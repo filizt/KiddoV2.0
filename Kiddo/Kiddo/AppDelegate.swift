@@ -8,14 +8,15 @@
 
 import UIKit
 import Parse
+import ParseUI
 import ParseFacebookUtilsV4
 
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, PFLogInViewControllerDelegate, PFSignUpViewControllerDelegate  {
 
     var window: UIWindow?
-
+    var rootVC: UIViewController?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
@@ -27,12 +28,53 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
 
         Parse.initialize(with: configuration)
-
-        //Parse.setApplicationId("8383nfjf9393nnd", clientKey: "93993djfjfjkskkskggh667")
         PFFacebookUtils.initializeFacebook(applicationLaunchOptions: launchOptions)
-        
+
+       // if PFUser.current() == nil {
+            let logInViewController = LogInViewController()
+            logInViewController.fields = [PFLogInFields.facebook, PFLogInFields.dismissButton]
+            logInViewController.delegate = self
+            logInViewController.emailAsUsername = false
+            logInViewController.signUpController?.delegate = self
+            logInViewController.facebookPermissions = ["public_profile", "email"]
+
+            window?.rootViewController? = logInViewController
+            window?.makeKeyAndVisible()
+
+    // }
         return true
     }
+
+    //MARK: PFLogInViewControllerDelegate functions
+
+    func log(_ logInController: PFLogInViewController, didLogIn user: PFUser) {
+        window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateInitialViewController()
+    }
+
+    //To-Do: Need to handle error conditions
+    func log(_ logInController: PFLogInViewController, didFailToLogInWithError error: Error?) {
+        window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateInitialViewController()
+
+        let alert = UIAlertController(title: "Facebook LogIn Failed", message: "Facebook login failed due to an error. We skipped the login step. You can still enjoy Kiddo!", preferredStyle: UIAlertControllerStyle.alert)
+        let alertAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil)
+        alert.addAction(alertAction)
+
+        window?.rootViewController?.present(alert, animated: true, completion: nil)
+    }
+
+    //Skipping log in triggers this.
+    func logInViewControllerDidCancelLog(in logInController: PFLogInViewController) {
+        window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateInitialViewController()
+
+        let alert = UIAlertController(title: "Facebook LogIn Cancelled", message: "Facebook login cancelled. No worries! You can still enjoy Kiddo without signing up!", preferredStyle: UIAlertControllerStyle.alert)
+        let alertAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil)
+        alert.addAction(alertAction)
+
+        window?.rootViewController?.present(alert, animated: true, completion: nil)
+
+    }
+    
+
 
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

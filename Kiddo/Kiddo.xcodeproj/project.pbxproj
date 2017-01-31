@@ -120,12 +120,12 @@
 		BD68B9A51DD0F2F300CE39CA /* Kiddo */ = {
 			isa = PBXGroup;
 			children = (
+				BD68B9A61DD0F2F300CE39CA /* AppDelegate.swift */,
 				BD506DDA1E294175001A98B0 /* Storyboards */,
 				BD68B9BB1DD0F98F00CE39CA /* Model */,
 				BD68B9BD1DD0F99F00CE39CA /* View */,
 				BD68B9BA1DD0F98000CE39CA /* View Controller */,
 				BD506DD91E29412E001A98B0 /* Util */,
-				BD68B9A61DD0F2F300CE39CA /* AppDelegate.swift */,
 				BD506DDB1E2941B6001A98B0 /* Resources */,
 			);
 			path = Kiddo;

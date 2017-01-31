@@ -10,7 +10,7 @@ import UIKit
 import Parse
 import ParseUI
 
-class TimelineViewController: UIViewController, PFLogInViewControllerDelegate, PFSignUpViewControllerDelegate {
+class TimelineViewController: UIViewController {
 
     @IBOutlet weak var timelineTableView: UITableView!
     @IBOutlet weak var switchControl: UISegmentedControl!
@@ -39,19 +39,6 @@ class TimelineViewController: UIViewController, PFLogInViewControllerDelegate, P
 
         self.setUpNavigationBar()
 
-
-      //The FB log in is commented out below.
-        if PFUser.current() == nil {
-            let logInViewController = LogInViewController()
-            logInViewController.fields = [PFLogInFields.facebook, PFLogInFields.dismissButton]
-            logInViewController.delegate = self
-            logInViewController.emailAsUsername = false
-
-            logInViewController.facebookPermissions = ["public_profile", "email"]
-            logInViewController.signUpController?.delegate = self
-            present(logInViewController, animated: false, completion: nil)
-
-       }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -119,31 +106,6 @@ class TimelineViewController: UIViewController, PFLogInViewControllerDelegate, P
         backItem.title = ""
         //navigationController?.editButtonItem = backItem
         navigationController?.navigationBar.topItem?.backBarButtonItem = backItem
-    }
-
-    //MARK: PFLogInViewXontrollerDelegate functions
-
-    func log(_ logInController: PFLogInViewController, didLogIn user: PFUser) {
-        dismiss(animated: true, completion: nil)
-    }
-
-    //To-Do: Need to handle error conditions
-    func log(_ logInController: PFLogInViewController, didFailToLogInWithError error: Error?) {
-        self.dismiss(animated: true, completion: nil)
-        let alert = UIAlertController(title: "Facebook LogIn Failed", message: "Facebook login failed due to an error. We skipped the login step for you. Enjoy Kiddo!", preferredStyle: UIAlertControllerStyle.alert)
-        let alertAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil)
-        alert.addAction(alertAction)
-        present(alert, animated: true, completion: nil)
-    }
-
-    //To-Do: Can't trigger cancel call. Need to look into this.
-    //Skip log in triggers this.
-    func logInViewControllerDidCancelLog(in logInController: PFLogInViewController) {
-        self.dismiss(animated: true, completion: nil)
-        let alert = UIAlertController(title: "Facebook LogIn Skipped", message: "You have chosen to skip the Facebook login.", preferredStyle: UIAlertControllerStyle.alert)
-        let alertAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil)
-        alert.addAction(alertAction)
-        present(alert, animated: true, completion: nil)
     }
 
 
