@@ -16,28 +16,32 @@ class DetailViewController: UIViewController {
     var image: UIImage!
     
     @IBOutlet weak var eventImage: UIImageView!
-    @IBOutlet weak var eventDescription: UILabel!
-    @IBOutlet weak var eventAddress: UILabel!
-    @IBOutlet weak var eventStartTime: UILabel!
-    @IBOutlet weak var moreInfoButton: UIButton!
+    @IBOutlet weak var scrollViewContainerView: UIView!
+    @IBOutlet weak var eventDescription: UITextView!
+    @IBOutlet weak var eventAgeInfo: UILabel!
 
     override func viewDidLoad() {
         super.viewDidLoad()
        // self.eventAddress.text = event.eventAddress
         // self.eventStartTime.text = event.eventStartTime
 
-        //self.eventImage.image = //self.image
-       // self.eventImage.contentMode = .scaleAspectFill
+        self.eventImage.image = self.image
+        //self.eventDescription.text = event.description
+        self.eventAgeInfo.text = "AGES 0-5"
 
-        //navigationController?.navigationBar.topItem?.title = event.eventTitle
+        navigationController?.navigationBar.topItem?.title = event.title
 
-//        if event.eventDescription != nil {
-//            self.eventDescription.text = event.eventDescription?.html2AttributedString?.string
-//        }
-//        if event.eventUrl != nil {
-//            moreInfoButton.isHidden = false
-//        }
+        calculateViewHeight()
 
+    }
+
+    private func calculateViewHeight() {
+        let c1 = eventImage.frame.size.height
+        let c2 = eventDescription.frame.size.height
+        let c3 = eventAgeInfo.frame.size.height
+
+        var viewFrame = scrollViewContainerView.frame
+        viewFrame.size.height = c1 + c2 + c3
     }
 
     @IBAction func moreInformationButton(_ sender: AnyObject) {

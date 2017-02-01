@@ -13,9 +13,8 @@ import ParseUI
 class TimelineViewController: UIViewController {
 
     @IBOutlet weak var timelineTableView: UITableView!
-    //@IBOutlet weak var switchControl: UISegmentedControl!
-
     @IBOutlet weak var segmentedControl: CustomSegmentedControl!
+    
     var events = [Event]() {
         didSet {
             self.timelineTableView.reloadData()
