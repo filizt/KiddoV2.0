@@ -25,27 +25,22 @@
                                 <rect key="frame" x="0.0" y="91" width="375" height="576"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </tableView>
-                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="3l0-vv-Hp5">
-                                <rect key="frame" x="0.0" y="64" width="375" height="29"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="L5u-Zr-Q8o" customClass="CustomSegmentedControl" customModule="Kiddo" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="64" width="375" height="36"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <segments>
-                                    <segment title="TODAY"/>
-                                    <segment title="TOMORROW"/>
-                                </segments>
-                                <color key="tintColor" red="1" green="0.67226733670000005" blue="0.49165077870000001" alpha="1" colorSpace="calibratedRGB"/>
-                                <connections>
-                                    <action selector="switchButtonPressed:" destination="BYZ-38-t0r" eventType="valueChanged" id="Xcm-D6-5Jg"/>
-                                </connections>
-                            </segmentedControl>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="36" id="1x5-pz-SgO"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="3l0-vv-Hp5" secondAttribute="trailing" id="25M-IH-Nkt"/>
                             <constraint firstItem="bl0-SP-8aP" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="27" id="2XA-bV-aVK"/>
+                            <constraint firstItem="L5u-Zr-Q8o" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="30y-jf-WX0"/>
                             <constraint firstItem="bl0-SP-8aP" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="42t-Ey-FKb"/>
                             <constraint firstAttribute="trailing" secondItem="bl0-SP-8aP" secondAttribute="trailing" id="7Fl-ba-4tm"/>
-                            <constraint firstItem="3l0-vv-Hp5" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="ArE-6R-QOt"/>
-                            <constraint firstItem="3l0-vv-Hp5" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="vAx-S5-KzX"/>
+                            <constraint firstAttribute="trailing" secondItem="L5u-Zr-Q8o" secondAttribute="trailing" id="DnL-IS-b4s"/>
+                            <constraint firstItem="L5u-Zr-Q8o" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="WlT-td-lMs"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="bl0-SP-8aP" secondAttribute="bottom" id="xSn-JK-8rc"/>
                         </constraints>
                     </view>
@@ -57,7 +52,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="switchControl" destination="3l0-vv-Hp5" id="Rsl-Mp-WeP"/>
+                        <outlet property="segmentedControl" destination="L5u-Zr-Q8o" id="UPy-pC-Hn9"/>
                         <outlet property="timelineTableView" destination="bl0-SP-8aP" id="Ur3-Dv-amR"/>
                         <segue destination="voi-bg-x8q" kind="show" identifier="showDetailView" id="BeH-JL-aHl"/>
                     </connections>

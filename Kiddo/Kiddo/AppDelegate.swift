@@ -30,7 +30,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PFLogInViewControllerDele
         Parse.initialize(with: configuration)
         PFFacebookUtils.initializeFacebook(applicationLaunchOptions: launchOptions)
 
-       // if PFUser.current() == nil {
+        if PFUser.current() == nil {
             let logInViewController = LogInViewController()
             logInViewController.fields = [PFLogInFields.facebook, PFLogInFields.dismissButton]
             logInViewController.delegate = self
@@ -41,7 +41,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PFLogInViewControllerDele
             window?.rootViewController? = logInViewController
             window?.makeKeyAndVisible()
 
-    // }
+     }
         return true
     }
 

@@ -13,8 +13,9 @@ import ParseUI
 class TimelineViewController: UIViewController {
 
     @IBOutlet weak var timelineTableView: UITableView!
-    @IBOutlet weak var switchControl: UISegmentedControl!
+    //@IBOutlet weak var switchControl: UISegmentedControl!
 
+    @IBOutlet weak var segmentedControl: CustomSegmentedControl!
     var events = [Event]() {
         didSet {
             self.timelineTableView.reloadData()
@@ -39,6 +40,8 @@ class TimelineViewController: UIViewController {
 
         self.setUpNavigationBar()
 
+        self.segmentedControl.items = ["TODAY","TOMORROW","LATER"]
+
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -48,17 +51,6 @@ class TimelineViewController: UIViewController {
     private var lastRequest: PFQuery<PFObject>?
 
     private func getEvents() {
-  //      let date = DateUtil.shared.createDate(from: "02-02-2017 09:30")
-  //      let query = PFQuery(className: "EventDate")
-       // query.where
-  //      query.findObjectsInBackground { (objects, error) in
-
-   //         let date2 = objects?[0]
-    //        if let objects = objects {
-     //           print("blah")
-      //      }
-
-
         //var eventDate = PFObject(className: "EventDate")
         let eventDateQuery = PFQuery(className: "EventDate")
         let date = DateUtil.shared.createDate(from: "04-02-2017 10:00")
@@ -73,7 +65,7 @@ class TimelineViewController: UIViewController {
                         self.events = objects.map {Event.create(from: $0)}
                     }
                 }
-            }
+            }           
     }
 
 /*
@@ -134,11 +126,8 @@ class TimelineViewController: UIViewController {
 extension TimelineViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if switchControl.selectedSegmentIndex == 0 {
-            return events.count
-        } else {
-            return eventsTomorrow.count
-        }
+        return events.count
+
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -146,11 +135,9 @@ extension TimelineViewController: UITableViewDataSource, UITableViewDelegate {
         var tempArray = [Event]()
 
         //0 means today, 1 means tomorrow
-        if switchControl.selectedSegmentIndex == 0 {
-            tempArray = events
-        } else {
-            tempArray = eventsTomorrow
-        }
+
+        tempArray = events
+
 
         let cell = self.timelineTableView.dequeueReusableCell(withIdentifier: EventTableViewCell.identifier(), for: indexPath) as! EventTableViewCell
 
