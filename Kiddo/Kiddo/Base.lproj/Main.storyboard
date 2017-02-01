@@ -73,7 +73,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hxZ-Yy-QZr">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hxZ-Yy-QZr">
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MNq-I4-i1y">
@@ -148,6 +148,7 @@
                         <outlet property="eventAgeInfo" destination="FnU-DU-vOB" id="L2I-sx-8gD"/>
                         <outlet property="eventDescription" destination="KxS-qL-ftz" id="hCe-HZ-oLr"/>
                         <outlet property="eventImage" destination="DYO-TX-Z2k" id="SZr-2k-WNH"/>
+                        <outlet property="scrollView" destination="hxZ-Yy-QZr" id="Mfl-0X-xNx"/>
                         <outlet property="scrollViewContainerView" destination="MNq-I4-i1y" id="mKy-pi-A1O"/>
                     </connections>
                 </viewController>

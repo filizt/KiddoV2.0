@@ -10,15 +10,17 @@ import UIKit
 import SafariServices
 import Parse
 
-class DetailViewController: UIViewController {
-    
-    var event: Event!
-    var image: UIImage!
+class DetailViewController: UIViewController, UIScrollViewDelegate {
     
     @IBOutlet weak var eventImage: UIImageView!
     @IBOutlet weak var scrollViewContainerView: UIView!
     @IBOutlet weak var eventDescription: UITextView!
     @IBOutlet weak var eventAgeInfo: UILabel!
+    @IBOutlet weak var scrollView: UIScrollView!
+
+    var event: Event!
+    var image: UIImage!
+    var cachedImageViewSize: CGRect!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,17 +33,18 @@ class DetailViewController: UIViewController {
 
         navigationController?.navigationBar.topItem?.title = event.title
 
-        calculateViewHeight()
-
+        self.cachedImageViewSize = self.eventImage.frame;
+        scrollView.delegate = self
     }
 
-    private func calculateViewHeight() {
-        let c1 = eventImage.frame.size.height
-        let c2 = eventDescription.frame.size.height
-        let c3 = eventAgeInfo.frame.size.height
-
-        var viewFrame = scrollViewContainerView.frame
-        viewFrame.size.height = c1 + c2 + c3
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let y = -scrollView.contentOffset.y;
+        print("scroll called")
+        print("y value:")
+        if (y > 0) {
+            self.eventImage.frame = CGRect(x: 0, y: scrollView.contentOffset.y, width: self.cachedImageViewSize.size.width+y, height: self.cachedImageViewSize.size.height+y)
+            self.eventImage.center = CGPoint(x:self.view.center.x, y:self.eventImage.center.y);
+        }
     }
 
     @IBAction func moreInformationButton(_ sender: AnyObject) {
