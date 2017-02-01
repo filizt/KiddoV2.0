@@ -12,6 +12,7 @@ import UIKit
 
     private var labels = [UILabel]()
     private var selectionBar = UIView()
+    private let SELECTION_BAR_HEIGHT: CGFloat = 3.0
 
     var items: [String] = ["Item1","Item2"] {
         didSet {
@@ -28,61 +29,77 @@ import UIKit
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupViews()
-        setupSubViews()
     }
 
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         setupViews()
-        setupSubViews()
     }
 
 
-    //update segmented controls UI; add thumbView to UI; call to create labels
+    //setup segmented control UI
     private func setupViews() {
         layer.borderColor = UIColor.white.cgColor
         backgroundColor = UIColor.orange
+
+        setupSubviews()
     }
 
-    private func setupSubViews() {
+    //create to labels and selectionBar; add them to view
+    private func setupSubviews() {
         for label in labels {
             label.removeFromSuperview()
         }
 
         labels.removeAll(keepingCapacity: true)
 
-        //To-Do: Clean up below code.
-        let xOffset:CGFloat = 15.0
-        let labelWidth = (self.bounds.size.width - (xOffset * 2)) / CGFloat(items.count)
-        var labelLocation = CGRect(x: 0, y: 0, width: labelWidth, height: self.frame.size.height)
-        for index in 1...items.count {
-            let label = UILabel(frame: labelLocation)
-            label.text = items[index-1]
+        var labelFrame = createNextLabelFrame(nil)
+        for index in 0..<items.count {
+            let label = UILabel(frame: labelFrame)
+            label.text = items[index]
             label.backgroundColor = UIColor.orange
             label.textAlignment = .center
-            label.font = UIFont(name: "Avenir", size: 15)
+            label.font = UIFont(name: "Avenir", size: 14)
             label.textColor = UIColor.white
+
             self.addSubview(label)
             labels.append(label)
 
-            //update label location for the next label
-            let x = label.frame.origin.x + label.frame.size.width + xOffset
-            labelLocation  = CGRect(x: x, y: 0, width: labelWidth, height: self.frame.size.height)
+            labelFrame = createNextLabelFrame(label.frame)
         }
 
         //setup selectionBar
-        var barFrame = labels[selectedIndex].frame
-        barFrame.size.height = 3
-        barFrame.origin.y = self.frame.size.height - barFrame.size.height
-        selectionBar.frame =  barFrame
+        selectionBar.frame =  createSelectionBarFrame(labels[selectedIndex].frame)
         selectionBar.backgroundColor = UIColor.white
 
         self.addSubview(selectionBar)
     }
 
+    private func createNextLabelFrame(_ currentFrame: CGRect?) -> CGRect {
+        let xOffset:CGFloat = 15.0
+        let labelWidth = (self.bounds.size.width - (xOffset * 2)) / CGFloat(items.count)
+        var newLabelFrame:CGRect
+
+        if let currentFrame = currentFrame {
+            let x = currentFrame.origin.x + currentFrame.size.width
+            newLabelFrame  = CGRect(x: x, y: 0, width: labelWidth, height: self.frame.size.height)
+        } else { //It's the first call
+            newLabelFrame = CGRect(x: xOffset, y: 0, width: labelWidth, height: self.frame.size.height)
+        }
+
+        return newLabelFrame
+    }
+
+    private func createSelectionBarFrame(_ originFrame: CGRect) ->CGRect {
+        var selectionBarFrame = originFrame
+        selectionBarFrame.size.height = SELECTION_BAR_HEIGHT
+        selectionBarFrame.origin.y = self.frame.size.height - SELECTION_BAR_HEIGHT
+
+        return selectionBarFrame
+    }
 
     override func layoutSubviews() {
-        self.setupSubViews()
+        self.setupSubviews()
     }
 
     override func beginTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
@@ -108,14 +125,8 @@ import UIKit
         let label = labels[selectedIndex]
 
         UIView.animate(withDuration: 0.5, delay: 0.0, usingSpringWithDamping: 0.9, initialSpringVelocity: 0.9, options: UIViewAnimationOptions.curveEaseIn , animations: {
-            var labelFrame = label.frame
-            labelFrame.size.height = 3
-            labelFrame.origin.y = self.frame.size.height - labelFrame.size.height
-            self.selectionBar.frame = labelFrame
-
+            self.selectionBar.frame = self.createSelectionBarFrame(label.frame)
         } , completion: nil)
-        
-        
     }
     
 }

@@ -22,8 +22,8 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="bl0-SP-8aP">
-                                <rect key="frame" x="0.0" y="91" width="375" height="576"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <rect key="frame" x="0.0" y="99" width="375" height="568"/>
+                                <color key="backgroundColor" red="0.64313725489999995" green="0.64313725489999995" blue="0.64313725489999995" alpha="1" colorSpace="calibratedRGB"/>
                             </tableView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="L5u-Zr-Q8o" customClass="CustomSegmentedControl" customModule="Kiddo" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="64" width="375" height="36"/>
@@ -35,7 +35,7 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="bl0-SP-8aP" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="27" id="2XA-bV-aVK"/>
+                            <constraint firstItem="bl0-SP-8aP" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="35" id="2XA-bV-aVK"/>
                             <constraint firstItem="L5u-Zr-Q8o" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="30y-jf-WX0"/>
                             <constraint firstItem="bl0-SP-8aP" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="42t-Ey-FKb"/>
                             <constraint firstAttribute="trailing" secondItem="bl0-SP-8aP" secondAttribute="trailing" id="7Fl-ba-4tm"/>
