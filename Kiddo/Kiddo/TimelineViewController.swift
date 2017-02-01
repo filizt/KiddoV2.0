@@ -20,6 +20,7 @@ class TimelineViewController: UIViewController {
             self.timelineTableView.reloadData()
         }
     }
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
 
     private var request:PFQuery<PFObject>?
     var eventsTomorrow = [Event]()
@@ -41,9 +42,13 @@ class TimelineViewController: UIViewController {
 
         self.segmentedControl.items = ["TODAY","TOMORROW","LATER"]
 
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.whiteLarge
+        activityIndicator.backgroundColor = UIColor.gray
     }
 
     override func viewWillAppear(_ animated: Bool) {
+        activityIndicator.startAnimating()
          self.getEvents()
     }
 
@@ -62,6 +67,7 @@ class TimelineViewController: UIViewController {
                     if let objects = objects {
                         //objects should be events for a particular date
                         self.events = objects.map {Event.create(from: $0)}
+                        self.activityIndicator.stopAnimating()
                     }
                 }
             }           
