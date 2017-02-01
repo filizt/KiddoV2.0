@@ -23,7 +23,7 @@ class EventTableViewCell: UITableViewCell {
 
     override func prepareForReuse() {
         super.prepareForReuse()
-        self.eventImage?.image = nil
+        self.eventImage?.image = UIImage(named: "image_placeholder")
         self.eventTitle?.text = nil
         self.eventVenueName?.text = nil
         self.eventStartTime?.text = nil
@@ -31,6 +31,11 @@ class EventTableViewCell: UITableViewCell {
 
     private func updateUI() {
         //load new information from our event (if any)
+
+        //cell view loads and shows white background for a short period of time. This looks very ugly. Turns out white background shows during the time we're waiting for the image download. Adding image placeholder to show here.
+        //It'd be great if we could start the image download earlier.
+        self.eventImage?.image = UIImage(named: "image_placeholder")
+
         if let event = event {
             self.eventTitle?.text = event.title
             self.eventVenueName?.text = event.location
@@ -41,7 +46,7 @@ class EventTableViewCell: UITableViewCell {
                 return
             }
 
-            //We don't have imageFile in the cache; let's retreive it. Event photo is a PFFile in this state
+            //We don't have imageFile in the cache; let's retreive it from the server. Event photo is a PFFile in this state
             if let imageFile = event.photo {
                 imageFile.getDataInBackground(block: { (imageData, error) in
                     guard error == nil else {

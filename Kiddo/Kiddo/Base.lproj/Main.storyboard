@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="rqb-Yq-P7V">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1212" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="rqb-Yq-P7V">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -32,6 +32,9 @@
                                     <constraint firstAttribute="height" constant="36" id="1x5-pz-SgO"/>
                                 </constraints>
                             </view>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="EUR-ae-as2">
+                                <rect key="frame" x="0.0" y="100" width="375" height="567"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -40,7 +43,11 @@
                             <constraint firstItem="bl0-SP-8aP" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="42t-Ey-FKb"/>
                             <constraint firstAttribute="trailing" secondItem="bl0-SP-8aP" secondAttribute="trailing" id="7Fl-ba-4tm"/>
                             <constraint firstAttribute="trailing" secondItem="L5u-Zr-Q8o" secondAttribute="trailing" id="DnL-IS-b4s"/>
+                            <constraint firstItem="EUR-ae-as2" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="EVj-cj-O7L"/>
                             <constraint firstItem="L5u-Zr-Q8o" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="WlT-td-lMs"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="EUR-ae-as2" secondAttribute="bottom" id="blq-ag-4ZV"/>
+                            <constraint firstItem="EUR-ae-as2" firstAttribute="top" secondItem="L5u-Zr-Q8o" secondAttribute="bottom" id="r0A-hW-8fG"/>
+                            <constraint firstAttribute="trailing" secondItem="EUR-ae-as2" secondAttribute="trailing" id="s8H-1F-i6j"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="bl0-SP-8aP" secondAttribute="bottom" id="xSn-JK-8rc"/>
                         </constraints>
                     </view>
@@ -52,6 +59,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="activityIndicator" destination="EUR-ae-as2" id="J7v-ci-NjN"/>
                         <outlet property="segmentedControl" destination="L5u-Zr-Q8o" id="UPy-pC-Hn9"/>
                         <outlet property="timelineTableView" destination="bl0-SP-8aP" id="Ur3-Dv-amR"/>
                         <segue destination="voi-bg-x8q" kind="show" identifier="showDetailView" id="BeH-JL-aHl"/>
