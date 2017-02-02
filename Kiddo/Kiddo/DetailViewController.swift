@@ -37,8 +37,6 @@ class DetailViewController: UIViewController, UIScrollViewDelegate {
         scrollView.delegate = self
     }
 
-
-    //BUG: There is a bug with below code while zooming on the image. It happens only on iPhone6+
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let y = -scrollView.contentOffset.y;
 
