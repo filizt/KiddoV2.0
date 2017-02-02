@@ -59,7 +59,7 @@ import UIKit
             label.text = items[index]
             label.backgroundColor = UIColor(red: 255, green: 147, blue: 92)
             label.textAlignment = .center
-            label.font = UIFont(name: "Avenir", size: 14)
+            label.font = UIFont(name: "Avenir-Book", size: 14)
             label.textColor = UIColor.white
 
             self.addSubview(label)

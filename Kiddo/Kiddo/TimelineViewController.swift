@@ -28,7 +28,7 @@ class TimelineViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         self.timelineTableView.dataSource = self
         self.timelineTableView.delegate = self
 
@@ -54,6 +54,13 @@ class TimelineViewController: UIViewController {
         dateFormatter.dateStyle = .medium
         let text = "Plans for "
         navigationController?.navigationBar.topItem?.title = text + dateFormatter.string(from: today as Date)
+        let attrs = [
+            NSForegroundColorAttributeName: UIColor.red,
+            NSFontAttributeName: UIFont(name: "Avenir-Book", size: 14)!
+        ]
+
+        UINavigationBar.appearance().titleTextAttributes = attrs
+
         self.getEvents()
 
     }
@@ -155,8 +162,6 @@ extension TimelineViewController: UITableViewDataSource, UITableViewDelegate {
 
         let currentEvent = tempArray[indexPath.row]
         cell.event = currentEvent
-
-        cell.eventVenueName.text = "Some really long text.. really really really really long"
 
         return cell
     }

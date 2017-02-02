@@ -123,6 +123,7 @@
 			isa = PBXGroup;
 			children = (
 				BD68B9A61DD0F2F300CE39CA /* AppDelegate.swift */,
+				BDC903D51E43C65C006CD7D6 /* Fonts */,
 				BD506DDA1E294175001A98B0 /* Storyboards */,
 				BD68B9BB1DD0F98F00CE39CA /* Model */,
 				BD68B9BD1DD0F99F00CE39CA /* View */,
@@ -161,6 +162,14 @@
 				C26E62701DD103B900BDC568 /* eventCell.xib */,
 			);
 			name = View;
+			sourceTree = "<group>";
+		};
+		BDC903D51E43C65C006CD7D6 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Fonts;
+			path = ..;
 			sourceTree = "<group>";
 		};
 		D6E9E1B41F25F9F678B82398 /* Pods */ = {
