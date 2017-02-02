@@ -49,7 +49,13 @@ class TimelineViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         activityIndicator.startAnimating()
-         self.getEvents()
+        let today = NSDate()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .medium
+        let text = "Plans for "
+        navigationController?.navigationBar.topItem?.title = text + dateFormatter.string(from: today as Date)
+        self.getEvents()
+
     }
 
     private var lastRequest: PFQuery<PFObject>?
@@ -149,6 +155,8 @@ extension TimelineViewController: UITableViewDataSource, UITableViewDelegate {
 
         let currentEvent = tempArray[indexPath.row]
         cell.event = currentEvent
+
+        cell.eventVenueName.text = "Some really long text.. really really really really long"
 
         return cell
     }
