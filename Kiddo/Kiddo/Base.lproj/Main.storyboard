@@ -90,6 +90,7 @@
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="DYO-TX-Z2k">
                                                 <rect key="frame" x="0.0" y="0.0" width="375" height="310"/>
                                                 <constraints>
+                                                    <constraint firstAttribute="width" constant="375" id="jA6-t8-FbP"/>
                                                     <constraint firstAttribute="height" constant="310" id="vFO-nD-sJV"/>
                                                 </constraints>
                                             </imageView>

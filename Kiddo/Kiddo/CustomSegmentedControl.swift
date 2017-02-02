@@ -40,7 +40,7 @@ import UIKit
     //setup segmented control UI
     private func setupViews() {
         layer.borderColor = UIColor.white.cgColor
-        backgroundColor = UIColor.orange
+        backgroundColor = UIColor(red: 255, green: 147, blue: 92)
 
         setupSubviews()
     }
@@ -57,7 +57,7 @@ import UIKit
         for index in 0..<items.count {
             let label = UILabel(frame: labelFrame)
             label.text = items[index]
-            label.backgroundColor = UIColor.orange
+            label.backgroundColor = UIColor(red: 255, green: 147, blue: 92)
             label.textAlignment = .center
             label.font = UIFont(name: "Avenir", size: 14)
             label.textColor = UIColor.white

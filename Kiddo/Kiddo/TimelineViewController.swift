@@ -98,6 +98,7 @@ class TimelineViewController: UIViewController {
         let newColor = UIColor(red: 255, green: 147, blue: 92)
         navigationController?.navigationBar.tintColor = UIColor.white
         navigationController?.navigationBar.barTintColor = newColor
+        navigationController?.navigationBar.backgroundColor = newColor
         navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
         let backItem = UIBarButtonItem()
         backItem.title = ""
