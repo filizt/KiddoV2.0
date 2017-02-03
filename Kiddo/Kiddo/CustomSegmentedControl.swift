@@ -8,11 +8,16 @@
 
 import UIKit
 
+protocol CustomSegmentedControlDelegate: class {
+    func didSelectItem(sender: CustomSegmentedControl, selectedIndex: Int)
+}
+
 @IBDesignable class CustomSegmentedControl: UIControl {
 
     private var labels = [UILabel]()
     private var selectionBar = UIView()
     private let SELECTION_BAR_HEIGHT: CGFloat = 3.0
+    weak var delegate:CustomSegmentedControlDelegate?
 
     var items: [String] = ["Item1","Item2"] {
         didSet {
@@ -126,9 +131,16 @@ import UIKit
 
         UIView.animate(withDuration: 0.5, delay: 0.0, usingSpringWithDamping: 0.9, initialSpringVelocity: 0.9, options: UIViewAnimationOptions.curveEaseIn , animations: {
             self.selectionBar.frame = self.createSelectionBarFrame(label.frame)
-        } , completion: nil)
+
+        } , completion: { (complete: Bool) in
+            if complete {
+                self.delegate?.didSelectItem(sender: self, selectedIndex: self.selectedIndex)
+            }
+        })
     }
     
 }
+
+
 
 

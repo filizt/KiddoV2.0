@@ -10,20 +10,28 @@ import UIKit
 import Parse
 import ParseUI
 
-class TimelineViewController: UIViewController {
+class TimelineViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, CustomSegmentedControlDelegate {
 
     @IBOutlet weak var timelineTableView: UITableView!
     @IBOutlet weak var segmentedControl: CustomSegmentedControl!
-    
-    var events = [Event]() {
-        didSet {
-            self.timelineTableView.reloadData()
-        }
-    }
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
 
     private var request:PFQuery<PFObject>?
-    var eventsTomorrow = [Event]()
+
+    private var today = [Event]()
+    var tomorrow = [Event]()
+    var later = [Event]()
+
+    var events = [Event]() {
+        didSet {
+            let range = NSMakeRange(0, self.timelineTableView.numberOfSections)
+            let sections = NSIndexSet(indexesIn: range)
+            self.timelineTableView.reloadSections(sections as IndexSet, with: UITableViewRowAnimation.fade)
+            let x = IndexPath(item: 0, section: 0)
+            self.timelineTableView.scrollToRow(at: x, at: UITableViewScrollPosition.top, animated: true)
+            self.timelineTableView.reloadData()
+        }
+    }
 
 
     override func viewDidLoad() {
@@ -41,6 +49,7 @@ class TimelineViewController: UIViewController {
         self.setUpNavigationBar()
 
         self.segmentedControl.items = ["TODAY","TOMORROW","LATER"]
+        self.segmentedControl.delegate = self
 
         activityIndicator.hidesWhenStopped = true
         activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.whiteLarge
@@ -56,7 +65,7 @@ class TimelineViewController: UIViewController {
         navigationController?.navigationBar.topItem?.title = text + dateFormatter.string(from: today as Date)
         let attrs = [
             NSForegroundColorAttributeName: UIColor.red,
-            NSFontAttributeName: UIFont(name: "Avenir-Book", size: 14)!
+            NSFontAttributeName: UIFont(name: "Avenir-Book", size: 24)!
         ]
 
         UINavigationBar.appearance().titleTextAttributes = attrs
@@ -70,7 +79,7 @@ class TimelineViewController: UIViewController {
     private func getEvents() {
         //var eventDate = PFObject(className: "EventDate")
         let eventDateQuery = PFQuery(className: "EventDate")
-        let date = DateUtil.shared.createDate(from: "04-02-2017 10:00")
+        let date = DateUtil.shared.createDate(from: "02-02-2017 10:00")
         eventDateQuery.whereKey("eventDate", equalTo: date)
         eventDateQuery.findObjectsInBackground { (dateObjects, error) in
             if let dateObjects = dateObjects {
@@ -79,12 +88,47 @@ class TimelineViewController: UIViewController {
                 relation.query().findObjectsInBackground { (objects, error) in
                     if let objects = objects {
                         //objects should be events for a particular date
-                        self.events = objects.map {Event.create(from: $0)}
+                        self.today = objects.map {Event.create(from: $0)}
+                        self.events = self.today
                         self.activityIndicator.stopAnimating()
                     }
                 }
-            }           
-    }
+            }
+        }
+
+        let queryTomorrow = PFQuery(className: "EventDate")
+        let dateTomorrow = DateUtil.shared.createDate(from: "04-02-2017 10:00")
+        queryTomorrow.whereKey("eventDate", equalTo: dateTomorrow)
+        queryTomorrow.findObjectsInBackground { (dateObjects, error) in
+            if let dateObjects = dateObjects {
+                var eventDate = dateObjects[0]
+                var relation = eventDate.relation(forKey: "events")
+                relation.query().findObjectsInBackground { (objects, error) in
+                    if let objects = objects {
+                        //objects should be events for a particular date
+                        self.tomorrow = objects.map {Event.create(from: $0)}
+                        self.activityIndicator.stopAnimating()
+                    }
+                }
+            }
+        }
+
+        let queryLater = PFQuery(className: "EventDate")
+        let dateLater = DateUtil.shared.createDate(from: "02-02-2017 10:00")
+        queryLater.whereKey("eventDate", greaterThan: dateLater)
+        queryLater.findObjectsInBackground { (dateObjects, error) in
+            if let dateObjects = dateObjects {
+                var eventDate = dateObjects[0]
+                var relation = eventDate.relation(forKey: "events")
+                relation.query().findObjectsInBackground { (objects, error) in
+                    if let objects = objects {
+                        //objects should be events for a particular date
+                        self.later = objects.map {Event.create(from: $0)}
+                        self.activityIndicator.stopAnimating()
+                    }
+                }
+            }
+        }
 
 /*
         self.request = PFQuery(className: "EventObject");
@@ -140,34 +184,36 @@ class TimelineViewController: UIViewController {
             }
         }
     }
-}
-
-extension TimelineViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return events.count
-
+      return self.events.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-
-        var tempArray = [Event]()
-
-        //0 means today, 1 means tomorrow
-
-        tempArray = events
-
+        let selectedEvent = self.events[indexPath.row]
 
         let cell = self.timelineTableView.dequeueReusableCell(withIdentifier: EventTableViewCell.identifier(), for: indexPath) as! EventTableViewCell
-
-        let currentEvent = tempArray[indexPath.row]
-        cell.event = currentEvent
+        cell.event = selectedEvent
 
         return cell
     }
-    
+
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         self.performSegue(withIdentifier: "showDetailView", sender: nil)
 
     }
+
+
+    func didSelectItem(sender: CustomSegmentedControl, selectedIndex: Int) {
+        if selectedIndex == 0 {
+            self.events = today
+        } else if selectedIndex == 1 {
+            self.events = tomorrow
+        } else {
+            self.events = later
+        }
+    }
+
+    
 }
