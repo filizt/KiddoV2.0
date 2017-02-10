@@ -17,6 +17,8 @@
 		BD68B9B11DD0F2F300CE39CA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD68B9AF1DD0F2F300CE39CA /* LaunchScreen.storyboard */; };
 		BD68B9BF1DD0FA1C00CE39CA /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD68B9BE1DD0FA1C00CE39CA /* DetailViewController.swift */; };
 		BD68B9CB1DD39FF100CE39CA /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD68B9CA1DD39FF100CE39CA /* Utility.swift */; };
+		BDB5B0931E4D534400D59AEA /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDB5B0911E4D534400D59AEA /* Fabric.framework */; };
+		BDB5B0961E4D54B600D59AEA /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDB5B0951E4D54B600D59AEA /* Crashlytics.framework */; };
 		BDC903D41E413B82006CD7D6 /* CustomSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDC903D31E413B82006CD7D6 /* CustomSegmentedControl.swift */; };
 		BDEB9E8D1E04966A002F7222 /* EventEntryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDEB9E8C1E04966A002F7222 /* EventEntryViewController.swift */; };
 		BDEB9E8F1E05A64F002F7222 /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDEB9E8E1E05A64F002F7222 /* LogInViewController.swift */; };
@@ -41,6 +43,8 @@
 		BD68B9B21DD0F2F300CE39CA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BD68B9BE1DD0FA1C00CE39CA /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		BD68B9CA1DD39FF100CE39CA /* Utility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
+		BDB5B0911E4D534400D59AEA /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = SOURCE_ROOT; };
+		BDB5B0951E4D54B600D59AEA /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = SOURCE_ROOT; };
 		BDC903D31E413B82006CD7D6 /* CustomSegmentedControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomSegmentedControl.swift; sourceTree = "<group>"; };
 		BDEB9E8C1E04966A002F7222 /* EventEntryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventEntryViewController.swift; sourceTree = "<group>"; };
 		BDEB9E8E1E05A64F002F7222 /* LogInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
@@ -58,6 +62,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				3D0E85AC124827498950F2FA /* Pods_Kiddo.framework in Frameworks */,
+				BDB5B0961E4D54B600D59AEA /* Crashlytics.framework in Frameworks */,
+				BDB5B0931E4D534400D59AEA /* Fabric.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -67,6 +73,8 @@
 		3220BF4C279B9A5E1CF5D8BA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				BDB5B0911E4D534400D59AEA /* Fabric.framework */,
+				BDB5B0951E4D54B600D59AEA /* Crashlytics.framework */,
 				4FFC514A966709BA92D1974B /* Pods_Kiddo.framework */,
 			);
 			name = Frameworks;
@@ -194,6 +202,7 @@
 				BD68B9A11DD0F2F200CE39CA /* Resources */,
 				59A50EDB3C88E49250C0A4F7 /* [CP] Embed Pods Frameworks */,
 				DA9CCB1D59561A99C8909304 /* [CP] Copy Pods Resources */,
+				BDB5B0901E4D529700D59AEA /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -269,6 +278,19 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Kiddo/Pods-Kiddo-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		BDB5B0901E4D529700D59AEA /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "./Fabric.framework/run 2f684b3c217cea7a76c0689ab5b2d0a70fb07dc9 e3a57cdaa1fed0186a9798b7d5f7626c4037bd645faeb9a5dac085a65b255266";
 		};
 		D3C342AA9E872EB67BC7B00C /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -441,6 +463,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = AWF997WQMM;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = Kiddo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = filizk.Kiddo;
@@ -455,6 +481,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = AWF997WQMM;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = Kiddo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = filizk.Kiddo;

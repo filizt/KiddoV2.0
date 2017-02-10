@@ -11,6 +11,9 @@ import Parse
 import ParseUI
 import ParseFacebookUtilsV4
 import UserNotifications
+import Fabric
+import Crashlytics
+
 
 
 @UIApplicationMain
@@ -22,6 +25,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PFLogInViewControllerDele
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+
+        Fabric.with([Answers.self, Crashlytics.self])
 
        let configuration = ParseClientConfiguration {
             $0.applicationId = "8383nfjf9393nnd"
