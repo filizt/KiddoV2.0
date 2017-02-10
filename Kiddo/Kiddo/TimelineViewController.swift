@@ -9,6 +9,7 @@
 import UIKit
 import Parse
 import ParseUI
+import UserNotifications
 
 class TimelineViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, CustomSegmentedControlDelegate {
 
@@ -18,18 +19,24 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 
     private var request:PFQuery<PFObject>?
 
-    private var today = [Event]()
-    var tomorrow = [Event]()
-    var later = [Event]()
-
-    var events = [Event]() {
+    private var today = [Event]() {
         didSet {
-            let range = NSMakeRange(0, self.timelineTableView.numberOfSections)
-            let sections = NSIndexSet(indexesIn: range)
-            self.timelineTableView.reloadSections(sections as IndexSet, with: UITableViewRowAnimation.fade)
-            let x = IndexPath(item: 0, section: 0)
-            self.timelineTableView.scrollToRow(at: x, at: UITableViewScrollPosition.top, animated: true)
-            self.timelineTableView.reloadData()
+            if self.today.elementsEqual(oldValue, by: { $0.id == $1.id }) {
+                today = oldValue
+                print("hit here: same todays events was sent. Keeping the old value")
+            } else {
+                print("hit here: different todays events was sent.")
+            }
+        }
+    }
+    private var tomorrow = [Event]()
+    private var later = [Event]()
+
+    private var events = [Event]() {
+        didSet {
+            if !self.events.elementsEqual(oldValue, by: { $0.id == $1.id }) {
+                animateTableViewReload()
+            }
         }
     }
 
@@ -54,6 +61,12 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         activityIndicator.hidesWhenStopped = true
         activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.whiteLarge
         activityIndicator.backgroundColor = UIColor.gray
+
+        //TO-DO: fetchAllEvents should be called strategically if backend changed at all. Is there a way to check that through Parse?
+        self.fetchAllEvents()
+
+
+
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -65,18 +78,22 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         navigationController?.navigationBar.topItem?.title = text + dateFormatter.string(from: today as Date)
         let attrs = [
             NSForegroundColorAttributeName: UIColor.red,
-            NSFontAttributeName: UIFont(name: "Avenir-Book", size: 24)!
+            NSFontAttributeName: UIFont(name: "Avenir-Book", size: 14)!
         ]
 
         UINavigationBar.appearance().titleTextAttributes = attrs
 
-        self.getEvents()
+        //we should only re-fetch events if there are new events to show. Otherwise load what we initially had when the timeline loaded.
+        //self.timelineTableView.reloadData() This is not needed!
+        self.activityIndicator.stopAnimating()
 
+        //self.fetchAllEvents()
     }
 
+    
     private var lastRequest: PFQuery<PFObject>?
 
-    private func getEvents() {
+    private func fetchAllEvents() {
         //var eventDate = PFObject(className: "EventDate")
         let eventDateQuery = PFQuery(className: "EventDate")
         let date = DateUtil.shared.createDate(from: "02-02-2017 10:00")
@@ -88,8 +105,13 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
                 relation.query().findObjectsInBackground { (objects, error) in
                     if let objects = objects {
                         //objects should be events for a particular date
-                        self.today = objects.map {Event.create(from: $0)}
-                        self.events = self.today
+                        let returnedEvents = objects.map { Event.create(from: $0) }
+                        //if !self.today.elementsEqual(returnedEvents, by: { $0.id == $1.id }) {
+                            self.today = returnedEvents
+                            if self.segmentedControl.selectedIndex == 0 {
+                                self.events = self.today
+                            }
+                        //}
                         self.activityIndicator.stopAnimating()
                     }
                 }
@@ -106,7 +128,13 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
                 relation.query().findObjectsInBackground { (objects, error) in
                     if let objects = objects {
                         //objects should be events for a particular date
-                        self.tomorrow = objects.map {Event.create(from: $0)}
+                        let returnedEvents = objects.map {Event.create(from: $0)}
+                        if !self.tomorrow.elementsEqual(returnedEvents, by: { $0.id == $1.id }) {
+                            self.tomorrow = returnedEvents
+                            if self.segmentedControl.selectedIndex == 1 {
+                                self.events = self.tomorrow
+                            }
+                        }
                         self.activityIndicator.stopAnimating()
                     }
                 }
@@ -123,7 +151,13 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
                 relation.query().findObjectsInBackground { (objects, error) in
                     if let objects = objects {
                         //objects should be events for a particular date
-                        self.later = objects.map {Event.create(from: $0)}
+                        let returnedEvents = objects.map {Event.create(from: $0)}
+                        if !self.later.elementsEqual(returnedEvents, by: { $0.id == $1.id }) {
+                            self.later = returnedEvents
+                            if self.segmentedControl.selectedIndex == 2 {
+                                self.events = self.later
+                            }
+                        }
                         self.activityIndicator.stopAnimating()
                     }
                 }
@@ -152,7 +186,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
     }
 
     private func setUpNavigationBar() {
-        let newColor = UIColor(red: 255, green: 147, blue: 92)
+        let newColor = UIColor(red:0.25, green:0.18, blue:0.35, alpha:1.0)
         navigationController?.navigationBar.tintColor = UIColor.white
         navigationController?.navigationBar.barTintColor = newColor
         navigationController?.navigationBar.backgroundColor = newColor
@@ -191,7 +225,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let selectedEvent = self.events[indexPath.row]
-
+        //print(indexPath.row, "how many times do we hit here for ", segmentedControl.selectedIndex)
         let cell = self.timelineTableView.dequeueReusableCell(withIdentifier: EventTableViewCell.identifier(), for: indexPath) as! EventTableViewCell
         cell.event = selectedEvent
 
@@ -204,16 +238,37 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 
     }
 
-
     func didSelectItem(sender: CustomSegmentedControl, selectedIndex: Int) {
-        if selectedIndex == 0 {
-            self.events = today
-        } else if selectedIndex == 1 {
-            self.events = tomorrow
-        } else {
-            self.events = later
+        switch selectedIndex {
+        case 0:
+            self.events = self.today
+        case 1:
+            self.events = self.tomorrow
+        case 2:
+            self.events = self.later
+        default:
+            self.events = self.today
         }
     }
 
-    
+    private func animateTableViewReload() {
+        UIView.transition(with: timelineTableView,
+                                  duration: 0.25,
+                                  options: .transitionCrossDissolve,
+                                  animations: { () -> Void in
+                                    self.timelineTableView.reloadData()
+                                    //self.timelineTableView.reloadRows(at: self.timelineTableView.indexPathsForVisibleRows!, with: .automatic)
+                                },
+                                  completion: { (completed: Bool) in
+                                    if (completed) {
+                                    if let visibleIndexPaths = self.timelineTableView.indexPathsForVisibleRows {
+                                        let x = IndexPath(item: 0, section: 0)
+                                        if !visibleIndexPaths.contains(x) {
+                                            self.timelineTableView.scrollToRow(at: x, at: UITableViewScrollPosition.top, animated: true)
+                                        }
+                                    }
+                                    }
+                                });
+    }
+
 }

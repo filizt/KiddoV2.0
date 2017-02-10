@@ -45,7 +45,7 @@ protocol CustomSegmentedControlDelegate: class {
     //setup segmented control UI
     private func setupViews() {
         layer.borderColor = UIColor.white.cgColor
-        backgroundColor = UIColor(red: 255, green: 147, blue: 92)
+        backgroundColor = UIColor.white
 
         setupSubviews()
     }
@@ -62,10 +62,10 @@ protocol CustomSegmentedControlDelegate: class {
         for index in 0..<items.count {
             let label = UILabel(frame: labelFrame)
             label.text = items[index]
-            label.backgroundColor = UIColor(red: 255, green: 147, blue: 92)
+            label.backgroundColor = UIColor.white
             label.textAlignment = .center
-            label.font = UIFont(name: "Avenir-Book", size: 14)
-            label.textColor = UIColor.white
+            label.font = UIFont(name: "Avenir-Heavy", size: 14)
+            label.textColor = UIColor(red:0.25, green:0.18, blue:0.35, alpha:1.0)
 
             self.addSubview(label)
             labels.append(label)
@@ -75,7 +75,7 @@ protocol CustomSegmentedControlDelegate: class {
 
         //setup selectionBar
         selectionBar.frame =  createSelectionBarFrame(labels[selectedIndex].frame)
-        selectionBar.backgroundColor = UIColor.white
+        selectionBar.backgroundColor = UIColor(red:0.25, green:0.18, blue:0.35, alpha:1.0)
 
         self.addSubview(selectionBar)
     }
@@ -131,7 +131,6 @@ protocol CustomSegmentedControlDelegate: class {
 
         UIView.animate(withDuration: 0.5, delay: 0.0, usingSpringWithDamping: 0.9, initialSpringVelocity: 0.9, options: UIViewAnimationOptions.curveEaseIn , animations: {
             self.selectionBar.frame = self.createSelectionBarFrame(label.frame)
-
         } , completion: { (complete: Bool) in
             if complete {
                 self.delegate?.didSelectItem(sender: self, selectedIndex: self.selectedIndex)

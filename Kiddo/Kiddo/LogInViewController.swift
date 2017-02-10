@@ -18,23 +18,22 @@ class LogInViewController: PFLogInViewController {
          super.viewDidLoad()
         //set background image
         backgroundImage = UIImageView(image: UIImage(named: "bg_portrait.jpg"))
-
         backgroundImage.contentMode = UIViewContentMode.scaleAspectFill
         self.logInView!.insertSubview(backgroundImage, at: 0)
         //below code didn't work for me as the bg image was becoming the top layer covering everything else 
         // in the screen. Turns out we need to insert the subview at the 0 index to avoid that.
         // self.logInView?.addSubview(imageView)
 
-        // remove the parse Logo
-        let logo = UILabel()
-        logo.text = "KIDDO"
-        logo.textColor = UIColor.white
-        logo.shadowColor = UIColor.lightGray
-        logo.shadowOffset = CGSize(width: 2, height: 2)
-        logInView?.logo = logo
 
-        //logInView?.dismissButton =
+//        let logoImage = UIImage(named: "kiddo")
+//        let logo = UIImageView(image: logoImage)
 
+        logInView?.logo = nil
+
+        self.logInView?.dismissButton?.setTitle("Skip", for: .normal)
+        self.logInView?.dismissButton?.setTitleColor(UIColor.lightGray, for: .normal)
+        self.logInView?.dismissButton?.setTitleShadowColor(UIColor.black, for: .normal)
+        self.logInView?.dismissButton?.setImage(nil, for: .normal)
 
     }
 
@@ -46,12 +45,13 @@ class LogInViewController: PFLogInViewController {
         backgroundImage.frame = CGRect(x: 0,y:  0,width:  self.logInView!.frame.width, height: self.logInView!.frame.height)
 
         // position logo at top with larger frame
-        logInView!.logo!.sizeToFit()
-        let logoFrame = logInView!.logo!.frame
-        logInView!.logo!.frame = CGRect(x:logoFrame.origin.x, y:self.logInView!.frame.origin.y + 16, width: logInView!.frame.width,  height: logoFrame.height)
+//        logInView!.logo!.sizeToFit()
+//        let logoFrame = logInView!.logo!.frame
+//        logInView!.logo!.frame = CGRect(x:logoFrame.origin.x, y:logoFrame.origin.y - 250, width: logoFrame.width+50,  height: logoFrame.height+50)
+
+
+        let dismissButtonFrame = logInView?.dismissButton?.frame
+        logInView?.dismissButton?.frame = CGRect(x:(self.logInView?.frame.width)! - 56, y: 28,  width:50, height: (dismissButtonFrame?.height)!)
+
     }
-
-   
-   
-
 }

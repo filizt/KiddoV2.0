@@ -10,6 +10,7 @@ import Foundation
 import Parse
 
 struct Event {
+    let id: String
     let title: String
     let startDate: Date?
     let endDate: Date?
@@ -24,6 +25,7 @@ struct Event {
     let photo: PFFile?
 
     static func create(from object: PFObject) -> Event {
+        let id = object.objectId ?? "0"
         let title = object["title"] as! String
         let startDate = object["startDate"] as? Date
         let endDate = object["endDate"] as? Date
@@ -37,7 +39,8 @@ struct Event {
         let description = object["description"] as? String
         let photo = object["photo"] as? PFFile
 
-        return Event(title: title,
+        return Event(id: id,
+                     title: title,
                      startDate: startDate,
                      endDate: endDate,
                      location: location,

@@ -153,11 +153,13 @@
                             </scrollView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vwe-a4-WTV">
                                 <rect key="frame" x="0.0" y="617" width="375" height="50"/>
-                                <color key="backgroundColor" red="1" green="0.67226733670000005" blue="0.49165077870000001" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.25098039215686274" green="0.1803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="Kft-jF-q9j"/>
                                 </constraints>
-                                <state key="normal" title="Button"/>
+                                <state key="normal" title="Button">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -176,6 +178,7 @@
                         <outlet property="eventAgeInfo" destination="FnU-DU-vOB" id="L2I-sx-8gD"/>
                         <outlet property="eventDescription" destination="KxS-qL-ftz" id="hCe-HZ-oLr"/>
                         <outlet property="eventImage" destination="DYO-TX-Z2k" id="SZr-2k-WNH"/>
+                        <outlet property="mapView" destination="I5B-Tu-rtM" id="v7U-ub-wGL"/>
                         <outlet property="scrollView" destination="hxZ-Yy-QZr" id="Mfl-0X-xNx"/>
                         <outlet property="scrollViewContainerView" destination="MNq-I4-i1y" id="mKy-pi-A1O"/>
                     </connections>
@@ -351,7 +354,7 @@
             <objects>
                 <navigationController storyboardIdentifier="navController" title="Events and Activities" automaticallyAdjustsScrollViewInsets="NO" id="rqb-Yq-P7V" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="0LU-hS-USf">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="0LU-hS-USf">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>

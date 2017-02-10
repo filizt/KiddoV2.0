@@ -9,9 +9,13 @@
 import UIKit
 import SafariServices
 import Parse
+import UserNotifications
+import CoreLocation
+import MapKit
 
-class DetailViewController: UIViewController, UIScrollViewDelegate {
+class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDelegate {
     
+    @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var eventImage: UIImageView!
     @IBOutlet weak var scrollViewContainerView: UIView!
     @IBOutlet weak var eventDescription: UITextView!
@@ -21,6 +25,16 @@ class DetailViewController: UIViewController, UIScrollViewDelegate {
     var event: Event!
     var image: UIImage!
     var cachedImageViewSize: CGRect!
+    var region: MKCoordinateRegion!
+    var locationCoordinates = CLLocationCoordinate2D() {
+        didSet {
+            let annotation = MKPointAnnotation()
+            annotation.coordinate = self.locationCoordinates
+            region = MKCoordinateRegionMakeWithDistance(locationCoordinates, 500, 500);
+            self.mapView.setRegion(region, animated: true)
+            self.mapView.addAnnotation(annotation)
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,9 +46,16 @@ class DetailViewController: UIViewController, UIScrollViewDelegate {
         self.eventAgeInfo.text = "AGES 0-5"
 
         navigationController?.navigationBar.topItem?.title = event.title
-
-        self.cachedImageViewSize = self.eventImage.frame;
         scrollView.delegate = self
+
+        let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
+        mapView.addGestureRecognizer(gestureRecognizer)
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        self.mapView.delegate = self;
+        addressStringToGeocode(for: "test")
+        self.cachedImageViewSize = self.eventImage.frame;
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -45,6 +66,55 @@ class DetailViewController: UIViewController, UIScrollViewDelegate {
             self.eventImage.center = CGPoint(x:self.view.center.x, y:self.eventImage.center.y);
         }
     }
+
+    func handleTap(_ gestureRecognizer: UITapGestureRecognizer) {
+        let options = [
+            MKLaunchOptionsMapCenterKey: NSValue(mkCoordinate: region.center),
+            MKLaunchOptionsMapSpanKey: NSValue(mkCoordinateSpan: region.span)
+        ]
+
+        let placemark = MKPlacemark(coordinate: locationCoordinates, addressDictionary: nil)
+        let mapItem = MKMapItem(placemark: placemark)
+
+        mapItem.name = "Home"
+        mapItem.openInMaps(launchOptions: options)
+    }
+
+    func addressStringToGeocode(for addressString: String) {
+        let address = "325 Harvard Ave E. Seattle 98122"
+        let geocoder = CLGeocoder()
+
+        geocoder.geocodeAddressString(address, completionHandler: {(placemarks, error) -> Void in
+            guard error == nil else { return }
+
+            if let placemark = placemarks?.first {
+                self.locationCoordinates = placemark.location!.coordinate
+
+            }
+        })
+    }
+
+//    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+//
+//        var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: "AnnotationView")
+//        annotationView?.annotation = annotation
+//
+//        if annotationView == nil {
+//            annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "AnnotationView")
+//        }
+//
+//        annotationView?.canShowCallout = true
+//
+//        let rightCalloutButton = UIButton(type: UIButtonType.detailDisclosure)
+//        annotationView?.rightCalloutAccessoryView = rightCalloutButton;
+//
+//        return annotationView
+//
+//    }
+//
+//    func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
+//        //This should be called whtn I tap on the calloutbox
+//    }
 
     @IBAction func moreInformationButton(_ sender: AnyObject) {
         self.presentSafariViewController(url: event.originalEventURL!)

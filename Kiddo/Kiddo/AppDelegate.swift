@@ -10,13 +10,15 @@ import UIKit
 import Parse
 import ParseUI
 import ParseFacebookUtilsV4
+import UserNotifications
 
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, PFLogInViewControllerDelegate, PFSignUpViewControllerDelegate  {
+class AppDelegate: UIResponder, UIApplicationDelegate, PFLogInViewControllerDelegate, PFSignUpViewControllerDelegate, UNUserNotificationCenterDelegate  {
 
     var window: UIWindow?
     var rootVC: UIViewController?
+    private let userDefaults = UserDefaults.standard
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
@@ -37,13 +39,86 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PFLogInViewControllerDele
             logInViewController.emailAsUsername = false
             logInViewController.signUpController?.delegate = self
             logInViewController.facebookPermissions = ["public_profile", "email"]
+            
 
             window?.rootViewController? = logInViewController
             window?.makeKeyAndVisible()
 
-     }
+         }
+
+
+        UNUserNotificationCenter.current().delegate = self
+
+        if let settings = UIApplication.shared.currentUserNotificationSettings {
+            if settings.types.contains([.alert, .sound]) {
+                //User already authorized for local notifications. Register with Fabric.
+            } else {
+                //not registered for local notifications
+                //let's check if enough time passed since we last asked, and if so ask again.
+                if let lastNotificationAuthRequest = userDefaults.object(forKey: "UserNotificationsDeniedKey") as? Date {
+                    if Int(lastNotificationAuthRequest.timeIntervalSinceNow * -1) > (60*60*24*7) {
+                        //It's been more than 7 days since we last asked, good enough, let's ask again.
+                        UNUserNotificationCenter.current().requestAuthorization(options: [ .alert, .sound]) {(granted, error) in
+                            if granted {
+                                //schedule notifications.
+                                self.scheduleLocalNotifications()
+                            } else {
+                                print("Notification access denied.")
+                                let today = Date()
+                                self.userDefaults.set(today, forKey: "UserNotificationsDeniedKey")
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         return true
     }
+
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        print("Handle local notification from background or closed")
+        //from background this method is called.
+    }
+
+    func scheduleLocalNotifications() {
+
+        //let date: Date = Date()
+        let calendar = Calendar(identifier: .gregorian)
+        var date = DateComponents()
+        date.calendar = calendar
+        date.timeZone = .current
+        //date.month = components.month
+        //date.day = components.day
+        date.hour = 8
+        date.minute = 30
+
+
+        //let components = calendar.dateComponents(in: .current, from: date)
+        //var components = calendar.dateComponents(in: .current, from: date)
+        //components.setValue(58, for: .minute)
+        //let expirationDate = Calendar.current.date(byAdding: components, to: date)
+
+
+        let content = UNMutableNotificationContent()
+        content.title = "Kiddo"
+        content.body = "Check out the new events added to Kiddo!"
+        content.sound = UNNotificationSound.default()
+        //content.categoryIdentifier = "myCategory"
+
+        let trigger = UNCalendarNotificationTrigger(dateMatching: date, repeats: true)
+
+
+        let request = UNNotificationRequest(identifier: "textNotification", content: content, trigger: trigger)
+
+
+        UNUserNotificationCenter.current().add(request) {(error) in
+            if let error = error {
+                print("Uh oh! We had an error: \(error)")
+            }
+        }
+    }
+
 
     //MARK: PFLogInViewControllerDelegate functions
 
@@ -74,7 +149,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PFLogInViewControllerDele
 
     }
     
-
 
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
@@ -110,3 +184,4 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PFLogInViewControllerDele
     }   
 
 }
+
