@@ -15,7 +15,6 @@ import Fabric
 import Crashlytics
 
 
-
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, PFLogInViewControllerDelegate, PFSignUpViewControllerDelegate, UNUserNotificationCenterDelegate  {
 
@@ -67,10 +66,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PFLogInViewControllerDele
                             if granted {
                                 //schedule notifications.
                                 self.scheduleLocalNotifications()
+                                Answers.logCustomEvent(withName: "UserOptedInForNotifications", customAttributes: nil)
                             } else {
                                 print("Notification access denied.")
                                 let today = Date()
                                 self.userDefaults.set(today, forKey: "UserNotificationsDeniedKey")
+                                Answers.logCustomEvent(withName: "UserOptedOutForNotifications", customAttributes: nil)
                             }
                         }
                     }
@@ -128,11 +129,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PFLogInViewControllerDele
     //MARK: PFLogInViewControllerDelegate functions
 
     func log(_ logInController: PFLogInViewController, didLogIn user: PFUser) {
+        Answers.logLogin(withMethod: "Facebook", success: 1, customAttributes: ["FacebookLogin": "Success"])
         window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateInitialViewController()
     }
 
     //To-Do: Need to handle error conditions
     func log(_ logInController: PFLogInViewController, didFailToLogInWithError error: Error?) {
+        Answers.logLogin(withMethod: "Facebook", success: 0, customAttributes: ["FacebookLogin": "Error"])
+
         window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateInitialViewController()
 
         let alert = UIAlertController(title: "Facebook LogIn Failed", message: "Facebook login failed due to an error. We skipped the login step. You can still enjoy Kiddo!", preferredStyle: UIAlertControllerStyle.alert)
@@ -144,16 +148,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PFLogInViewControllerDele
 
     //Skipping log in triggers this.
     func logInViewControllerDidCancelLog(in logInController: PFLogInViewController) {
+
+        Answers.logLogin(withMethod: "Facebook", success: 0, customAttributes: ["FacebookLogin": "Skip"])
+
         window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateInitialViewController()
 
-        let alert = UIAlertController(title: "Facebook LogIn Cancelled", message: "Facebook login cancelled. No worries! You can still enjoy Kiddo without signing up!", preferredStyle: UIAlertControllerStyle.alert)
+        let alert = UIAlertController(title: "Facebook LogIn Cancelled", message: "No worries! You can still enjoy Kiddo without signing up!", preferredStyle: UIAlertControllerStyle.alert)
         let alertAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil)
         alert.addAction(alertAction)
 
         window?.rootViewController?.present(alert, animated: true, completion: nil)
 
     }
-    
 
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
