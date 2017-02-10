@@ -94,28 +94,6 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
         })
     }
 
-//    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-//
-//        var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: "AnnotationView")
-//        annotationView?.annotation = annotation
-//
-//        if annotationView == nil {
-//            annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "AnnotationView")
-//        }
-//
-//        annotationView?.canShowCallout = true
-//
-//        let rightCalloutButton = UIButton(type: UIButtonType.detailDisclosure)
-//        annotationView?.rightCalloutAccessoryView = rightCalloutButton;
-//
-//        return annotationView
-//
-//    }
-//
-//    func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
-//        //This should be called whtn I tap on the calloutbox
-//    }
-
     @IBAction func moreInformationButton(_ sender: AnyObject) {
         self.presentSafariViewController(url: event.originalEventURL!)
 
