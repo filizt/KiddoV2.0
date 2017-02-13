@@ -63,7 +63,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         activityIndicator.backgroundColor = UIColor.gray
 
         //TO-DO: fetchAllEvents should be called strategically if backend changed at all. Is there a way to check that through Parse?
-        self.fetchAllEvents()
+        //self.fetchAllEvents()
 
         // TODO: Track the user action that is important for you.
         //Answers.logContentView(withName: "Tweet", contentType: "Video", contentId: "1234", customAttributes: ["Favorites Count":20, "Screen Orientation":"Landscape"])
@@ -86,8 +86,9 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         let today = NSDate()
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .medium
-        let text = "Plans for "
-        navigationController?.navigationBar.topItem?.title = text + dateFormatter.string(from: today as Date)
+        let text = "PLANS FOR"
+        navigationController?.navigationBar.topItem?.title = text
+            //+ dateFormatter.string(from: today as Date)
         let attrs = [
             NSForegroundColorAttributeName: UIColor.red,
             NSFontAttributeName: UIFont(name: "Avenir-Book", size: 14)!
@@ -99,7 +100,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         //self.timelineTableView.reloadData() This is not needed!
         self.activityIndicator.stopAnimating()
 
-        //self.fetchAllEvents()
+        self.fetchAllEvents()
     }
 
     
@@ -108,7 +109,9 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
     private func fetchAllEvents() {
         //var eventDate = PFObject(className: "EventDate")
         let eventDateQuery = PFQuery(className: "EventDate")
-        let date = DateUtil.shared.createDate(from: "02-02-2017 10:00")
+        let date = DateUtil.shared.createDate(from: "02-17-2017")
+        print("today ", date)
+
         eventDateQuery.whereKey("eventDate", equalTo: date)
         eventDateQuery.findObjectsInBackground { (dateObjects, error) in
             if let dateObjects = dateObjects {
@@ -131,7 +134,8 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         }
 
         let queryTomorrow = PFQuery(className: "EventDate")
-        let dateTomorrow = DateUtil.shared.createDate(from: "04-02-2017 10:00")
+        let dateTomorrow = DateUtil.shared.createDate(from: "02-27-2017")
+        print("tomorrow is ", dateTomorrow)
         queryTomorrow.whereKey("eventDate", equalTo: dateTomorrow)
         queryTomorrow.findObjectsInBackground { (dateObjects, error) in
             if let dateObjects = dateObjects {
@@ -153,48 +157,30 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
             }
         }
 
-        let queryLater = PFQuery(className: "EventDate")
-        let dateLater = DateUtil.shared.createDate(from: "02-02-2017 10:00")
-        queryLater.whereKey("eventDate", greaterThan: dateLater)
-        queryLater.findObjectsInBackground { (dateObjects, error) in
-            if let dateObjects = dateObjects {
-                var eventDate = dateObjects[0]
-                var relation = eventDate.relation(forKey: "events")
-                relation.query().findObjectsInBackground { (objects, error) in
-                    if let objects = objects {
-                        //objects should be events for a particular date
-                        let returnedEvents = objects.map {Event.create(from: $0)}
-                        if !self.later.elementsEqual(returnedEvents, by: { $0.id == $1.id }) {
-                            self.later = returnedEvents
-                            if self.segmentedControl.selectedIndex == 2 {
-                                self.events = self.later
-                            }
+
+
+        let queryLater = PFQuery(className: "EventObject")
+        var datesArray = [Date]()
+        for index in 15...28 {
+            let s1 = String(index)
+            let s2 = "02-\(s1)-2017"
+            datesArray.append(DateUtil.shared.createDate(from: s2))
+        }
+
+
+        queryLater.whereKey("allEventDates", containedIn: datesArray)
+        queryLater.findObjectsInBackground { (objects, error) in
+            if let objects = objects {
+                let returnedEvents = objects.map { Event.create(from: $0) }
+                    if !self.later.elementsEqual(returnedEvents, by: { $0.id == $1.id }) {
+                        self.later = returnedEvents
+                        if self.segmentedControl.selectedIndex == 2 {
+                            self.events = self.later
                         }
-                        self.activityIndicator.stopAnimating()
                     }
-                }
+                    self.activityIndicator.stopAnimating()
             }
         }
-
-/*
-        self.request = PFQuery(className: "EventObject");
-        //self.request?.whereKey("dates", equalTo: date2)
-        self.lastRequest = self.request
-
-
-        if let request = self.request {
-            request.findObjectsInBackground(block: { [weak weakSelf = self] (objects, error) in
-                guard error == nil else {
-                    print (error?.localizedDescription ?? "Error retrieving events from Parse.");
-                    return
-                }
-                guard let objects = objects else { return }
-                guard weakSelf?.lastRequest == weakSelf?.request else { return }
-
-                weakSelf?.events = objects.map {Event.create(from: $0)}
-            })
-        }
-*/
     }
 
     private func setUpNavigationBar() {

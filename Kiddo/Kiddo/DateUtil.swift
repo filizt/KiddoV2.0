@@ -16,35 +16,37 @@ class DateUtil {
     private init() {
         formatter = DateFormatter()
         formatter.locale = Locale(identifier: "en_US")
+        formatter.timeZone = TimeZone.current
     }
 
-    func shortDate(from dateString: String) -> String? {
-        formatter.dateFormat = "dd-MM-yyyy HH:mm"
+    func shortDate(from dateString: String) -> String {
+        formatter.dateFormat = "MM-dd-yyyy HH:mm"
         if dateString.isEmpty != true {
             if let date = formatter.date(from: dateString) {
                 return formatter.string(from:date )
             }
         }
-        return nil
+        return ""
     }
 
-    func shortTime(from dateString:String) -> String? {
+    func shortTime(from dateString:String) -> String {
         formatter.dateFormat = "HH:mm"
         if dateString.isEmpty != true {
             if let time = formatter.date(from: dateString) {
                 return formatter.string(from:time)
             }
         }
-        return nil
+        return ""
     }
 
-    func shortTime(from date:Date) -> String? {
+    func shortTime(from date:Date) -> String {
         formatter.dateFormat = "HH:mm"
         return formatter.string(from:date)
     }
 
-    func createDate(from dateString:String) -> Date? {
-        formatter.dateFormat = "dd-MM-yyyy HH:mm"
-        return formatter.date(from: dateString)
+    func createDate(from dateString:String) -> Date {
+        formatter.dateFormat = "MM-dd-yyyy"
+        print("date:", formatter.date(from: dateString)! as Date)
+        return formatter.date(from: dateString) ?? Date()
     }
 }

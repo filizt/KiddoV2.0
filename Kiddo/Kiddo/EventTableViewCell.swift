@@ -14,7 +14,8 @@ class EventTableViewCell: UITableViewCell {
     @IBOutlet weak var eventTitle: UILabel!
     @IBOutlet weak var eventVenueName: UILabel!
     @IBOutlet weak var eventStartTime: UILabel!
-
+    @IBOutlet weak var eventFreeImage: UIImageView!
+    
     private let cache = SimpleCache.shared
 
     var event: Event? {
@@ -41,8 +42,9 @@ class EventTableViewCell: UITableViewCell {
         if let event = event {
             self.eventTitle?.text = event.title
             self.eventVenueName?.text = event.location
-            self.eventStartTime?.text = event.allDayFlag ? "ALL DAY" : DateUtil.shared.shortTime(from:event.startDate!)
-
+            self.eventStartTime?.text = event.allDayFlag == true ? "ALL DAY" : DateUtil.shared.shortTime(from:event.startDate)
+            self.eventFreeImage.isHidden = event.freeFlag == true ? false : true
+            
             if let image = cache.image(key:event.imageURL!) {
                 self.eventImage?.image = image
                 return

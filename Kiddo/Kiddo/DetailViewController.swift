@@ -42,7 +42,7 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
         // self.eventStartTime.text = event.eventStartTime
 
         self.eventImage.image = self.image
-        //self.eventDescription.text = event.description
+        self.eventDescription.text = event.description
         self.eventAgeInfo.text = "AGES 0-5"
 
         navigationController?.navigationBar.topItem?.title = event.title
@@ -54,7 +54,7 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
 
     override func viewWillAppear(_ animated: Bool) {
         self.mapView.delegate = self;
-        addressStringToGeocode(for: "test")
+        addressStringToGeocode(for: event.address)
         self.cachedImageViewSize = self.eventImage.frame;
     }
 
@@ -95,7 +95,7 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
     }
 
     @IBAction func moreInformationButton(_ sender: AnyObject) {
-        self.presentSafariViewController(url: event.originalEventURL!)
+        self.presentSafariViewController(url: event.originalEventURL)
 
     }
 

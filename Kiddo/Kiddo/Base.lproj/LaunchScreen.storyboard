@@ -26,7 +26,7 @@
                                 <rect key="frame" x="132.5" y="218" width="110" height="64"/>
                             </imageView>
                         </subviews>
-                        <color key="backgroundColor" red="0.098039215686274508" green="0.070588235294117646" blue="0.13725490196078433" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="0.2198525380546956" green="0.14552655766253864" blue="0.30301353682920501" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="KPT-ge-DTo" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" multiplier="0.75" id="5G7-r9-1R4"/>
                             <constraint firstItem="KPT-ge-DTo" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="TkD-jv-Vxd"/>
