@@ -21,7 +21,6 @@
 		BDB5B0961E4D54B600D59AEA /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDB5B0951E4D54B600D59AEA /* Crashlytics.framework */; };
 		BDB5B0981E521C5200D59AEA /* Assets in Resources */ = {isa = PBXBuildFile; fileRef = BDB5B0971E521C5200D59AEA /* Assets */; };
 		BDC903D41E413B82006CD7D6 /* CustomSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDC903D31E413B82006CD7D6 /* CustomSegmentedControl.swift */; };
-		BDEB9E8D1E04966A002F7222 /* EventEntryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDEB9E8C1E04966A002F7222 /* EventEntryViewController.swift */; };
 		BDEB9E8F1E05A64F002F7222 /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDEB9E8E1E05A64F002F7222 /* LogInViewController.swift */; };
 		BDEB9E911E05AB06002F7222 /* bg_portrait.jpg in Resources */ = {isa = PBXBuildFile; fileRef = BDEB9E901E05AB06002F7222 /* bg_portrait.jpg */; };
 		C26E626F1DD1038C00BDC568 /* TimelineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C26E626E1DD1038C00BDC568 /* TimelineViewController.swift */; };
@@ -48,7 +47,6 @@
 		BDB5B0951E4D54B600D59AEA /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = SOURCE_ROOT; };
 		BDB5B0971E521C5200D59AEA /* Assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Assets; sourceTree = "<group>"; };
 		BDC903D31E413B82006CD7D6 /* CustomSegmentedControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomSegmentedControl.swift; sourceTree = "<group>"; };
-		BDEB9E8C1E04966A002F7222 /* EventEntryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventEntryViewController.swift; sourceTree = "<group>"; };
 		BDEB9E8E1E05A64F002F7222 /* LogInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
 		BDEB9E901E05AB06002F7222 /* bg_portrait.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = bg_portrait.jpg; sourceTree = "<group>"; };
 		C26E626E1DD1038C00BDC568 /* TimelineViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimelineViewController.swift; sourceTree = "<group>"; };
@@ -151,7 +149,6 @@
 				C26E626E1DD1038C00BDC568 /* TimelineViewController.swift */,
 				BD68B9BE1DD0FA1C00CE39CA /* DetailViewController.swift */,
 				BDEB9E8E1E05A64F002F7222 /* LogInViewController.swift */,
-				BDEB9E8C1E04966A002F7222 /* EventEntryViewController.swift */,
 			);
 			name = "View Controller";
 			sourceTree = "<group>";
@@ -343,7 +340,6 @@
 				BD506DDD1E316A5C001A98B0 /* SimpleCache.swift in Sources */,
 				C26E626F1DD1038C00BDC568 /* TimelineViewController.swift in Sources */,
 				C26E62751DD111AF00BDC568 /* Event.swift in Sources */,
-				BDEB9E8D1E04966A002F7222 /* EventEntryViewController.swift in Sources */,
 				BDC903D41E413B82006CD7D6 /* CustomSegmentedControl.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
