@@ -60,9 +60,9 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
         self.title = event.title
         self.eventImage.image = self.image
         self.eventDescription.text = event.description
-        self.eventAgeInfo.text = "AGES \(event.ages)"
-        self.eventCost.text = event.freeFlag == true ? "COST Free" : "COST \(event.price)"
-        self.eventHours.text = event.allDayFlag == true ? "LOCATION HOURS \(event.locationHours)" : "HOURS \(event.startTime) - \(event.endTime)"
+        self.eventAgeInfo.text = "AGES: \(event.ages)"
+        self.eventCost.text = event.freeFlag == true ? "COST: Free" : "COST: \(event.price)"
+        self.eventHours.text = event.allDayFlag == true ? "LOCATION HOURS: \(event.locationHours)" : "HOURS: \(event.startTime) - \(event.endTime)"
 
         if event.originalEventURL != nil {
             self.moreInfoButton.setTitle("Visit Event Website", for: .normal)

@@ -16,12 +16,12 @@ struct Event {
     let startDate: Date
     let endDate: Date
     let allDayFlag: Bool!
-    let startTime: String?
-    let endTime: String?
+    let startTime: String
+    let endTime: String
     let freeFlag: Bool!
-    let price: String?
+    let price: String
     let location: String!
-    let locationHours: String?
+    let locationHours: String
     let imageURL: String?
     let originalEventURL: String?
     let address: String!
@@ -36,12 +36,12 @@ struct Event {
         let startDate = object["startDate"] as! Date
         let endDate = object["endDate"] as! Date
         let allDayFlag = object["allDay"] as! Bool
-        let startTime = object["startTime"] as? String
-        let endTime = object["endTime"] as? String
+        let startTime = object["startTime"] as! String
+        let endTime = object["endTime"] as! String
         let freeFlag = object["free"] as! Bool
-        let price = object["price"] as? String
+        let price = object["price"] as! String
         let location = object["location"] as! String
-        let locationHours = object["locationHours"] as? String
+        let locationHours = object["locationHours"] as! String
         let imageURL = object["imageURL"] as? String
         let originalEventURL = object["originalEventURL"] as? String
         let address = object["address"] as! String
