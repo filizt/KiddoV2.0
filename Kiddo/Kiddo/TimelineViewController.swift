@@ -23,9 +23,6 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         didSet {
             if self.today.elementsEqual(oldValue, by: { $0.id == $1.id }) {
                 today = oldValue
-                print("hit here: same todays events was sent. Keeping the old value")
-            } else {
-                print("hit here: different todays events was sent.")
             }
         }
     }
@@ -83,23 +80,6 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 
     override func viewWillAppear(_ animated: Bool) {
         activityIndicator.startAnimating()
-        let today = NSDate()
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateStyle = .medium
-        let text = "PLANS FOR"
-        navigationController?.navigationBar.topItem?.title = text
-            //+ dateFormatter.string(from: today as Date)
-        let attrs = [
-            NSForegroundColorAttributeName: UIColor.red,
-            NSFontAttributeName: UIFont(name: "Avenir-Book", size: 14)!
-        ]
-
-        UINavigationBar.appearance().titleTextAttributes = attrs
-
-        //we should only re-fetch events if there are new events to show. Otherwise load what we initially had when the timeline loaded.
-        //self.timelineTableView.reloadData() This is not needed!
-        self.activityIndicator.stopAnimating()
-
         self.fetchAllEvents()
     }
 
@@ -110,7 +90,6 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         //var eventDate = PFObject(className: "EventDate")
         let eventDateQuery = PFQuery(className: "EventDate")
         let date = DateUtil.shared.createDate(from: "02-17-2017")
-        print("today ", date)
 
         eventDateQuery.whereKey("eventDate", equalTo: date)
         eventDateQuery.findObjectsInBackground { (dateObjects, error) in
@@ -191,8 +170,9 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
         let backItem = UIBarButtonItem()
         backItem.title = ""
-        //navigationController?.editButtonItem = backItem
         navigationController?.navigationBar.topItem?.backBarButtonItem = backItem
+        navigationController?.navigationBar.topItem?.title = "EVENTS FOR"
+
     }
 
 
@@ -223,7 +203,6 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let selectedEvent = self.events[indexPath.row]
-        //print(indexPath.row, "how many times do we hit here for ", segmentedControl.selectedIndex)
         let cell = self.timelineTableView.dequeueReusableCell(withIdentifier: EventTableViewCell.identifier(), for: indexPath) as! EventTableViewCell
         cell.event = selectedEvent
 
@@ -251,20 +230,19 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 
     private func animateTableViewReload() {
         UIView.transition(with: timelineTableView,
-                                  duration: 0.25,
-                                  options: .transitionCrossDissolve,
-                                  animations: { () -> Void in
+                      duration: 0.25,
+                       options: .transitionCrossDissolve,
+                    animations: { () -> Void in
                                     self.timelineTableView.reloadData()
-                                    //self.timelineTableView.reloadRows(at: self.timelineTableView.indexPathsForVisibleRows!, with: .automatic)
                                 },
-                                  completion: { (completed: Bool) in
+                    completion: { (completed: Bool) in
                                     if (completed) {
-                                    if let visibleIndexPaths = self.timelineTableView.indexPathsForVisibleRows {
-                                        let x = IndexPath(item: 0, section: 0)
-                                        if !visibleIndexPaths.contains(x) {
-                                            self.timelineTableView.scrollToRow(at: x, at: UITableViewScrollPosition.top, animated: true)
+                                        if let visibleIndexPaths = self.timelineTableView.indexPathsForVisibleRows {
+                                            let x = IndexPath(item: 0, section: 0)
+                                            if !visibleIndexPaths.contains(x) {
+                                                self.timelineTableView.scrollToRow(at: x, at: UITableViewScrollPosition.top, animated: true)
+                                            }
                                         }
-                                    }
                                     }
                                 });
     }
