@@ -20,11 +20,12 @@ struct Event {
     let endTime: String?
     let freeFlag: Bool!
     let price: String?
-    let location: String
+    let location: String!
+    let locationHours: String?
     let imageURL: String?
-    let originalEventURL: String
-    let address: String
-    let description: String
+    let originalEventURL: String?
+    let address: String!
+    let description: String!
     let ages: String
     let photo: PFFile?
 
@@ -40,8 +41,9 @@ struct Event {
         let freeFlag = object["free"] as! Bool
         let price = object["price"] as? String
         let location = object["location"] as! String
+        let locationHours = object["locationHours"] as? String
         let imageURL = object["imageURL"] as? String
-        let originalEventURL = ""
+        let originalEventURL = object["originalEventURL"] as? String
         let address = object["address"] as! String
         let description = object["description"] as! String
         let ages = object["ages"] as! String
@@ -58,6 +60,7 @@ struct Event {
                      freeFlag: freeFlag,
                      price: price,
                      location: location,
+                     locationHours: locationHours,
                      imageURL: imageURL,
                      originalEventURL: originalEventURL,
                      address: address,

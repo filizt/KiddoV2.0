@@ -79,6 +79,7 @@ class EventEntryViewController: UIViewController {
         data["price"] = "0-3 FREE / 4 -12 16.95 / 13 and older 24.95"
         data["originalEventURL"] = "http://www.seattleaquarium.org/"
         data["location"] = "Seattle Aquarium"
+        data["locationHours"] = "9 AM to 5 PM daily. Closed on Sundays."
         data["address"] = "1483 Alaskan Way, Seattle, WA 98101"
         data["description"] = "From dressing up like a wolf eel to fish-print painting and water play with ocean animal toys, Toddler Time keeps even the busiest of bodies engaged and entertained. A myriad of developmentally age-appropriate, hands-on activities await for tots to explore."
         data["ages"] = "0 - 5"
@@ -120,6 +121,7 @@ class EventEntryViewController: UIViewController {
         data["price"] = ""
         data["originalEventURL"] = "http://www.seattle.gov/parks/find/centers/montlake-community-center"
         data["location"] = "Montlake Community Center"
+        data["locationHours"] = "9 AM to 5 PM daily. Closed on Sundays."
         data["address"] = "1618 E Calhoun St Seattle, WA 98112"
         data["description"] = "Offered on specific days for a limited amount of time. Toddler Gyms offer a better variety of toys and a much larger space to play in Children will enjoy toys, balls, trikes, scooters, push bikes, and more. Parental supervision required."
         data["ages"] = "0 - 5"
@@ -143,6 +145,7 @@ class EventEntryViewController: UIViewController {
         data["price"] = "$15.00 - $20.00"
         data["originalEventURL"] = "http://www.seattlesymphony.org/concerttickets/calendar/2016-2017/symphony/dr-seuss-green-eggs-ham"
         data["location"] = "Beneroya Hall"
+        data["locationHours"] = "9 AM to 5 PM daily. Closed on Sundays."
         data["address"] = "825 228th Ave SE Sammamish, WA 98075"
         data["description"] = "Do you like Green Eggs and Ham?” Spend your Saturday with Sam-I-Am and a Seussical Diva in this orchestral celebration of Dr. Seuss classic culinary curiosity. The Seattle Symphony, partnering with the vaudeville-inspired troupe Really Inventive Stuff, presents Rob Kapilow's delightful composition a musical feast for the whole family. Classical KING FM Family Concerts are designed for ages 12 and below.Come early for pre-concert activities in the Samuel & Althea Stroum Grand Lobby, featuring crafts and an instrument petting zoo."
         data["ages"] = "0 - 12"
@@ -172,6 +175,7 @@ class EventEntryViewController: UIViewController {
         data["price"] = "Drop-in: $12 per child"
         data["originalEventURL"] = "http://www.babyjam.net/"
         data["location"] = "Balance Studio"
+        data["locationHours"] = "9 AM to 5 PM daily. Closed on Sundays."
         data["address"] = "418 N 35th St, Seattle WA 98103"
         data["description"] = "Seattle Baby Jam is an award winning music class for kids ages birth to 5 years old. Preschoolers, toddlers, babies, and kids from all backgrounds are welcome to attend. We offer fun, engaging, safe, low-pressure rhythm and music exposure for young ones. Help nurture your child's cognitive development through hands-on drumming, percussion, and multilingual songs, stories and games. "
         data["ages"] = "0 - 5"
@@ -198,6 +202,7 @@ class EventEntryViewController: UIViewController {
         data["price"] = "$18 for 1 adult and 1 child. Additional child: $9"
         data["originalEventURL"] = "https://www.arboretumfoundation.org/events/"
         data["location"] = "Washington Park Arboretum Graham Visitors Center"
+        data["locationHours"] = "9 AM to 5 PM daily. Closed on Sundays."
         data["address"] = "2300 Arboretum Drive E Seattle, WA 98112"
         data["description"] = "Get outside with your preschooler, foster curiosity and explore the natural world. Our weekly two-hour classes engage the senses with hands on-activities, science-based exploration, learning stations, songs, stories, hikes and games based around a theme that changes every week. "
         data["ages"] = "2 - 5"
@@ -224,6 +229,7 @@ class EventEntryViewController: UIViewController {
         data["price"] = "October 1 - March 31 Adult (13 - 64 years) - $14.95 Child (3-12 years) - $9.95 Toddler (0 - 2 years) - FREE Senior (65+) and disabled discount - $2 off regular admission - (Only available at zoo gates, not online). April 1 - September 30: Adult (13 - 64 years) - $20.95 Child (3-12 years) - $12.95 Toddler (0 - 2 years) - FREE Senior (65+) and disabled discount - $2 off regular admission - (Only available at zoo gates, not online)."
         data["originalEventURL"] = "http://www.zoo.org/exhibits/penguins#.WKHug7YrI_V"
         data["location"] = "Woodland Park Zoo"
+        data["locationHours"] = "9 AM to 5 PM daily. Closed on Sundays."
         data["address"] = "5500 Phinney Ave. N., Seattle WA 98103"
         data["description"] = "Most people think of snow and ice when they think of penguins, but our penguins are from the hot, arid coastal regions of Peru! This award-winning exhibit incorporates a rocky coast with incredible underwater viewing. It is also the first sustainable penguin exhibit with geothermal warming and cooling of water and eco-friendly water filtering systems. Watch up-close as the birds frolic just inches away. May 1 - September 30 Open 9:30 a.m. - 6:00 p.m. daily."
         data["ages"] = "0 - 12"
@@ -262,6 +268,7 @@ class EventEntryViewController: UIViewController {
         data["price"] = "$10 for 1 adult and 1 child."
         data["originalEventURL"] = "https://www.seattle.gov/parks/find/pools/rainier-beach-pool/rainier-beach-pool-schedule"
         data["location"] = "Rainier Beach Pool"
+        data["locationHours"] = "9 AM to 5 PM daily. Closed on Sundays."
         data["address"] = "8825 Rainier Ave S, Seattle, WA 98118"
         data["description"] = "Come enjoy your time with your kiddo at Family Swim time at Rainier Beach Pool (Intended for children 5 and under with a parent)."
         data["ages"] = "0 - 5"
@@ -300,6 +307,7 @@ class EventEntryViewController: UIViewController {
         data["price"] = ""
         data["originalEventURL"] = "http://www.spl.org/audiences/children/chi-calendar-of-events"
         data["location"] = "SPL Lake City Branch"
+        data["locationHours"] = "9 AM to 5 PM daily. Closed on Sundays."
         data["address"] = "12501 28th Ave NE, Seattle, WA 98125"
         data["description"] = "It is story time at the Lake City Branch! Bring your children from birth to age 8 to enjoy stories, rhymes, songs, crafts, and fun with our children's librarian, Nancy P! Space is limited at library events. Please come early to make sure you get a seat. Due to the fire code, we can’t exceed the maximum capacity for our rooms."
         data["ages"] = "0 - 5"
@@ -338,6 +346,7 @@ class EventEntryViewController: UIViewController {
         data["price"] = "Day Pass: $6/child (unlimited play time) 30 Day Pass: $15/child (unlimited visits) 12 Month Pass: $150/child (unlimited visits)"
         data["originalEventURL"] = "http://wunderkindseattle.com/"
         data["location"] = "Wunderkind Seattle"
+        data["locationHours"] = "9 AM to 5 PM daily. Closed on Sundays."
         data["address"] = "3318 NE 55th St, Seattle, WA 98105"
         data["description"] = "Keep kiddos busy with legos, train sets and duplo while you sip your coffee. Ages 18 months – 4 years: Our main floor play space features an extensive area tailored specifically for younger kids ages 18 months to 4 years. They’ll have an opportunity to create whatever may pop into their imagination using a seemingly endless supply of LEGO® DUPLO® building blocks, train sets, and figures on early 65 square feet of counter space built at just the right height.Ages 4 and up: Older kids will find an equally appealing space in our community build area upstairs where they can build more advanced structures, motorized vehicles, and other unique creations using LEGO® building blocks. We also work to maintain their interests by exploring different themes so they may find a different look and feel from one visit to the next. Daily 9:00AM to 6:00 PM"
         data["ages"] = "0 - 12"
@@ -361,8 +370,9 @@ class EventEntryViewController: UIViewController {
                     eventObject["endTime"] = test["endTime"] as! String
                     eventObject["free"] = test ["free"] as! Bool
                     eventObject["price"] =  test["price"] as! String
-                    eventObject["originalEventURL"] = test["originalEventURL"] as! String
+                    //eventObject["originalEventURL"] = test["originalEventURL"] as! String
                     eventObject["location"] = test["location"] as! String
+                    eventObject["locationHours"] = test["locationHours"] as! String
                     eventObject["address"] = test["address"] as! String
                     eventObject["description"] = test["description"] as! String
                     eventObject["ages"] = test["ages"] as! String

@@ -21,16 +21,19 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
     @IBOutlet weak var eventDescription: UITextView!
     @IBOutlet weak var eventAgeInfo: UILabel!
     @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var eventHours: UILabel!
+    @IBOutlet weak var eventCost: UILabel!
+    @IBOutlet weak var moreInfoButton: UIButton!
 
     var event: Event!
     var image: UIImage!
     var cachedImageViewSize: CGRect!
     var region: MKCoordinateRegion!
-    var locationCoordinates = CLLocationCoordinate2D() {
+    var locationCoordinates: CLLocationCoordinate2D? {
         didSet {
             let annotation = MKPointAnnotation()
-            annotation.coordinate = self.locationCoordinates
-            region = MKCoordinateRegionMakeWithDistance(locationCoordinates, 500, 500);
+            annotation.coordinate = self.locationCoordinates!
+            region = MKCoordinateRegionMakeWithDistance(locationCoordinates!, 500, 500);
             self.mapView.setRegion(region, animated: true)
             self.mapView.addAnnotation(annotation)
         }
@@ -38,24 +41,35 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
 
     override func viewDidLoad() {
         super.viewDidLoad()
-       // self.eventAddress.text = event.eventAddress
-        // self.eventStartTime.text = event.eventStartTime
 
-        self.eventImage.image = self.image
-        self.eventDescription.text = event.description
-        self.eventAgeInfo.text = "AGES 0-5"
+        self.loadEventInfo()
 
-        navigationController?.navigationBar.topItem?.title = event.title
         scrollView.delegate = self
+        mapView.delegate = self;
 
         let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
         mapView.addGestureRecognizer(gestureRecognizer)
     }
 
     override func viewWillAppear(_ animated: Bool) {
-        self.mapView.delegate = self;
         addressStringToGeocode(for: event.address)
         self.cachedImageViewSize = self.eventImage.frame;
+    }
+
+    private func loadEventInfo() {
+        self.title = event.title
+        self.eventImage.image = self.image
+        self.eventDescription.text = event.description
+        self.eventAgeInfo.text = "AGES \(event.ages)"
+        self.eventCost.text = event.freeFlag == true ? "COST Free" : "COST \(event.price)"
+        self.eventHours.text = event.allDayFlag == true ? "LOCATION HOURS \(event.locationHours)" : "HOURS \(event.startTime) - \(event.endTime)"
+
+        if event.originalEventURL != nil {
+            self.moreInfoButton.setTitle("Visit Event Website", for: .normal)
+        } else {
+            self.moreInfoButton.setTitle("", for: .normal)
+            self.moreInfoButton.isUserInteractionEnabled = false
+        }
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -68,40 +82,45 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
     }
 
     func handleTap(_ gestureRecognizer: UITapGestureRecognizer) {
+
+        guard locationCoordinates != nil else { return }
+
         let options = [
             MKLaunchOptionsMapCenterKey: NSValue(mkCoordinate: region.center),
             MKLaunchOptionsMapSpanKey: NSValue(mkCoordinateSpan: region.span)
         ]
 
-        let placemark = MKPlacemark(coordinate: locationCoordinates, addressDictionary: nil)
+        let placemark = MKPlacemark(coordinate: locationCoordinates!, addressDictionary: nil)
         let mapItem = MKMapItem(placemark: placemark)
 
-        mapItem.name = "Home"
+        mapItem.name = self.event.location
         mapItem.openInMaps(launchOptions: options)
     }
 
     func addressStringToGeocode(for addressString: String) {
-        let address = "325 Harvard Ave E. Seattle 98122"
+        let address = addressString
         let geocoder = CLGeocoder()
 
         geocoder.geocodeAddressString(address, completionHandler: {(placemarks, error) -> Void in
             guard error == nil else { return }
 
             if let placemark = placemarks?.first {
-                self.locationCoordinates = placemark.location!.coordinate
-
+                if let location = placemark.location {
+                    self.locationCoordinates = location.coordinate
+                }
             }
         })
     }
 
     @IBAction func moreInformationButton(_ sender: AnyObject) {
-        self.presentSafariViewController(url: event.originalEventURL)
-
+        self.presentSafariViewController(url: event.originalEventURL!)
     }
 
     func presentSafariViewController(url: String) {
-        let safariVC = SFSafariViewController(url:URL(string: url)!)
-        self.present(safariVC, animated: true, completion: nil)
+        if !url.isEmpty {
+            let safariVC = SFSafariViewController(url:URL(string: url)!)
+            self.present(safariVC, animated: true, completion: nil)
+        }
     }
 
 
