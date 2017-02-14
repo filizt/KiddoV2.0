@@ -370,7 +370,7 @@ class EventEntryViewController: UIViewController {
                     eventObject["endTime"] = test["endTime"] as! String
                     eventObject["free"] = test ["free"] as! Bool
                     eventObject["price"] =  test["price"] as! String
-                    //eventObject["originalEventURL"] = test["originalEventURL"] as! String
+                    eventObject["originalEventURL"] = test["originalEventURL"] as! String
                     eventObject["location"] = test["location"] as! String
                     eventObject["locationHours"] = test["locationHours"] as! String
                     eventObject["address"] = test["address"] as! String
