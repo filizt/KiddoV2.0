@@ -65,6 +65,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         // TODO: Track the user action that is important for you.
         //Answers.logContentView(withName: "Tweet", contentType: "Video", contentId: "1234", customAttributes: ["Favorites Count":20, "Screen Orientation":"Landscape"])
 
+        //let dateString = DateUtil.shared.shortDate(from: <#T##String#>)
 
     }
 
@@ -87,39 +88,33 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
     private var lastRequest: PFQuery<PFObject>?
 
     private func fetchAllEvents() {
-        //var eventDate = PFObject(className: "EventDate")
         let eventDateQuery = PFQuery(className: "EventDate")
-        let date = DateUtil.shared.createDate(from: "02-17-2017")
-
+        let date = DateUtil.shared.createDate(from: DateUtil.shared.today())
         eventDateQuery.whereKey("eventDate", equalTo: date)
         eventDateQuery.findObjectsInBackground { (dateObjects, error) in
             if let dateObjects = dateObjects {
-                var eventDate = dateObjects[0]
-                var relation = eventDate.relation(forKey: "events")
+                var relation = dateObjects[0].relation(forKey: "events")
                 relation.query().findObjectsInBackground { (objects, error) in
                     if let objects = objects {
                         //objects should be events for a particular date
                         let returnedEvents = objects.map { Event.create(from: $0) }
-                        //if !self.today.elementsEqual(returnedEvents, by: { $0.id == $1.id }) {
-                            self.today = returnedEvents
-                            if self.segmentedControl.selectedIndex == 0 {
-                                self.events = self.today
-                            }
-                        //}
-                        self.activityIndicator.stopAnimating()
+                        self.today = returnedEvents
+                        if self.segmentedControl.selectedIndex == 0 {
+                            self.events = self.today
+                        }
+                    self.activityIndicator.stopAnimating()
                     }
                 }
             }
         }
 
         let queryTomorrow = PFQuery(className: "EventDate")
-        let dateTomorrow = DateUtil.shared.createDate(from: "02-27-2017")
-        print("tomorrow is ", dateTomorrow)
+        let dateTomorrow = DateUtil.shared.createDate(from: DateUtil.shared.tomorrow())
+        print("Date tomorrow",dateTomorrow)
         queryTomorrow.whereKey("eventDate", equalTo: dateTomorrow)
         queryTomorrow.findObjectsInBackground { (dateObjects, error) in
             if let dateObjects = dateObjects {
-                var eventDate = dateObjects[0]
-                var relation = eventDate.relation(forKey: "events")
+                var relation = dateObjects[0].relation(forKey: "events")
                 relation.query().findObjectsInBackground { (objects, error) in
                     if let objects = objects {
                         //objects should be events for a particular date
