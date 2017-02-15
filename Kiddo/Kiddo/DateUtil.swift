@@ -35,7 +35,7 @@ class DateUtil {
     }
 
     func fullDateString(from date: Date) -> String {
-        formatter.dateFormat = "MMM d, yyyy h:mm a"
+        formatter.dateFormat = "MMM d, yyyy"
         return formatter.string(from: date)
     }
 

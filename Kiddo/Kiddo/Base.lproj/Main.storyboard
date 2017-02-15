@@ -51,9 +51,7 @@
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="bl0-SP-8aP" secondAttribute="bottom" id="xSn-JK-8rc"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Title" id="fJv-Hi-iQY">
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="aal-Qt-IAH"/>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Title" id="fJv-Hi-iQY"/>
                     <connections>
                         <outlet property="activityIndicator" destination="EUR-ae-as2" id="J7v-ci-NjN"/>
                         <outlet property="segmentedControl" destination="L5u-Zr-Q8o" id="UPy-pC-Hn9"/>
