@@ -68,7 +68,10 @@ class EventEntryViewController: UIViewController {
         var data = [String: Any]()
         data["title"] = "Toddler Time"
         var allEventDates = [Date]()
+        allEventDates.append(DateUtil.shared.createDate(from: "02-15-2017"))
+        allEventDates.append(DateUtil.shared.createDate(from: "02-16-2017"))
         allEventDates.append(DateUtil.shared.createDate(from: "02-17-2017"))
+        allEventDates.append(DateUtil.shared.createDate(from: "02-18-2017"))
         data["allEventDates"] = allEventDates
         data["startDate"] = DateUtil.shared.createDate(from: "02-06-2017")
         data["endDate"] = DateUtil.shared.createDate(from: "03-31-2017")
@@ -92,7 +95,10 @@ class EventEntryViewController: UIViewController {
         data = [String: Any]()
         data["title"] = "Toddler Indoor Playground"
         allEventDates = [Date]()
+        allEventDates.append(DateUtil.shared.createDate(from: "02-15-2017"))
+        allEventDates.append(DateUtil.shared.createDate(from: "02-16-2017"))
         allEventDates.append(DateUtil.shared.createDate(from: "02-17-2017"))
+        allEventDates.append(DateUtil.shared.createDate(from: "02-18-2017"))
         allEventDates.append(DateUtil.shared.createDate(from: "02-20-2017"))
         allEventDates.append(DateUtil.shared.createDate(from: "02-22-2017"))
         allEventDates.append(DateUtil.shared.createDate(from: "02-24-2017"))
@@ -134,7 +140,10 @@ class EventEntryViewController: UIViewController {
         data = [String: Any]()
         data["title"] = "Dr. Seuss Green Eggs & Ham"
         allEventDates = [Date]()
-        allEventDates.append(DateUtil.shared.createDate(from: "03-04-2017"))
+        allEventDates.append(DateUtil.shared.createDate(from: "02-15-2017"))
+        allEventDates.append(DateUtil.shared.createDate(from: "02-16-2017"))
+        allEventDates.append(DateUtil.shared.createDate(from: "02-17-2017"))
+        allEventDates.append(DateUtil.shared.createDate(from: "02-18-2017"))
         data["allEventDates"] = allEventDates
         data["startDate"] = DateUtil.shared.createDate(from: "03-04-2017")
         data["endDate"] = DateUtil.shared.createDate(from:"03-04-2017")
@@ -159,7 +168,10 @@ class EventEntryViewController: UIViewController {
         data = [String: Any]()
         data["title"] = "Baby Jam"
         allEventDates = [Date]()
+        allEventDates.append(DateUtil.shared.createDate(from: "02-15-2017"))
+        allEventDates.append(DateUtil.shared.createDate(from: "02-16-2017"))
         allEventDates.append(DateUtil.shared.createDate(from: "02-17-2017"))
+        allEventDates.append(DateUtil.shared.createDate(from: "02-18-2017"))
         allEventDates.append(DateUtil.shared.createDate(from: "02-24-2017"))
         allEventDates.append(DateUtil.shared.createDate(from: "03-03-2017"))
         allEventDates.append(DateUtil.shared.createDate(from: "02-10-2017"))
