@@ -232,10 +232,12 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
                                 },
                     completion: { (completed: Bool) in
                                     if (completed) {
-                                        if let visibleIndexPaths = self.timelineTableView.indexPathsForVisibleRows {
-                                            let x = IndexPath(item: 0, section: 0)
-                                            if !visibleIndexPaths.contains(x) {
-                                                self.timelineTableView.scrollToRow(at: x, at: UITableViewScrollPosition.top, animated: true)
+                                        if self.events.count > 0 {
+                                            if let visibleIndexPaths = self.timelineTableView.indexPathsForVisibleRows {
+                                                let x = IndexPath(item: 0, section: 0)
+                                                if !visibleIndexPaths.contains(x) {
+                                                    self.timelineTableView.scrollToRow(at: x, at: UITableViewScrollPosition.top, animated: true)
+                                                }
                                             }
                                         }
                                     }
