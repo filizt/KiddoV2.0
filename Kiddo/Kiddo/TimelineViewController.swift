@@ -90,6 +90,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
     private func fetchAllEvents() {
         let eventDateQuery = PFQuery(className: "EventDate")
         let date = DateUtil.shared.createDate(from: DateUtil.shared.today())
+        print("TODAY IS ", date)
         eventDateQuery.whereKey("eventDate", equalTo: date)
         eventDateQuery.findObjectsInBackground { (dateObjects, error) in
             if let dateObjects = dateObjects {
@@ -201,6 +202,9 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         let cell = self.timelineTableView.dequeueReusableCell(withIdentifier: EventTableViewCell.identifier(), for: indexPath) as! EventTableViewCell
         cell.event = selectedEvent
 
+        if self.segmentedControl.selectedIndex == 2 {
+            cell.eventStartTime.text = DateUtil.shared.fullDateString(from: selectedEvent.date)
+        }
         return cell
     }
 
