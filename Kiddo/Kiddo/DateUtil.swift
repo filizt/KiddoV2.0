@@ -70,9 +70,9 @@ class DateUtil {
     func tomorrow() -> String {
         var components = DateComponents()
         components.day = 1
-        let tomorrow = Calendar.current.date(byAdding: components, to: Date())
+        guard let tomorrow = Calendar.current.date(byAdding: components, to: Date()) else { return "" }
 
         formatter.dateFormat = "MM-dd-yyyy"
-        return formatter.string(from: tomorrow!)
+        return formatter.string(from: tomorrow)
     }
 }

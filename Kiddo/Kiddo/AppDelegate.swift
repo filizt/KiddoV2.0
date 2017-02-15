@@ -79,17 +79,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PFLogInViewControllerDele
             }
         }
 
-         window?.makeKeyAndVisible()
-        let imageView = UIImageView(frame: (self.window?.frame)!)
-        imageView.image = UIImage(named: "kiddo_default_1")
-        self.window?.addSubview(imageView)
-        self.window?.bringSubview(toFront: imageView)
-        UIView.transition(with: self.window!, duration: 3.0, options: UIViewAnimationOptions.curveEaseIn, animations: {
-            imageView.alpha = 0.0
-            imageView.frame = imageView.frame.offsetBy(dx: -100.0, dy: -100.0)
+        window?.makeKeyAndVisible()
+        let splashView = UIView(frame: (self.window?.frame)!)
+        splashView.backgroundColor = UIColor(red:0.22, green:0.15, blue:0.30, alpha:1.0)
+        self.window?.addSubview(splashView)
 
+        let imageView = UIImageView(image: UIImage(named: "kiddo"))
+        var imageFrame = imageView.frame
+        imageFrame.origin.x = 132.5
+        imageFrame.origin.y = 218
+        imageView.frame = imageFrame
+        self.window?.addSubview(imageView)
+
+
+        self.window?.bringSubview(toFront: imageView)
+        UIView.transition(with: self.window!,
+                          duration: 0.75,
+                          options: UIViewAnimationOptions.curveEaseInOut,
+                          animations: {
+                            imageView.alpha = 0.0
+                            splashView.alpha = 0.0
+                            imageView.transform = CGAffineTransform(scaleX: 2, y: 2);
+            //imageView.frame = imageView.frame.offsetBy(dx: 100.0, dy: 100.0)
         }) { (finished) in
             imageView.removeFromSuperview()
+            splashView.removeFromSuperview()
         }
 
 
