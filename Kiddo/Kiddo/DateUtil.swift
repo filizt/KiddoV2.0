@@ -20,20 +20,10 @@ class DateUtil {
     }
 
     func shortDate(from dateString: String) -> String {
-        formatter.dateFormat = "MM-dd-yyyy HH:mm"
+        formatter.dateFormat = "MMM d, yyyy"
         if dateString.isEmpty != true {
             if let date = formatter.date(from: dateString) {
                 return formatter.string(from:date )
-            }
-        }
-        return ""
-    }
-
-    func shortTime(from dateString:String) -> String {
-        formatter.dateFormat = "HH:mm"
-        if dateString.isEmpty != true {
-            if let time = formatter.date(from: dateString) {
-                return formatter.string(from:time)
             }
         }
         return ""
@@ -44,9 +34,19 @@ class DateUtil {
         return formatter.string(from: date)
     }
 
+    func shortTime(from dateString:String) -> String {
+        formatter.dateFormat = "h:mm a"
+        if dateString.isEmpty != true {
+            if let time = formatter.date(from: dateString) {
+                return formatter.string(from:time)
+            }
+        }
+        return ""
+    }
+
 
     func shortTime(from date:Date) -> String {
-        formatter.dateFormat = "HH:mm"
+        formatter.dateFormat = "h:mm a"
         return formatter.string(from:date)
     }
 
@@ -66,10 +66,9 @@ class DateUtil {
         let date = Date()
         var components = DateComponents()
         components.day = 1
-
         let tomorrow = Calendar.current.date(byAdding: components, to: date)
-        formatter.dateFormat = "MM-dd-yyyy"
 
+        formatter.dateFormat = "MM-dd-yyyy"
         return formatter.string(from: tomorrow!)
     }
 }
