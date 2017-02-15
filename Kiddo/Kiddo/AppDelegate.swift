@@ -36,7 +36,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PFLogInViewControllerDele
         Parse.initialize(with: configuration)
         PFFacebookUtils.initializeFacebook(applicationLaunchOptions: launchOptions)
 
-        if PFUser.current() == nil {
+        if PFUser.current() == nil && facebookLoginNeeded() {
             let logInViewController = LogInViewController()
             logInViewController.fields = [PFLogInFields.facebook, PFLogInFields.dismissButton]
             logInViewController.delegate = self
@@ -60,7 +60,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PFLogInViewControllerDele
                 //not registered for local notifications
                 //let's check if enough time passed since we last asked, and if so ask again.
                 if let lastNotificationAuthRequest = userDefaults.object(forKey: "UserNotificationsDeniedKey") as? Date {
-                    if Int(lastNotificationAuthRequest.timeIntervalSinceNow * -1) > (60*60*24*7) {
+                    if Int(lastNotificationAuthRequest.timeIntervalSinceNow * -1) >= (60*60*24*7) {
                         //It's been more than 7 days since we last asked, good enough, let's ask again.
                         UNUserNotificationCenter.current().requestAuthorization(options: [ .alert, .sound]) {(granted, error) in
                             if granted {
@@ -108,6 +108,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PFLogInViewControllerDele
 
 
         return true
+    }
+
+    func facebookLoginNeeded() -> Bool {
+        guard let lastFacebookLoginRequest = userDefaults.object(forKey: "FacebookLoginSkipped") as? Date else { return true }
+
+            if Int(lastFacebookLoginRequest.timeIntervalSinceNow * -1) >= (60*60*24*7) {
+                //it's been more than a week since we asked the user to log in. Let's try that again.
+                return true
+            }
+
+         return false
     }
 
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
@@ -158,6 +169,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PFLogInViewControllerDele
 
     func log(_ logInController: PFLogInViewController, didLogIn user: PFUser) {
         Answers.logLogin(withMethod: "Facebook", success: 1, customAttributes: ["FacebookLogin": "Success"])
+
         window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateInitialViewController()
     }
 
@@ -167,7 +179,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PFLogInViewControllerDele
 
         window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateInitialViewController()
 
-        let alert = UIAlertController(title: "Facebook LogIn Failed", message: "Facebook login failed due to an error. We skipped the login step. You can still enjoy Kiddo!", preferredStyle: UIAlertControllerStyle.alert)
+        let alert = UIAlertController(title: "Facebook Login Failed", message: "Facebook login failed due to an error. We skipped the login step. You can still enjoy Kiddo!", preferredStyle: UIAlertControllerStyle.alert)
         let alertAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil)
         alert.addAction(alertAction)
 
@@ -179,11 +191,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PFLogInViewControllerDele
 
         Answers.logLogin(withMethod: "Facebook", success: 0, customAttributes: ["FacebookLogin": "Skip"])
 
+        self.userDefaults.set(Date(), forKey: "FacebookLoginSkipped")
+
         window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateInitialViewController()
 
-        let alert = UIAlertController(title: "Facebook LogIn Cancelled", message: "No worries! You can still enjoy Kiddo without signing up!", preferredStyle: UIAlertControllerStyle.alert)
+        let alert = UIAlertController(title: "Facebook Login Cancelled", message: "No worries! You can still enjoy Kiddo without signing up!", preferredStyle: UIAlertControllerStyle.alert)
         let alertAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil)
         alert.addAction(alertAction)
+
 
         window?.rootViewController?.present(alert, animated: true, completion: nil)
 

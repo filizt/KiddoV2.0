@@ -59,24 +59,8 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.whiteLarge
         activityIndicator.backgroundColor = UIColor.gray
 
-        //TO-DO: fetchAllEvents should be called strategically if backend changed at all. Is there a way to check that through Parse?
-        //self.fetchAllEvents()
-
-        // TODO: Track the user action that is important for you.
-        //Answers.logContentView(withName: "Tweet", contentType: "Video", contentId: "1234", customAttributes: ["Favorites Count":20, "Screen Orientation":"Landscape"])
-
-        //let dateString = DateUtil.shared.shortDate(from: <#T##String#>)
 
     }
-
-    /*
-    func anImportantUserAction() {
-
-        // TODO: Move this method and customize the name and parameters to track your key metrics
-        //       Use your own string attributes to track common values over time
-        //       Use your own number attributes to track median value over time
-        Answers.logCustomEvent(withName: "Video Played", customAttributes: ["Category":"Comedy", "Length":350])
-    }*/
 
 
     override func viewWillAppear(_ animated: Bool) {
