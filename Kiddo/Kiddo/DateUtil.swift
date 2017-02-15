@@ -20,7 +20,7 @@ class DateUtil {
     }
 
     func shortDate(from dateString: String) -> String {
-        formatter.dateFormat = "MM-dd-yyyy HH:mm"
+        formatter.dateFormat = "MMM d, yyyy"
         if dateString.isEmpty != true {
             if let date = formatter.date(from: dateString) {
                 return formatter.string(from:date )
@@ -29,8 +29,18 @@ class DateUtil {
         return ""
     }
 
+    func shortDateString(from date: Date) -> String {
+        formatter.dateFormat = "MMM d, yyyy"
+        return formatter.string(from: date)
+    }
+
+    func fullDateString(from date: Date) -> String {
+        formatter.dateFormat = "MMM d, yyyy h:mm a"
+        return formatter.string(from: date)
+    }
+
     func shortTime(from dateString:String) -> String {
-        formatter.dateFormat = "HH:mm"
+        formatter.dateFormat = "h:mm a"
         if dateString.isEmpty != true {
             if let time = formatter.date(from: dateString) {
                 return formatter.string(from:time)
@@ -39,14 +49,30 @@ class DateUtil {
         return ""
     }
 
-    func shortTime(from date:Date) -> String {
-        formatter.dateFormat = "HH:mm"
+
+    func shortTimeString(from date:Date) -> String {
+        formatter.dateFormat = "h:mm a"
         return formatter.string(from:date)
     }
 
+    //FIX-ME: There is a better way to implement below createDate logic. I think we should not return today date if we faile to create a date object from a string.
     func createDate(from dateString:String) -> Date {
         formatter.dateFormat = "MM-dd-yyyy"
-        print("date:", formatter.date(from: dateString)! as Date)
         return formatter.date(from: dateString) ?? Date()
+    }
+
+    func today() -> String {
+        formatter.dateFormat = "MM-dd-yyyy"
+        return formatter.string(from: Date())
+
+    }
+
+    func tomorrow() -> String {
+        var components = DateComponents()
+        components.day = 1
+        let tomorrow = Calendar.current.date(byAdding: components, to: Date())
+
+        formatter.dateFormat = "MM-dd-yyyy"
+        return formatter.string(from: tomorrow!)
     }
 }
