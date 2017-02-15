@@ -79,6 +79,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PFLogInViewControllerDele
             }
         }
 
+         window?.makeKeyAndVisible()
+        let imageView = UIImageView(frame: (self.window?.frame)!)
+        imageView.image = UIImage(named: "kiddo_default_1")
+        self.window?.addSubview(imageView)
+        self.window?.bringSubview(toFront: imageView)
+        UIView.transition(with: self.window!, duration: 3.0, options: UIViewAnimationOptions.curveEaseIn, animations: {
+            imageView.alpha = 0.0
+            imageView.frame = imageView.frame.offsetBy(dx: -100.0, dy: -100.0)
+
+        }) { (finished) in
+            imageView.removeFromSuperview()
+        }
+
+
         return true
     }
 
