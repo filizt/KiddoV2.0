@@ -54,13 +54,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PFLogInViewControllerDele
 
         UNUserNotificationCenter.current().delegate = self
 
-        if let settings = UIApplication.shared.currentUserNotificationSettings {
-            if settings.types.contains([.alert, .sound]) {
-                //User already authorized for local notifications. Register with Fabric.
-            } else {
-                //not registered for local notifications
-                //let's check if enough time passed since we last asked, and if so ask again.
-                if let lastNotificationAuthRequest = userDefaults.object(forKey: "UserNotificationsDeniedKey") as? Date {
+        UNUserNotificationCenter.current().getNotificationSettings(completionHandler: { (settings) in
+            if settings.authorizationStatus != .authorized {
+                if let lastNotificationAuthRequest = self.userDefaults.object(forKey: "UserNotificationsDeniedKey") as? Date {
                     if Int(lastNotificationAuthRequest.timeIntervalSinceNow * -1) >= (60*60*24*7) {
                         //It's been more than 7 days since we last asked, good enough, let's ask again.
                         UNUserNotificationCenter.current().requestAuthorization(options: [ .alert, .sound]) {(granted, error) in
@@ -76,9 +72,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PFLogInViewControllerDele
                             }
                         }
                     }
+                } else {
+                    //If we get here, it's the user's first time launching the app (becaue no UserNotificationsDeniedKey recorded).
+                    self.scheduleLocalNotifications()
                 }
             }
-        }
+        })
 
         window?.makeKeyAndVisible()
         let splashView = UIView(frame: (self.window?.frame)!)
@@ -111,7 +110,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PFLogInViewControllerDele
     }
 
     func fetchImages() {
-
         let eventDateQuery = PFQuery(className: "EventImage")
         eventDateQuery.findObjectsInBackground { (objects, error) in
             if let objects = objects {
@@ -122,7 +120,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PFLogInViewControllerDele
                         let dataImage = UIImage(data: data!)
                         SimpleCache.shared.setImage(dataImage!, key: object.objectId!)
                     })
-
                 }
             }
         }
@@ -146,34 +143,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PFLogInViewControllerDele
 
     func scheduleLocalNotifications() {
 
-        //let date: Date = Date()
-        let calendar = Calendar(identifier: .gregorian)
-        var date = DateComponents()
-        date.calendar = calendar
-        date.timeZone = .current
-        //date.month = components.month
-        //date.day = components.day
-        date.hour = 8
-        date.minute = 30
-
-
-        //let components = calendar.dateComponents(in: .current, from: date)
-        //var components = calendar.dateComponents(in: .current, from: date)
-        //components.setValue(58, for: .minute)
-        //let expirationDate = Calendar.current.date(byAdding: components, to: date)
-
+        //time interval is every day for now
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: (60*60*24*1), repeats: true)
 
         let content = UNMutableNotificationContent()
         content.title = "Kiddo"
-        content.body = "Check out the new events added to Kiddo!"
+        content.body = "Check out these new events added to Kiddo!"
         content.sound = UNNotificationSound.default()
-        //content.categoryIdentifier = "myCategory"
-
-        let trigger = UNCalendarNotificationTrigger(dateMatching: date, repeats: true)
-
 
         let request = UNNotificationRequest(identifier: "textNotification", content: content, trigger: trigger)
-
 
         UNUserNotificationCenter.current().add(request) {(error) in
             if let error = error {
