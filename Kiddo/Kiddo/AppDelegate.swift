@@ -28,9 +28,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PFLogInViewControllerDele
         Fabric.with([Crashlytics.self])
 
        let configuration = ParseClientConfiguration {
-            $0.applicationId = "8383nfjf9393nnd"
-            $0.clientKey = "93993djfjfjkskkskggh667"
-            $0.server = "https://location-reminder-serverfk.herokuapp.com/parse"
+            $0.applicationId = "1G2h3j45Rtf3s"
+            $0.clientKey = "1kjHsfg72348nkKnwl2"
+            $0.server = "https://kiddoapp.herokuapp.com/parse"
         }
 
         Parse.initialize(with: configuration)
