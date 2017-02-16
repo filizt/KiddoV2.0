@@ -81,7 +81,6 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
     private func fetchAllEvents() {
         let eventDateQuery = PFQuery(className: "EventDate")
         let date = DateUtil.shared.createDate(from: DateUtil.shared.today())
-        print("TODAY IS ", date)
         eventDateQuery.whereKey("eventDate", equalTo: date)
         eventDateQuery.findObjectsInBackground { (dateObjects, error) in
             if let dateObjects = dateObjects {
@@ -102,7 +101,6 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 
         let queryTomorrow = PFQuery(className: "EventDate")
         let dateTomorrow = DateUtil.shared.createDate(from: DateUtil.shared.tomorrow())
-        print("Date tomorrow",dateTomorrow)
         queryTomorrow.whereKey("eventDate", equalTo: dateTomorrow)
         queryTomorrow.findObjectsInBackground { (dateObjects, error) in
             if let dateObjects = dateObjects {
@@ -126,14 +124,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 
 
         let queryLater = PFQuery(className: "EventObject")
-        var datesArray = [Date]()
-        for index in 15...28 {
-            let s1 = String(index)
-            let s2 = "02-\(s1)-2017"
-            datesArray.append(DateUtil.shared.createDate(from: s2))
-        }
-
-
+        guard let datesArray = DateUtil.shared.later() else { return }
         queryLater.whereKey("allEventDates", containedIn: datesArray)
         queryLater.findObjectsInBackground { (objects, error) in
             if let objects = objects {

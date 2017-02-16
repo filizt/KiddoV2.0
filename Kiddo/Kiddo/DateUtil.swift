@@ -75,4 +75,22 @@ class DateUtil {
         formatter.dateFormat = "MM-dd-yyyy"
         return formatter.string(from: tomorrow)
     }
+
+    func later() -> [Date]? {
+        var datesArray = [Date]()
+        var dateComponents = DateComponents()
+        dateComponents.day = 2
+
+        guard let laterDate = Calendar.current.date(byAdding: dateComponents, to: createDate(from:today())) else { return nil }
+        dateComponents.day = 1
+
+        datesArray.append(laterDate)
+
+        for index in 0...10 {
+            let d = datesArray[index]
+            guard let dateO = Calendar.current.date(byAdding: dateComponents, to: d) else { continue }
+            datesArray.append(dateO)
+        }
+        return datesArray
+    }
 }

@@ -128,7 +128,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PFLogInViewControllerDele
     func facebookLoginNeeded() -> Bool {
         guard let lastFacebookLoginRequest = userDefaults.object(forKey: "FacebookLoginSkipped") as? Date else { return true }
 
-            if Int(lastFacebookLoginRequest.timeIntervalSinceNow * -1) >= (60*60*24*7) {
+            if Int(lastFacebookLoginRequest.timeIntervalSinceNow * -1) >= (60*60*24*3) {
                 //it's been more than a week since we asked the user to log in. Let's try that again.
                 return true
             }
