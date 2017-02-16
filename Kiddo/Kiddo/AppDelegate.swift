@@ -25,7 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PFLogInViewControllerDele
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
 
-        Fabric.with([Answers.self, Crashlytics.self])
+        Fabric.with([Crashlytics.self])
 
        let configuration = ParseClientConfiguration {
             $0.applicationId = "8383nfjf9393nnd"
