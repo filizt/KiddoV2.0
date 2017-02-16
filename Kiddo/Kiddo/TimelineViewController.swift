@@ -32,6 +32,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
     private var events = [Event]() {
         didSet {
             if !self.events.elementsEqual(oldValue, by: { $0.id == $1.id }) {
+                self.events.sort { ($0.startTime < $1.startTime) }
                 animateTableViewReload()
             }
         }
