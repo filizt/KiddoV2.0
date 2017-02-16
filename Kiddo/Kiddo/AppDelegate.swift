@@ -50,6 +50,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PFLogInViewControllerDele
 
          }
 
+         fetchImages()
 
         UNUserNotificationCenter.current().delegate = self
 
@@ -106,35 +107,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PFLogInViewControllerDele
             splashView.removeFromSuperview()
         }
 
-        fetchImages()
-
         return true
     }
 
     func fetchImages() {
 
         let eventDateQuery = PFQuery(className: "EventImage")
-        eventDateQuery.findObjectsInBackground { (imageObjects, error) in
-            if let imageObjects = imageObjects {
-                for imageObject in imageObjects {
-                    var img = imageObject["image"] as? PFFile
+        eventDateQuery.findObjectsInBackground { (objects, error) in
+            if let objects = objects {
+                for object in objects {
+                    let imageFile = object["image"] as? PFFile
                     //var dataImage: UIImage
-                    img?.getDataInBackground({ (data, error) in
-                        var dataImage = UIImage(data: data!)
-                        SimpleCache.shared.setImage(dataImage!, key: imageObject.objectId!)
-
-                    }, progressBlock: { (progress) in
-                        if progress == 100 {
-                            ("Image downloaded")
-                        }
+                    imageFile?.getDataInBackground({ (data, error) in
+                        let dataImage = UIImage(data: data!)
+                        SimpleCache.shared.setImage(dataImage!, key: object.objectId!)
                     })
 
-                    }
-
+                }
             }
         }
-
     }
+
     func facebookLoginNeeded() -> Bool {
         guard let lastFacebookLoginRequest = userDefaults.object(forKey: "FacebookLoginSkipped") as? Date else { return true }
 
