@@ -56,25 +56,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PFLogInViewControllerDele
 
         UNUserNotificationCenter.current().getNotificationSettings(completionHandler: { (settings) in
             if settings.authorizationStatus != .authorized {
-                if let lastNotificationAuthRequest = self.userDefaults.object(forKey: "UserNotificationsDeniedKey") as? Date {
-                    if Int(lastNotificationAuthRequest.timeIntervalSinceNow * -1) >= (60*60*24*7) {
-                        //It's been more than 7 days since we last asked, good enough, let's ask again.
-                        UNUserNotificationCenter.current().requestAuthorization(options: [ .alert, .sound]) {(granted, error) in
-                            if granted {
-                                //schedule notifications.
-                                self.scheduleLocalNotifications()
-                                Answers.logCustomEvent(withName: "UserOptedInForNotifications", customAttributes: nil)
-                            } else {
-                                print("Notification access denied.")
-                                let today = Date()
-                                self.userDefaults.set(today, forKey: "UserNotificationsDeniedKey")
-                                Answers.logCustomEvent(withName: "UserOptedOutForNotifications", customAttributes: nil)
-                            }
+                if self.notificationsAuthNeeded() {
+                    UNUserNotificationCenter.current().requestAuthorization(options: [ .alert, .sound]) {(granted, error) in
+                        if granted {
+                            //schedule notifications.
+                            self.scheduleLocalNotifications()
+                            Answers.logCustomEvent(withName: "UserOptedInForNotifications", customAttributes: nil)
+                        } else {
+                            self.userDefaults.set(Date(), forKey: "UserNotificationsDeniedKey")
+                            Answers.logCustomEvent(withName: "UserOptedOutForNotifications", customAttributes: nil)
                         }
                     }
-                } else {
-                    //If we get here, it's the user's first time launching the app (becaue no UserNotificationsDeniedKey recorded).
-                    self.scheduleLocalNotifications()
                 }
             }
         })
@@ -107,6 +99,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PFLogInViewControllerDele
         }
 
         return true
+    }
+
+    func notificationsAuthNeeded() -> Bool {
+        if let lastNotificationAuthRequest = self.userDefaults.object(forKey: "UserNotificationsDeniedKey") as? Date {
+            guard ((lastNotificationAuthRequest.timeIntervalSinceNow * -1) <= (60*60*24*3)) else { return false }
+        }
+
+        return true //first time user case
     }
 
     func fetchImages() {
