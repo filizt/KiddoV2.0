@@ -119,31 +119,14 @@
 			isa = PBXGroup;
 			children = (
 				BD68B9A61DD0F2F300CE39CA /* AppDelegate.swift */,
+				C26E626E1DD1038C00BDC568 /* TimelineViewController.swift */,
+				BDEB9E8C1E04966A002F7222 /* EventEntryViewController.swift */,
 				BDB5B0971E521C5200D59AEA /* Assets */,
-				BDC903D51E43C65C006CD7D6 /* Fonts */,
 				BD506DDA1E294175001A98B0 /* Storyboards */,
-				BD68B9BA1DD0F98000CE39CA /* View Controller */,
 				BD506DD91E29412E001A98B0 /* Util */,
 				BD506DDB1E2941B6001A98B0 /* Resources */,
 			);
 			path = Kiddo;
-			sourceTree = "<group>";
-		};
-		BD68B9BA1DD0F98000CE39CA /* View Controller */ = {
-			isa = PBXGroup;
-			children = (
-				C26E626E1DD1038C00BDC568 /* TimelineViewController.swift */,
-				BDEB9E8C1E04966A002F7222 /* EventEntryViewController.swift */,
-			);
-			name = "View Controller";
-			sourceTree = "<group>";
-		};
-		BDC903D51E43C65C006CD7D6 /* Fonts */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Fonts;
-			path = ..;
 			sourceTree = "<group>";
 		};
 		D6E9E1B41F25F9F678B82398 /* Pods */ = {
