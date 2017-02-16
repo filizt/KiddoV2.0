@@ -125,8 +125,9 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 
 
         let queryLater = PFQuery(className: "EventObject")
-        guard let datesArray = DateUtil.shared.later() else { return }
-        queryLater.whereKey("allEventDates", containedIn: datesArray)
+        guard let laterDate = DateUtil.shared.later() else { return }
+        queryLater.whereKey("allEventDates", greaterThanOrEqualTo: laterDate)
+        queryLater.limit = 20
         queryLater.findObjectsInBackground { (objects, error) in
             if let objects = objects {
                 let returnedEvents = objects.map { Event.create(from: $0) }
