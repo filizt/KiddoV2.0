@@ -25,18 +25,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PFLogInViewControllerDele
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
 
-        Fabric.with([Answers.self, Crashlytics.self])
+        Fabric.with([Crashlytics.self])
 
        let configuration = ParseClientConfiguration {
-            $0.applicationId = "8383nfjf9393nnd"
-            $0.clientKey = "93993djfjfjkskkskggh667"
-            $0.server = "https://location-reminder-serverfk.herokuapp.com/parse"
+            $0.applicationId = "1G2h3j45Rtf3s"
+            $0.clientKey = "1kjHsfg72348nkKnwl2"
+            $0.server = "https://kiddoapp.herokuapp.com/parse"
         }
 
         Parse.initialize(with: configuration)
         PFFacebookUtils.initializeFacebook(applicationLaunchOptions: launchOptions)
 
-        if PFUser.current() == nil {
+        if PFUser.current() == nil && facebookLoginNeeded() {
             let logInViewController = LogInViewController()
             logInViewController.fields = [PFLogInFields.facebook, PFLogInFields.dismissButton]
             logInViewController.delegate = self
@@ -50,17 +50,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PFLogInViewControllerDele
 
          }
 
+         fetchImages()
 
         UNUserNotificationCenter.current().delegate = self
 
-        if let settings = UIApplication.shared.currentUserNotificationSettings {
-            if settings.types.contains([.alert, .sound]) {
-                //User already authorized for local notifications. Register with Fabric.
-            } else {
-                //not registered for local notifications
-                //let's check if enough time passed since we last asked, and if so ask again.
-                if let lastNotificationAuthRequest = userDefaults.object(forKey: "UserNotificationsDeniedKey") as? Date {
-                    if Int(lastNotificationAuthRequest.timeIntervalSinceNow * -1) > (60*60*24*7) {
+        UNUserNotificationCenter.current().getNotificationSettings(completionHandler: { (settings) in
+            if settings.authorizationStatus != .authorized {
+                if let lastNotificationAuthRequest = self.userDefaults.object(forKey: "UserNotificationsDeniedKey") as? Date {
+                    if Int(lastNotificationAuthRequest.timeIntervalSinceNow * -1) >= (60*60*24*7) {
                         //It's been more than 7 days since we last asked, good enough, let's ask again.
                         UNUserNotificationCenter.current().requestAuthorization(options: [ .alert, .sound]) {(granted, error) in
                             if granted {
@@ -75,11 +72,68 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PFLogInViewControllerDele
                             }
                         }
                     }
+                } else {
+                    //If we get here, it's the user's first time launching the app (becaue no UserNotificationsDeniedKey recorded).
+                    self.scheduleLocalNotifications()
                 }
             }
+        })
+
+        window?.makeKeyAndVisible()
+        let splashView = UIView(frame: (self.window?.frame)!)
+        splashView.backgroundColor = UIColor(red:0.22, green:0.15, blue:0.30, alpha:1.0)
+        self.window?.addSubview(splashView)
+
+        let imageView = UIImageView(image: UIImage(named: "kiddo"))
+        var imageFrame = imageView.frame
+        imageFrame.origin.x = 132.5
+        imageFrame.origin.y = 218
+        imageView.frame = imageFrame
+        self.window?.addSubview(imageView)
+
+
+        self.window?.bringSubview(toFront: imageView)
+        UIView.transition(with: self.window!,
+                          duration: 0.75,
+                          options: UIViewAnimationOptions.curveEaseInOut,
+                          animations: {
+                            imageView.alpha = 0.0
+                            splashView.alpha = 0.0
+                            imageView.transform = CGAffineTransform(scaleX: 2, y: 2);
+            //imageView.frame = imageView.frame.offsetBy(dx: 100.0, dy: 100.0)
+        }) { (finished) in
+            imageView.removeFromSuperview()
+            splashView.removeFromSuperview()
         }
 
         return true
+    }
+
+    func fetchImages() {
+        let eventDateQuery = PFQuery(className: "EventImage")
+        eventDateQuery.findObjectsInBackground { (objects, error) in
+            if let objects = objects {
+                for object in objects {
+                    let imageFile = object["image"] as? PFFile
+                    //var dataImage: UIImage
+                    imageFile?.getDataInBackground({ (data, error) in
+                        let dataImage = UIImage(data: data!)
+                        SimpleCache.shared.setImage(dataImage!, key: object.objectId!)
+                    })
+                }
+            }
+        }
+    }
+
+    func facebookLoginNeeded() -> Bool {
+        guard let lastFacebookLoginRequest = userDefaults.object(forKey: "FacebookLoginSkipped") as? Date else { return true }
+
+            if Int(lastFacebookLoginRequest.timeIntervalSinceNow * -1) >= (60*60*24*3) {
+                //it's been more than a week since we asked the user to log in. Let's try that again.
+                return true
+            }
+
+         return false
     }
 
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
@@ -89,34 +143,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PFLogInViewControllerDele
 
     func scheduleLocalNotifications() {
 
-        //let date: Date = Date()
-        let calendar = Calendar(identifier: .gregorian)
-        var date = DateComponents()
-        date.calendar = calendar
-        date.timeZone = .current
-        //date.month = components.month
-        //date.day = components.day
-        date.hour = 8
-        date.minute = 30
-
-
-        //let components = calendar.dateComponents(in: .current, from: date)
-        //var components = calendar.dateComponents(in: .current, from: date)
-        //components.setValue(58, for: .minute)
-        //let expirationDate = Calendar.current.date(byAdding: components, to: date)
-
+        //time interval is every day for now
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: (60*60*24*1), repeats: true)
 
         let content = UNMutableNotificationContent()
         content.title = "Kiddo"
-        content.body = "Check out the new events added to Kiddo!"
+        content.body = "Check out these new events added to Kiddo!"
         content.sound = UNNotificationSound.default()
-        //content.categoryIdentifier = "myCategory"
-
-        let trigger = UNCalendarNotificationTrigger(dateMatching: date, repeats: true)
-
 
         let request = UNNotificationRequest(identifier: "textNotification", content: content, trigger: trigger)
-
 
         UNUserNotificationCenter.current().add(request) {(error) in
             if let error = error {
@@ -130,6 +165,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PFLogInViewControllerDele
 
     func log(_ logInController: PFLogInViewController, didLogIn user: PFUser) {
         Answers.logLogin(withMethod: "Facebook", success: 1, customAttributes: ["FacebookLogin": "Success"])
+
         window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateInitialViewController()
     }
 
@@ -139,7 +175,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PFLogInViewControllerDele
 
         window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateInitialViewController()
 
-        let alert = UIAlertController(title: "Facebook LogIn Failed", message: "Facebook login failed due to an error. We skipped the login step. You can still enjoy Kiddo!", preferredStyle: UIAlertControllerStyle.alert)
+        let alert = UIAlertController(title: "Facebook Login Failed", message: "Facebook login failed due to an error. We skipped the login step. You can still enjoy Kiddo!", preferredStyle: UIAlertControllerStyle.alert)
         let alertAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil)
         alert.addAction(alertAction)
 
@@ -151,11 +187,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PFLogInViewControllerDele
 
         Answers.logLogin(withMethod: "Facebook", success: 0, customAttributes: ["FacebookLogin": "Skip"])
 
+        self.userDefaults.set(Date(), forKey: "FacebookLoginSkipped")
+
         window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateInitialViewController()
 
-        let alert = UIAlertController(title: "Facebook LogIn Cancelled", message: "No worries! You can still enjoy Kiddo without signing up!", preferredStyle: UIAlertControllerStyle.alert)
+        let alert = UIAlertController(title: "Facebook Login Cancelled", message: "No worries! You can still enjoy Kiddo without signing up!", preferredStyle: UIAlertControllerStyle.alert)
         let alertAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil)
         alert.addAction(alertAction)
+
 
         window?.rootViewController?.present(alert, animated: true, completion: nil)
 

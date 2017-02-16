@@ -32,6 +32,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
     private var events = [Event]() {
         didSet {
             if !self.events.elementsEqual(oldValue, by: { $0.id == $1.id }) {
+                self.events.sort { ($0.startTime < $1.startTime) }
                 animateTableViewReload()
             }
         }
@@ -59,24 +60,15 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.whiteLarge
         activityIndicator.backgroundColor = UIColor.gray
 
-        //TO-DO: fetchAllEvents should be called strategically if backend changed at all. Is there a way to check that through Parse?
-        //self.fetchAllEvents()
+        UNUserNotificationCenter.current().getPendingNotificationRequests { (pendingNotifications) in
+            for notification in pendingNotifications {
+                print("notification", notification)
+            }
+        }
 
-        // TODO: Track the user action that is important for you.
-        //Answers.logContentView(withName: "Tweet", contentType: "Video", contentId: "1234", customAttributes: ["Favorites Count":20, "Screen Orientation":"Landscape"])
-
-        //let dateString = DateUtil.shared.shortDate(from: <#T##String#>)
+        //UIApplication.shared.sche
 
     }
-
-    /*
-    func anImportantUserAction() {
-
-        // TODO: Move this method and customize the name and parameters to track your key metrics
-        //       Use your own string attributes to track common values over time
-        //       Use your own number attributes to track median value over time
-        Answers.logCustomEvent(withName: "Video Played", customAttributes: ["Category":"Comedy", "Length":350])
-    }*/
 
 
     override func viewWillAppear(_ animated: Bool) {
@@ -110,7 +102,6 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 
         let queryTomorrow = PFQuery(className: "EventDate")
         let dateTomorrow = DateUtil.shared.createDate(from: DateUtil.shared.tomorrow())
-        print("Date tomorrow",dateTomorrow)
         queryTomorrow.whereKey("eventDate", equalTo: dateTomorrow)
         queryTomorrow.findObjectsInBackground { (dateObjects, error) in
             if let dateObjects = dateObjects {
@@ -134,15 +125,9 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 
 
         let queryLater = PFQuery(className: "EventObject")
-        var datesArray = [Date]()
-        for index in 15...28 {
-            let s1 = String(index)
-            let s2 = "02-\(s1)-2017"
-            datesArray.append(DateUtil.shared.createDate(from: s2))
-        }
-
-
-        queryLater.whereKey("allEventDates", containedIn: datesArray)
+        guard let laterDate = DateUtil.shared.later() else { return }
+        queryLater.whereKey("allEventDates", greaterThanOrEqualTo: laterDate)
+        queryLater.limit = 20
         queryLater.findObjectsInBackground { (objects, error) in
             if let objects = objects {
                 let returnedEvents = objects.map { Event.create(from: $0) }
@@ -201,6 +186,9 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         let cell = self.timelineTableView.dequeueReusableCell(withIdentifier: EventTableViewCell.identifier(), for: indexPath) as! EventTableViewCell
         cell.event = selectedEvent
 
+        if self.segmentedControl.selectedIndex == 2 {
+            cell.eventStartTime.text = DateUtil.shared.fullDateString(from: selectedEvent.date)
+        }
         return cell
     }
 
@@ -232,10 +220,12 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
                                 },
                     completion: { (completed: Bool) in
                                     if (completed) {
-                                        if let visibleIndexPaths = self.timelineTableView.indexPathsForVisibleRows {
-                                            let x = IndexPath(item: 0, section: 0)
-                                            if !visibleIndexPaths.contains(x) {
-                                                self.timelineTableView.scrollToRow(at: x, at: UITableViewScrollPosition.top, animated: true)
+                                        if self.events.count > 0 {
+                                            if let visibleIndexPaths = self.timelineTableView.indexPathsForVisibleRows {
+                                                let x = IndexPath(item: 0, section: 0)
+                                                if !visibleIndexPaths.contains(x) {
+                                                    self.timelineTableView.scrollToRow(at: x, at: UITableViewScrollPosition.top, animated: true)
+                                                }
                                             }
                                         }
                                     }
