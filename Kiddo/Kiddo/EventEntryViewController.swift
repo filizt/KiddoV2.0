@@ -26,14 +26,16 @@ class EventEntryViewController: UIViewController {
         super.viewDidLoad()
         //deleteUserDefaultsData()
         // createDateObjects()
-         populateTestData()
-         saveTestData()
+         //populateTestData()
+         //saveTestData()
 
         //downloadEventImagesFromSource()
         //downloadEventImagesFromLocalSource()
 
-        //createImageTestData()
-        //uploadEventImagesFromLocalSource()
+        createImageTestData()
+        uploadEventImagesFromLocalSource()
+
+        navigationController?.popViewController(animated: true)
     }
 
 
@@ -59,7 +61,7 @@ class EventEntryViewController: UIViewController {
                 })
             }
         }
-        navigationController?.popViewController(animated: true)
+
     }
 
     func deleteUserDefaultsData() {
@@ -426,7 +428,6 @@ class EventEntryViewController: UIViewController {
             }
       //  })
 
-        navigationController?.popViewController(animated: true)
     }
 
     private func downloadEventImagesFromSource() {
