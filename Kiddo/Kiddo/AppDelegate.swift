@@ -26,11 +26,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate   {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
 
-       let configuration = ParseClientConfiguration {
-            $0.applicationId = "8383nfjf9393nnd"
-            $0.clientKey = "93993djfjfjkskkskggh667"
-            $0.server = "https://location-reminder-serverfk.herokuapp.com/parse"
+        let configuration = ParseClientConfiguration {
+            $0.applicationId = "1G2h3j45Rtf3s"
+            $0.clientKey = "1kjHsfg72348nkKnwl2"
+            $0.server = "https://kiddoapp.herokuapp.com/parse"
         }
+
 
         Parse.initialize(with: configuration)
         PFFacebookUtils.initializeFacebook(applicationLaunchOptions: launchOptions)
