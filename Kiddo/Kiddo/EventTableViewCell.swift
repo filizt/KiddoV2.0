@@ -45,7 +45,7 @@ class EventTableViewCell: UITableViewCell {
             self.eventStartTime?.text = event.allDayFlag == true ? "ALL DAY" : "@\(DateUtil.shared.shortTime(from:event.startTime))"
             self.eventFreeImage.isHidden = event.freeFlag == true ? false : true
             
-            if let image = cache.image(key:event.imageURL!) {
+            if let image = cache.image(key:event.imageObjectId) {
                 self.eventImage?.image = image
                 return
             }
@@ -60,7 +60,7 @@ class EventTableViewCell: UITableViewCell {
                     guard let imageData = imageData else { return }
                     guard let image = UIImage(data: imageData) else { return }
                     
-                    self.cache.setImage(image, key: event.imageURL!)
+                    self.cache.setImage(image, key: event.imageObjectId)
                     self.eventImage?.image = image
                 })
             }
