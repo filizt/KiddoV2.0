@@ -54,6 +54,8 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 
         self.segmentedControl.items = ["TODAY","TOMORROW","LATER"]
         self.segmentedControl.delegate = self
+        
+        Answers.logCustomEvent(withName: "User Reopened App", customAttributes: nil)
 
         activityIndicator.hidesWhenStopped = true
         activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.whiteLarge
