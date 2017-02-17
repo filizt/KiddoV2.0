@@ -50,6 +50,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         
         self.timelineTableView.estimatedRowHeight = 100
         self.timelineTableView.rowHeight = UITableViewAutomaticDimension
+        self.timelineTableView.separatorStyle = .none
 
         self.setUpNavigationBar()
 
@@ -65,9 +66,6 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
                 print("notification", notification)
             }
         }
-
-        //UIApplication.shared.sche
-
     }
 
 
