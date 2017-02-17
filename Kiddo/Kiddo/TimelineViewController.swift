@@ -59,7 +59,6 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 
         activityIndicator.hidesWhenStopped = true
         activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.whiteLarge
-        activityIndicator.backgroundColor = UIColor.gray
 
         UNUserNotificationCenter.current().getPendingNotificationRequests { (pendingNotifications) in
             for notification in pendingNotifications {
