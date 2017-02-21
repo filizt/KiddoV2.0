@@ -16,7 +16,6 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
     @IBOutlet weak var timelineTableView: UITableView!
     @IBOutlet weak var segmentedControl: CustomSegmentedControl!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
-
     private var request:PFQuery<PFObject>?
 
     private var today = [Event]() {
@@ -32,8 +31,14 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
     private var events = [Event]() {
         didSet {
             if !self.events.elementsEqual(oldValue, by: { $0.id == $1.id }) {
-                self.events.sort { ($0.startTime < $1.startTime) }
-                animateTableViewReload()
+                if self.segmentedControl.selectedIndex != 2 {
+                    var a = self.events.filter { $0.allDayFlag == false }
+                    let b = self.events.filter { $0.allDayFlag == true }
+                    a.sort { ($0.startTime < $1.startTime) }
+                    self.events = a + b
+
+                }
+                 animateTableViewReload()
             }
         }
     }
@@ -127,11 +132,24 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         queryLater.limit = 20
         queryLater.findObjectsInBackground { (objects, error) in
             if let objects = objects {
-                let returnedEvents = objects.map { Event.create(from: $0) }
+                var returnedEvents = objects.map { Event.create(from: $0) }
                     if !self.later.elementsEqual(returnedEvents, by: { $0.id == $1.id }) {
-                        self.later = returnedEvents
+
+                        //returnedEvents = returnedEvents.map { $0.0. }
+
+                        //first find out the next event date relative to today.
+                        var newArray = [Date]()
+                        for index in 0..<returnedEvents.count{
+                           
+                            newArray = returnedEvents[index].dates.filter{ $0 >= laterDate }
+                            returnedEvents[index].dates = newArray
+                            //returnedEvents[index].updateDates(bydate: laterDate)
+                        }
+                        self.later = returnedEvents.sorted { $0.dates.first! < $1.dates.first! }
+                            //newArray.sorted { $0.dates.first! < $1.dates.first! }
                         if self.segmentedControl.selectedIndex == 2 {
                             self.events = self.later
+                            //self.events[0].address = "sdfsd"
                         }
                     }
                     self.activityIndicator.stopAnimating()
@@ -184,7 +202,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         cell.event = selectedEvent
 
         if self.segmentedControl.selectedIndex == 2 {
-            cell.eventStartTime.text = DateUtil.shared.fullDateString(from: selectedEvent.date)
+            cell.eventStartTime.text = DateUtil.shared.shortDateString(from: selectedEvent.dates.first!)
         }
         return cell
     }

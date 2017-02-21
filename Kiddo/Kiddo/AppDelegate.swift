@@ -36,6 +36,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PFLogInViewControllerDele
         Parse.initialize(with: configuration)
         PFFacebookUtils.initializeFacebook(applicationLaunchOptions: launchOptions)
 
+       // if !AppUtil.isSimulator() &&
+
+
         if PFUser.current() == nil && facebookLoginNeeded() {
             let logInViewController = LogInViewController()
             logInViewController.fields = [PFLogInFields.facebook, PFLogInFields.dismissButton]
@@ -61,10 +64,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PFLogInViewControllerDele
                         if granted {
                             //schedule notifications.
                             self.scheduleLocalNotifications()
-                            Answers.logCustomEvent(withName: "UserOptedInForNotifications", customAttributes: nil)
+                            //Answers.logCustomEvent(withName: "UserOptedInForNotifications", customAttributes: nil)
                         } else {
                             self.userDefaults.set(Date(), forKey: "UserNotificationsDeniedKey")
-                            Answers.logCustomEvent(withName: "UserOptedOutForNotifications", customAttributes: nil)
+                            //Answers.logCustomEvent(withName: "UserOptedOutForNotifications", customAttributes: nil)
                         }
                     }
                 }
@@ -164,14 +167,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PFLogInViewControllerDele
     //MARK: PFLogInViewControllerDelegate functions
 
     func log(_ logInController: PFLogInViewController, didLogIn user: PFUser) {
-        Answers.logLogin(withMethod: "Facebook", success: 1, customAttributes: ["FacebookLogin": "Success"])
+        //Answers.logLogin(withMethod: "Facebook", success: 1, customAttributes: ["FacebookLogin": "Success"])
 
         window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateInitialViewController()
     }
 
     //To-Do: Need to handle error conditions
     func log(_ logInController: PFLogInViewController, didFailToLogInWithError error: Error?) {
-        Answers.logLogin(withMethod: "Facebook", success: 0, customAttributes: ["FacebookLogin": "Error"])
+        //Answers.logLogin(withMethod: "Facebook", success: 0, customAttributes: ["FacebookLogin": "Error"])
 
         window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateInitialViewController()
 
@@ -185,7 +188,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PFLogInViewControllerDele
     //Skipping log in triggers this.
     func logInViewControllerDidCancelLog(in logInController: PFLogInViewController) {
 
-        Answers.logLogin(withMethod: "Facebook", success: 0, customAttributes: ["FacebookLogin": "Skip"])
+        //Answers.logLogin(withMethod: "Facebook", success: 0, customAttributes: ["FacebookLogin": "Skip"])
 
         self.userDefaults.set(Date(), forKey: "FacebookLoginSkipped")
 
@@ -212,6 +215,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PFLogInViewControllerDele
 
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
+
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
