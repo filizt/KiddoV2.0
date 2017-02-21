@@ -26,14 +26,14 @@ class EventEntryViewController: UIViewController {
         super.viewDidLoad()
         //deleteUserDefaultsData()
         // createDateObjects()
-         //populateTestData()
-         //saveTestData()
+         populateTestData()
+         saveTestData()
 
         //downloadEventImagesFromSource()
         //downloadEventImagesFromLocalSource()
 
-        createImageTestData()
-        uploadEventImagesFromLocalSource()
+        //createImageTestData()
+        //uploadEventImagesFromLocalSource()
 
         navigationController?.popViewController(animated: true)
     }
@@ -205,6 +205,8 @@ class EventEntryViewController: UIViewController {
         data = [String: Any]()
         data["title"] = "Family Nature Classes"
         allEventDates = [Date]()
+        print(DateUtil.shared.createDate(from: "02-16-2017 00:00"))
+        print(DateUtil.shared.createDate(from: "03-18-2017 00:00"))
         allEventDates.append(DateUtil.shared.createDate(from: "02-16-2017"))
         allEventDates.append(DateUtil.shared.createDate(from: "02-17-2017"))
         allEventDates.append(DateUtil.shared.createDate(from: "03-18-2017"))

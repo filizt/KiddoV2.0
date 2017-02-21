@@ -35,7 +35,7 @@ class DateUtil {
     }
 
     func fullDateString(from date: Date) -> String {
-        formatter.dateFormat = "MMM d, yyyy h:mm a"
+        formatter.dateFormat = "MMM d, yyyy"
         return formatter.string(from: date)
     }
 
@@ -70,9 +70,18 @@ class DateUtil {
     func tomorrow() -> String {
         var components = DateComponents()
         components.day = 1
-        let tomorrow = Calendar.current.date(byAdding: components, to: Date())
+        guard let tomorrow = Calendar.current.date(byAdding: components, to: Date()) else { return "" }
 
         formatter.dateFormat = "MM-dd-yyyy"
-        return formatter.string(from: tomorrow!)
+        return formatter.string(from: tomorrow)
+    }
+
+    func later() -> Date? {
+        var dateComponents = DateComponents()
+        dateComponents.day = 2
+
+        guard let laterDate = Calendar.current.date(byAdding: dateComponents, to: createDate(from:today())) else { return nil }
+        
+        return laterDate
     }
 }
