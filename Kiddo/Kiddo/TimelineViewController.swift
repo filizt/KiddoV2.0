@@ -134,22 +134,12 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
             if let objects = objects {
                 var returnedEvents = objects.map { Event.create(from: $0) }
                     if !self.later.elementsEqual(returnedEvents, by: { $0.id == $1.id }) {
-
-                        //returnedEvents = returnedEvents.map { $0.0. }
-
-                        //first find out the next event date relative to today.
-                        var newArray = [Date]()
-                        for index in 0..<returnedEvents.count{
-                           
-                            newArray = returnedEvents[index].dates.filter{ $0 >= laterDate }
-                            returnedEvents[index].dates = newArray
-                            //returnedEvents[index].updateDates(bydate: laterDate)
+                        for i in 0..<returnedEvents.count {
+                            returnedEvents[i].updateDates(bydate: laterDate)
                         }
                         self.later = returnedEvents.sorted { $0.dates.first! < $1.dates.first! }
-                            //newArray.sorted { $0.dates.first! < $1.dates.first! }
                         if self.segmentedControl.selectedIndex == 2 {
                             self.events = self.later
-                            //self.events[0].address = "sdfsd"
                         }
                     }
                     self.activityIndicator.stopAnimating()
