@@ -156,7 +156,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         let backItem = UIBarButtonItem()
         backItem.title = ""
         navigationController?.navigationBar.topItem?.backBarButtonItem = backItem
-        navigationController?.navigationBar.topItem?.title = "EVENTS FOR"
+        navigationController?.navigationBar.topItem?.title = "PLANS FOR"
 
     }
 
