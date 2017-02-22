@@ -16,7 +16,6 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
     @IBOutlet weak var timelineTableView: UITableView!
     @IBOutlet weak var segmentedControl: CustomSegmentedControl!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
-
     private var request:PFQuery<PFObject>?
 
     private var today = [Event]() {
@@ -32,8 +31,14 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
     private var events = [Event]() {
         didSet {
             if !self.events.elementsEqual(oldValue, by: { $0.id == $1.id }) {
-                self.events.sort { ($0.startTime < $1.startTime) }
-                animateTableViewReload()
+                if self.segmentedControl.selectedIndex != 2 {
+                    var a = self.events.filter { $0.allDayFlag == false }
+                    let b = self.events.filter { $0.allDayFlag == true }
+                    a.sort { ($0.startTime < $1.startTime) }
+                    self.events = a + b
+
+                }
+                 animateTableViewReload()
             }
         }
     }
@@ -50,6 +55,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         
         self.timelineTableView.estimatedRowHeight = 100
         self.timelineTableView.rowHeight = UITableViewAutomaticDimension
+        self.timelineTableView.separatorStyle = .none
 
         self.setUpNavigationBar()
 
@@ -58,16 +64,12 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 
         activityIndicator.hidesWhenStopped = true
         activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.whiteLarge
-        activityIndicator.backgroundColor = UIColor.gray
 
         UNUserNotificationCenter.current().getPendingNotificationRequests { (pendingNotifications) in
             for notification in pendingNotifications {
                 print("notification", notification)
             }
         }
-
-        //UIApplication.shared.sche
-
     }
 
 
@@ -130,9 +132,12 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         queryLater.limit = 20
         queryLater.findObjectsInBackground { (objects, error) in
             if let objects = objects {
-                let returnedEvents = objects.map { Event.create(from: $0) }
+                var returnedEvents = objects.map { Event.create(from: $0) }
                     if !self.later.elementsEqual(returnedEvents, by: { $0.id == $1.id }) {
-                        self.later = returnedEvents
+                        for i in 0..<returnedEvents.count {
+                            returnedEvents[i].updateDates(bydate: laterDate)
+                        }
+                        self.later = returnedEvents.sorted { $0.dates.first! < $1.dates.first! }
                         if self.segmentedControl.selectedIndex == 2 {
                             self.events = self.later
                         }
@@ -187,7 +192,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         cell.event = selectedEvent
 
         if self.segmentedControl.selectedIndex == 2 {
-            cell.eventStartTime.text = DateUtil.shared.fullDateString(from: selectedEvent.date)
+            cell.eventStartTime.text = DateUtil.shared.shortDateString(from: selectedEvent.dates.first!)
         }
         return cell
     }

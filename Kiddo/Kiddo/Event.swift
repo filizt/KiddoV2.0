@@ -12,7 +12,7 @@ import Parse
 struct Event {
     let id: String
     let title: String
-    let date: Date!
+    var dates: [Date]
     let startDate: Date
     let endDate: Date
     let allDayFlag: Bool!
@@ -33,7 +33,7 @@ struct Event {
     static func create(from object: PFObject) -> Event {
         let id = object.objectId ?? "0"
         let title = object["title"] as! String
-        let date = (object["allEventDates"] as! [Date]).first
+        var dates = object["allEventDates"] as! [Date] //force downcast
         let startDate = object["startDate"] as! Date
         let endDate = object["endDate"] as! Date
         let allDayFlag = object["allDay"] as! Bool
@@ -44,7 +44,7 @@ struct Event {
         let location = object["location"] as! String
         let locationHours = object["locationHours"] as! String
         let imageURL = object["imageURL"] as? String
-        let originalEventURL = object["originalEventURL"] as? String
+        let originalEventURL = object["originalEventURL"] as? String //Try downcast; and store nil if doesn't work
         let address = object["address"] as! String
         let description = object["description"] as! String
         let ages = object["ages"] as! String
@@ -53,7 +53,7 @@ struct Event {
 
         return Event(id: id,
                      title: title,
-                     date: date,
+                     dates: dates,
                      startDate: startDate,
                      endDate: endDate,
                      allDayFlag: allDayFlag,
@@ -72,6 +72,13 @@ struct Event {
                      imageObjectId: imageObjectId
         )
     }
+
+    mutating func updateDates(bydate: Date) {
+        dates = dates.filter{ $0 >= bydate }
+
+    }
+
+
 }
 
 
