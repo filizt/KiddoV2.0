@@ -151,7 +151,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PFLogInViewControllerDele
 
         let content = UNMutableNotificationContent()
         content.title = "Kiddo"
-        content.body = "Check out these new events added to Kiddo!"
+        content.body = "Just found some new things for you and the littles - come check them out!"
         content.sound = UNNotificationSound.default()
 
         let request = UNNotificationRequest(identifier: "textNotification", content: content, trigger: trigger)
@@ -178,7 +178,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PFLogInViewControllerDele
 
         window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateInitialViewController()
 
-        let alert = UIAlertController(title: "Facebook Login Failed", message: "Facebook login failed due to an error. We skipped the login step. You can still enjoy Kiddo!", preferredStyle: UIAlertControllerStyle.alert)
+        let alert = UIAlertController(title: "Facebook Login Failed", message: "Facebook is slow at the moment...but don't worry! We skipped the login step so you can still enjoy Kiddo!", preferredStyle: UIAlertControllerStyle.alert)
         let alertAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil)
         alert.addAction(alertAction)
 
@@ -194,7 +194,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PFLogInViewControllerDele
 
         window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateInitialViewController()
 
-        let alert = UIAlertController(title: "Facebook Login Cancelled", message: "No worries! You can still enjoy Kiddo without signing up!", preferredStyle: UIAlertControllerStyle.alert)
+        let alert = UIAlertController(title: "Facebook Login Cancelled", message: "No login required - let's find some fun events!", preferredStyle: UIAlertControllerStyle.alert)
         let alertAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil)
         alert.addAction(alertAction)
 
