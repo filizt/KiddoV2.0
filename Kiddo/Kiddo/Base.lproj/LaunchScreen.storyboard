@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1212" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -22,14 +22,24 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="bnE-df-HXH">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="splashGradient" translatesAutoresizingMaskIntoConstraints="NO" id="Y6w-tg-AQi">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                    </imageView>
+                                </subviews>
+                            </stackView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="kiddo" translatesAutoresizingMaskIntoConstraints="NO" id="KPT-ge-DTo">
-                                <rect key="frame" x="132.5" y="218" width="110" height="64"/>
+                                <rect key="frame" x="133" y="218" width="110" height="64"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" red="0.2196078431372549" green="0.14509803921568626" blue="0.30196078431372547" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="KPT-ge-DTo" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" multiplier="0.75" id="5G7-r9-1R4"/>
                             <constraint firstItem="KPT-ge-DTo" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="TkD-jv-Vxd"/>
+                            <constraint firstItem="bnE-df-HXH" firstAttribute="centerX" secondItem="KPT-ge-DTo" secondAttribute="centerX" id="bKb-lP-IXp"/>
+                            <constraint firstItem="bnE-df-HXH" firstAttribute="bottom" secondItem="xb3-aO-Qok" secondAttribute="top" id="tF3-5n-tQL"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -40,5 +50,6 @@
     </scenes>
     <resources>
         <image name="kiddo" width="110" height="64"/>
+        <image name="splashGradient" width="375" height="667"/>
     </resources>
 </document>
