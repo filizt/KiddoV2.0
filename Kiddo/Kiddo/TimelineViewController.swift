@@ -90,9 +90,20 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         Timer.scheduledTimer(timeInterval: 10.0, target: self, selector: #selector(self.requestAuthForNotifications), userInfo: nil, repeats: false);
 
 
+        NotificationCenter.default.addObserver(self, selector: #selector(didBecomeActive), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
+
+
     }
 
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
 
+    func didBecomeActive() {
+        //activityIndicator.startAnimating()
+        self.fetchAllEvents()
+
+    }
 
     override func viewWillAppear(_ animated: Bool) {
         activityIndicator.startAnimating()
@@ -162,7 +173,8 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
                     if let objects = objects {
                         //objects should be events for a particular date
                         let returnedEvents = objects.map { Event.create(from: $0) }
-                        self.today = returnedEvents
+                        let sortedEvents = self.sortEvents(events: returnedEvents)
+                        self.today = sortedEvents
                         if self.segmentedControl.selectedIndex == 0 {
                             self.events = self.today
                         }
@@ -182,12 +194,11 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
                     if let objects = objects {
                         //objects should be events for a particular date
                         let returnedEvents = objects.map {Event.create(from: $0)}
-                        if !self.tomorrow.elementsEqual(returnedEvents, by: { $0.id == $1.id }) {
-                            self.tomorrow = returnedEvents
+                        let sortedEvents = self.sortEvents(events: returnedEvents)
+                            self.tomorrow = sortedEvents
                             if self.segmentedControl.selectedIndex == 1 {
                                 self.events = self.tomorrow
                             }
-                        }
                         self.activityIndicator.stopAnimating()
                     }
                 }
@@ -215,6 +226,16 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
                     self.activityIndicator.stopAnimating()
             }
         }
+    }
+
+    func sortEvents(events: [Event]) -> [Event]{
+        var e = events
+        var a = e.filter { $0.allDayFlag == false }
+        let b = e.filter { $0.allDayFlag == true }
+        a.sort { ($0.startTime < $1.startTime) }
+        e = a + b
+
+        return e
     }
 
 
