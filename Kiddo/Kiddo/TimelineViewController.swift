@@ -84,7 +84,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         self.segmentedControl.delegate = self
 
         activityIndicator.hidesWhenStopped = true
-        activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.whiteLarge
+        activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
 
         UNUserNotificationCenter.current().getPendingNotificationRequests { (pendingNotifications) in
             for notification in pendingNotifications {
