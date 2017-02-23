@@ -33,7 +33,7 @@ struct Event {
     static func create(from object: PFObject) -> Event {
         let id = object.objectId ?? "0"
         let title = object["title"] as! String
-        var dates = object["allEventDates"] as! [Date] //force downcast
+        let dates = object["allEventDates"] as! [Date] //force downcast
         let startDate = object["startDate"] as! Date
         let endDate = object["endDate"] as! Date
         let allDayFlag = object["allDay"] as! Bool

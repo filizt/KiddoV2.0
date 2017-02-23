@@ -168,7 +168,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         eventDateQuery.whereKey("eventDate", equalTo: date)
         eventDateQuery.findObjectsInBackground { (dateObjects, error) in
             if let dateObjects = dateObjects {
-                var relation = dateObjects[0].relation(forKey: "events")
+                let relation = dateObjects[0].relation(forKey: "events")
                 relation.query().findObjectsInBackground { (objects, error) in
                     if let objects = objects {
                         //objects should be events for a particular date
@@ -189,7 +189,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         queryTomorrow.whereKey("eventDate", equalTo: dateTomorrow)
         queryTomorrow.findObjectsInBackground { (dateObjects, error) in
             if let dateObjects = dateObjects {
-                var relation = dateObjects[0].relation(forKey: "events")
+                let relation = dateObjects[0].relation(forKey: "events")
                 relation.query().findObjectsInBackground { (objects, error) in
                     if let objects = objects {
                         //objects should be events for a particular date
