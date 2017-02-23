@@ -208,7 +208,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PFLogInViewControllerDele
 
         window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateInitialViewController()
 
-        let alert = UIAlertController(title: "Facebook Login Cancelled", message: "No login required - let's find some fun events!", preferredStyle: UIAlertControllerStyle.alert)
+        let alert = UIAlertController(title: "Facebook Login Skipped", message: "No login required - let's find some fun events!", preferredStyle: UIAlertControllerStyle.alert)
         let alertAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil)
         alert.addAction(alertAction)
 
