@@ -36,9 +36,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
                     let b = self.events.filter { $0.allDayFlag == true }
                     a.sort { ($0.startTime < $1.startTime) }
                     self.events = a + b
-
                 }
-
                 timelineTableView.reloadData()
                 let x = IndexPath(item: 0, section: 0)
                 timelineTableView.scrollToRow(at: x, at: .top, animated: false)

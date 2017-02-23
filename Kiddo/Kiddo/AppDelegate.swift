@@ -146,7 +146,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PFLogInViewControllerDele
         guard let lastFacebookLoginRequest = userDefaults.object(forKey: "FacebookLoginSkipped") as? Date else { return true }
 
             if Int(lastFacebookLoginRequest.timeIntervalSinceNow * -1) >= (60*60*24*3) {
-                //it's been more than a week since we asked the user to log in. Let's try that again.
+                //it's been more than 3 days since we asked the user to log in. Let's try that again.
                 return true
             }
 
@@ -160,12 +160,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PFLogInViewControllerDele
 
     func scheduleLocalNotifications() {
 
-        //time interval is every day for now
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: (60*60*24*1), repeats: true)
+        //time interval is every 3 days
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: (60*60*24*3), repeats: true)
 
         let content = UNMutableNotificationContent()
         content.title = "Kiddo"
-        content.body = "Just found some new things for you and the littles - come check them out!"
+        content.body = "Kiddo has some new things for you and the littles - come check them out!"
         content.sound = UNNotificationSound.default()
 
         let request = UNNotificationRequest(identifier: "textNotification", content: content, trigger: trigger)
