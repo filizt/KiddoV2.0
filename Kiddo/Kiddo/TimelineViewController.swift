@@ -86,12 +86,12 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         activityIndicator.hidesWhenStopped = true
         activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
 
-        UNUserNotificationCenter.current().getPendingNotificationRequests { (pendingNotifications) in
-            for notification in pendingNotifications {
-                print("notification", notification)
-            }
-        }
+
+        Timer.scheduledTimer(timeInterval: 10.0, target: self, selector: #selector(self.requestAuthForNotifications), userInfo: nil, repeats: false);
+
+
     }
+
 
 
     override func viewWillAppear(_ animated: Bool) {
@@ -99,7 +99,56 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         self.fetchAllEvents()
     }
 
-    
+    //MARK: Local Notifications
+
+    func requestAuthForNotifications() {
+        UNUserNotificationCenter.current().getNotificationSettings(completionHandler: { (settings) in
+            if settings.authorizationStatus != .authorized {
+                if self.notificationsAuthNeeded() {
+                    UNUserNotificationCenter.current().requestAuthorization(options: [ .alert, .sound]) {(granted, error) in
+                        if granted {
+                            //schedule notifications.
+                            self.scheduleLocalNotifications()
+                            //Answers.logCustomEvent(withName: "UserOptedInForNotifications", customAttributes: nil)
+                        } else {
+                            UserDefaults.standard.set(Date(), forKey: "UserNotificationsDeniedKey")
+                            //Answers.logCustomEvent(withName: "UserOptedOutForNotifications", customAttributes: nil)
+                        }
+                    }
+                }
+            }
+        })
+    }
+
+    func notificationsAuthNeeded() -> Bool {
+        if let lastNotificationAuthRequest = UserDefaults.standard.object(forKey: "UserNotificationsDeniedKey") as? Date {
+            guard ((lastNotificationAuthRequest.timeIntervalSinceNow * -1) <= (60*60*24*3)) else { return false }
+        }
+
+        return true //first time user case
+    }
+
+
+    func scheduleLocalNotifications() {
+        //time interval is every 3 days
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: (60*60*24*3), repeats: true)
+
+        let content = UNMutableNotificationContent()
+        content.title = "Kiddo"
+        content.body = "Kiddo has some new things for you and the littles - come check them out!"
+        content.sound = UNNotificationSound.default()
+
+        let request = UNNotificationRequest(identifier: "textNotification", content: content, trigger: trigger)
+
+        UNUserNotificationCenter.current().add(request) {(error) in
+            if let error = error {
+                print("Uh oh! We had an error: \(error)")
+            }
+        }
+    }
+
+    //MARK: Fetch Events
+
     private var lastRequest: PFQuery<PFObject>?
 
     private func fetchAllEvents() {
@@ -168,6 +217,9 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         }
     }
 
+
+    //MARK: Stup Navigation Bar
+
     private func setUpNavigationBar() {
         let newColor = UIColor(red:0.25, green:0.18, blue:0.35, alpha:1.0)
         navigationController?.navigationBar.tintColor = UIColor.white
@@ -181,12 +233,6 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 
     }
 
-
-    
-    @IBAction func switchButtonPressed(_ sender: UISegmentedControl) {
-        self.timelineTableView.reloadData()
-
-    }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
@@ -202,7 +248,9 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
             }
         }
     }
-    
+
+    //MARK: TableView Delegates
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
       return self.events.count
     }
@@ -224,6 +272,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 
     }
 
+    //MARK: Segmented Control Delegate
 
     func didSelectItem(sender: CustomSegmentedControl, selectedIndex: Int) {
         switch selectedIndex {

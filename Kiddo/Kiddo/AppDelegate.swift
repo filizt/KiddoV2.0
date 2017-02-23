@@ -56,24 +56,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PFLogInViewControllerDele
          fetchImages()
 
         UNUserNotificationCenter.current().delegate = self
-
-        UNUserNotificationCenter.current().getNotificationSettings(completionHandler: { (settings) in
-            if settings.authorizationStatus != .authorized {
-                if self.notificationsAuthNeeded() {
-                    UNUserNotificationCenter.current().requestAuthorization(options: [ .alert, .sound]) {(granted, error) in
-                        if granted {
-                            //schedule notifications.
-                            self.scheduleLocalNotifications()
-                            //Answers.logCustomEvent(withName: "UserOptedInForNotifications", customAttributes: nil)
-                        } else {
-                            self.userDefaults.set(Date(), forKey: "UserNotificationsDeniedKey")
-                            //Answers.logCustomEvent(withName: "UserOptedOutForNotifications", customAttributes: nil)
-                        }
-                    }
-                }
-            }
-        })
-
         window?.makeKeyAndVisible()
         let splashView = UIView(frame: (self.window?.frame)!)
         splashView.backgroundColor = UIColor(red:0.22, green:0.15, blue:0.30, alpha:1.0)
@@ -104,14 +86,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PFLogInViewControllerDele
         return true
     }
 
-    func notificationsAuthNeeded() -> Bool {
-        if let lastNotificationAuthRequest = self.userDefaults.object(forKey: "UserNotificationsDeniedKey") as? Date {
-            guard ((lastNotificationAuthRequest.timeIntervalSinceNow * -1) <= (60*60*24*3)) else { return false }
-        }
-
-        return true //first time user case
-    }
-
+  
     func fetchImages() {
 
 
@@ -153,30 +128,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PFLogInViewControllerDele
          return false
     }
 
-    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        print("Handle local notification from background or closed")
-        //from background this method is called.
-    }
-
-    func scheduleLocalNotifications() {
-
-        //time interval is every 3 days
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: (60*60*24*3), repeats: true)
-
-        let content = UNMutableNotificationContent()
-        content.title = "Kiddo"
-        content.body = "Kiddo has some new things for you and the littles - come check them out!"
-        content.sound = UNNotificationSound.default()
-
-        let request = UNNotificationRequest(identifier: "textNotification", content: content, trigger: trigger)
-
-        UNUserNotificationCenter.current().add(request) {(error) in
-            if let error = error {
-                print("Uh oh! We had an error: \(error)")
-            }
-        }
-    }
-
+  
 
     //MARK: PFLogInViewControllerDelegate functions
 
@@ -216,7 +168,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PFLogInViewControllerDele
         window?.rootViewController?.present(alert, animated: true, completion: nil)
 
     }
-
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        print("Handle local notification from background or closed")
+        //from background this method is called.
+    }
+    
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
