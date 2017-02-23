@@ -94,7 +94,7 @@ class EventEntryViewController: UIViewController {
         data["description"] = "From dressing up like a wolf eel to fish-print painting and water play with ocean animal toys, Toddler Time keeps even the busiest of bodies engaged and entertained. A myriad of developmentally age-appropriate, hands-on activities await for tots to explore."
         data["ages"] = "0 - 5"
         data["imageURL"] = ""
-        data["imageObjectId"] = "hsoUX77tUB"
+        data["imageObjectId"] = "oEL6Sasr33"
 
         testData["1"] =  data
 
@@ -139,7 +139,7 @@ class EventEntryViewController: UIViewController {
         data["description"] = "Offered on specific days for a limited amount of time. Toddler Gyms offer a better variety of toys and a much larger space to play in Children will enjoy toys, balls, trikes, scooters, push bikes, and more. Parental supervision required."
         data["ages"] = "0 - 5"
         data["imageURL"] = ""
-        data["imageObjectId"] = "9CDJILVPf4"
+        data["imageObjectId"] = "tz76WpiHYe"
         testData["2"] =  data
 
 ////https://img.vimbly.com/images/full_photos/kids-indoor-play-5.jpg
@@ -167,7 +167,7 @@ class EventEntryViewController: UIViewController {
         data["ages"] = "0 - 12"
         data["imageURL"] = ""
 //http://a1.mzstatic.com/us/r1000/041/Purple/4b/19/e2/mzi.anpnlkza.png
-        data["imageObjectId"] = "yB4ZLIF7Ig"
+        data["imageObjectId"] = "WdGOGRBlba"
         testData["3"] =  data
 
 
@@ -199,7 +199,7 @@ class EventEntryViewController: UIViewController {
         data["description"] = "Seattle Baby Jam is an award winning music class for kids ages birth to 5 years old. Preschoolers, toddlers, babies, and kids from all backgrounds are welcome to attend. We offer fun, engaging, safe, low-pressure rhythm and music exposure for young ones. Help nurture your child's cognitive development through hands-on drumming, percussion, and multilingual songs, stories and games. "
         data["ages"] = "0 - 5"
         data["imageURL"] = ""
-        data["imageObjectId"] = "lMNL3tWnQj"
+        data["imageObjectId"] = "XCqOt5xlh4"
         testData["4"] =  data
 
         data = [String: Any]()
@@ -228,7 +228,7 @@ class EventEntryViewController: UIViewController {
         data["description"] = "Get outside with your preschooler, foster curiosity and explore the natural world. Our weekly two-hour classes engage the senses with hands on-activities, science-based exploration, learning stations, songs, stories, hikes and games based around a theme that changes every week. "
         data["ages"] = "2 - 5"
         data["imageURL"] = ""
-        data["imageObjectId"] = "nOqZWaOIfj"
+        data["imageObjectId"] = "VOkACvnFyP"
         testData["5"] = data
 
         data = [String: Any]()
@@ -255,7 +255,7 @@ class EventEntryViewController: UIViewController {
         data["description"] = "Most people think of snow and ice when they think of penguins, but our penguins are from the hot, arid coastal regions of Peru! This award-winning exhibit incorporates a rocky coast with incredible underwater viewing. It is also the first sustainable penguin exhibit with geothermal warming and cooling of water and eco-friendly water filtering systems. Watch up-close as the birds frolic just inches away. May 1 - September 30 Open 9:30 a.m. - 6:00 p.m. daily."
         data["ages"] = "0 - 12"
         data["imageURL"] = ""
-        data["imageObjectId"] = "nOqZWaOIfj"
+        data["imageObjectId"] = "aj6irGvQ5J"
         testData["6"] = data
 
         data = [String: Any]()
@@ -294,11 +294,11 @@ class EventEntryViewController: UIViewController {
         data["description"] = "Come enjoy your time with your kiddo at Family Swim time at Rainier Beach Pool (Intended for children 5 and under with a parent)."
         data["ages"] = "0 - 5"
         data["imageURL"] = ""
-        data["imageObjectId"] = "F3atgAj0Dv"
+        data["imageObjectId"] = "gJQpn5LTJL"
         testData["7"] = data
 
         data = [String: Any]()
-        data["title"] = "Family Stroy Time"
+        data["title"] = "Family Story Time"
         allEventDates = [Date]()
         allEventDates.append(DateUtil.shared.createDate(from: "02-16-2017"))
         allEventDates.append(DateUtil.shared.createDate(from: "02-17-2017"))
@@ -333,7 +333,7 @@ class EventEntryViewController: UIViewController {
         data["description"] = "It is story time at the Lake City Branch! Bring your children from birth to age 8 to enjoy stories, rhymes, songs, crafts, and fun with our children's librarian, Nancy P! Space is limited at library events. Please come early to make sure you get a seat. Due to the fire code, we can’t exceed the maximum capacity for our rooms."
         data["ages"] = "0 - 5"
         data["imageURL"] = ""
-        data["imageObjectId"] = "IGisjfW4B9"
+        data["imageObjectId"] = "cl3E2YnoCU"
         testData["8"] = data
 
         data = [String: Any]()
@@ -372,7 +372,7 @@ class EventEntryViewController: UIViewController {
         data["description"] = "Keep kiddos busy with legos, train sets and duplo while you sip your coffee. Ages 18 months – 4 years: Our main floor play space features an extensive area tailored specifically for younger kids ages 18 months to 4 years. They’ll have an opportunity to create whatever may pop into their imagination using a seemingly endless supply of LEGO® DUPLO® building blocks, train sets, and figures on early 65 square feet of counter space built at just the right height.Ages 4 and up: Older kids will find an equally appealing space in our community build area upstairs where they can build more advanced structures, motorized vehicles, and other unique creations using LEGO® building blocks. We also work to maintain their interests by exploring different themes so they may find a different look and feel from one visit to the next. Daily 9:00AM to 6:00 PM"
         data["ages"] = "0 - 12"
         data["imageURL"] = ""
-        data["imageObjectId"] = "st61S1cRPT"
+        data["imageObjectId"] = "Mi2n2k4SMK"
         testData["9"] = data
 
     }
@@ -525,9 +525,75 @@ class EventEntryViewController: UIViewController {
         imageData["imageName"] = "Zoo"
         imageTestData["9"] = imageData
 
+
+        imageData = [String: Any]()
+        imageData["category"] = "Aquarium"
+        imageData["imageName"] = "Aquarium2"
+        imageTestData["9"] = imageData
+
+
+        imageData = [String: Any]()
+        imageData["category"] = "Arts"
+        imageData["imageName"] = "ArtsGeneric"
+        imageTestData["10"] = imageData
+
+
+        imageData = [String: Any]()
+        imageData["category"] = "Arts"
+        imageData["imageName"] = "ClassicalMusic"
+        imageTestData["11"] = imageData
+
+        imageData = [String: Any]()
+        imageData["category"] = "IndoorGym"
+        imageData["imageName"] = "IndoorGym2"
+        imageTestData["12"] = imageData
+
+
+        imageData = [String: Any]()
+        imageData["category"] = "Arts"
+        imageData["imageName"] = "KidsMusic"
+        imageTestData["13"] = imageData
+
+
+        imageData = [String: Any]()
+        imageData["category"] = "KidsYoga"
+        imageData["imageName"] = "KidsYoga"
+        imageTestData["14"] = imageData
+
+
+        imageData = [String: Any]()
+        imageData["category"] = "Library"
+        imageData["imageName"] = "LibraryGeneric"
+        imageTestData["15"] = imageData
+
+
+        imageData = [String: Any]()
+        imageData["category"] = "Nature"
+        imageData["imageName"] = "NatureKid"
+        imageTestData["16"] = imageData
+
+        imageData = [String: Any]()
+        imageData["category"] = "Zoo"
+        imageData["imageName"] = "PettingZoo"
+        imageTestData["17"] = imageData
+
+        imageData = [String: Any]()
+        imageData["category"] = "Arts"
+        imageData["imageName"] = "PuppetShow"
+        imageTestData["18"] = imageData
+
+        imageData = [String: Any]()
+        imageData["category"] = "Zoo"
+        imageData["imageName"] = "PettingZoo"
+        imageTestData["19"] = imageData
+
+
+
     }
 
     private func uploadEventImagesFromLocalSource() {
+
+        print ("Start uploading")
 
         for entry in self.imageTestData {
             if let test = self.imageTestData[entry.key] {
@@ -535,7 +601,7 @@ class EventEntryViewController: UIViewController {
                 eventImage["category"] = test["category"] as! String
                 eventImage["imageName"] = test["imageName"] as! String
 
-                if let imageFileURL = Bundle.main.url(forResource: eventImage["imageName"] as! String?, withExtension: "jpg", subdirectory: "Assets") {
+                if let imageFileURL = Bundle.main.url(forResource: eventImage["imageName"] as! String?, withExtension: "jpeg", subdirectory: "Assets") {
                     if let imageData = try? Data(contentsOf: imageFileURL) {
                         let imagePFFile = PFFile(data: imageData, contentType: "image/jpeg")
                         eventImage["image"] = imagePFFile

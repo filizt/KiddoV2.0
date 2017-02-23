@@ -15,6 +15,7 @@
 		BD68B9AE1DD0F2F300CE39CA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BD68B9AD1DD0F2F300CE39CA /* Assets.xcassets */; };
 		BD68B9B11DD0F2F300CE39CA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD68B9AF1DD0F2F300CE39CA /* LaunchScreen.storyboard */; };
 		BD68B9CB1DD39FF100CE39CA /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD68B9CA1DD39FF100CE39CA /* Utility.swift */; };
+		BD8EAAD91E5F52270056BC1A /* Assets in Resources */ = {isa = PBXBuildFile; fileRef = BD8EAAD81E5F52270056BC1A /* Assets */; };
 		BDB5B0931E4D534400D59AEA /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDB5B0911E4D534400D59AEA /* Fabric.framework */; };
 		BDB5B0961E4D54B600D59AEA /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDB5B0951E4D54B600D59AEA /* Crashlytics.framework */; };
 		BDEB9E8D1E04966A002F7222 /* EventEntryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDEB9E8C1E04966A002F7222 /* EventEntryViewController.swift */; };
@@ -34,6 +35,7 @@
 		BD68B9B01DD0F2F300CE39CA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		BD68B9B21DD0F2F300CE39CA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BD68B9CA1DD39FF100CE39CA /* Utility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
+		BD8EAAD81E5F52270056BC1A /* Assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Assets; sourceTree = "<group>"; };
 		BDB5B0911E4D534400D59AEA /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = SOURCE_ROOT; };
 		BDB5B0951E4D54B600D59AEA /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = SOURCE_ROOT; };
 		BDEB9E8C1E04966A002F7222 /* EventEntryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventEntryViewController.swift; sourceTree = "<group>"; };
@@ -88,6 +90,7 @@
 		BD506DDB1E2941B6001A98B0 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				BD8EAAD81E5F52270056BC1A /* Assets */,
 				BD68B9AD1DD0F2F300CE39CA /* Assets.xcassets */,
 				BDEB9E901E05AB06002F7222 /* bg_portrait.jpg */,
 				BD68B9B21DD0F2F300CE39CA /* Info.plist */,
@@ -199,6 +202,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BD8EAAD91E5F52270056BC1A /* Assets in Resources */,
 				BD68B9B11DD0F2F300CE39CA /* LaunchScreen.storyboard in Resources */,
 				BD68B9AE1DD0F2F300CE39CA /* Assets.xcassets in Resources */,
 				BDEB9E911E05AB06002F7222 /* bg_portrait.jpg in Resources */,
