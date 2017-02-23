@@ -113,19 +113,33 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PFLogInViewControllerDele
     }
 
     func fetchImages() {
-        let eventDateQuery = PFQuery(className: "EventImage")
-        eventDateQuery.findObjectsInBackground { (objects, error) in
+
+
+        let query = PFQuery(className: "EventImage")
+        query.findObjectsInBackground(block: { (objects, error) in
+            guard error == nil else {
+                print ("Error retrieving image data from Parse")
+                return
+            }
+
             if let objects = objects {
                 for object in objects {
-                    let imageFile = object["image"] as? PFFile
-                    //var dataImage: UIImage
-                    imageFile?.getDataInBackground({ (data, error) in
-                        let dataImage = UIImage(data: data!)
-                        SimpleCache.shared.setImage(dataImage!, key: object.objectId!)
+                    guard let imageFile = object["image"] as? PFFile else { return }
+
+                    imageFile.getDataInBackground({ (data, error) in
+                        guard error == nil else {
+                            print ("Error retrieving image data from Parse")
+                            return
+                        }
+                        guard let imageData = data else { return }
+                        guard let image = UIImage(data: imageData) else { return }
+
+                        SimpleCache.shared.setImage(image, key: object.objectId!)
+
                     })
                 }
             }
-        }
+        })
     }
 
     func facebookLoginNeeded() -> Bool {
