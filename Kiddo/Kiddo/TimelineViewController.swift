@@ -38,9 +38,37 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
                     self.events = a + b
 
                 }
-                 animateTableViewReload()
+
+                timelineTableView.reloadData()
+                let x = IndexPath(item: 0, section: 0)
+                timelineTableView.scrollToRow(at: x, at: .top, animated: false)
+                //animateTableViewReload()
+                animateTimelineCells()
             }
         }
+    }
+
+    func animateTimelineCells() {
+        let cells = timelineTableView.visibleCells
+        let tableHeight = timelineTableView.bounds.size.height
+
+        for i in cells {
+            let cell = i as! EventTableViewCell
+            cell.transform = CGAffineTransform(translationX: 0, y: tableHeight)
+        }
+
+        var index = 0
+
+        //        UIView.animateWithDuration(1.5, delay: 0.05 * Double(index), usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: nil, animations: {
+
+
+        for a in cells {
+            let cell = a as! EventTableViewCell
+            UIView.animate(withDuration: 1.5, delay: 0.05 * Double(index), usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+                cell.transform = CGAffineTransform(translationX: 0, y: 0);
+            }, completion: nil)
+        }
+
     }
 
 
