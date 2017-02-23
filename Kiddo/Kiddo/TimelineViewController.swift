@@ -42,31 +42,26 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
                 timelineTableView.reloadData()
                 let x = IndexPath(item: 0, section: 0)
                 timelineTableView.scrollToRow(at: x, at: .top, animated: false)
-                //animateTableViewReload()
                 animateTimelineCells()
             }
         }
     }
 
     func animateTimelineCells() {
-        let cells = timelineTableView.visibleCells
-        let tableHeight = timelineTableView.bounds.size.height
 
-        for i in cells {
-            let cell = i as! EventTableViewCell
-            cell.transform = CGAffineTransform(translationX: 0, y: tableHeight)
+        let visibleCells = timelineTableView.visibleCells.map { (cell) -> EventTableViewCell in
+            cell.transform = CGAffineTransform(translationX: 0, y: timelineTableView.bounds.size.height)
+            return cell as! EventTableViewCell
         }
 
         var index = 0
 
-        //        UIView.animateWithDuration(1.5, delay: 0.05 * Double(index), usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: nil, animations: {
-
-
-        for a in cells {
-            let cell = a as! EventTableViewCell
-            UIView.animate(withDuration: 1.5, delay: 0.05 * Double(index), usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
-                cell.transform = CGAffineTransform(translationX: 0, y: 0);
-            }, completion: nil)
+        for cell in visibleCells {
+           // let customCell = cell as! EventTableViewCell
+            UIView.animate(withDuration: 0.40, delay: 0.05 * Double(index), usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+                cell.transform =  CGAffineTransform.identity
+            })
+            index += 1
         }
 
     }
@@ -231,6 +226,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 
     }
 
+
     func didSelectItem(sender: CustomSegmentedControl, selectedIndex: Int) {
         switch selectedIndex {
         case 0:
@@ -243,26 +239,4 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
             self.events = self.today
         }
     }
-
-    private func animateTableViewReload() {
-        UIView.transition(with: timelineTableView,
-                      duration: 0.25,
-                       options: .transitionCrossDissolve,
-                    animations: { () -> Void in
-                                    self.timelineTableView.reloadData()
-                                },
-                    completion: { (completed: Bool) in
-                                    if (completed) {
-                                        if self.events.count > 0 {
-                                            if let visibleIndexPaths = self.timelineTableView.indexPathsForVisibleRows {
-                                                let x = IndexPath(item: 0, section: 0)
-                                                if !visibleIndexPaths.contains(x) {
-                                                    self.timelineTableView.scrollToRow(at: x, at: UITableViewScrollPosition.top, animated: true)
-                                                }
-                                            }
-                                        }
-                                    }
-                                });
-    }
-
 }
