@@ -17,19 +17,11 @@ class LogInViewController: PFLogInViewController {
     override func viewDidLoad() {
          super.viewDidLoad()
         //set background image
-        backgroundImage = UIImageView(image: UIImage(named: "bg_portrait.jpg"))
+        backgroundImage = UIImageView(image: UIImage(named: "bg_portraitNew.png"))
         backgroundImage.contentMode = UIViewContentMode.scaleAspectFill
         self.logInView!.insertSubview(backgroundImage, at: 0)
-        //below code didn't work for me as the bg image was becoming the top layer covering everything else 
-        // in the screen. Turns out we need to insert the subview at the 0 index to avoid that.
-        // self.logInView?.addSubview(imageView)
-
-
-//        let logoImage = UIImage(named: "kiddo")
-//        let logo = UIImageView(image: logoImage)
 
         logInView?.logo = nil
-
         self.logInView?.dismissButton?.setTitle("Skip", for: .normal)
         self.logInView?.dismissButton?.setTitleColor(UIColor.lightGray, for: .normal)
         self.logInView?.dismissButton?.setTitleShadowColor(UIColor.black, for: .normal)
@@ -44,14 +36,22 @@ class LogInViewController: PFLogInViewController {
         // stretch background image to fill screen
         backgroundImage.frame = CGRect(x: 0,y:  0,width:  self.logInView!.frame.width, height: self.logInView!.frame.height)
 
-        // position logo at top with larger frame
-//        logInView!.logo!.sizeToFit()
-//        let logoFrame = logInView!.logo!.frame
-//        logInView!.logo!.frame = CGRect(x:logoFrame.origin.x, y:logoFrame.origin.y - 250, width: logoFrame.width+50,  height: logoFrame.height+50)
-
-
         let dismissButtonFrame = logInView?.dismissButton?.frame
         logInView?.dismissButton?.frame = CGRect(x:(self.logInView?.frame.width)! - 56, y: 28,  width:50, height: (dismissButtonFrame?.height)!)
+
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        if let frame = logInView?.facebookButton?.frame {
+            logInView?.facebookButton?.frame = CGRect(x: (self.logInView?.frame.size.width)!, y: frame.origin.y, width: frame.size.width, height: frame.size.height)
+
+            UIView.animate(withDuration: 0.5, delay: 0.20, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.8, options: .curveEaseInOut, animations: {
+                               self.logInView?.facebookButton?.frame = frame
+                           }
+            )
+        }
 
     }
 }

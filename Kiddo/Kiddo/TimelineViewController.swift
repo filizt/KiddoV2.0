@@ -56,7 +56,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 
         for cell in visibleCells {
            // let customCell = cell as! EventTableViewCell
-            UIView.animate(withDuration: 0.40, delay: 0.05 * Double(index), usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+            UIView.animate(withDuration: 0.50, delay: 0.05 * Double(index), usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
                 cell.transform =  CGAffineTransform.identity
             })
             index += 1
