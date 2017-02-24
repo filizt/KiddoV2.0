@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="WBr-Ha-32t">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1212" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="WBr-Ha-32t">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -83,13 +83,13 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="kiddo" translatesAutoresizingMaskIntoConstraints="NO" id="vGX-1E-KtD">
                                 <rect key="frame" x="132" y="268" width="110" height="64"/>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="kiddoHeart" translatesAutoresizingMaskIntoConstraints="NO" id="11V-A5-JQj">
-                                <rect key="frame" x="133" y="265" width="108" height="54"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="kiddoHearth" translatesAutoresizingMaskIntoConstraints="NO" id="11V-A5-JQj">
+                                <rect key="frame" x="132" y="268" width="110" height="64"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" red="0.2196078431372549" green="0.14509803921568626" blue="0.30196078431372547" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="11V-A5-JQj" firstAttribute="centerY" secondItem="Re7-2U-Ea0" secondAttribute="centerY" constant="-41.5" id="1Vq-W3-998"/>
+                            <constraint firstItem="11V-A5-JQj" firstAttribute="centerY" secondItem="Re7-2U-Ea0" secondAttribute="centerY" multiplier="0.9" id="1Vq-W3-998"/>
                             <constraint firstItem="cqS-4D-5w9" firstAttribute="top" secondItem="Re7-2U-Ea0" secondAttribute="top" id="4ct-5c-sCA"/>
                             <constraint firstItem="vGX-1E-KtD" firstAttribute="centerX" secondItem="Re7-2U-Ea0" secondAttribute="centerX" id="BnR-AJ-dbO"/>
                             <constraint firstItem="11V-A5-JQj" firstAttribute="centerX" secondItem="Re7-2U-Ea0" secondAttribute="centerX" id="PhG-kC-uIN"/>
@@ -102,11 +102,12 @@
                     <connections>
                         <outlet property="kiddoHeart" destination="11V-A5-JQj" id="QLC-11-66v"/>
                         <outlet property="kiddoLogo" destination="vGX-1E-KtD" id="Yqk-X1-qPS"/>
+                        <segue destination="rqb-Yq-P7V" kind="show" identifier="showTimeline" animates="NO" id="BND-Ye-09L"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="u0y-42-JHP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="656.79999999999995" y="803.74812593703155"/>
+            <point key="canvasLocation" x="-730" y="146"/>
         </scene>
         <!--Detail View Controller-->
         <scene sceneID="Qfs-9q-RSc">
@@ -269,7 +270,7 @@
     </scenes>
     <resources>
         <image name="kiddo" width="110" height="64"/>
-        <image name="kiddoHeart" width="108" height="54"/>
+        <image name="kiddoHearth" width="110" height="64"/>
         <image name="splashGradient" width="375" height="667"/>
         <image name="subtleGrade" width="2100" height="696"/>
     </resources>

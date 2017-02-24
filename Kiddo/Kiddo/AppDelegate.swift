@@ -16,7 +16,7 @@ import Crashlytics
 
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, PFLogInViewControllerDelegate, PFSignUpViewControllerDelegate, UNUserNotificationCenterDelegate  {
+class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate  {
 
     var window: UIWindow?
     var rootVC: UIViewController?
@@ -36,60 +36,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PFLogInViewControllerDele
         Parse.initialize(with: configuration)
         PFFacebookUtils.initializeFacebook(applicationLaunchOptions: launchOptions)
 
-       // if !AppUtil.isSimulator() &&
+        // if !AppUtil.isSimulator() &&
 
-
-        if PFUser.current() == nil && facebookLoginNeeded() {
-            let logInViewController = LogInViewController()
-            logInViewController.fields = [PFLogInFields.facebook, PFLogInFields.dismissButton]
-            logInViewController.delegate = self
-            logInViewController.emailAsUsername = false
-            logInViewController.signUpController?.delegate = self
-            logInViewController.facebookPermissions = ["public_profile", "email"]
-            
-
-            window?.rootViewController? = logInViewController
-            window?.makeKeyAndVisible()
-
-         }
-
-         fetchImages()
-
-//        UNUserNotificationCenter.current().delegate = self
-//        window?.makeKeyAndVisible()
-//        let splashView = UIView(frame: (self.window?.frame)!)
-//        splashView.backgroundColor = UIColor(red:0.22, green:0.15, blue:0.30, alpha:1.0)
-//        self.window?.addSubview(splashView)
-//
-//        let imageView = UIImageView(image: UIImage(named: "kiddo"))
-//        var imageFrame = imageView.frame
-//        imageFrame.origin.x = 132.5
-//        imageFrame.origin.y = 218
-//        imageView.frame = imageFrame
-//        self.window?.addSubview(imageView)
-//
-//
-//        self.window?.bringSubview(toFront: imageView)
-//        UIView.transition(with: self.window!,
-//                          duration: 0.75,
-//                          options: UIViewAnimationOptions.curveEaseInOut,
-//                          animations: {
-//                            imageView.alpha = 0.0
-//                            splashView.alpha = 0.0
-//                            imageView.transform = CGAffineTransform(scaleX: 2, y: 2);
-//            //imageView.frame = imageView.frame.offsetBy(dx: 100.0, dy: 100.0)
-//        }) { (finished) in
-//            imageView.removeFromSuperview()
-//            splashView.removeFromSuperview()
-//        }
+        //window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "SplashAnimate")
+        fetchImages()
 
         return true
     }
 
   
     func fetchImages() {
-
-
         let query = PFQuery(className: "EventImage")
         query.findObjectsInBackground(block: { (objects, error) in
             guard error == nil else {
@@ -117,57 +73,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PFLogInViewControllerDele
         })
     }
 
-    func facebookLoginNeeded() -> Bool {
-        guard let lastFacebookLoginRequest = userDefaults.object(forKey: "FacebookLoginSkipped") as? Date else { return true }
-
-            if Int(lastFacebookLoginRequest.timeIntervalSinceNow * -1) >= (60*60*24*3) {
-                //it's been more than 3 days since we asked the user to log in. Let's try that again.
-                return true
-            }
-
-         return false
-    }
-
-  
-
-    //MARK: PFLogInViewControllerDelegate functions
-
-    func log(_ logInController: PFLogInViewController, didLogIn user: PFUser) {
-        //Answers.logLogin(withMethod: "Facebook", success: 1, customAttributes: ["FacebookLogin": "Success"])
-
-        window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateInitialViewController()
-    }
-
-    //To-Do: Need to handle error conditions
-    func log(_ logInController: PFLogInViewController, didFailToLogInWithError error: Error?) {
-        //Answers.logLogin(withMethod: "Facebook", success: 0, customAttributes: ["FacebookLogin": "Error"])
-
-        window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateInitialViewController()
-
-        let alert = UIAlertController(title: "Facebook Login Failed", message: "Facebook is slow at the moment...but don't worry! We skipped the login step so you can still enjoy Kiddo!", preferredStyle: UIAlertControllerStyle.alert)
-        let alertAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil)
-        alert.addAction(alertAction)
-
-        window?.rootViewController?.present(alert, animated: true, completion: nil)
-    }
-
-    //Skipping log in triggers this.
-    func logInViewControllerDidCancelLog(in logInController: PFLogInViewController) {
-
-        //Answers.logLogin(withMethod: "Facebook", success: 0, customAttributes: ["FacebookLogin": "Skip"])
-
-        self.userDefaults.set(Date(), forKey: "FacebookLoginSkipped")
-
-        window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateInitialViewController()
-
-        let alert = UIAlertController(title: "Facebook Login Skipped", message: "No login required - let's find some fun events!", preferredStyle: UIAlertControllerStyle.alert)
-        let alertAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil)
-        alert.addAction(alertAction)
-
-
-        window?.rootViewController?.present(alert, animated: true, completion: nil)
-
-    }
+ 
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         print("Handle local notification from background or closed")
         //from background this method is called.

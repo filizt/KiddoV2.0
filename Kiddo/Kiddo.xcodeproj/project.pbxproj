@@ -225,7 +225,7 @@
 				TargetAttributes = {
 					BD68B9A21DD0F2F200CE39CA = {
 						CreatedOnToolsVersion = 8.0;
-						DevelopmentTeam = 286637PNYQ;
+						DevelopmentTeam = AWF997WQMM;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -464,7 +464,7 @@
 			baseConfigurationReference = 540CFF22675486906CCC738D /* Pods-Kiddo.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 286637PNYQ;
+				DEVELOPMENT_TEAM = AWF997WQMM;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -482,7 +482,7 @@
 			baseConfigurationReference = DCF89C9892D94F333D0A06CA /* Pods-Kiddo.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 286637PNYQ;
+				DEVELOPMENT_TEAM = AWF997WQMM;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",

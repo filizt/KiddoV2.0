@@ -13,6 +13,7 @@ import ParseFacebookUtilsV4
 class LogInViewController: PFLogInViewController {
 
     var backgroundImage: UIImageView!
+    private var facebookButtonAnimationShown: Bool = false
 
     override func viewDidLoad() {
          super.viewDidLoad()
@@ -44,11 +45,21 @@ class LogInViewController: PFLogInViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
+        guard facebookButtonAnimationShown == true else { return }
+
         if let frame = logInView?.facebookButton?.frame {
             logInView?.facebookButton?.frame = CGRect(x: (self.logInView?.frame.size.width)!, y: frame.origin.y, width: frame.size.width, height: frame.size.height)
 
-            UIView.animate(withDuration: 0.5, delay: 0.20, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.8, options: .curveEaseInOut, animations: {
+            UIView.animate(withDuration: 0.5,
+                           delay: 0.20,
+                           usingSpringWithDamping: 0.6,
+                           initialSpringVelocity: 0.8,
+                           options: .curveEaseInOut,
+                           animations: {
                                self.logInView?.facebookButton?.frame = frame
+                           },
+                           completion: { (finished) in
+                            self.facebookButtonAnimationShown = true
                            }
             )
         }

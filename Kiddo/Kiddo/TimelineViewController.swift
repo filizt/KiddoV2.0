@@ -11,7 +11,7 @@ import Parse
 import ParseUI
 import UserNotifications
 
-class TimelineViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, CustomSegmentedControlDelegate {
+class TimelineViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, CustomSegmentedControlDelegate  {
 
     @IBOutlet weak var timelineTableView: UITableView!
     @IBOutlet weak var segmentedControl: CustomSegmentedControl!
@@ -45,6 +45,25 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         }
     }
 
+
+    var alert: UIAlertController {
+        get {
+            if loginSuccessful {
+                let alert =  UIAlertController(title: "Facebook Login Failed", message: "Facebook is slow at the moment...but don't worry! We skipped the login step so you can still enjoy Kiddo!", preferredStyle: UIAlertControllerStyle.alert)
+                let alertAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil )
+                alert.addAction(alertAction)
+                return alert
+            } else {
+                let alert = UIAlertController(title: "Facebook Login Skipped", message: "No login required - let's find some fun events!", preferredStyle: UIAlertControllerStyle.alert)
+                let alertAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil )
+                alert.addAction(alertAction)
+                return alert
+            }
+        }
+    }
+
+    var loginSuccessful: Bool = false
+
     func animateTimelineCells() {
 
         let visibleCells = timelineTableView.visibleCells.map { (cell) -> EventTableViewCell in
@@ -61,7 +80,6 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
             })
             index += 1
         }
-
     }
 
 
@@ -89,7 +107,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 
         Timer.scheduledTimer(timeInterval: 10.0, target: self, selector: #selector(self.requestAuthForNotifications), userInfo: nil, repeats: false);
 
-
+        //self.present(self.alert, animated: true, completion: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(didBecomeActive), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
 
 
@@ -100,7 +118,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
     }
 
     func didBecomeActive() {
-        //activityIndicator.startAnimating()
+        activityIndicator.startAnimating()
         self.fetchAllEvents()
 
     }
@@ -110,6 +128,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         self.fetchAllEvents()
     }
 
+   
     //MARK: Local Notifications
 
     func requestAuthForNotifications() {
