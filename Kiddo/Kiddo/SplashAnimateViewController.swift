@@ -26,19 +26,26 @@ class SplashAnimateViewController: UIViewController, PFLogInViewControllerDelega
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        UIView.animate(withDuration: 1.5, delay: 0, options: .curveEaseInOut, animations: {
-            self.kiddoLogo.alpha = 0
-        }) { (finished) in
-               self.kiddoLogo.isHidden = true
-            UIView.animate(withDuration: 2.0, delay: 0.05, options: .curveEaseInOut, animations: {
-                 self.kiddoHeart.transform = CGAffineTransform(translationX: 0, y: -(self.view.frame.size.height/2))
+        UIView.animate(withDuration: 1.5,
+                       delay: 0,
+                       options: .curveEaseInOut,
+                       animations: {
+                            self.kiddoLogo.alpha = 0
+                       },
+                       completion: { (finished) in
+                            self.kiddoLogo.isHidden = true
+                            UIView.animate(withDuration: 2.0,
+                                           delay: 0.05,
+                                           options: .curveEaseInOut,
+                                           animations: {
+                                                self.kiddoHeart.transform = CGAffineTransform(translationX: 0, y: -(self.view.frame.size.height/2))
+                                           },
+                                           completion: { (finished) in
+                                                self.kiddoHeart.isHidden = true
+                                                self.prepareForLaunch()
 
-            }, completion: { (finished) in
-                self.kiddoHeart.isHidden = true
-                 self.prepareForLaunch()
-
-            })
-        }
+                                           })
+                       })
     }
     
     func prepareForLaunch() {

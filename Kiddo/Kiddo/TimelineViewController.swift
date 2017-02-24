@@ -197,7 +197,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
                         if self.segmentedControl.selectedIndex == 0 {
                             self.events = self.today
                         }
-                    self.activityIndicator.stopAnimating()
+                        self.activityIndicator.stopAnimating()
                     }
                 }
             }
@@ -214,10 +214,10 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
                         //objects should be events for a particular date
                         let returnedEvents = objects.map {Event.create(from: $0)}
                         let sortedEvents = self.sortEvents(events: returnedEvents)
-                            self.tomorrow = sortedEvents
-                            if self.segmentedControl.selectedIndex == 1 {
-                                self.events = self.tomorrow
-                            }
+                        self.tomorrow = sortedEvents
+                        if self.segmentedControl.selectedIndex == 1 {
+                            self.events = self.tomorrow
+                        }
                         self.activityIndicator.stopAnimating()
                     }
                 }
