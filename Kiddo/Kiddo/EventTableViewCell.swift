@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Parse
 
 class EventTableViewCell: UITableViewCell {
     
@@ -51,17 +52,31 @@ class EventTableViewCell: UITableViewCell {
             }
 
             //We don't have imageFile in the cache; let's retreive it from the server. Event photo is a PFFile in this state
-            if let imageFile = event.photo {
-                imageFile.getDataInBackground(block: { (imageData, error) in
+            if !event.imageObjectId.isEmpty {
+                let imageObjectId = event.imageObjectId
+                let query = PFQuery(className: "EventImage")
+                query.whereKey("objectId", equalTo: imageObjectId)
+                query.getFirstObjectInBackground(block: { (object, error) in
                     guard error == nil else {
                         print ("Error retrieving image data from Parse")
                         return
                     }
-                    guard let imageData = imageData else { return }
-                    guard let image = UIImage(data: imageData) else { return }
-                    
-                    self.cache.setImage(image, key: event.imageObjectId)
-                    self.eventImage?.image = image
+
+                    guard let object = object else { return }
+                    guard let imageFile = object["image"] as? PFFile else { return }
+
+                    imageFile.getDataInBackground({ (data, error) in
+                        guard error == nil else {
+                            print ("Error retrieving image data from Parse")
+                            return
+                        }
+                        guard let imageData = data else { return }
+                        guard let image = UIImage(data: imageData) else { return }
+
+                        self.cache.setImage(image, key: event.imageObjectId)
+                        self.eventImage?.image = image
+
+                    })
                 })
             }
         }

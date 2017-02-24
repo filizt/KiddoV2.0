@@ -23,13 +23,20 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="kiddo" translatesAutoresizingMaskIntoConstraints="NO" id="KPT-ge-DTo">
-                                <rect key="frame" x="132.5" y="218" width="110" height="64"/>
+                                <rect key="frame" x="133" y="268" width="110" height="64"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="splashGradient" translatesAutoresizingMaskIntoConstraints="NO" id="Y6w-tg-AQi">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" red="0.2196078431372549" green="0.14509803921568626" blue="0.30196078431372547" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="KPT-ge-DTo" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" multiplier="0.75" id="5G7-r9-1R4"/>
+                            <constraint firstItem="KPT-ge-DTo" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" multiplier="0.9" id="5G7-r9-1R4"/>
+                            <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="Y6w-tg-AQi" secondAttribute="bottom" id="PIO-g0-hDd"/>
+                            <constraint firstAttribute="trailing" secondItem="Y6w-tg-AQi" secondAttribute="trailing" id="RKP-pD-ml8"/>
+                            <constraint firstItem="Y6w-tg-AQi" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="RrP-Nk-17r"/>
                             <constraint firstItem="KPT-ge-DTo" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="TkD-jv-Vxd"/>
+                            <constraint firstItem="Y6w-tg-AQi" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="hML-rE-XTd"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -40,5 +47,6 @@
     </scenes>
     <resources>
         <image name="kiddo" width="110" height="64"/>
+        <image name="splashGradient" width="375" height="667"/>
     </resources>
 </document>

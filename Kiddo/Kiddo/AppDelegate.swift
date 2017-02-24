@@ -56,24 +56,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PFLogInViewControllerDele
          fetchImages()
 
         UNUserNotificationCenter.current().delegate = self
-
-        UNUserNotificationCenter.current().getNotificationSettings(completionHandler: { (settings) in
-            if settings.authorizationStatus != .authorized {
-                if self.notificationsAuthNeeded() {
-                    UNUserNotificationCenter.current().requestAuthorization(options: [ .alert, .sound]) {(granted, error) in
-                        if granted {
-                            //schedule notifications.
-                            self.scheduleLocalNotifications()
-                            //Answers.logCustomEvent(withName: "UserOptedInForNotifications", customAttributes: nil)
-                        } else {
-                            self.userDefaults.set(Date(), forKey: "UserNotificationsDeniedKey")
-                            //Answers.logCustomEvent(withName: "UserOptedOutForNotifications", customAttributes: nil)
-                        }
-                    }
-                }
-            }
-        })
-
         window?.makeKeyAndVisible()
         let splashView = UIView(frame: (self.window?.frame)!)
         splashView.backgroundColor = UIColor(red:0.22, green:0.15, blue:0.30, alpha:1.0)
@@ -104,65 +86,49 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PFLogInViewControllerDele
         return true
     }
 
-    func notificationsAuthNeeded() -> Bool {
-        if let lastNotificationAuthRequest = self.userDefaults.object(forKey: "UserNotificationsDeniedKey") as? Date {
-            guard ((lastNotificationAuthRequest.timeIntervalSinceNow * -1) <= (60*60*24*3)) else { return false }
-        }
-
-        return true //first time user case
-    }
-
+  
     func fetchImages() {
-        let eventDateQuery = PFQuery(className: "EventImage")
-        eventDateQuery.findObjectsInBackground { (objects, error) in
+
+
+        let query = PFQuery(className: "EventImage")
+        query.findObjectsInBackground(block: { (objects, error) in
+            guard error == nil else {
+                print ("Error retrieving image data from Parse")
+                return
+            }
+
             if let objects = objects {
                 for object in objects {
-                    let imageFile = object["image"] as? PFFile
-                    //var dataImage: UIImage
-                    imageFile?.getDataInBackground({ (data, error) in
-                        let dataImage = UIImage(data: data!)
-                        SimpleCache.shared.setImage(dataImage!, key: object.objectId!)
+                    guard let imageFile = object["image"] as? PFFile else { return }
+
+                    imageFile.getDataInBackground({ (data, error) in
+                        guard error == nil else {
+                            print ("Error retrieving image data from Parse")
+                            return
+                        }
+                        guard let imageData = data else { return }
+                        guard let image = UIImage(data: imageData) else { return }
+
+                        SimpleCache.shared.setImage(image, key: object.objectId!)
+
                     })
                 }
             }
-        }
+        })
     }
 
     func facebookLoginNeeded() -> Bool {
         guard let lastFacebookLoginRequest = userDefaults.object(forKey: "FacebookLoginSkipped") as? Date else { return true }
 
             if Int(lastFacebookLoginRequest.timeIntervalSinceNow * -1) >= (60*60*24*3) {
-                //it's been more than a week since we asked the user to log in. Let's try that again.
+                //it's been more than 3 days since we asked the user to log in. Let's try that again.
                 return true
             }
 
          return false
     }
 
-    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        print("Handle local notification from background or closed")
-        //from background this method is called.
-    }
-
-    func scheduleLocalNotifications() {
-
-        //time interval is every day for now
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: (60*60*24*1), repeats: true)
-
-        let content = UNMutableNotificationContent()
-        content.title = "Kiddo"
-        content.body = "Check out these new events added to Kiddo!"
-        content.sound = UNNotificationSound.default()
-
-        let request = UNNotificationRequest(identifier: "textNotification", content: content, trigger: trigger)
-
-        UNUserNotificationCenter.current().add(request) {(error) in
-            if let error = error {
-                print("Uh oh! We had an error: \(error)")
-            }
-        }
-    }
-
+  
 
     //MARK: PFLogInViewControllerDelegate functions
 
@@ -178,7 +144,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PFLogInViewControllerDele
 
         window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateInitialViewController()
 
-        let alert = UIAlertController(title: "Facebook Login Failed", message: "Facebook login failed due to an error. We skipped the login step. You can still enjoy Kiddo!", preferredStyle: UIAlertControllerStyle.alert)
+        let alert = UIAlertController(title: "Facebook Login Failed", message: "Facebook is slow at the moment...but don't worry! We skipped the login step so you can still enjoy Kiddo!", preferredStyle: UIAlertControllerStyle.alert)
         let alertAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil)
         alert.addAction(alertAction)
 
@@ -194,7 +160,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PFLogInViewControllerDele
 
         window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateInitialViewController()
 
-        let alert = UIAlertController(title: "Facebook Login Cancelled", message: "No worries! You can still enjoy Kiddo without signing up!", preferredStyle: UIAlertControllerStyle.alert)
+        let alert = UIAlertController(title: "Facebook Login Skipped", message: "No login required - let's find some fun events!", preferredStyle: UIAlertControllerStyle.alert)
         let alertAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil)
         alert.addAction(alertAction)
 
@@ -202,7 +168,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PFLogInViewControllerDele
         window?.rootViewController?.present(alert, animated: true, completion: nil)
 
     }
-
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        print("Handle local notification from background or closed")
+        //from background this method is called.
+    }
+    
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.

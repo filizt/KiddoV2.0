@@ -129,7 +129,7 @@ protocol CustomSegmentedControlDelegate: class {
 
         let label = labels[selectedIndex]
 
-        UIView.animate(withDuration: 0.5, delay: 0.0, usingSpringWithDamping: 0.9, initialSpringVelocity: 0.9, options: UIViewAnimationOptions.curveEaseIn , animations: {
+        UIView.animate(withDuration: 0.5, delay: 0.0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.7, options: UIViewAnimationOptions.curveEaseIn , animations: {
             self.selectionBar.frame = self.createSelectionBarFrame(label.frame)
         } , completion: { (complete: Bool) in
             if complete {

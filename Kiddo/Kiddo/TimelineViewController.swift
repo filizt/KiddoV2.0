@@ -36,11 +36,32 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
                     let b = self.events.filter { $0.allDayFlag == true }
                     a.sort { ($0.startTime < $1.startTime) }
                     self.events = a + b
-
                 }
-                 animateTableViewReload()
+                timelineTableView.reloadData()
+                let x = IndexPath(item: 0, section: 0)
+                timelineTableView.scrollToRow(at: x, at: .top, animated: false)
+                animateTimelineCells()
             }
         }
+    }
+
+    func animateTimelineCells() {
+
+        let visibleCells = timelineTableView.visibleCells.map { (cell) -> EventTableViewCell in
+            cell.transform = CGAffineTransform(translationX: 0, y: timelineTableView.bounds.size.height)
+            return cell as! EventTableViewCell
+        }
+
+        var index = 0
+
+        for cell in visibleCells {
+           // let customCell = cell as! EventTableViewCell
+            UIView.animate(withDuration: 0.50, delay: 0.05 * Double(index), usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+                cell.transform =  CGAffineTransform.identity
+            })
+            index += 1
+        }
+
     }
 
 
@@ -63,22 +84,82 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         self.segmentedControl.delegate = self
 
         activityIndicator.hidesWhenStopped = true
-        activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.whiteLarge
+        activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
 
-        UNUserNotificationCenter.current().getPendingNotificationRequests { (pendingNotifications) in
-            for notification in pendingNotifications {
-                print("notification", notification)
-            }
-        }
+
+        Timer.scheduledTimer(timeInterval: 10.0, target: self, selector: #selector(self.requestAuthForNotifications), userInfo: nil, repeats: false);
+
+
+        NotificationCenter.default.addObserver(self, selector: #selector(didBecomeActive), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
+
+
     }
 
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
+    func didBecomeActive() {
+        //activityIndicator.startAnimating()
+        self.fetchAllEvents()
+
+    }
 
     override func viewWillAppear(_ animated: Bool) {
         activityIndicator.startAnimating()
         self.fetchAllEvents()
     }
 
-    
+    //MARK: Local Notifications
+
+    func requestAuthForNotifications() {
+        UNUserNotificationCenter.current().getNotificationSettings(completionHandler: { (settings) in
+            if settings.authorizationStatus != .authorized {
+                if self.notificationsAuthNeeded() {
+                    UNUserNotificationCenter.current().requestAuthorization(options: [ .alert, .sound]) {(granted, error) in
+                        if granted {
+                            //schedule notifications.
+                            self.scheduleLocalNotifications()
+                            //Answers.logCustomEvent(withName: "UserOptedInForNotifications", customAttributes: nil)
+                        } else {
+                            UserDefaults.standard.set(Date(), forKey: "UserNotificationsDeniedKey")
+                            //Answers.logCustomEvent(withName: "UserOptedOutForNotifications", customAttributes: nil)
+                        }
+                    }
+                }
+            }
+        })
+    }
+
+    func notificationsAuthNeeded() -> Bool {
+        if let lastNotificationAuthRequest = UserDefaults.standard.object(forKey: "UserNotificationsDeniedKey") as? Date {
+            guard ((lastNotificationAuthRequest.timeIntervalSinceNow * -1) <= (60*60*24*3)) else { return false }
+        }
+
+        return true //first time user case
+    }
+
+
+    func scheduleLocalNotifications() {
+        //time interval is every 3 days
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: (60*60*24*3), repeats: true)
+
+        let content = UNMutableNotificationContent()
+        content.title = "Kiddo"
+        content.body = "Kiddo has some new things for you and the littles - come check them out!"
+        content.sound = UNNotificationSound.default()
+
+        let request = UNNotificationRequest(identifier: "textNotification", content: content, trigger: trigger)
+
+        UNUserNotificationCenter.current().add(request) {(error) in
+            if let error = error {
+                print("Uh oh! We had an error: \(error)")
+            }
+        }
+    }
+
+    //MARK: Fetch Events
+
     private var lastRequest: PFQuery<PFObject>?
 
     private func fetchAllEvents() {
@@ -87,12 +168,13 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         eventDateQuery.whereKey("eventDate", equalTo: date)
         eventDateQuery.findObjectsInBackground { (dateObjects, error) in
             if let dateObjects = dateObjects {
-                var relation = dateObjects[0].relation(forKey: "events")
+                let relation = dateObjects[0].relation(forKey: "events")
                 relation.query().findObjectsInBackground { (objects, error) in
                     if let objects = objects {
                         //objects should be events for a particular date
                         let returnedEvents = objects.map { Event.create(from: $0) }
-                        self.today = returnedEvents
+                        let sortedEvents = self.sortEvents(events: returnedEvents)
+                        self.today = sortedEvents
                         if self.segmentedControl.selectedIndex == 0 {
                             self.events = self.today
                         }
@@ -107,17 +189,16 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         queryTomorrow.whereKey("eventDate", equalTo: dateTomorrow)
         queryTomorrow.findObjectsInBackground { (dateObjects, error) in
             if let dateObjects = dateObjects {
-                var relation = dateObjects[0].relation(forKey: "events")
+                let relation = dateObjects[0].relation(forKey: "events")
                 relation.query().findObjectsInBackground { (objects, error) in
                     if let objects = objects {
                         //objects should be events for a particular date
                         let returnedEvents = objects.map {Event.create(from: $0)}
-                        if !self.tomorrow.elementsEqual(returnedEvents, by: { $0.id == $1.id }) {
-                            self.tomorrow = returnedEvents
+                        let sortedEvents = self.sortEvents(events: returnedEvents)
+                            self.tomorrow = sortedEvents
                             if self.segmentedControl.selectedIndex == 1 {
                                 self.events = self.tomorrow
                             }
-                        }
                         self.activityIndicator.stopAnimating()
                     }
                 }
@@ -147,6 +228,19 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         }
     }
 
+    func sortEvents(events: [Event]) -> [Event]{
+        var e = events
+        var a = e.filter { $0.allDayFlag == false }
+        let b = e.filter { $0.allDayFlag == true }
+        a.sort { ($0.startTime < $1.startTime) }
+        e = a + b
+
+        return e
+    }
+
+
+    //MARK: Stup Navigation Bar
+
     private func setUpNavigationBar() {
         let newColor = UIColor(red:0.25, green:0.18, blue:0.35, alpha:1.0)
         navigationController?.navigationBar.tintColor = UIColor.white
@@ -156,16 +250,10 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         let backItem = UIBarButtonItem()
         backItem.title = ""
         navigationController?.navigationBar.topItem?.backBarButtonItem = backItem
-        navigationController?.navigationBar.topItem?.title = "EVENTS FOR"
+        navigationController?.navigationBar.topItem?.title = "PLANS FOR"
 
     }
 
-
-    
-    @IBAction func switchButtonPressed(_ sender: UISegmentedControl) {
-        self.timelineTableView.reloadData()
-
-    }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
@@ -181,7 +269,9 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
             }
         }
     }
-    
+
+    //MARK: TableView Delegates
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
       return self.events.count
     }
@@ -203,6 +293,8 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 
     }
 
+    //MARK: Segmented Control Delegate
+
     func didSelectItem(sender: CustomSegmentedControl, selectedIndex: Int) {
         switch selectedIndex {
         case 0:
@@ -215,26 +307,4 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
             self.events = self.today
         }
     }
-
-    private func animateTableViewReload() {
-        UIView.transition(with: timelineTableView,
-                      duration: 0.25,
-                       options: .transitionCrossDissolve,
-                    animations: { () -> Void in
-                                    self.timelineTableView.reloadData()
-                                },
-                    completion: { (completed: Bool) in
-                                    if (completed) {
-                                        if self.events.count > 0 {
-                                            if let visibleIndexPaths = self.timelineTableView.indexPathsForVisibleRows {
-                                                let x = IndexPath(item: 0, section: 0)
-                                                if !visibleIndexPaths.contains(x) {
-                                                    self.timelineTableView.scrollToRow(at: x, at: UITableViewScrollPosition.top, animated: true)
-                                                }
-                                            }
-                                        }
-                                    }
-                                });
-    }
-
 }
