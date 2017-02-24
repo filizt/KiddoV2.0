@@ -1,11 +1,12 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1212" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="rqb-Yq-P7V">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="WBr-Ha-32t">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -63,6 +64,49 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1076" y="136.28185907046478"/>
+        </scene>
+        <!--Splash Animate View Controller-->
+        <scene sceneID="dju-E2-e6b">
+            <objects>
+                <viewController storyboardIdentifier="SplashAnimate" id="WBr-Ha-32t" customClass="SplashAnimateViewController" customModule="Kiddo" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="z4h-Os-w45"/>
+                        <viewControllerLayoutGuide type="bottom" id="93h-nb-Z9g"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Re7-2U-Ea0">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="splashGradient" translatesAutoresizingMaskIntoConstraints="NO" id="cqS-4D-5w9">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="kiddo" translatesAutoresizingMaskIntoConstraints="NO" id="vGX-1E-KtD">
+                                <rect key="frame" x="132" y="268" width="110" height="64"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="kiddoHeart" translatesAutoresizingMaskIntoConstraints="NO" id="11V-A5-JQj">
+                                <rect key="frame" x="133" y="265" width="108" height="54"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" red="0.2196078431372549" green="0.14509803921568626" blue="0.30196078431372547" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="11V-A5-JQj" firstAttribute="centerY" secondItem="Re7-2U-Ea0" secondAttribute="centerY" constant="-41.5" id="1Vq-W3-998"/>
+                            <constraint firstItem="cqS-4D-5w9" firstAttribute="top" secondItem="Re7-2U-Ea0" secondAttribute="top" id="4ct-5c-sCA"/>
+                            <constraint firstItem="vGX-1E-KtD" firstAttribute="centerX" secondItem="Re7-2U-Ea0" secondAttribute="centerX" id="BnR-AJ-dbO"/>
+                            <constraint firstItem="11V-A5-JQj" firstAttribute="centerX" secondItem="Re7-2U-Ea0" secondAttribute="centerX" id="PhG-kC-uIN"/>
+                            <constraint firstItem="93h-nb-Z9g" firstAttribute="top" secondItem="cqS-4D-5w9" secondAttribute="bottom" id="Z2N-af-iUT"/>
+                            <constraint firstItem="vGX-1E-KtD" firstAttribute="centerY" secondItem="Re7-2U-Ea0" secondAttribute="centerY" multiplier="0.9" id="arN-o6-Ejx"/>
+                            <constraint firstAttribute="trailing" secondItem="cqS-4D-5w9" secondAttribute="trailing" id="kwg-vz-CCw"/>
+                            <constraint firstItem="cqS-4D-5w9" firstAttribute="leading" secondItem="Re7-2U-Ea0" secondAttribute="leading" id="ubN-R3-ziL"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="kiddoHeart" destination="11V-A5-JQj" id="QLC-11-66v"/>
+                        <outlet property="kiddoLogo" destination="vGX-1E-KtD" id="Yqk-X1-qPS"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="u0y-42-JHP" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="656.79999999999995" y="803.74812593703155"/>
         </scene>
         <!--Detail View Controller-->
         <scene sceneID="Qfs-9q-RSc">
@@ -224,6 +268,9 @@
         </scene>
     </scenes>
     <resources>
+        <image name="kiddo" width="110" height="64"/>
+        <image name="kiddoHeart" width="108" height="54"/>
+        <image name="splashGradient" width="375" height="667"/>
         <image name="subtleGrade" width="2100" height="696"/>
     </resources>
 </document>

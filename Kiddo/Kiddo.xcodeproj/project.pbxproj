@@ -22,6 +22,7 @@
 		BDC903D41E413B82006CD7D6 /* CustomSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDC903D31E413B82006CD7D6 /* CustomSegmentedControl.swift */; };
 		BDEB9E8F1E05A64F002F7222 /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDEB9E8E1E05A64F002F7222 /* LogInViewController.swift */; };
 		BDEB9E911E05AB06002F7222 /* bg_portrait.jpg in Resources */ = {isa = PBXBuildFile; fileRef = BDEB9E901E05AB06002F7222 /* bg_portrait.jpg */; };
+		C22AC4681E60168D00F79926 /* SplashAnimateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22AC4671E60168D00F79926 /* SplashAnimateViewController.swift */; };
 		C26E626F1DD1038C00BDC568 /* TimelineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C26E626E1DD1038C00BDC568 /* TimelineViewController.swift */; };
 		C26E62711DD103B900BDC568 /* eventCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C26E62701DD103B900BDC568 /* eventCell.xib */; };
 		C26E62731DD1098600BDC568 /* EventTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C26E62721DD1098600BDC568 /* EventTableViewCell.swift */; };
@@ -47,6 +48,7 @@
 		BDC903D31E413B82006CD7D6 /* CustomSegmentedControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomSegmentedControl.swift; sourceTree = "<group>"; };
 		BDEB9E8E1E05A64F002F7222 /* LogInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
 		BDEB9E901E05AB06002F7222 /* bg_portrait.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = bg_portrait.jpg; sourceTree = "<group>"; };
+		C22AC4671E60168D00F79926 /* SplashAnimateViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplashAnimateViewController.swift; sourceTree = "<group>"; };
 		C26E626E1DD1038C00BDC568 /* TimelineViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimelineViewController.swift; sourceTree = "<group>"; };
 		C26E62701DD103B900BDC568 /* eventCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = eventCell.xib; path = ../eventCell.xib; sourceTree = "<group>"; };
 		C26E62721DD1098600BDC568 /* EventTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventTableViewCell.swift; sourceTree = "<group>"; };
@@ -143,6 +145,7 @@
 		BD68B9BA1DD0F98000CE39CA /* View Controller */ = {
 			isa = PBXGroup;
 			children = (
+				C22AC4671E60168D00F79926 /* SplashAnimateViewController.swift */,
 				C26E626E1DD1038C00BDC568 /* TimelineViewController.swift */,
 				BD68B9BE1DD0FA1C00CE39CA /* DetailViewController.swift */,
 				BDEB9E8E1E05A64F002F7222 /* LogInViewController.swift */,
@@ -222,7 +225,7 @@
 				TargetAttributes = {
 					BD68B9A21DD0F2F200CE39CA = {
 						CreatedOnToolsVersion = 8.0;
-						DevelopmentTeam = AWF997WQMM;
+						DevelopmentTeam = 286637PNYQ;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -337,6 +340,7 @@
 				C26E626F1DD1038C00BDC568 /* TimelineViewController.swift in Sources */,
 				C26E62751DD111AF00BDC568 /* Event.swift in Sources */,
 				BDC903D41E413B82006CD7D6 /* CustomSegmentedControl.swift in Sources */,
+				C22AC4681E60168D00F79926 /* SplashAnimateViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -460,7 +464,7 @@
 			baseConfigurationReference = 540CFF22675486906CCC738D /* Pods-Kiddo.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = AWF997WQMM;
+				DEVELOPMENT_TEAM = 286637PNYQ;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -478,7 +482,7 @@
 			baseConfigurationReference = DCF89C9892D94F333D0A06CA /* Pods-Kiddo.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = AWF997WQMM;
+				DEVELOPMENT_TEAM = 286637PNYQ;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
