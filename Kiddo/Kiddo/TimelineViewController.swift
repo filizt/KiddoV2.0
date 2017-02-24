@@ -10,6 +10,7 @@ import UIKit
 import Parse
 import ParseUI
 import UserNotifications
+import Crashlytics
 
 class TimelineViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, CustomSegmentedControlDelegate {
 
@@ -216,12 +217,16 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         switch selectedIndex {
         case 0:
             self.events = self.today
+            Answers.logContentView(withName: "Today Tab", contentType: nil, contentId: nil, customAttributes: nil)
         case 1:
             self.events = self.tomorrow
+            Answers.logContentView(withName: "Tomorrow Tab", contentType: nil, contentId: nil, customAttributes: nil)
         case 2:
             self.events = self.later
+            Answers.logContentView(withName: "Later Tab", contentType: nil, contentId: nil, customAttributes: nil)
         default:
             self.events = self.today
+            Answers.logContentView(withName: "Today Tab", contentType: nil, contentId: nil, customAttributes: nil)
         }
     }
 
