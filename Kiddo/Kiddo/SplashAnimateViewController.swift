@@ -15,7 +15,7 @@ class SplashAnimateViewController: UIViewController, PFLogInViewControllerDelega
     @IBOutlet weak var kiddoLogo: UIView!
     @IBOutlet weak var kiddoHeart: UIView!
 
-    var loginSuccessful = false
+    var loginFailed = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -81,14 +81,14 @@ class SplashAnimateViewController: UIViewController, PFLogInViewControllerDelega
 
     func log(_ logInController: PFLogInViewController, didLogIn user: PFUser) {
         //Answers.logLogin(withMethod: "Facebook", success: 1, customAttributes: ["FacebookLogin": "Success"])
-        self.loginSuccessful = true
+        self.loginFailed = false
         presentTimeline()
     }
 
     //To-Do: Need to handle error conditions
     func log(_ logInController: PFLogInViewController, didFailToLogInWithError error: Error?) {
         //Answers.logLogin(withMethod: "Facebook", success: 0, customAttributes: ["FacebookLogin": "Error"])
-        self.loginSuccessful = false
+        self.loginFailed = true
         presentTimeline()
     }
 
@@ -98,7 +98,7 @@ class SplashAnimateViewController: UIViewController, PFLogInViewControllerDelega
         //Answers.logLogin(withMethod: "Facebook", success: 0, customAttributes: ["FacebookLogin": "Skip"])
 
         UserDefaults.standard.set(Date(), forKey: "FacebookLoginSkipped")
-        self.loginSuccessful = false
+        self.loginFailed = true
         presentTimeline()
 
     }
@@ -111,7 +111,7 @@ class SplashAnimateViewController: UIViewController, PFLogInViewControllerDelega
         if segue.identifier == "showTimeline" {
             let navController = segue.destination as! UINavigationController
             if let timeLineVC = navController.viewControllers[0] as? TimelineViewController {
-                timeLineVC.loginSuccessful = self.loginSuccessful
+                timeLineVC.loginFailed = self.loginFailed
             }
         }
     }

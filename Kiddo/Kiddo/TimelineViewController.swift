@@ -46,23 +46,20 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
     }
 
 
-    var alert: UIAlertController {
+    var loginFailAlert: UIAlertController? {
         get {
-            if loginSuccessful {
-                let alert =  UIAlertController(title: "Facebook Login Failed", message: "Facebook is slow at the moment...but don't worry! We skipped the login step so you can still enjoy Kiddo!", preferredStyle: UIAlertControllerStyle.alert)
+            if loginFailed {
+                let alert = UIAlertController(title: "Facebook Login Failed", message: "No login required - let's find some fun events!", preferredStyle: UIAlertControllerStyle.alert)
                 let alertAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil )
                 alert.addAction(alertAction)
                 return alert
             } else {
-                let alert = UIAlertController(title: "Facebook Login Skipped", message: "No login required - let's find some fun events!", preferredStyle: UIAlertControllerStyle.alert)
-                let alertAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil )
-                alert.addAction(alertAction)
-                return alert
+                return nil
             }
         }
     }
 
-    var loginSuccessful: Bool = false
+    var loginFailed: Bool = false
 
     func animateTimelineCells() {
 
@@ -107,9 +104,11 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 
         Timer.scheduledTimer(timeInterval: 10.0, target: self, selector: #selector(self.requestAuthForNotifications), userInfo: nil, repeats: false);
 
-        //self.present(self.alert, animated: true, completion: nil)
+        if let alert = self.loginFailAlert {
+            self.present(alert, animated: true, completion: nil)
+        }
+        
         NotificationCenter.default.addObserver(self, selector: #selector(didBecomeActive), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
-
 
     }
 
