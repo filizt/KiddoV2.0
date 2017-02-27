@@ -19,33 +19,25 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     private var request:PFQuery<PFObject>?
 
-    private var today = [Event]() {
-        didSet {
-            if self.today.elementsEqual(oldValue, by: { $0.id == $1.id }) {
-                today = oldValue
-            }
-        }
-    }
-    private var tomorrow = [Event]()
-    private var later = [Event]()
-
     private var events = [Event]() {
         didSet {
             if !self.events.elementsEqual(oldValue, by: { $0.id == $1.id }) {
-                if self.segmentedControl.selectedIndex != 2 {
-                    var a = self.events.filter { $0.allDayFlag == false }
-                    let b = self.events.filter { $0.allDayFlag == true }
-                    a.sort { ($0.startTime < $1.startTime) }
-                    self.events = a + b
-                }
                 timelineTableView.reloadData()
-                let x = IndexPath(item: 0, section: 0)
-                timelineTableView.scrollToRow(at: x, at: .top, animated: false)
+                timelineTableView.scrollToRow(at: IndexPath(item: 0, section: 0), at: .top, animated: false)
                 animateTimelineCells()
             }
         }
     }
 
+    private var today = [Event]()
+    private var tomorrow = [Event]()
+    private var later = [Event]() {
+        didSet {
+            if self.later.elementsEqual(oldValue, by: { $0.id == $1.id }) {
+                later = oldValue
+            }
+        }
+    }
 
     var loginFailAlert: UIAlertController? {
         get {
@@ -72,7 +64,6 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         var index = 0
 
         for cell in visibleCells {
-           // let customCell = cell as! EventTableViewCell
             UIView.animate(withDuration: 0.50, delay: 0.05 * Double(index), usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
                 cell.transform =  CGAffineTransform.identity
             })
@@ -109,7 +100,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
             self.present(alert, animated: true, completion: nil)
         }
         
-        NotificationCenter.default.addObserver(self, selector: #selector(didBecomeActive), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(didBecomeActive), name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
 
         //First time the app loads, default view is today tab. Let's log that.
         Answers.logContentView(withName: "Today Tab", contentType: nil, contentId: nil, customAttributes: nil)
@@ -219,9 +210,6 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
                         let returnedEvents = objects.map {Event.create(from: $0)}
                         let sortedEvents = self.sortEvents(events: returnedEvents)
                         self.tomorrow = sortedEvents
-                        if self.segmentedControl.selectedIndex == 1 {
-                            self.events = self.tomorrow
-                        }
                         self.activityIndicator.stopAnimating()
                     }
                 }
@@ -242,9 +230,6 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
                             returnedEvents[i].updateDates(bydate: laterDate)
                         }
                         self.later = returnedEvents.sorted { $0.dates.first! < $1.dates.first! }
-                        if self.segmentedControl.selectedIndex == 2 {
-                            self.events = self.later
-                        }
                     }
                     self.activityIndicator.stopAnimating()
             }
