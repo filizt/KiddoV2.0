@@ -10,6 +10,7 @@ import UIKit
 import Parse
 import ParseUI
 import UserNotifications
+import Crashlytics
 
 class TimelineViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, CustomSegmentedControlDelegate  {
 
@@ -49,7 +50,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
     var loginFailAlert: UIAlertController? {
         get {
             if loginFailed {
-                let alert = UIAlertController(title: "Facebook Login Failed", message: "No login required - let's find some fun events!", preferredStyle: UIAlertControllerStyle.alert)
+                let alert = UIAlertController(title: "Facebook Login Skipped", message: "No login required - let's find some fun events!", preferredStyle: UIAlertControllerStyle.alert)
                 let alertAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil )
                 alert.addAction(alertAction)
                 return alert
@@ -110,6 +111,10 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         
         NotificationCenter.default.addObserver(self, selector: #selector(didBecomeActive), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
 
+        //First time the app loads, default view is today tab. Let's log that.
+        Answers.logContentView(withName: "Today Tab", contentType: nil, contentId: nil, customAttributes: nil)
+        Answers.logCustomEvent(withName: "App Launch", customAttributes:nil)
+
     }
 
     deinit {
@@ -138,10 +143,10 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
                         if granted {
                             //schedule notifications.
                             self.scheduleLocalNotifications()
-                            //Answers.logCustomEvent(withName: "UserOptedInForNotifications", customAttributes: nil)
+                            Answers.logCustomEvent(withName: "UserNotificationAuth", customAttributes: ["Notifications":"Authroized"])
                         } else {
                             UserDefaults.standard.set(Date(), forKey: "UserNotificationsDeniedKey")
-                            //Answers.logCustomEvent(withName: "UserOptedOutForNotifications", customAttributes: nil)
+                            Answers.logCustomEvent(withName: "UserNotificationAuth", customAttributes: ["Notifications":"Denied"])
                         }
                     }
                 }
@@ -317,10 +322,13 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         switch selectedIndex {
         case 0:
             self.events = self.today
+            Answers.logContentView(withName: "Today Tab", contentType: nil, contentId: nil, customAttributes: nil)
         case 1:
             self.events = self.tomorrow
+             Answers.logContentView(withName: "Tomorrow Tab", contentType: nil, contentId: nil, customAttributes: nil)
         case 2:
             self.events = self.later
+             Answers.logContentView(withName: "Later Tab", contentType: nil, contentId: nil, customAttributes: nil)
         default:
             self.events = self.today
         }

@@ -25,7 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
 
-        Fabric.with([Crashlytics.self])
+
 
        let configuration = ParseClientConfiguration {
             $0.applicationId = "1G2h3j45Rtf3s"
@@ -36,7 +36,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         Parse.initialize(with: configuration)
         PFFacebookUtils.initializeFacebook(applicationLaunchOptions: launchOptions)
 
-        // if !AppUtil.isSimulator() &&
+
+        if !isSimulator() {
+             Fabric.with([Crashlytics.self])
+        }
 
         //window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "SplashAnimate")
         fetchImages()
@@ -73,6 +76,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         })
     }
 
+    func isSimulator() -> Bool {
+        return TARGET_OS_SIMULATOR != 0
+    }
  
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         print("Handle local notification from background or closed")

@@ -9,6 +9,7 @@
 import UIKit
 import Parse
 import ParseUI
+import Crashlytics
 
 class SplashAnimateViewController: UIViewController, PFLogInViewControllerDelegate, PFSignUpViewControllerDelegate{
     
@@ -60,7 +61,6 @@ class SplashAnimateViewController: UIViewController, PFLogInViewControllerDelega
 
             self.present(logInViewController, animated: false, completion: nil )
         } else {
-
             self.performSegue(withIdentifier: "showTimeline", sender: nil)
         }
     }
@@ -80,14 +80,14 @@ class SplashAnimateViewController: UIViewController, PFLogInViewControllerDelega
     //MARK: PFLogInViewControllerDelegate functions
 
     func log(_ logInController: PFLogInViewController, didLogIn user: PFUser) {
-        //Answers.logLogin(withMethod: "Facebook", success: 1, customAttributes: ["FacebookLogin": "Success"])
+        Answers.logSignUp(withMethod: "Facebook", success: 1, customAttributes: ["FacebookLogin": "Success"])
         self.loginFailed = false
         presentTimeline()
     }
 
     //To-Do: Need to handle error conditions
     func log(_ logInController: PFLogInViewController, didFailToLogInWithError error: Error?) {
-        //Answers.logLogin(withMethod: "Facebook", success: 0, customAttributes: ["FacebookLogin": "Error"])
+        Answers.logSignUp(withMethod: "Facebook", success: 1, customAttributes: ["FacebookLogin": "Error"])
         self.loginFailed = true
         presentTimeline()
     }
@@ -95,8 +95,7 @@ class SplashAnimateViewController: UIViewController, PFLogInViewControllerDelega
     //Skipping log in triggers this.
     func logInViewControllerDidCancelLog(in logInController: PFLogInViewController) {
 
-        //Answers.logLogin(withMethod: "Facebook", success: 0, customAttributes: ["FacebookLogin": "Skip"])
-
+        Answers.logSignUp(withMethod: "Facebook", success: 1, customAttributes: ["FacebookLogin": "Skipped"])
         UserDefaults.standard.set(Date(), forKey: "FacebookLoginSkipped")
         self.loginFailed = true
         presentTimeline()
