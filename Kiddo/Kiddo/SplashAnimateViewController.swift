@@ -69,7 +69,7 @@ class SplashAnimateViewController: UIViewController, PFLogInViewControllerDelega
         guard let lastFacebookLoginRequest = UserDefaults.standard.object(forKey: "FacebookLoginSkipped") as? Date else { return true }
 
         if Int(lastFacebookLoginRequest.timeIntervalSinceNow * -1) >= (60*60*24*3) {
-            //it's been more than 3 days since we asked the user to log in. Let's try that again.
+            //it's been 3 days or more since we last asked the user to log in. Let's try that again.
             return true
         }
 
@@ -85,17 +85,16 @@ class SplashAnimateViewController: UIViewController, PFLogInViewControllerDelega
         presentTimeline()
     }
 
-    //To-Do: Need to handle error conditions
+
     func log(_ logInController: PFLogInViewController, didFailToLogInWithError error: Error?) {
-        Answers.logSignUp(withMethod: "Facebook", success: 1, customAttributes: ["FacebookLogin": "Error"])
+        Answers.logSignUp(withMethod: "Facebook", success: 0, customAttributes: ["FacebookLogin": "Error"])
         self.loginFailed = true
         presentTimeline()
     }
 
     //Skipping log in triggers this.
     func logInViewControllerDidCancelLog(in logInController: PFLogInViewController) {
-
-        Answers.logSignUp(withMethod: "Facebook", success: 1, customAttributes: ["FacebookLogin": "Skipped"])
+        Answers.logSignUp(withMethod: "Facebook", success: 0, customAttributes: ["FacebookLogin": "Skipped"])
         UserDefaults.standard.set(Date(), forKey: "FacebookLoginSkipped")
         self.loginFailed = true
         presentTimeline()

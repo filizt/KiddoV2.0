@@ -12,6 +12,7 @@ import Parse
 import UserNotifications
 import CoreLocation
 import MapKit
+import Crashlytics
 
 class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDelegate {
     
@@ -49,6 +50,9 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
 
         let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
         mapView.addGestureRecognizer(gestureRecognizer)
+
+        Answers.logCustomEvent(withName: "Detail View", customAttributes:["Event Title": event.title, "Event Cost": event.price])
+
     }
 
     override func viewWillAppear(_ animated: Bool) {
