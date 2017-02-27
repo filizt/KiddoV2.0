@@ -51,7 +51,7 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
         let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
         mapView.addGestureRecognizer(gestureRecognizer)
 
-        Answers.logCustomEvent(withName: "Detail View", customAttributes:["Event Title": event.title, "Event Cost": event.price])
+        Answers.logCustomEvent(withName: "Detail View", customAttributes:["Event Title": event.title, "Event Cost": event.freeFlag == true ? "Free" : "Paid"])
 
     }
 
