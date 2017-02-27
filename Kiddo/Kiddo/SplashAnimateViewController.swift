@@ -50,7 +50,6 @@ class SplashAnimateViewController: UIViewController, PFLogInViewControllerDelega
     }
     
     func prepareForLaunch() {
-
         if PFUser.current() == nil && facebookLoginNeeded() {
             let logInViewController = LogInViewController()
             logInViewController.fields = [PFLogInFields.facebook, PFLogInFields.dismissButton]

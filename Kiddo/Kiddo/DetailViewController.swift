@@ -105,12 +105,12 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
         let address = addressString
         let geocoder = CLGeocoder()
 
-        geocoder.geocodeAddressString(address, completionHandler: {(placemarks, error) -> Void in
+        geocoder.geocodeAddressString(address, completionHandler: {[weak weakSelf = self] (placemarks, error) -> Void in
             guard error == nil else { return }
 
             if let placemark = placemarks?.first {
                 if let location = placemark.location {
-                    self.locationCoordinates = location.coordinate
+                    weakSelf?.locationCoordinates = location.coordinate
                 }
             }
         })

@@ -34,10 +34,7 @@ class EventTableViewCell: UITableViewCell {
     }
 
     private func updateUI() {
-        //load new information from our event (if any)
-
-        //cell view loads and shows white background for a short period of time. This looks very ugly. Turns out white background shows during the time we're waiting for the image download. Adding image placeholder to show here.
-        //It'd be great if we could start the image download earlier.
+        //load new information from event object(if any)
         self.eventImage?.image = UIImage(named: "image_placeholder")
 
         if let event = event {

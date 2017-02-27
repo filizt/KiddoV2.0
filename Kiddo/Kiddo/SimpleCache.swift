@@ -19,7 +19,6 @@ class SimpleCache {
         return self.cache[key]
     }
 
-    //what happens if there is a collusion here? Why is the Dictionary acting like a Set here. Need to look at the notes.
     func setImage(_ image:UIImage, key: String) {
         if self.cache.count >= self.capacity{
             guard let lastKey = Array(self.cache.keys).last else { return }

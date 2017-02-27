@@ -29,14 +29,40 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         }
     }
 
-    private var today = [Event]()
-    private var tomorrow = [Event]()
-    private var later = [Event]() {
+    private var today = [Event]() {
         didSet {
-            if self.later.elementsEqual(oldValue, by: { $0.id == $1.id }) {
-                later = oldValue
+            if !today.elementsEqual(oldValue, by: { $0.id == $1.id }) {
+                today = self.sortEvents(events: today )
+
+                if self.segmentedControl.selectedIndex == 0 { // IS THIS NEEDED?
+                    self.events = self.today
+                }
             }
         }
+    }
+    private var tomorrow = [Event]() {
+        didSet {
+            if !tomorrow.elementsEqual(oldValue, by: { $0.id == $1.id }) {
+                tomorrow = self.sortEvents(events: tomorrow )
+            }
+        }
+    }
+    private var later = [Event]() {
+        didSet {
+            if !later.elementsEqual(oldValue, by: { $0.id == $1.id }) {
+                guard let laterDate = DateUtil.shared.later() else { return }
+                for i in 0..<later.count {
+                    later[i].updateDates(bydate: laterDate)
+                }
+                later.sort { $0.dates.first! < $1.dates.first! }
+            }
+        }
+//not sure assigning oldValue back saves cycles.
+//        didSet {
+//            if self.later.elementsEqual(oldValue, by: { $0.id == $1.id }) {
+//                later = oldValue
+//            }
+//        }
     }
 
     var loginFailAlert: UIAlertController? {
@@ -53,24 +79,6 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
     }
 
     var loginFailed: Bool = false
-
-    func animateTimelineCells() {
-
-        let visibleCells = timelineTableView.visibleCells.map { (cell) -> EventTableViewCell in
-            cell.transform = CGAffineTransform(translationX: 0, y: timelineTableView.bounds.size.height)
-            return cell as! EventTableViewCell
-        }
-
-        var index = 0
-
-        for cell in visibleCells {
-            UIView.animate(withDuration: 0.50, delay: 0.05 * Double(index), usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
-                cell.transform =  CGAffineTransform.identity
-            })
-            index += 1
-        }
-    }
-
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -100,29 +108,46 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
             self.present(alert, animated: true, completion: nil)
         }
         
-        NotificationCenter.default.addObserver(self, selector: #selector(didBecomeActive), name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(applationEnteredForeground), name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
 
         //First time the app loads, default view is today tab. Let's log that.
         Answers.logContentView(withName: "Today Tab", contentType: nil, contentId: nil, customAttributes: nil)
         Answers.logCustomEvent(withName: "App Launch", customAttributes:nil)
 
+        activityIndicator.startAnimating()
+        self.fetchAllEvents()
     }
 
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
 
-    func didBecomeActive() {
-        activityIndicator.startAnimating()
-        self.fetchAllEvents()
-
-    }
 
     override func viewWillAppear(_ animated: Bool) {
+
+    }
+
+    func applationEnteredForeground() {
         activityIndicator.startAnimating()
         self.fetchAllEvents()
     }
 
+    func animateTimelineCells() {
+
+        let visibleCells = timelineTableView.visibleCells.map { (cell) -> EventTableViewCell in
+            cell.transform = CGAffineTransform(translationX: 0, y: timelineTableView.bounds.size.height)
+            return cell as! EventTableViewCell
+        }
+
+        var index = 0
+
+        for cell in visibleCells {
+            UIView.animate(withDuration: 0.50, delay: 0.05 * Double(index), usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+                cell.transform =  CGAffineTransform.identity
+            })
+            index += 1
+        }
+    }
    
     //MARK: Local Notifications
 
@@ -180,19 +205,13 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         let eventDateQuery = PFQuery(className: "EventDate")
         let date = DateUtil.shared.createDate(from: DateUtil.shared.today())
         eventDateQuery.whereKey("eventDate", equalTo: date)
-        eventDateQuery.findObjectsInBackground { (dateObjects, error) in
+        eventDateQuery.findObjectsInBackground { [weak weakSelf = self] (dateObjects, error) in
             if let dateObjects = dateObjects {
                 let relation = dateObjects[0].relation(forKey: "events")
                 relation.query().findObjectsInBackground { (objects, error) in
                     if let objects = objects {
-                        //objects should be events for a particular date
-                        let returnedEvents = objects.map { Event.create(from: $0) }
-                        let sortedEvents = self.sortEvents(events: returnedEvents)
-                        self.today = sortedEvents
-                        if self.segmentedControl.selectedIndex == 0 {
-                            self.events = self.today
-                        }
-                        self.activityIndicator.stopAnimating()
+                        weakSelf?.today = objects.map { Event.create(from: $0) }
+                        weakSelf?.activityIndicator.stopAnimating()
                     }
                 }
             }
@@ -201,37 +220,24 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         let queryTomorrow = PFQuery(className: "EventDate")
         let dateTomorrow = DateUtil.shared.createDate(from: DateUtil.shared.tomorrow())
         queryTomorrow.whereKey("eventDate", equalTo: dateTomorrow)
-        queryTomorrow.findObjectsInBackground { (dateObjects, error) in
+        queryTomorrow.findObjectsInBackground { [weak weakSelf = self] (dateObjects, error) in
             if let dateObjects = dateObjects {
                 let relation = dateObjects[0].relation(forKey: "events")
                 relation.query().findObjectsInBackground { (objects, error) in
                     if let objects = objects {
-                        //objects should be events for a particular date
-                        let returnedEvents = objects.map {Event.create(from: $0)}
-                        let sortedEvents = self.sortEvents(events: returnedEvents)
-                        self.tomorrow = sortedEvents
-                        self.activityIndicator.stopAnimating()
+                        weakSelf?.tomorrow = objects.map { Event.create(from: $0) }
                     }
                 }
             }
         }
 
-
-
         let queryLater = PFQuery(className: "EventObject")
         guard let laterDate = DateUtil.shared.later() else { return }
         queryLater.whereKey("allEventDates", greaterThanOrEqualTo: laterDate)
         queryLater.limit = 20
-        queryLater.findObjectsInBackground { (objects, error) in
+        queryLater.findObjectsInBackground { [weak weakSelf = self] (objects, error) in
             if let objects = objects {
-                var returnedEvents = objects.map { Event.create(from: $0) }
-                    if !self.later.elementsEqual(returnedEvents, by: { $0.id == $1.id }) {
-                        for i in 0..<returnedEvents.count {
-                            returnedEvents[i].updateDates(bydate: laterDate)
-                        }
-                        self.later = returnedEvents.sorted { $0.dates.first! < $1.dates.first! }
-                    }
-                    self.activityIndicator.stopAnimating()
+                weakSelf?.later = objects.map { Event.create(from: $0) }
             }
         }
     }
