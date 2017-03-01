@@ -38,6 +38,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
 
         fetchImages()
+        requestAuthForNotifications()
 
         return true
     }
@@ -69,6 +70,52 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 }
             }
         })
+    }
+
+    //MARK: Local Notifications
+
+    func requestAuthForNotifications() {
+        UNUserNotificationCenter.current().getNotificationSettings(completionHandler: { (settings) in
+            if settings.authorizationStatus != .authorized {
+                UNUserNotificationCenter.current().requestAuthorization(options: [ .alert, .sound]) {(granted, error) in
+                    if granted {
+                        //schedule notifications.
+                        self.scheduleLocalNotifications()
+                        Answers.logCustomEvent(withName: "UserNotificationAuth", customAttributes: ["Notifications":"Authroized"])
+                    } else {
+                        Answers.logCustomEvent(withName: "UserNotificationAuth", customAttributes: ["Notifications":"Denied"])
+                    }
+                }
+            }
+        })
+    }
+
+    //Turns out we can only ask the user once for notification auth. So commenting below code out.
+    //    func notificationsAuthNeeded() -> Bool {
+    //        if let lastNotificationAuthRequest = UserDefaults.standard.object(forKey: "UserNotificationsDeniedKey") as? Date {
+    //            guard ((lastNotificationAuthRequest.timeIntervalSinceNow * -1) >= (60*60*24*3)) else { return false }
+    //        }
+    //
+    //        return true //first time user case
+    //    }
+
+
+    func scheduleLocalNotifications() {
+        //time interval is every 3 days
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: (60*60*24*3), repeats: true)
+
+        let content = UNMutableNotificationContent()
+        content.title = "Kiddo"
+        content.body = "Kiddo has some new things for you and the littles - come check them out!"
+        content.sound = UNNotificationSound.default()
+
+        let request = UNNotificationRequest(identifier: "textNotification", content: content, trigger: trigger)
+
+        UNUserNotificationCenter.current().add(request) {(error) in
+            if let error = error {
+                print("Uh oh! We had an error: \(error)")
+            }
+        }
     }
 
     func isSimulator() -> Bool {

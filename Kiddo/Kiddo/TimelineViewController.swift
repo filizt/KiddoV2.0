@@ -85,9 +85,6 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 
         activityIndicator.hidesWhenStopped = true
         activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
-
-
-        Timer.scheduledTimer(timeInterval: 10.0, target: self, selector: #selector(self.requestAuthForNotifications), userInfo: nil, repeats: false)
         
         NotificationCenter.default.addObserver(self, selector: #selector(applationEnteredForeground), name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
 
@@ -130,52 +127,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         }
     }
    
-    //MARK: Local Notifications
-
-    func requestAuthForNotifications() {
-        UNUserNotificationCenter.current().getNotificationSettings(completionHandler: { (settings) in
-            if settings.authorizationStatus != .authorized {
-                UNUserNotificationCenter.current().requestAuthorization(options: [ .alert, .sound]) {(granted, error) in
-                    if granted {
-                        //schedule notifications.
-                        self.scheduleLocalNotifications()
-                        Answers.logCustomEvent(withName: "UserNotificationAuth", customAttributes: ["Notifications":"Authroized"])
-                    } else {
-                        Answers.logCustomEvent(withName: "UserNotificationAuth", customAttributes: ["Notifications":"Denied"])
-                    }
-                }
-            }
-        })
-    }
-
-    //Turns out we can only ask the user once for notification auth. So commenting below code out.
-//    func notificationsAuthNeeded() -> Bool {
-//        if let lastNotificationAuthRequest = UserDefaults.standard.object(forKey: "UserNotificationsDeniedKey") as? Date {
-//            guard ((lastNotificationAuthRequest.timeIntervalSinceNow * -1) >= (60*60*24*3)) else { return false }
-//        }
-//
-//        return true //first time user case
-//    }
-
-
-    func scheduleLocalNotifications() {
-        //time interval is every 3 days
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: (60*60*24*3), repeats: true)
-
-        let content = UNMutableNotificationContent()
-        content.title = "Kiddo"
-        content.body = "Kiddo has some new things for you and the littles - come check them out!"
-        content.sound = UNNotificationSound.default()
-
-        let request = UNNotificationRequest(identifier: "textNotification", content: content, trigger: trigger)
-
-        UNUserNotificationCenter.current().add(request) {(error) in
-            if let error = error {
-                print("Uh oh! We had an error: \(error)")
-            }
-        }
-    }
-
+ 
     //MARK: Fetch Events
 
     private var lastRequest: PFQuery<PFObject>?
@@ -185,6 +137,11 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         let date = DateUtil.shared.createDate(from: DateUtil.shared.today())
         eventDateQuery.whereKey("eventDate", equalTo: date)
         eventDateQuery.findObjectsInBackground { [weak weakSelf = self] (dateObjects, error) in
+            guard error == nil else {
+                print ("Error fetching today's events from Parse")
+                return
+            }
+
             if let dateObjects = dateObjects {
                 let relation = dateObjects[0].relation(forKey: "events")
                 relation.query().findObjectsInBackground { (objects, error) in
@@ -200,6 +157,11 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         let dateTomorrow = DateUtil.shared.createDate(from: DateUtil.shared.tomorrow())
         queryTomorrow.whereKey("eventDate", equalTo: dateTomorrow)
         queryTomorrow.findObjectsInBackground { [weak weakSelf = self] (dateObjects, error) in
+            guard error == nil else {
+                print ("Error fetching tomorrow's events from Parse")
+                return
+            }
+
             if let dateObjects = dateObjects {
                 let relation = dateObjects[0].relation(forKey: "events")
                 relation.query().findObjectsInBackground { (objects, error) in
@@ -215,6 +177,11 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         queryLater.whereKey("allEventDates", greaterThanOrEqualTo: laterDate)
         queryLater.limit = 20
         queryLater.findObjectsInBackground { [weak weakSelf = self] (objects, error) in
+            guard error == nil else {
+                print ("Error fetching later events from Parse")
+                return
+            }
+
             if let objects = objects {
                 weakSelf?.later = objects.map { Event.create(from: $0) }
             }
