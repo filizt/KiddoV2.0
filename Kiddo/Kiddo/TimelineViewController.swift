@@ -65,21 +65,6 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 //        }
     }
 
-    var loginFailAlert: UIAlertController? {
-        get {
-            if loginFailed {
-                let alert = UIAlertController(title: "Facebook Login Skipped", message: "No login required - let's find some fun events!", preferredStyle: UIAlertControllerStyle.alert)
-                let alertAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil )
-                alert.addAction(alertAction)
-                return alert
-            } else {
-                return nil
-            }
-        }
-    }
-
-    var loginFailed: Bool = false
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -102,11 +87,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
 
 
-        Timer.scheduledTimer(timeInterval: 10.0, target: self, selector: #selector(self.requestAuthForNotifications), userInfo: nil, repeats: false);
-
-        if let alert = self.loginFailAlert {
-            self.present(alert, animated: true, completion: nil)
-        }
+        Timer.scheduledTimer(timeInterval: 10.0, target: self, selector: #selector(self.requestAuthForNotifications), userInfo: nil, repeats: false)
         
         NotificationCenter.default.addObserver(self, selector: #selector(applationEnteredForeground), name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
 
@@ -154,29 +135,27 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
     func requestAuthForNotifications() {
         UNUserNotificationCenter.current().getNotificationSettings(completionHandler: { (settings) in
             if settings.authorizationStatus != .authorized {
-                if self.notificationsAuthNeeded() {
-                    UNUserNotificationCenter.current().requestAuthorization(options: [ .alert, .sound]) {(granted, error) in
-                        if granted {
-                            //schedule notifications.
-                            self.scheduleLocalNotifications()
-                            Answers.logCustomEvent(withName: "UserNotificationAuth", customAttributes: ["Notifications":"Authroized"])
-                        } else {
-                            UserDefaults.standard.set(Date(), forKey: "UserNotificationsDeniedKey")
-                            Answers.logCustomEvent(withName: "UserNotificationAuth", customAttributes: ["Notifications":"Denied"])
-                        }
+                UNUserNotificationCenter.current().requestAuthorization(options: [ .alert, .sound]) {(granted, error) in
+                    if granted {
+                        //schedule notifications.
+                        self.scheduleLocalNotifications()
+                        Answers.logCustomEvent(withName: "UserNotificationAuth", customAttributes: ["Notifications":"Authroized"])
+                    } else {
+                        Answers.logCustomEvent(withName: "UserNotificationAuth", customAttributes: ["Notifications":"Denied"])
                     }
                 }
             }
         })
     }
 
-    func notificationsAuthNeeded() -> Bool {
-        if let lastNotificationAuthRequest = UserDefaults.standard.object(forKey: "UserNotificationsDeniedKey") as? Date {
-            guard ((lastNotificationAuthRequest.timeIntervalSinceNow * -1) <= (60*60*24*3)) else { return false }
-        }
-
-        return true //first time user case
-    }
+    //Turns out we can only ask the user once for notification auth. So commenting below code out.
+//    func notificationsAuthNeeded() -> Bool {
+//        if let lastNotificationAuthRequest = UserDefaults.standard.object(forKey: "UserNotificationsDeniedKey") as? Date {
+//            guard ((lastNotificationAuthRequest.timeIntervalSinceNow * -1) >= (60*60*24*3)) else { return false }
+//        }
+//
+//        return true //first time user case
+//    }
 
 
     func scheduleLocalNotifications() {
