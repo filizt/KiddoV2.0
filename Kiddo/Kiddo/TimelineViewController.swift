@@ -134,10 +134,11 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
     private var lastRequest: PFQuery<PFObject>?
 
     private func fetchAllEvents() {
-        let eventDateQuery = PFQuery(className: "EventDate")
+        let eventToday = PFQuery(className: "EventDate")
         let date = DateUtil.shared.createDate(from: DateUtil.shared.today())
-        eventDateQuery.whereKey("eventDate", equalTo: date)
-        eventDateQuery.findObjectsInBackground { [weak weakSelf = self] (dateObjects, error) in
+        eventToday.whereKey("eventDate", equalTo: date)
+        //eventToday.whereKey("isActive", equalTo: true)
+        eventToday.findObjectsInBackground { [weak weakSelf = self] (dateObjects, error) in
             guard error == nil else {
                 print ("Error fetching today's events from Parse")
                 return
@@ -145,6 +146,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 
             if let dateObjects = dateObjects {
                 let relation = dateObjects[0].relation(forKey: "events")
+                relation.query().whereKey("isActive", equalTo: true)
                 relation.query().findObjectsInBackground { (objects, error) in
                     if let objects = objects {
                         weakSelf?.today = objects.map { Event.create(from: $0) }
@@ -176,6 +178,8 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         let queryLater = PFQuery(className: "EventObject")
         guard let laterDate = DateUtil.shared.later() else { return }
         queryLater.whereKey("allEventDates", greaterThanOrEqualTo: laterDate)
+        eventToday.whereKey("isActive", equalTo: true)
+        eventToday.whereKey("isPopular", equalTo: true)
         queryLater.limit = 20
         queryLater.findObjectsInBackground { [weak weakSelf = self] (objects, error) in
             guard error == nil else {
