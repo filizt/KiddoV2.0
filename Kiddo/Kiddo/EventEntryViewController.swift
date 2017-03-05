@@ -32,8 +32,8 @@ class EventEntryViewController: UIViewController {
         //downloadEventImagesFromSource()
         //downloadEventImagesFromLocalSource()
 
-        createImageTestData()
-        uploadEventImagesFromLocalSource()
+        //createImageTestData()
+        //uploadEventImagesFromLocalSource()
 
         navigationController?.popViewController(animated: true)
     }
@@ -73,30 +73,36 @@ class EventEntryViewController: UIViewController {
     func populateTestData() {
 
         var data = [String: Any]()
-//        data["title"] = "Toddler Time"
-//        var allEventDates = [Date]()
-//        allEventDates.append(DateUtil.shared.createDate(from: "03-01-2017"))
-//        allEventDates.append(DateUtil.shared.createDate(from: "03-02-2017"))
-//        allEventDates.append(DateUtil.shared.createDate(from: "03-03-2017"))
-//        allEventDates.append(DateUtil.shared.createDate(from: "03-04-2017"))
-//        data["allEventDates"] = allEventDates
-//        data["startDate"] = DateUtil.shared.createDate(from: "02-06-2017")
-//        data["endDate"] = DateUtil.shared.createDate(from: "03-31-2017")
-//        data["allDay"] = false
-//        data["startTime"] = "9:30 AM"
-//        data["endTime"] = "12:00 AM"
-//        data["free"] = false
-//        data["price"] = "0-3 FREE / 4 -12 16.95 / 13 and older 24.95"
-//        data["originalEventURL"] = "http://www.seattleaquarium.org/"
-//        data["location"] = "Seattle Aquarium"
-//        data["locationHours"] = ""
-//        data["address"] = "1483 Alaskan Way, Seattle, WA 98101"
-//        data["description"] = "From dressing up like a wolf eel to fish-print painting and water play with ocean animal toys, Toddler Time keeps even the busiest of bodies engaged and entertained. A myriad of developmentally age-appropriate, hands-on activities await for tots to explore."
-//        data["ages"] = "0 - 5"
-//        data["imageURL"] = ""
-//        data["imageObjectId"] = "MrXAwEQqHC"
-//
-//        testData["1"] =  data
+        data["title"] = "Toddler Time"
+        var allEventDates = [Date]()
+        allEventDates.append(DateUtil.shared.createDate(from: "03-05-2017"))
+        allEventDates.append(DateUtil.shared.createDate(from: "03-06-2017"))
+        allEventDates.append(DateUtil.shared.createDate(from: "03-07-2017"))
+        allEventDates.append(DateUtil.shared.createDate(from: "03-08-2017"))
+        allEventDates.append(DateUtil.shared.createDate(from: "03-09-2017"))
+        allEventDates.append(DateUtil.shared.createDate(from: "03-10-2017"))
+        allEventDates.append(DateUtil.shared.createDate(from: "03-11-2017"))
+        allEventDates.append(DateUtil.shared.createDate(from: "03-12-2017"))
+        data["allEventDates"] = allEventDates
+        data["startDate"] = DateUtil.shared.createDate(from: "02-06-2017")
+        data["endDate"] = DateUtil.shared.createDate(from: "03-31-2017")
+        data["allDay"] = false
+        data["startTime"] = "9:30 AM"
+        data["endTime"] = "12:00 AM"
+        data["free"] = false
+        data["price"] = "0-3 FREE / 4 -12 16.95 / 13 and older 24.95"
+        data["originalEventURL"] = "http://www.seattleaquarium.org/"
+        data["location"] = "Seattle Aquarium"
+        data["locationHours"] = ""
+        data["address"] = "1483 Alaskan Way, Seattle, WA 98101"
+        data["description"] = "From dressing up like a wolf eel to fish-print painting and water play with ocean animal toys, Toddler Time keeps even the busiest of bodies engaged and entertained. A myriad of developmentally age-appropriate, hands-on activities await for tots to explore."
+        data["ages"] = "0 - 5"
+        data["imageURL"] = ""
+        data["isActive"] = true
+        data["isPopular"] = true
+        data["imageObjectId"] = "upisg34kPs"
+
+        testData["1"] =  data
 
 
 //        data = [String: Any]()
@@ -146,11 +152,15 @@ class EventEntryViewController: UIViewController {
 
         data = [String: Any]()
         data["title"] = "Tiny Tyke Time"
-        var allEventDates = [Date]()
-        allEventDates.append(DateUtil.shared.createDate(from: "03-01-2017"))
-        allEventDates.append(DateUtil.shared.createDate(from: "03-02-2017"))
-        allEventDates.append(DateUtil.shared.createDate(from: "03-03-2017"))
-        allEventDates.append(DateUtil.shared.createDate(from: "03-04-2017"))
+        allEventDates = [Date]()
+        allEventDates.append(DateUtil.shared.createDate(from: "03-05-2017"))
+        allEventDates.append(DateUtil.shared.createDate(from: "03-06-2017"))
+        allEventDates.append(DateUtil.shared.createDate(from: "03-07-2017"))
+        allEventDates.append(DateUtil.shared.createDate(from: "03-08-2017"))
+        allEventDates.append(DateUtil.shared.createDate(from: "03-09-2017"))
+        allEventDates.append(DateUtil.shared.createDate(from: "03-10-2017"))
+        allEventDates.append(DateUtil.shared.createDate(from: "03-11-2017"))
+        allEventDates.append(DateUtil.shared.createDate(from: "03-12-2017"))
         data["allEventDates"] = allEventDates
         data["startDate"] = DateUtil.shared.createDate(from: "03-04-2017")
         data["endDate"] = DateUtil.shared.createDate(from:"03-04-2017")
@@ -167,8 +177,10 @@ class EventEntryViewController: UIViewController {
         data["ages"] = "0 - 12"
         data["imageURL"] = ""
 //http://a1.mzstatic.com/us/r1000/041/Purple/4b/19/e2/mzi.anpnlkza.png
-        data["imageObjectId"] = "WdGOGRBlba"
-        testData["1"] =  data
+        data["imageObjectId"] = "xGOoXPL3kR"
+        data["isActive"] = true
+        data["isPopular"] = true
+        testData["2"] =  data
 
 
 
@@ -202,30 +214,36 @@ class EventEntryViewController: UIViewController {
 //        data["imageObjectId"] = "XCqOt5xlh4"
 //        testData["4"] =  data
 
-//        data = [String: Any]()
-//        data["title"] = "Little Movers"
-//        allEventDates = [Date]()
-//        allEventDates.append(DateUtil.shared.createDate(from: "03-01-2017"))
-//        allEventDates.append(DateUtil.shared.createDate(from: "03-02-2017"))
-//        allEventDates.append(DateUtil.shared.createDate(from: "03-03-2017"))
-//        allEventDates.append(DateUtil.shared.createDate(from: "03-04-2017"))
-//        data["allEventDates"] = allEventDates
-//        data["startDate"] = DateUtil.shared.createDate(from: "02-16-2017")
-//        data["endDate"] = DateUtil.shared.createDate(from: "03-31-2017")
-//        data["allDay"] = false
-//        data["startTime"] = "10:30 AM"
-//        data["endTime"] = "11:15 AM"
-//        data["free"] = true
-//        data["price"] = ""
-//        data["originalEventURL"] = "https://www.arboretumfoundation.org/events/"
-//        data["location"] = "Seattle Public Library"
-//        data["locationHours"] = ""
-//        data["address"] = "1000 Fourth Ave. Seattle, WA 98104"
-//        data["description"] = "The Seattle Public Library will host free sessions of Illumination Learning's \"Little Movers\" a music class for toddlers and their parents or caregivers. Little Movers is an introduction into the world of music for children ages 15 months to 3 years old. Library events are free and open to the public. Free parking is available in the underground garage. Enter and exit the garage on N. 81st Street. Registration is required, call or drop by the branch to sign up."
-//        data["ages"] = "15 months - 3 years old"
-//        data["imageURL"] = ""
-//        data["imageObjectId"] = "uPw8UZTzM9"
-//        testData["2"] = data
+        data = [String: Any]()
+        data["title"] = "Little Movers"
+        allEventDates = [Date]()
+        allEventDates.append(DateUtil.shared.createDate(from: "03-05-2017"))
+        allEventDates.append(DateUtil.shared.createDate(from: "03-06-2017"))
+        allEventDates.append(DateUtil.shared.createDate(from: "03-07-2017"))
+        allEventDates.append(DateUtil.shared.createDate(from: "03-08-2017"))
+        allEventDates.append(DateUtil.shared.createDate(from: "03-09-2017"))
+        allEventDates.append(DateUtil.shared.createDate(from: "03-10-2017"))
+        allEventDates.append(DateUtil.shared.createDate(from: "03-11-2017"))
+        allEventDates.append(DateUtil.shared.createDate(from: "03-12-2017"))
+        data["allEventDates"] = allEventDates
+        data["startDate"] = DateUtil.shared.createDate(from: "02-16-2017")
+        data["endDate"] = DateUtil.shared.createDate(from: "03-31-2017")
+        data["allDay"] = false
+        data["startTime"] = "10:30 AM"
+        data["endTime"] = "11:15 AM"
+        data["free"] = true
+        data["price"] = ""
+        data["originalEventURL"] = "https://www.arboretumfoundation.org/events/"
+        data["location"] = "Seattle Public Library"
+        data["locationHours"] = ""
+        data["address"] = "1000 Fourth Ave. Seattle, WA 98104"
+        data["description"] = "The Seattle Public Library will host free sessions of Illumination Learning's \"Little Movers\" a music class for toddlers and their parents or caregivers. Little Movers is an introduction into the world of music for children ages 15 months to 3 years old. Library events are free and open to the public. Free parking is available in the underground garage. Enter and exit the garage on N. 81st Street. Registration is required, call or drop by the branch to sign up."
+        data["ages"] = "15 months - 3 years old"
+        data["imageURL"] = ""
+        data["imageObjectId"] = "o32UnQpsZF"
+        data["isActive"] = true
+        data["isPopular"] = false
+        testData["3"] = data
 
 //        data = [String: Any]()
 //        data["title"] = "Penguin Exhibit"
@@ -395,6 +413,8 @@ class EventEntryViewController: UIViewController {
                     eventObject["ages"] = test["ages"] as! String
                     eventObject["imageURL"] = test["imageURL"] as! String
                     eventObject["imageObjectId"] = test["imageObjectId"] as! String
+                    eventObject["isActive"] = test["isActive"] as! Bool
+                    eventObject["isPopular"] = test["isPopular"] as! Bool
 
                     let alleventdates = test["allEventDates"] as! [Date];
 
