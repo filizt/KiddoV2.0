@@ -137,7 +137,6 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         let eventToday = PFQuery(className: "EventDate")
         let date = DateUtil.shared.createDate(from: DateUtil.shared.today())
         eventToday.whereKey("eventDate", equalTo: date)
-        //eventToday.whereKey("isActive", equalTo: true)
         eventToday.findObjectsInBackground { [weak weakSelf = self] (dateObjects, error) in
             guard error == nil else {
                 print ("Error fetching today's events from Parse")
@@ -146,8 +145,10 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 
             if let dateObjects = dateObjects {
                 let relation = dateObjects[0].relation(forKey: "events")
-                relation.query().whereKey("isActive", equalTo: true)
-                relation.query().findObjectsInBackground { (objects, error) in
+                let query = relation.query()
+                query.includeKey("isActive")
+                query.whereKey("isActive", equalTo: true)
+                query.findObjectsInBackground { (objects, error) in
                     if let objects = objects {
                         weakSelf?.today = objects.map { Event.create(from: $0) }
                         weakSelf?.activityIndicator.stopAnimating()
@@ -167,7 +168,10 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 
             if let dateObjects = dateObjects {
                 let relation = dateObjects[0].relation(forKey: "events")
-                relation.query().findObjectsInBackground { (objects, error) in
+                let query = relation.query()
+                query.includeKey("isActive")
+                query.whereKey("isActive", equalTo: true)
+                query.findObjectsInBackground { (objects, error) in
                     if let objects = objects {
                         weakSelf?.tomorrow = objects.map { Event.create(from: $0) }
                     }
@@ -178,8 +182,8 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         let queryLater = PFQuery(className: "EventObject")
         guard let laterDate = DateUtil.shared.later() else { return }
         queryLater.whereKey("allEventDates", greaterThanOrEqualTo: laterDate)
-        eventToday.whereKey("isActive", equalTo: true)
-        eventToday.whereKey("isPopular", equalTo: true)
+        queryLater.whereKey("isActive", equalTo: true)
+        queryLater.whereKey("isPopular", equalTo: true)
         queryLater.limit = 20
         queryLater.findObjectsInBackground { [weak weakSelf = self] (objects, error) in
             guard error == nil else {
