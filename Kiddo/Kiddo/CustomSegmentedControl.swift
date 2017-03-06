@@ -111,7 +111,7 @@ protocol CustomSegmentedControlDelegate: class {
         let location = touch.location(in: self)
 
         for (index, item) in labels.enumerated() {
-            if item.frame.contains(location) {
+            if item.frame.contains(location) && selectedIndex != index {
                 selectedIndex = index
                 break
             }

@@ -21,15 +21,13 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 
     private var events = [Event]() {
         didSet {
-            if !self.events.elementsEqual(oldValue, by: { $0.id == $1.id }) {
+            if events.count > 0 {
                 timelineTableView.reloadData()
-                guard events.count > 0 else { return }
                 timelineTableView.scrollToRow(at: IndexPath(item: 0, section: 0), at: .top, animated: false)
                 animateTimelineCells()
             }
         }
     }
-
     private var today = [Event]() {
         didSet {
             if !today.elementsEqual(oldValue, by: { $0.id == $1.id }) {
