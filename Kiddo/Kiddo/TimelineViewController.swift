@@ -30,10 +30,10 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     private var today = [Event]() {
         didSet {
-            if !today.elementsEqual(oldValue, by: { $0.id == $1.id }) {
+            if today.count > 0 {
                 today = self.sortEvents(events: today )
 
-                if self.segmentedControl.selectedIndex == 0 { // IS THIS NEEDED?
+                if self.segmentedControl.selectedIndex == 0 {
                     self.events = self.today
                 }
             }
@@ -41,14 +41,14 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     private var tomorrow = [Event]() {
         didSet {
-            if !tomorrow.elementsEqual(oldValue, by: { $0.id == $1.id }) {
+            if tomorrow.count > 0 {
                 tomorrow = self.sortEvents(events: tomorrow )
             }
         }
     }
     private var later = [Event]() {
         didSet {
-            if !later.elementsEqual(oldValue, by: { $0.id == $1.id }) {
+            if later.count > 0 {
                 guard let laterDate = DateUtil.shared.later() else { return }
                 for i in 0..<later.count {
                     later[i].updateDates(bydate: laterDate)
@@ -56,12 +56,6 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
                 later.sort { $0.dates.first! < $1.dates.first! }
             }
         }
-//not sure assigning oldValue back saves cycles.
-//        didSet {
-//            if self.later.elementsEqual(oldValue, by: { $0.id == $1.id }) {
-//                later = oldValue
-//            }
-//        }
     }
 
     override func viewDidLoad() {

@@ -58,6 +58,10 @@ class SplashAnimateViewController: UIViewController, PFLogInViewControllerDelega
 
             self.present(logInViewController, animated: false, completion: nil )
         } else {
+            if PFUser.current() != nil {
+                Answers.logLogin(withMethod: "Facebook", success: 1, customAttributes: nil)
+            }
+
             self.performSegue(withIdentifier: "showTimeline", sender: nil)
         }
     }
