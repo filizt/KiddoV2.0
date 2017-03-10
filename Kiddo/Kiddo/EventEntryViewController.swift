@@ -492,150 +492,172 @@ class EventEntryViewController: UIViewController {
 
     private func createImageTestData() {
         var imageData = [String: Any]()
-        imageData["category"] = "Aquarium"
-        imageData["imageName"] = "aquarium"
+//        imageData["category"] = "Category"
+//        imageData["imageName"] = "AquariumMammal"
+//        imageTestData["0"] = imageData
+//
+//        imageData = [String: Any]()
+//        imageData["category"] = "Category"
+//        imageData["imageName"] = "aquarium2"
+//        imageTestData["1"] = imageData
+//
+//        imageData = [String: Any]()
+//        imageData["category"] = "Category"
+//        imageData["imageName"] = "ArtsGeneric"
+//        imageTestData["2"] = imageData
+//
+//        imageData = [String: Any]()
+//        imageData["category"] = "Category"
+//        imageData["imageName"] = "ArtsGeneric2"
+//        imageTestData["3"] = imageData
+//
+//        imageData = [String: Any]()
+//        imageData["category"] = "Category"
+//        imageData["imageName"] = "ArtsPainting"
+//        imageTestData["4"] = imageData
+//
+//        imageData = [String: Any]()
+//        imageData["category"] = "Category"
+//        imageData["imageName"] = "ArtsPaintingKid"
+//        imageTestData["5"] = imageData
+//
+//        imageData = [String: Any]()
+//        imageData["category"] = "Category"
+//        imageData["imageName"] = "Baby"
+//        imageTestData["6"] = imageData
+//
+//        imageData = [String: Any]()
+//        imageData["category"] = "Category"
+//        imageData["imageName"] = "Clover"
+//        imageTestData["7"] = imageData
+//
+//        imageData = [String: Any]()
+//        imageData["category"] = "Category"
+//        imageData["imageName"] = "Coffeeshop"
+//        imageTestData["8"] = imageData
+//
+//        imageData = [String: Any]()
+//        imageData["category"] = "Category"
+//        imageData["imageName"] = "EMPlicensed"
+//        imageTestData["9"] = imageData
+//
+//
+//        imageData = [String: Any]()
+//        imageData["category"] = "Category"
+//        imageData["imageName"] = "IndoorGym"
+//        imageTestData["10"] = imageData
+//
+//
+//        imageData = [String: Any]()
+//        imageData["category"] = "Category"
+//        imageData["imageName"] = "IndoorPlayGeneric"
+//        imageTestData["11"] = imageData
+//
+//
+//        imageData = [String: Any]()
+//        imageData["category"] = "Category"
+//        imageData["imageName"] = "KidSwimming"
+//        imageTestData["12"] = imageData
+//
+//        imageData = [String: Any]()
+//        imageData["category"] = "Category"
+//        imageData["imageName"] = "Library2"
+//        imageTestData["13"] = imageData
+//
+//
+//        imageData = [String: Any]()
+//        imageData["category"] = "Category"
+//        imageData["imageName"] = "LibraryGeneric"
+//        imageTestData["14"] = imageData
+//
+//
+//        imageData = [String: Any]()
+//        imageData["category"] = "Category"
+//        imageData["imageName"] = "MusicGeneric"
+//        imageTestData["15"] = imageData
+//
+//        imageData = [String: Any]()
+//        imageData["category"] = "Category"
+//        imageData["imageName"] = "OutdoorBuble"
+//        imageTestData["16"] = imageData
+//
+//        imageData = [String: Any]()
+//        imageData["category"] = "Category"
+//        imageData["imageName"] = "OutdoorGeneric"
+//        imageTestData["17"] = imageData
+//
+//        imageData = [String: Any]()
+//        imageData["category"] = "Category"
+//        imageData["imageName"] = "OutdoorGeneric2"
+//        imageTestData["18"] = imageData
+//
+//        imageData = [String: Any]()
+//        imageData["category"] = "Category"
+//        imageData["imageName"] = "OutdoorJump"
+//        imageTestData["19"] = imageData
+//
+//
+//        imageData["category"] = "Category"
+//        imageData["imageName"] = "OutdoorKidPlay"
+//        imageTestData["20"] = imageData
+//        imageData = [String: Any]()
+//
+//        imageData["category"] = "Category"
+//        imageData["imageName"] = "OutdoorLeaves"
+//        imageTestData["21"] = imageData
+//        imageData = [String: Any]()
+//
+//        imageData["category"] = "Category"
+//        imageData["imageName"] = "PacificScienceCenter"
+//        imageTestData["22"] = imageData
+//        imageData = [String: Any]()
+//
+//        imageData["category"] = "Category"
+//        imageData["imageName"] = "PeppaPig"
+//        imageTestData["23"] = imageData
+//        imageData = [String: Any]()
+//
+//        imageData["category"] = "Category"
+//        imageData["imageName"] = "Pony"
+//        imageTestData["24"] = imageData
+//        imageData = [String: Any]()
+//
+//        imageData["category"] = "Category"
+//        imageData["imageName"] = "PuppetShow"
+//        imageTestData["25"] = imageData
+//        imageData = [String: Any]()
+//
+//        imageData["category"] = "Category"
+//        imageData["imageName"] = "Swimming"
+//        imageTestData["26"] = imageData
+//        imageData = [String: Any]()
+//        
+//        imageData["category"] = "Category"
+//        imageData["imageName"] = "TheatreGeneric"
+//        imageTestData["27"] = imageData
+//        imageData = [String: Any]()
+//
+//        imageData["category"] = "Category"
+//        imageData["imageName"] = "Thomas"
+//        imageTestData["28"] = imageData
+//        imageData = [String: Any]()
+//
+//        imageData["category"] = "Category"
+//        imageData["imageName"] = "Yoga"
+//        imageTestData["29"] = imageData
+//        imageData = [String: Any]()
+
+        imageData["category"] = "Category"
+        imageData["imageName"] = "Zoomazium"
         imageTestData["0"] = imageData
-
         imageData = [String: Any]()
-        imageData["category"] = "Aquarium"
-        imageData["imageName"] = "aquarium2"
+
+        imageData["category"] = "Category"
+        imageData["imageName"] = "Elmo"
         imageTestData["1"] = imageData
-
-        imageData = [String: Any]()
-        imageData["category"] = "Arts"
-        imageData["imageName"] = "artsGeneric"
-        imageTestData["2"] = imageData
-
-        imageData = [String: Any]()
-        imageData["category"] = "Brewery"
-        imageData["imageName"] = "beerTap"
-        imageTestData["3"] = imageData
-
-        imageData = [String: Any]()
-        imageData["category"] = "Shows"
-        imageData["imageName"] = "classicalTheatre"
-        imageTestData["4"] = imageData
-
-        imageData = [String: Any]()
-        imageData["category"] = "CoffeeShop"
-        imageData["imageName"] = "coffeeShop"
-        imageTestData["5"] = imageData
-
-        imageData = [String: Any]()
-        imageData["category"] = "Museums"
-        imageData["imageName"] = "EMPlicensed"
-        imageTestData["6"] = imageData
-
-        imageData = [String: Any]()
-        imageData["category"] = "FitnessForMom"
-        imageData["imageName"] = "fitnessForMom"
-        imageTestData["7"] = imageData
-
-        imageData = [String: Any]()
-        imageData["category"] = "Arts"
-        imageData["imageName"] = "girlColoring"
-        imageTestData["8"] = imageData
-
-        imageData = [String: Any]()
-        imageData["category"] = "GrassNature"
-        imageData["imageName"] = "grassNature"
-        imageTestData["9"] = imageData
-
-
-        imageData = [String: Any]()
-        imageData["category"] = "Aquarium"
-        imageData["imageName"] = "aquarium2"
-        imageTestData["10"] = imageData
-
-
-        imageData = [String: Any]()
-        imageData["category"] = "IndoorGym"
-        imageData["imageName"] = "indoorGym"
-        imageTestData["11"] = imageData
-
-
-        imageData = [String: Any]()
-        imageData["category"] = "Arts"
-        imageData["imageName"] = "classicalMusic"
-        imageTestData["12"] = imageData
-
-        imageData = [String: Any]()
-        imageData["category"] = "Nature"
-        imageData["imageName"] = "kidsNature"
-        imageTestData["13"] = imageData
-
-
-        imageData = [String: Any]()
-        imageData["category"] = "Swimming"
-        imageData["imageName"] = "kidSwimming"
-        imageTestData["14"] = imageData
-
-
-        imageData = [String: Any]()
-        imageData["category"] = "Library"
-        imageData["imageName"] = "libraryGeneric"
-        imageTestData["15"] = imageData
-
-        imageData = [String: Any]()
-        imageData["category"] = "MusicGeneric"
-        imageData["imageName"] = "musicGeneric"
-        imageTestData["16"] = imageData
-
-        imageData = [String: Any]()
-        imageData["category"] = "OutdoorPlayground"
-        imageData["imageName"] = "outdoorPlayground"
-        imageTestData["17"] = imageData
-
-        imageData = [String: Any]()
-        imageData["category"] = "OutdoorPlayground"
-        imageData["imageName"] = "outdoorSwing"
-        imageTestData["18"] = imageData
-
-        imageData = [String: Any]()
-        imageData["category"] = "Museums"
-        imageData["imageName"] = "pacificScienceCenter"
-        imageTestData["19"] = imageData
-
-
-        imageData["category"] = "Arts"
-        imageData["imageName"] = "paintbrushes"
-        imageTestData["20"] = imageData
         imageData = [String: Any]()
 
-        imageData["category"] = "Arts"
-        imageData["imageName"] = "paintingKid"
-        imageTestData["21"] = imageData
-        imageData = [String: Any]()
 
-        imageData["category"] = "Zoo"
-        imageData["imageName"] = "pettingZoo"
-        imageTestData["22"] = imageData
-        imageData = [String: Any]()
-
-        imageData["category"] = "Zoo"
-        imageData["imageName"] = "puppetShow"
-        imageTestData["23"] = imageData
-        imageData = [String: Any]()
-
-        imageData["category"] = "Swimming"
-        imageData["imageName"] = "swimming"
-        imageTestData["24"] = imageData
-        imageData = [String: Any]()
-
-        imageData["category"] = "Zoo"
-        imageData["imageName"] = "zoo"
-        imageTestData["25"] = imageData
-        imageData = [String: Any]()
-
-        imageData["category"] = "Zoo"
-        imageData["imageName"] = "zooFlamingo"
-        imageTestData["26"] = imageData
-        imageData = [String: Any]()
-        
-        imageData["category"] = "Zoo"
-        imageData["imageName"] = "zooPeacock"
-        imageTestData["27"] = imageData
-        imageData = [String: Any]()
         
 
     }
