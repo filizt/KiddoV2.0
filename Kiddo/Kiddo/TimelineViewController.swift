@@ -31,7 +31,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
     private var today = [Event]() {
         didSet {
             if today.count > 0 {
-                today = self.sortEvents(events: today )
+                today = self.sortEventsSham(events: today )
 
                 if self.segmentedControl.selectedIndex == 0 {
                     self.events = self.today
@@ -42,7 +42,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
     private var tomorrow = [Event]() {
         didSet {
             if tomorrow.count > 0 {
-                tomorrow = self.sortEvents(events: tomorrow )
+                tomorrow = self.sortEventsSham(events: tomorrow )
             }
         }
     }
@@ -172,11 +172,14 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         }
 
         let queryLater = PFQuery(className: "EventObject")
+        var laterDates = [Date]()
         guard let laterDate = DateUtil.shared.later() else { return }
-        queryLater.whereKey("allEventDates", greaterThanOrEqualTo: laterDate)
+        guard let laterDatePlusOne = DateUtil.shared.laterPlusOne() else { return }
+        laterDates.append(laterDate)
+        laterDates.append(laterDatePlusOne)
+        queryLater.whereKey("allEventDates", containedIn: laterDates)
         queryLater.whereKey("isActive", equalTo: true)
-        queryLater.whereKey("isPopular", equalTo: true)
-        queryLater.limit = 20
+        queryLater.limit = 12
         queryLater.findObjectsInBackground { [weak weakSelf = self] (objects, error) in
             guard error == nil else {
                 print ("Error fetching later events from Parse")
@@ -185,6 +188,25 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 
             if let objects = objects {
                 weakSelf?.later = objects.map { Event.create(from: $0) }
+
+                let queryPopular = PFQuery(className: "EventObject")
+                guard let tomorrow: Date = DateUtil.shared.tomorrow() else { return }
+                queryPopular.whereKey("allEventDates", greaterThanOrEqualTo: tomorrow)
+                queryPopular.whereKey("isActive", equalTo: true)
+                queryPopular.whereKey("isPopular", equalTo: true)
+                queryPopular.limit = 12
+                queryPopular.findObjectsInBackground { [weak weakSelf = self] (popularObjects, error) in
+                    if let popularObjects = popularObjects {
+                        let returnedEvents = popularObjects.map { Event.create(from: $0) }
+                        //let's add returned events and dedupe  if necessary - this is a rare condition but still we need to do it.
+                        for event in returnedEvents {
+                            let filtered = weakSelf?.later.filter{ $0.id == event.id }
+                            if filtered?.count == 0 {
+                                weakSelf?.later.append(event)
+                            }
+                        }
+                    }
+                }
             }
         }
     }
@@ -198,6 +220,18 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 
         return e
     }
+
+    func sortEventsSham(events: [Event]) -> [Event]{
+        var e = events
+        var a = e.filter { $0.allDayFlag == false }
+        let b = e.filter { $0.allDayFlag == true }
+        a.sort { (DateUtil.shared.createShortTimeDate(from: $0.startTime)).compare(DateUtil.shared.createShortTimeDate(from: $1.startTime)) == ComparisonResult.orderedAscending }
+        e = a + b
+
+        return e
+    }
+
+
 
 
     //MARK: Stup Navigation Bar

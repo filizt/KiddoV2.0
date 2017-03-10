@@ -106,7 +106,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
         let content = UNMutableNotificationContent()
         content.title = "Kiddo"
-        content.body = "Kiddo has some new things for you and the littles - come check them out!"
+        content.body = "New events and activities added every day! Come check them out!"
         content.sound = UNNotificationSound.default()
 
         let request = UNNotificationRequest(identifier: "textNotification", content: content, trigger: trigger)

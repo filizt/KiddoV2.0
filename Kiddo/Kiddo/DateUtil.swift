@@ -55,6 +55,11 @@ class DateUtil {
         return formatter.string(from:date)
     }
 
+    func createShortTimeDate(from timeString:String) -> Date {
+        formatter.dateFormat = "h:mm a"
+        return formatter.date(from:timeString) ?? Date()
+    }
+
     //FIX-ME: There is a better way to implement below createDate logic. I think we should not return today date if we faile to create a date object from a string.
     func createDate(from dateString:String) -> Date {
         formatter.dateFormat = "MM-dd-yyyy"
@@ -76,6 +81,15 @@ class DateUtil {
         return formatter.string(from: tomorrow)
     }
 
+    func tomorrow() -> Date? {
+        var dateComponents = DateComponents()
+        dateComponents.day = 1
+
+        guard let tomorrow = Calendar.current.date(byAdding: dateComponents, to: createDate(from:today())) else { return nil }
+
+        return tomorrow
+    }
+
     func later() -> Date? {
         var dateComponents = DateComponents()
         dateComponents.day = 2
@@ -84,4 +98,14 @@ class DateUtil {
 
         return laterDate
     }
+
+    func laterPlusOne() -> Date? {
+        var dateComponents = DateComponents()
+        dateComponents.day = 3
+
+        guard let laterDate = Calendar.current.date(byAdding: dateComponents, to: createDate(from:today())) else { return nil }
+
+        return laterDate
+    }
+
 }
