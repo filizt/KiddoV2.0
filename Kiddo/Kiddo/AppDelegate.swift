@@ -37,15 +37,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
              Fabric.with([Crashlytics.self])
         }
 
-        fetchImages()
+        fetchImageCacheLimitAndImages()
         requestAuthForNotifications()
 
         return true
     }
 
-  
+    func fetchImageCacheLimitAndImages() {
+        let query = PFQuery(className: "ImageCache")
+        query.getFirstObjectInBackground(block: { (object, error) in
+            guard error == nil else {
+                print ("Error retrieving image cache limit from Parse")
+                return
+            }
+
+            if let object = object {
+                SimpleCache.shared.capacity = object["limit"] as! Int
+                self.fetchImages()
+            }
+        })
+    }
+    
     func fetchImages() {
         let query = PFQuery(className: "EventImage")
+        query.limit = SimpleCache.shared.capacity
         query.findObjectsInBackground(block: { (objects, error) in
             guard error == nil else {
                 print ("Error retrieving image data from Parse")
