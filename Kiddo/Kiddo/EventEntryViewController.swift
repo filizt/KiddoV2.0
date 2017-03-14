@@ -33,7 +33,7 @@ class EventEntryViewController: UIViewController {
         //downloadEventImagesFromLocalSource()
 
         createImageTestData()
-        uploadEventImagesFromLocalSource()
+        //uploadEventImagesFromLocalSource()
 
         navigationController?.popViewController(animated: true)
     }
@@ -647,19 +647,65 @@ class EventEntryViewController: UIViewController {
 //        imageTestData["29"] = imageData
 //        imageData = [String: Any]()
 
-        imageData["category"] = "Category"
-        imageData["imageName"] = "Zoomazium"
-        imageTestData["0"] = imageData
-        imageData = [String: Any]()
+//        imageData["category"] = "Category"
+//        imageData["imageName"] = "Zoomazium"
+//        imageTestData["0"] = imageData
+//        imageData = [String: Any]()
+//
+//        imageData["category"] = "Category"
+//        imageData["imageName"] = "Elmo"
+//        imageTestData["1"] = imageData
+//        imageData = [String: Any]()
 
-        imageData["category"] = "Category"
-        imageData["imageName"] = "Elmo"
-        imageTestData["1"] = imageData
-        imageData = [String: Any]()
+          var count = 0
+        if let path = Bundle.main.resourcePath {
+
+            let imagePath = path + "/Assets"
+            let url = NSURL(fileURLWithPath: imagePath)
+            let fileManager = FileManager.default
+
+            let properties = [URLResourceKey.localizedNameKey,
+                              URLResourceKey.creationDateKey, URLResourceKey.localizedTypeDescriptionKey]
+
+            do {
+                let urlList = try fileManager.contentsOfDirectory(at: url as URL, includingPropertiesForKeys: properties, options:FileManager.DirectoryEnumerationOptions.skipsHiddenFiles)
 
 
-        
 
+                for url in urlList {
+                    if let imageData = try? Data(contentsOf: url) {
+                        var fileName = url.deletingPathExtension().lastPathComponent
+                        uploadEventImageData(data: imageData, imageName: fileName)
+                        print("image URL: \(url.lastPathComponent)")
+                        count = count + 1
+                    }
+                 }
+
+                               //_ =  UIImage(data: NSData(contentsOf: imageURLs[0])! as Data)
+
+            } catch let error1 as NSError {
+                print(error1.description)
+            }
+        }
+
+        print("Total images uploaded: ", count)
+
+
+    }
+
+    private func uploadEventImageData(data: Data, imageName: String) {
+
+                let eventImage = PFObject(className: "EventImage")
+                eventImage["category"] = imageName
+                eventImage["imageName"] = imageName
+
+                let imagePFFile = PFFile(data: data, contentType: "image/jpeg")
+                eventImage["image"] = imagePFFile
+                if let imagePFFile = try? imagePFFile.save() {
+                    guard let _ = try? eventImage.save() else { return }
+                } else {
+                    print("IMAGE IS NOT SAVED!!!")
+                }
     }
 
     private func uploadEventImagesFromLocalSource() {

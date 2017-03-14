@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		3D0E85AC124827498950F2FA /* Pods_Kiddo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FFC514A966709BA92D1974B /* Pods_Kiddo.framework */; };
 		50584E071DD122ED00A2BEA9 /* UIExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50584E061DD122ED00A2BEA9 /* UIExtensions.swift */; };
+		BD3B8C421E789972000BFB09 /* Assets in Resources */ = {isa = PBXBuildFile; fileRef = BD3B8C411E789972000BFB09 /* Assets */; };
 		BD506DD81E293CD6001A98B0 /* DateUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD506DD71E293CD6001A98B0 /* DateUtil.swift */; };
 		BD68B9A71DD0F2F300CE39CA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD68B9A61DD0F2F300CE39CA /* AppDelegate.swift */; };
 		BD68B9AC1DD0F2F300CE39CA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD68B9AA1DD0F2F300CE39CA /* Main.storyboard */; };
@@ -27,6 +28,7 @@
 		4FFC514A966709BA92D1974B /* Pods_Kiddo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Kiddo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		50584E061DD122ED00A2BEA9 /* UIExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIExtensions.swift; sourceTree = "<group>"; };
 		540CFF22675486906CCC738D /* Pods-Kiddo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Kiddo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Kiddo/Pods-Kiddo.debug.xcconfig"; sourceTree = "<group>"; };
+		BD3B8C411E789972000BFB09 /* Assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Assets; sourceTree = "<group>"; };
 		BD506DD71E293CD6001A98B0 /* DateUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateUtil.swift; sourceTree = "<group>"; };
 		BD68B9A31DD0F2F200CE39CA /* Kiddo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kiddo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD68B9A61DD0F2F300CE39CA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -119,6 +121,7 @@
 		BD68B9A51DD0F2F300CE39CA /* Kiddo */ = {
 			isa = PBXGroup;
 			children = (
+				BD3B8C411E789972000BFB09 /* Assets */,
 				BD68B9A61DD0F2F300CE39CA /* AppDelegate.swift */,
 				C26E626E1DD1038C00BDC568 /* TimelineViewController.swift */,
 				BDEB9E8C1E04966A002F7222 /* EventEntryViewController.swift */,
@@ -203,6 +206,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BD8EAAD91E5F52270056BC1A /* Assets in Resources */,
+				BD3B8C421E789972000BFB09 /* Assets in Resources */,
 				BD68B9B11DD0F2F300CE39CA /* LaunchScreen.storyboard in Resources */,
 				BD68B9AE1DD0F2F300CE39CA /* Assets.xcassets in Resources */,
 				BDEB9E911E05AB06002F7222 /* bg_portrait.jpg in Resources */,
