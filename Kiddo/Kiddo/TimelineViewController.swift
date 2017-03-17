@@ -199,12 +199,14 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
                     if let popularObjects = popularObjects {
                         let returnedEvents = popularObjects.map { Event.create(from: $0) }
                         //let's add returned events and dedupe  if necessary - this is a rare condition but still we need to do it.
+                        var filteredList = [Event]()
                         for event in returnedEvents {
                             let filtered = weakSelf?.later.filter{ $0.id == event.id }
                             if filtered?.count == 0 {
-                                weakSelf?.later.append(event)
+                                filteredList.append(event)
                             }
                         }
+                        weakSelf?.later += filteredList
                     }
                 }
             }
