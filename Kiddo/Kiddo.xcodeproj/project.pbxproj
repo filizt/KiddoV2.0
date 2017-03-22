@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		3D0E85AC124827498950F2FA /* Pods_Kiddo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FFC514A966709BA92D1974B /* Pods_Kiddo.framework */; };
 		50584E071DD122ED00A2BEA9 /* UIExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50584E061DD122ED00A2BEA9 /* UIExtensions.swift */; };
+		BD1A4F241E82D3B800BF036D /* UserGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD1A4F231E82D3B800BF036D /* UserGraph.swift */; };
 		BD506DD81E293CD6001A98B0 /* DateUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD506DD71E293CD6001A98B0 /* DateUtil.swift */; };
 		BD506DDD1E316A5C001A98B0 /* SimpleCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD506DDC1E316A5C001A98B0 /* SimpleCache.swift */; };
 		BD68B9A71DD0F2F300CE39CA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD68B9A61DD0F2F300CE39CA /* AppDelegate.swift */; };
@@ -32,6 +33,7 @@
 		4FFC514A966709BA92D1974B /* Pods_Kiddo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Kiddo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		50584E061DD122ED00A2BEA9 /* UIExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIExtensions.swift; sourceTree = "<group>"; };
 		540CFF22675486906CCC738D /* Pods-Kiddo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Kiddo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Kiddo/Pods-Kiddo.debug.xcconfig"; sourceTree = "<group>"; };
+		BD1A4F231E82D3B800BF036D /* UserGraph.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserGraph.swift; sourceTree = "<group>"; };
 		BD506DD71E293CD6001A98B0 /* DateUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateUtil.swift; sourceTree = "<group>"; };
 		BD506DDC1E316A5C001A98B0 /* SimpleCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleCache.swift; sourceTree = "<group>"; };
 		BD68B9A31DD0F2F200CE39CA /* Kiddo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kiddo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -155,6 +157,7 @@
 			children = (
 				C26E62741DD111AF00BDC568 /* Event.swift */,
 				BD506DDC1E316A5C001A98B0 /* SimpleCache.swift */,
+				BD1A4F231E82D3B800BF036D /* UserGraph.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -333,6 +336,7 @@
 				50584E071DD122ED00A2BEA9 /* UIExtensions.swift in Sources */,
 				BD506DD81E293CD6001A98B0 /* DateUtil.swift in Sources */,
 				BD506DDD1E316A5C001A98B0 /* SimpleCache.swift in Sources */,
+				BD1A4F241E82D3B800BF036D /* UserGraph.swift in Sources */,
 				C26E626F1DD1038C00BDC568 /* TimelineViewController.swift in Sources */,
 				C26E62751DD111AF00BDC568 /* Event.swift in Sources */,
 				BDC903D41E413B82006CD7D6 /* CustomSegmentedControl.swift in Sources */,

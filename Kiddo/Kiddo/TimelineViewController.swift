@@ -11,6 +11,7 @@ import Parse
 import ParseUI
 import UserNotifications
 import Crashlytics
+import ParseFacebookUtilsV4
 
 class TimelineViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, CustomSegmentedControlDelegate  {
 
@@ -87,6 +88,8 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 
         activityIndicator.startAnimating()
         self.fetchAllEvents()
+
+        updateUserGraphDataIfNecessary()
     }
 
     deinit {
@@ -98,9 +101,59 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 
     }
 
+
     func applationEnteredForeground() {
         activityIndicator.startAnimating()
         self.fetchAllEvents()
+
+        self.updateUserGraphDataIfNecessary()
+    }
+
+    func updateUserGraphDataIfNecessary() {
+        //user had signed up through FB before and currently logged in.
+        if let currentParseUserObjectId = PFUser.current()?.objectId {
+            let query = PFQuery(className: "UserGraphInfo")
+            query.whereKey("parseUserId", equalTo: currentParseUserObjectId)
+            query.getFirstObjectInBackground() { (object, error) in
+                if let object = object {
+                    //user graph data already saved, just update the lastSeen field
+                    object["lastSeen"] = Date()
+                    object.saveInBackground()
+                } else { //below is the case where users signed up with facebook but we don't have their userGraph info yet
+                    if let accessToken = FBSDKAccessToken.current() {
+                        PFFacebookUtils.logInInBackground(with: accessToken) { (user, error) in
+                            guard error == nil else { print("\(error?.localizedDescription)"); return }
+                            if user != nil {
+                                let requestParameters = ["fields": "id, first_name, last_name, email, age_range, gender, locale"]
+                                if let userDetails = FBSDKGraphRequest(graphPath: "me", parameters: requestParameters){
+                                    userDetails.start { (connection, result, error) -> Void in
+                                        guard error == nil else { print("\(error?.localizedDescription)"); return }
+
+                                        if let result = result {
+                                            let userGraphObject = UserGraph.create(from: result)
+                                            let userInfo: PFObject = PFObject(className: "UserGraphInfo")
+                                            userInfo["facebookId"] = userGraphObject.id
+                                            userInfo["firstName"] = userGraphObject.first_name
+                                            userInfo["lastName"] = userGraphObject.last_name
+                                            userInfo["email"] = userGraphObject.email
+                                            userInfo["gender"] = userGraphObject.gender
+                                            userInfo["locale"] = userGraphObject.locale
+                                            userInfo["parseUser"] = PFUser.current()
+                                            userInfo["parseUserId"] = PFUser.current()?.objectId
+                                            userInfo["lastSeen"] = Date()
+
+                                            userInfo.saveInBackground()
+                                        } else {
+                                            print("Uh oh. There was an problem getting the  in.")
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     func animateTimelineCells() {

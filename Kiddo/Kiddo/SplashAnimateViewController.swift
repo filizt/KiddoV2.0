@@ -10,6 +10,7 @@ import UIKit
 import Parse
 import ParseUI
 import Crashlytics
+import ParseFacebookUtilsV4
 
 class SplashAnimateViewController: UIViewController, PFLogInViewControllerDelegate, PFSignUpViewControllerDelegate{
     
@@ -48,7 +49,8 @@ class SplashAnimateViewController: UIViewController, PFLogInViewControllerDelega
     }
     
     func prepareForLaunch() {
-        if PFUser.current() == nil && facebookLoginNeeded() {
+        if PFUser.current() == nil {
+            guard facebookLoginNeeded() else { return }
             let logInViewController = LogInViewController()
             logInViewController.fields = [PFLogInFields.facebook, PFLogInFields.dismissButton]
             logInViewController.delegate = self
@@ -57,11 +59,7 @@ class SplashAnimateViewController: UIViewController, PFLogInViewControllerDelega
             logInViewController.facebookPermissions = ["public_profile", "email"]
 
             self.present(logInViewController, animated: false, completion: nil )
-        } else {
-            if PFUser.current() != nil {
-                Answers.logLogin(withMethod: "Facebook", success: 1, customAttributes: nil)
-            }
-
+        } else { // User had logged on before
             self.performSegue(withIdentifier: "showTimeline", sender: nil)
         }
     }
@@ -83,6 +81,7 @@ class SplashAnimateViewController: UIViewController, PFLogInViewControllerDelega
     func log(_ logInController: PFLogInViewController, didLogIn user: PFUser) {
         Answers.logSignUp(withMethod: "Facebook", success: 1, customAttributes: ["FacebookLogin": "Success"])
         presentTimeline()
+
     }
 
 
