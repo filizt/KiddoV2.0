@@ -6,14 +6,6 @@
 //  Copyright © 2017 Filiz Kurban. All rights reserved.
 //
 
-//
-//  Event.swift
-//  Kiddo
-//
-//  Created by Rachael A Helsel on 11/7/16.
-//  Copyright © 2016 Filiz Kurban. All rights reserved.
-//
-
 import Foundation
 import Parse
 

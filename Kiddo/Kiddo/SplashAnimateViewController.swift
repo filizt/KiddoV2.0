@@ -2,7 +2,7 @@
 //  SplashAnimateViewController.swift
 //  Kiddo
 //
-//  Created by Rachael A Helsel on 2/23/17.
+//  Created by Filiz Kurban on 2/23/17.
 //  Copyright © 2017 Filiz Kurban. All rights reserved.
 //
 

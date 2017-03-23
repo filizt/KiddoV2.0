@@ -2,7 +2,7 @@
 //  EventTableViewNib.swift
 //  Kiddo
 //
-//  Created by Rachael A Helsel on 11/7/16.
+//  Created by Filiz Kurban on 11/7/16.
 //  Copyright © 2016 Filiz Kurban. All rights reserved.
 //
 

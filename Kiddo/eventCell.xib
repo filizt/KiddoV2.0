@@ -35,7 +35,7 @@
                         </constraints>
                     </imageView>
                     <stackView opaque="NO" contentMode="scaleToFill" alignment="bottom" translatesAutoresizingMaskIntoConstraints="NO" id="GIj-qi-YAt">
-                        <rect key="frame" x="15" y="160.5" width="346" height="84"/>
+                        <rect key="frame" x="15" y="161" width="346" height="84"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="aao-36-zLd" userLabel="CategoryToLocationAllVertical">
                                 <rect key="frame" x="0.0" y="0.0" width="306" height="84"/>
@@ -117,7 +117,7 @@
                 <constraints>
                     <constraint firstAttribute="bottom" secondItem="seo-c7-hM8" secondAttribute="bottom" constant="-1" id="07x-3n-VGr"/>
                     <constraint firstItem="seo-c7-hM8" firstAttribute="top" secondItem="qoZ-Vx-DOt" secondAttribute="top" id="7dQ-64-1EG"/>
-                    <constraint firstItem="GIj-qi-YAt" firstAttribute="top" secondItem="qoZ-Vx-DOt" secondAttribute="topMargin" constant="152.5" id="Ir7-kb-xdH"/>
+                    <constraint firstItem="GIj-qi-YAt" firstAttribute="top" relation="lessThanOrEqual" secondItem="qoZ-Vx-DOt" secondAttribute="topMargin" constant="152.5" id="Ir7-kb-xdH"/>
                     <constraint firstItem="GIj-qi-YAt" firstAttribute="leading" secondItem="qoZ-Vx-DOt" secondAttribute="leading" constant="15" id="PRT-50-r1u"/>
                     <constraint firstAttribute="trailing" secondItem="dIg-Rg-YSx" secondAttribute="trailing" constant="-1" id="Qqz-6D-Kfx"/>
                     <constraint firstItem="seo-c7-hM8" firstAttribute="leading" secondItem="qoZ-Vx-DOt" secondAttribute="leading" id="Waz-2e-bxe"/>
