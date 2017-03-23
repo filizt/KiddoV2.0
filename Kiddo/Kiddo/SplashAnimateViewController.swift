@@ -79,9 +79,10 @@ class SplashAnimateViewController: UIViewController, PFLogInViewControllerDelega
     //MARK: PFLogInViewControllerDelegate functions
 
     func log(_ logInController: PFLogInViewController, didLogIn user: PFUser) {
-        Answers.logSignUp(withMethod: "Facebook", success: 1, customAttributes: ["FacebookLogin": "Success"])
+        if user.isNew {
+            Answers.logSignUp(withMethod: "Facebook", success: 1, customAttributes: ["FacebookLogin": "Success"])
+        }
         presentTimeline()
-
     }
 
 

@@ -16,6 +16,7 @@ class EventTableViewCell: UITableViewCell {
     @IBOutlet weak var eventVenueName: UILabel!
     @IBOutlet weak var eventStartTime: UILabel!
     @IBOutlet weak var eventFreeImage: UIImageView!
+    @IBOutlet weak var eventCategory: UILabel!
     
     private let cache = SimpleCache.shared
 
@@ -31,11 +32,14 @@ class EventTableViewCell: UITableViewCell {
         self.eventTitle?.text = nil
         self.eventVenueName?.text = nil
         self.eventStartTime?.text = nil
+
     }
 
     private func updateUI() {
         //load new information from event object(if any)
         self.eventImage?.image = UIImage(named: "image_placeholder")
+        self.eventCategory.layer.cornerRadius = 8
+        self.eventCategory.layer.masksToBounds = true
 
         if let event = event {
             self.eventTitle?.text = event.title
