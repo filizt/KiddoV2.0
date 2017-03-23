@@ -16,7 +16,8 @@ class EventTableViewCell: UITableViewCell {
     @IBOutlet weak var eventVenueName: UILabel!
     @IBOutlet weak var eventStartTime: UILabel!
     @IBOutlet weak var eventFreeImage: UIImageView!
-    @IBOutlet weak var eventCategory: UILabel!
+
+    @IBOutlet weak var eventCategory: UIButton!
     
     private let cache = SimpleCache.shared
 
