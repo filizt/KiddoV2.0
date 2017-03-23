@@ -134,8 +134,15 @@
                                                     <constraint firstAttribute="height" constant="310" id="vFO-nD-sJV"/>
                                                 </constraints>
                                             </imageView>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="gradientHigh" translatesAutoresizingMaskIntoConstraints="NO" id="U9h-xr-6yx">
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="gradient" translatesAutoresizingMaskIntoConstraints="NO" id="U9h-xr-6yx">
                                                 <rect key="frame" x="0.0" y="0.0" width="375" height="310"/>
+                                            </imageView>
+                                            <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="star" translatesAutoresizingMaskIntoConstraints="NO" id="EFG-fz-vpx">
+                                                <rect key="frame" x="15" y="280" width="18" height="18"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="18" id="FJS-uX-3Ic"/>
+                                                    <constraint firstAttribute="height" constant="18" id="qLI-Ub-wlG"/>
+                                                </constraints>
                                             </imageView>
                                             <textView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" text="test" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KxS-qL-ftz">
                                                 <rect key="frame" x="10" y="331" width="355" height="33"/>
@@ -168,9 +175,17 @@
                                                     <constraint firstAttribute="height" constant="200" id="rVQ-EY-U9H"/>
                                                 </constraints>
                                             </mapView>
+                                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="FEATURED" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xbd-OS-MgO">
+                                                <rect key="frame" x="30" y="280" width="86" height="21"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="13"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
+                                            <constraint firstItem="EFG-fz-vpx" firstAttribute="leading" secondItem="MNq-I4-i1y" secondAttribute="leading" constant="15" id="0a1-Et-Ype"/>
                                             <constraint firstItem="U9h-xr-6yx" firstAttribute="width" secondItem="DYO-TX-Z2k" secondAttribute="width" id="0ix-el-Cr1"/>
                                             <constraint firstItem="vbP-ow-Q3x" firstAttribute="top" secondItem="FnU-DU-vOB" secondAttribute="bottom" constant="8" id="Ec3-0z-2JX"/>
                                             <constraint firstItem="KxS-qL-ftz" firstAttribute="top" secondItem="U9h-xr-6yx" secondAttribute="bottom" constant="21" id="EhM-ca-3FH"/>
@@ -189,6 +204,7 @@
                                             <constraint firstAttribute="trailing" secondItem="DYO-TX-Z2k" secondAttribute="trailing" id="hUg-iC-XXX"/>
                                             <constraint firstAttribute="trailing" secondItem="LcF-FC-ec6" secondAttribute="trailing" constant="8" id="hWo-fJ-zdQ"/>
                                             <constraint firstAttribute="trailing" secondItem="I5B-Tu-rtM" secondAttribute="trailing" id="kft-t6-Ba9"/>
+                                            <constraint firstItem="EFG-fz-vpx" firstAttribute="top" secondItem="MNq-I4-i1y" secondAttribute="top" constant="280" id="pbL-RQ-xrR"/>
                                             <constraint firstAttribute="bottom" secondItem="I5B-Tu-rtM" secondAttribute="bottom" constant="50" id="ptT-uD-UM1"/>
                                             <constraint firstItem="LcF-FC-ec6" firstAttribute="leading" secondItem="MNq-I4-i1y" secondAttribute="leading" constant="16" id="qT6-qT-abw"/>
                                             <constraint firstItem="KxS-qL-ftz" firstAttribute="leading" secondItem="MNq-I4-i1y" secondAttribute="leading" constant="10" id="vEf-dT-g43"/>
@@ -247,7 +263,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xdv-tQ-HZd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1902" y="8"/>
+            <point key="canvasLocation" x="1901.5999999999999" y="7.6461769115442282"/>
         </scene>
         <!--Events and Activities-->
         <scene sceneID="WfC-FS-QJt">
@@ -269,9 +285,10 @@
         </scene>
     </scenes>
     <resources>
-        <image name="gradientHigh" width="2100" height="690"/>
+        <image name="gradient" width="2100" height="690"/>
         <image name="kiddo" width="110" height="64"/>
         <image name="kiddoHearth" width="110" height="64"/>
         <image name="splashGradient" width="375" height="667"/>
+        <image name="star" width="512" height="512"/>
     </resources>
 </document>
