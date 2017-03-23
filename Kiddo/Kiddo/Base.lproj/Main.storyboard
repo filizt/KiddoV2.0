@@ -134,7 +134,7 @@
                                                     <constraint firstAttribute="height" constant="310" id="vFO-nD-sJV"/>
                                                 </constraints>
                                             </imageView>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="subtleGrade" translatesAutoresizingMaskIntoConstraints="NO" id="U9h-xr-6yx">
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="gradientHigh" translatesAutoresizingMaskIntoConstraints="NO" id="U9h-xr-6yx">
                                                 <rect key="frame" x="0.0" y="0.0" width="375" height="310"/>
                                             </imageView>
                                             <textView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" text="test" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KxS-qL-ftz">
@@ -269,9 +269,9 @@
         </scene>
     </scenes>
     <resources>
+        <image name="gradientHigh" width="2100" height="690"/>
         <image name="kiddo" width="110" height="64"/>
         <image name="kiddoHearth" width="110" height="64"/>
         <image name="splashGradient" width="375" height="667"/>
-        <image name="subtleGrade" width="2100" height="696"/>
     </resources>
 </document>

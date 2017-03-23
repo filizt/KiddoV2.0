@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -25,7 +26,7 @@
                             <constraint firstAttribute="width" constant="375" id="uVB-b8-ewm"/>
                         </constraints>
                     </imageView>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="subtleGrade" translatesAutoresizingMaskIntoConstraints="NO" id="dIg-Rg-YSx" userLabel="gradient">
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="gradientHigh" translatesAutoresizingMaskIntoConstraints="NO" id="dIg-Rg-YSx" userLabel="gradient">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="260"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="260" id="86N-BS-xfx"/>
@@ -33,107 +34,99 @@
                             <constraint firstAttribute="width" constant="375" id="rAN-1l-DDx"/>
                         </constraints>
                     </imageView>
-                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="snZ-6F-cVW" userLabel="AllControlsSV">
-                        <rect key="frame" x="15" y="167.5" width="354" height="82.5"/>
+                    <stackView opaque="NO" contentMode="scaleToFill" alignment="bottom" translatesAutoresizingMaskIntoConstraints="NO" id="GIj-qi-YAt">
+                        <rect key="frame" x="15" y="163.5" width="348" height="84"/>
                         <subviews>
-                            <button opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9KD-1Q-QA9">
-                                <rect key="frame" x="0.0" y="0.0" width="67" height="16"/>
-                                <color key="backgroundColor" red="1" green="0.82621631920000005" blue="0.13725490200000001" alpha="1" colorSpace="calibratedRGB"/>
-                                <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="9"/>
-                                <inset key="contentEdgeInsets" minX="10" minY="2" maxX="10" maxY="1"/>
-                                <state key="normal" title="OUTDOOR">
-                                    <color key="titleColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
-                                </state>
-                            </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Event Title" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s7f-NO-xe3">
-                                <rect key="frame" x="0.0" y="16" width="100.5" height="27.5"/>
-                                <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="20"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <stackView opaque="NO" contentMode="scaleToFill" alignment="firstBaseline" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="gfo-Lu-vMg" userLabel="FeaturedLocationFree SV">
-                                <rect key="frame" x="0.0" y="43.5" width="349" height="39"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="aao-36-zLd" userLabel="CategoryToLocationAllVertical">
+                                <rect key="frame" x="0.0" y="0.0" width="308" height="84"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="aao-36-zLd" userLabel="FeaturedAndLocationSV">
-                                        <rect key="frame" x="0.0" y="0.0" width="184.5" height="39"/>
+                                    <button hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9KD-1Q-QA9">
+                                        <rect key="frame" x="0.0" y="0.0" width="67" height="16"/>
+                                        <color key="backgroundColor" red="1" green="0.82621631920000005" blue="0.13725490200000001" alpha="1" colorSpace="calibratedRGB"/>
+                                        <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="9"/>
+                                        <inset key="contentEdgeInsets" minX="10" minY="2" maxX="10" maxY="1"/>
+                                        <state key="normal" title="OUTDOOR">
+                                            <color key="titleColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
+                                        </state>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Event Title" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="none" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s7f-NO-xe3">
+                                        <rect key="frame" x="0.0" y="18" width="95.5" height="26"/>
+                                        <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="19"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="4" baselineRelativeArrangement="YES" translatesAutoresizingMaskIntoConstraints="NO" id="T1G-1u-vQQ" userLabel="Featured SV">
+                                        <rect key="frame" x="0.0" y="46" width="87.5" height="18"/>
                                         <subviews>
-                                            <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="4" baselineRelativeArrangement="YES" translatesAutoresizingMaskIntoConstraints="NO" id="T1G-1u-vQQ" userLabel="Featured SV">
-                                                <rect key="frame" x="0.0" y="0.0" width="87.5" height="18"/>
-                                                <subviews>
-                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="star" translatesAutoresizingMaskIntoConstraints="NO" id="bHz-8J-LBF">
-                                                        <rect key="frame" x="0.0" y="0.0" width="17" height="17"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="height" constant="17" id="9xA-rd-RYS"/>
-                                                            <constraint firstAttribute="width" constant="17" id="sKx-89-y26"/>
-                                                        </constraints>
-                                                    </imageView>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="FEATURED" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="m7Y-gg-AR2">
-                                                        <rect key="frame" x="21" y="0.0" width="66.5" height="18"/>
-                                                        <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="13"/>
-                                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                </subviews>
-                                            </stackView>
-                                            <stackView opaque="NO" contentMode="scaleToFill" alignment="bottom" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="7YK-Qz-KGp" userLabel="Location SV">
-                                                <rect key="frame" x="0.0" y="21" width="184.5" height="18"/>
-                                                <subviews>
-                                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="location_pin" translatesAutoresizingMaskIntoConstraints="NO" id="mMq-m3-ZNN">
-                                                        <rect key="frame" x="0.0" y="0.0" width="18" height="18"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="width" constant="18" id="DYJ-ET-vig"/>
-                                                            <constraint firstAttribute="height" constant="18" id="EK8-GA-rQE"/>
-                                                        </constraints>
-                                                    </imageView>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Seattle Aquarium" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CQ5-XZ-pXL">
-                                                        <rect key="frame" x="21" y="0.0" width="100.5" height="18"/>
-                                                        <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="13"/>
-                                                        <color key="textColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="10:00 AM" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OI5-6J-JOr">
-                                                        <rect key="frame" x="124.5" y="0.0" width="60" height="18"/>
-                                                        <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="13"/>
-                                                        <color key="textColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                </subviews>
-                                            </stackView>
-                                        </subviews>
-                                    </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="bottom" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="aki-Eg-aAi" userLabel="Free SV">
-                                        <rect key="frame" x="199.5" y="0.0" width="149.5" height="35"/>
-                                        <subviews>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="free" translatesAutoresizingMaskIntoConstraints="NO" id="zFP-HN-0Do">
-                                                <rect key="frame" x="114.5" y="0.0" width="35" height="35"/>
+                                            <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="star" translatesAutoresizingMaskIntoConstraints="NO" id="bHz-8J-LBF">
+                                                <rect key="frame" x="0.0" y="0.0" width="17" height="17"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="width" constant="35" id="MHA-c5-3Lv"/>
-                                                    <constraint firstAttribute="height" constant="35" id="dLc-Ac-zJT"/>
+                                                    <constraint firstAttribute="height" constant="17" id="9xA-rd-RYS"/>
+                                                    <constraint firstAttribute="width" constant="17" id="sKx-89-y26"/>
                                                 </constraints>
                                             </imageView>
+                                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="FEATURED" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="m7Y-gg-AR2">
+                                                <rect key="frame" x="21" y="0.0" width="66.5" height="18"/>
+                                                <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="13"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="7YK-Qz-KGp" userLabel="Location SV">
+                                        <rect key="frame" x="0.0" y="66" width="184.5" height="18"/>
+                                        <subviews>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="location_pin" translatesAutoresizingMaskIntoConstraints="NO" id="mMq-m3-ZNN">
+                                                <rect key="frame" x="0.0" y="0.0" width="18" height="18"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="18" id="DYJ-ET-vig"/>
+                                                    <constraint firstAttribute="height" constant="18" id="EK8-GA-rQE"/>
+                                                </constraints>
+                                            </imageView>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Seattle Aquarium" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CQ5-XZ-pXL">
+                                                <rect key="frame" x="21" y="0.0" width="100.5" height="18"/>
+                                                <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="13"/>
+                                                <color key="textColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="10:00 AM" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OI5-6J-JOr">
+                                                <rect key="frame" x="124.5" y="0.0" width="60" height="18"/>
+                                                <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="13"/>
+                                                <color key="textColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
                                         </subviews>
                                     </stackView>
                                 </subviews>
                             </stackView>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="EWP-Mm-5kQ" userLabel="FreeImage">
+                                <rect key="frame" x="308" y="44" width="40" height="40"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="free" translatesAutoresizingMaskIntoConstraints="NO" id="zFP-HN-0Do">
+                                        <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="40" id="MHA-c5-3Lv"/>
+                                            <constraint firstAttribute="height" constant="40" id="dLc-Ac-zJT"/>
+                                        </constraints>
+                                    </imageView>
+                                </subviews>
+                            </stackView>
                         </subviews>
-                        <constraints>
-                            <constraint firstAttribute="trailing" secondItem="gfo-Lu-vMg" secondAttribute="trailing" constant="5" id="3PE-hC-jl1"/>
-                        </constraints>
                     </stackView>
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="bottom" secondItem="seo-c7-hM8" secondAttribute="bottom" constant="-1" id="07x-3n-VGr"/>
-                    <constraint firstAttribute="bottom" secondItem="snZ-6F-cVW" secondAttribute="bottom" constant="10" id="224-BZ-KTG"/>
-                    <constraint firstAttribute="trailing" secondItem="snZ-6F-cVW" secondAttribute="trailing" constant="5" id="7TF-zx-aZg"/>
                     <constraint firstItem="seo-c7-hM8" firstAttribute="top" secondItem="qoZ-Vx-DOt" secondAttribute="top" id="7dQ-64-1EG"/>
-                    <constraint firstItem="snZ-6F-cVW" firstAttribute="top" relation="lessThanOrEqual" secondItem="qoZ-Vx-DOt" secondAttribute="top" constant="174.5" id="DUY-DY-SGI"/>
-                    <constraint firstItem="snZ-6F-cVW" firstAttribute="leading" secondItem="qoZ-Vx-DOt" secondAttribute="leading" constant="15" id="Qmg-4l-4tv"/>
+                    <constraint firstItem="GIj-qi-YAt" firstAttribute="leading" secondItem="qoZ-Vx-DOt" secondAttribute="leading" constant="15" id="PRT-50-r1u"/>
                     <constraint firstAttribute="trailing" secondItem="dIg-Rg-YSx" secondAttribute="trailing" constant="-1" id="Qqz-6D-Kfx"/>
                     <constraint firstItem="seo-c7-hM8" firstAttribute="leading" secondItem="qoZ-Vx-DOt" secondAttribute="leading" id="Waz-2e-bxe"/>
                     <constraint firstItem="dIg-Rg-YSx" firstAttribute="leading" secondItem="qoZ-Vx-DOt" secondAttribute="leading" id="YIn-Re-AH9"/>
+                    <constraint firstAttribute="bottom" secondItem="GIj-qi-YAt" secondAttribute="bottom" constant="12" id="gAi-bL-zGV"/>
                     <constraint firstItem="dIg-Rg-YSx" firstAttribute="top" secondItem="qoZ-Vx-DOt" secondAttribute="top" id="hcQ-0l-Yqu"/>
                     <constraint firstAttribute="bottom" secondItem="dIg-Rg-YSx" secondAttribute="bottom" constant="-1" id="oji-UW-1td"/>
                     <constraint firstAttribute="trailing" secondItem="seo-c7-hM8" secondAttribute="trailing" constant="-1" id="rVi-UD-Obk"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="GIj-qi-YAt" secondAttribute="trailing" constant="3" id="slO-Su-pgC"/>
+                    <constraint firstItem="GIj-qi-YAt" firstAttribute="top" relation="lessThanOrEqual" secondItem="qoZ-Vx-DOt" secondAttribute="topMargin" constant="160" id="v5v-a4-ZZD"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
@@ -149,8 +142,8 @@
     </objects>
     <resources>
         <image name="free" width="200" height="200"/>
+        <image name="gradientHigh" width="2100" height="690"/>
         <image name="location_pin" width="512" height="512"/>
         <image name="star" width="512" height="512"/>
-        <image name="subtleGrade" width="2100" height="696"/>
     </resources>
 </document>
