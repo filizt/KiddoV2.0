@@ -29,6 +29,7 @@ struct Event {
     let ages: String
     let photo: PFFile?
     let category: String!
+    let featuredFlag: Bool
     let imageObjectId: String
 
     static func create(from object: PFObject) -> Event {
@@ -51,6 +52,7 @@ struct Event {
         let ages = object["ages"] as! String
         let photo = object["photo"] as? PFFile
         let category = object["category"] as! String
+        let featuredFlag = object["isFeatured"] as! Bool
         let imageObjectId = object["imageObjectId"] as! String
 
         return Event(id: id,
@@ -72,6 +74,7 @@ struct Event {
                      ages: ages,
                      photo: photo,
                      category: category,
+                     featuredFlag: featuredFlag,
                      imageObjectId: imageObjectId
         )
     }

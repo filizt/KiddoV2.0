@@ -131,6 +131,8 @@
             </tableViewCellContentView>
             <connections>
                 <outlet property="eventCategory" destination="9KD-1Q-QA9" id="G7P-oI-c1f"/>
+                <outlet property="eventFeaturedLabel" destination="m7Y-gg-AR2" id="DoN-lq-hU3"/>
+                <outlet property="eventFeaturedStar" destination="bHz-8J-LBF" id="XBm-cB-DVp"/>
                 <outlet property="eventFreeImage" destination="zFP-HN-0Do" id="iOB-i1-0pr"/>
                 <outlet property="eventImage" destination="seo-c7-hM8" id="IOD-Bx-GAp"/>
                 <outlet property="eventStartTime" destination="OI5-6J-JOr" id="dVO-CW-hki"/>

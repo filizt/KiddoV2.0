@@ -16,9 +16,10 @@ class EventTableViewCell: UITableViewCell {
     @IBOutlet weak var eventVenueName: UILabel!
     @IBOutlet weak var eventStartTime: UILabel!
     @IBOutlet weak var eventFreeImage: UIImageView!
-
+    @IBOutlet weak var eventFeaturedLabel: UILabel!
     @IBOutlet weak var eventCategory: UIButton!
-    
+    @IBOutlet weak var eventFeaturedStar: UIImageView!
+
     private let cache = SimpleCache.shared
 
     var event: Event? {
@@ -54,6 +55,14 @@ class EventTableViewCell: UITableViewCell {
                 self.eventCategory.isHidden = false
                 let formatedString = event.category.uppercased()
                 self.eventCategory?.setTitle(formatedString, for: .normal)
+            }
+
+            if event.featuredFlag == true {
+                self.eventFeaturedStar.isHidden = false
+                self.eventFeaturedLabel.isHidden = false
+            } else {
+                self.eventFeaturedStar.isHidden = true
+                self.eventFeaturedLabel.isHidden = true
             }
 
             if let image = cache.image(key:event.imageObjectId) {
