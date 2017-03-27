@@ -35,7 +35,7 @@
                         </constraints>
                     </imageView>
                     <stackView opaque="NO" contentMode="scaleToFill" alignment="bottom" translatesAutoresizingMaskIntoConstraints="NO" id="GIj-qi-YAt">
-                        <rect key="frame" x="15" y="161" width="346" height="84"/>
+                        <rect key="frame" x="15" y="160" width="346" height="84"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="aao-36-zLd" userLabel="CategoryToLocationAllVertical">
                                 <rect key="frame" x="0.0" y="0.0" width="306" height="84"/>

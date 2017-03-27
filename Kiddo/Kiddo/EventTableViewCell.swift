@@ -47,7 +47,15 @@ class EventTableViewCell: UITableViewCell {
             self.eventVenueName?.text = event.location
             self.eventStartTime?.text = event.allDayFlag == true ? "ALL DAY" : "\(DateUtil.shared.shortTime(from:event.startTime))"
             self.eventFreeImage.isHidden = event.freeFlag == true ? false : true
-            
+
+            if event.category == "Other" {
+                self.eventCategory.isHidden = true
+            } else {
+                self.eventCategory.isHidden = false
+                let formatedString = event.category.uppercased()
+                self.eventCategory?.setTitle(formatedString, for: .normal)
+            }
+
             if let image = cache.image(key:event.imageObjectId) {
                 self.eventImage?.image = image
                 return
