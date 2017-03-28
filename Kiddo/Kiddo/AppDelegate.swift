@@ -37,6 +37,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
              Fabric.with([Crashlytics.self])
         }
 
+        UNUserNotificationCenter.current().delegate = self
+
         fetchImageCacheLimitAndImages()
         requestAuthForNotifications()
 
@@ -114,7 +116,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     //        return true //first time user case
     //    }
 
-
     func scheduleLocalNotifications() {
         //time interval is every 3 days
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: (60*60*24*2), repeats: true)
@@ -136,11 +137,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func isSimulator() -> Bool {
         return TARGET_OS_SIMULATOR != 0
     }
- 
+
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        print("Handle local notification from background or closed")
-        //from background this method is called.
+        let date = DateUtil.shared.today()
+        Answers.logCustomEvent(withName: "NotificationViewed", customAttributes: ["Date":date])
     }
+
     
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
