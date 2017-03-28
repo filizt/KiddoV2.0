@@ -39,6 +39,17 @@ class DateUtil {
         return formatter.string(from: date)
     }
 
+    func fullDateStringWithDateStyle(from date: Date) -> String {
+        formatter.dateStyle = .full
+        return formatter.string(from: date)
+    }
+
+    func fullDateStringWithDateTimeStyle(from date: Date) -> String {
+        formatter.dateStyle = .full
+        formatter.timeStyle = .short
+        return formatter.string(from: date)
+    }
+
     func shortTime(from dateString:String) -> String {
         formatter.dateFormat = "h:mm a"
         if dateString.isEmpty != true {
@@ -48,6 +59,7 @@ class DateUtil {
         }
         return ""
     }
+
 
 
     func shortTimeString(from date:Date) -> String {

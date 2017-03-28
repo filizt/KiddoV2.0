@@ -53,8 +53,10 @@ class EventTableViewCell: UITableViewCell {
                 self.eventCategory.isHidden = true
             } else {
                 self.eventCategory.isHidden = false
+                self.eventCategory.isUserInteractionEnabled = false
                 let formatedString = event.category.uppercased()
                 self.eventCategory?.setTitle(formatedString, for: .normal)
+                self.eventCategory.setBackgroundImage(UIImage(color: UIColor(red:1.00, green:0.83, blue:0.14, alpha:1.0)), for: UIControlState.normal)
             }
 
             if event.featuredFlag == true {
@@ -64,6 +66,8 @@ class EventTableViewCell: UITableViewCell {
                 self.eventFeaturedStar.isHidden = true
                 self.eventFeaturedLabel.isHidden = true
             }
+
+
 
             if let image = cache.image(key:event.imageObjectId) {
                 self.eventImage?.image = image
@@ -100,7 +104,6 @@ class EventTableViewCell: UITableViewCell {
             }
         }
     }
-
 
     override func awakeFromNib() {
         super.awakeFromNib()

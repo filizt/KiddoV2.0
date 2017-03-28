@@ -137,14 +137,7 @@
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="gradient" translatesAutoresizingMaskIntoConstraints="NO" id="U9h-xr-6yx">
                                                 <rect key="frame" x="0.0" y="0.0" width="375" height="310"/>
                                             </imageView>
-                                            <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="star" translatesAutoresizingMaskIntoConstraints="NO" id="EFG-fz-vpx">
-                                                <rect key="frame" x="15" y="280" width="18" height="18"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" constant="18" id="FJS-uX-3Ic"/>
-                                                    <constraint firstAttribute="height" constant="18" id="qLI-Ub-wlG"/>
-                                                </constraints>
-                                            </imageView>
-                                            <textView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" text="test" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KxS-qL-ftz">
+                                            <textView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" text="Description" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KxS-qL-ftz">
                                                 <rect key="frame" x="10" y="331" width="355" height="33"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
@@ -175,20 +168,56 @@
                                                     <constraint firstAttribute="height" constant="200" id="rVQ-EY-U9H"/>
                                                 </constraints>
                                             </mapView>
-                                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="FEATURED" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xbd-OS-MgO">
-                                                <rect key="frame" x="30" y="280" width="86" height="21"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="13"/>
-                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="nPf-Qr-Axw" userLabel="AllEventInfoOverImage">
+                                                <rect key="frame" x="16" y="240" width="143" height="60"/>
+                                                <subviews>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pFQ-ad-dVo">
+                                                        <rect key="frame" x="0.0" y="0.0" width="69" height="16"/>
+                                                        <color key="backgroundColor" red="1" green="0.82621631920000005" blue="0.13725490200000001" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="9"/>
+                                                        <inset key="contentEdgeInsets" minX="10" minY="2" maxX="10" maxY="1"/>
+                                                        <state key="normal" title="CATEGORY">
+                                                            <color key="titleColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
+                                                        </state>
+                                                    </button>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="lsq-rG-7vH" userLabel="FeaturedAndDate">
+                                                        <rect key="frame" x="0.0" y="21" width="142.5" height="38.5"/>
+                                                        <subviews>
+                                                            <stackView opaque="NO" contentMode="scaleToFill" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="3mo-qq-sG3" userLabel="Featured">
+                                                                <rect key="frame" x="0.0" y="0.0" width="87.5" height="18"/>
+                                                                <subviews>
+                                                                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="star" translatesAutoresizingMaskIntoConstraints="NO" id="EFG-fz-vpx">
+                                                                        <rect key="frame" x="0.0" y="0.0" width="18" height="18"/>
+                                                                        <constraints>
+                                                                            <constraint firstAttribute="height" constant="18" id="ZUF-ow-pbW"/>
+                                                                            <constraint firstAttribute="width" constant="18" id="tN9-7W-UgY"/>
+                                                                        </constraints>
+                                                                    </imageView>
+                                                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="FEATURED" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xbd-OS-MgO">
+                                                                        <rect key="frame" x="21" y="0.0" width="66.5" height="18"/>
+                                                                        <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="13"/>
+                                                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                                        <nil key="highlightedColor"/>
+                                                                    </label>
+                                                                </subviews>
+                                                            </stackView>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Thu, Mar 30, 5:00 PM" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1bV-V6-72Q">
+                                                                <rect key="frame" x="0.0" y="19" width="142.5" height="19.5"/>
+                                                                <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="14"/>
+                                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                        </subviews>
+                                                    </stackView>
+                                                </subviews>
+                                            </stackView>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
-                                            <constraint firstItem="EFG-fz-vpx" firstAttribute="leading" secondItem="MNq-I4-i1y" secondAttribute="leading" constant="15" id="0a1-Et-Ype"/>
                                             <constraint firstItem="U9h-xr-6yx" firstAttribute="width" secondItem="DYO-TX-Z2k" secondAttribute="width" id="0ix-el-Cr1"/>
                                             <constraint firstItem="vbP-ow-Q3x" firstAttribute="top" secondItem="FnU-DU-vOB" secondAttribute="bottom" constant="8" id="Ec3-0z-2JX"/>
                                             <constraint firstItem="KxS-qL-ftz" firstAttribute="top" secondItem="U9h-xr-6yx" secondAttribute="bottom" constant="21" id="EhM-ca-3FH"/>
+                                            <constraint firstItem="nPf-Qr-Axw" firstAttribute="leading" secondItem="MNq-I4-i1y" secondAttribute="leading" constant="16" id="FCh-dU-ORu"/>
                                             <constraint firstAttribute="trailing" secondItem="vbP-ow-Q3x" secondAttribute="trailing" constant="8" id="HHU-TK-NQL"/>
                                             <constraint firstItem="FnU-DU-vOB" firstAttribute="top" secondItem="KxS-qL-ftz" secondAttribute="bottom" constant="20" id="NPv-DR-7to"/>
                                             <constraint firstItem="FnU-DU-vOB" firstAttribute="leading" secondItem="MNq-I4-i1y" secondAttribute="leading" constant="16" id="QbV-wk-KE0"/>
@@ -200,13 +229,14 @@
                                             <constraint firstItem="I5B-Tu-rtM" firstAttribute="top" secondItem="LcF-FC-ec6" secondAttribute="bottom" constant="30" id="Xv2-VV-MRg"/>
                                             <constraint firstItem="LcF-FC-ec6" firstAttribute="top" secondItem="vbP-ow-Q3x" secondAttribute="bottom" constant="8" id="YgU-wB-Yne"/>
                                             <constraint firstItem="KxS-qL-ftz" firstAttribute="top" secondItem="DYO-TX-Z2k" secondAttribute="bottom" constant="21" id="cYq-m4-3Oh"/>
+                                            <constraint firstItem="KxS-qL-ftz" firstAttribute="top" secondItem="nPf-Qr-Axw" secondAttribute="bottom" constant="31" id="cvz-i7-K0w"/>
                                             <constraint firstItem="U9h-xr-6yx" firstAttribute="top" secondItem="MNq-I4-i1y" secondAttribute="top" id="fsa-VY-S1X"/>
                                             <constraint firstAttribute="trailing" secondItem="DYO-TX-Z2k" secondAttribute="trailing" id="hUg-iC-XXX"/>
                                             <constraint firstAttribute="trailing" secondItem="LcF-FC-ec6" secondAttribute="trailing" constant="8" id="hWo-fJ-zdQ"/>
                                             <constraint firstAttribute="trailing" secondItem="I5B-Tu-rtM" secondAttribute="trailing" id="kft-t6-Ba9"/>
-                                            <constraint firstItem="EFG-fz-vpx" firstAttribute="top" secondItem="MNq-I4-i1y" secondAttribute="top" constant="280" id="pbL-RQ-xrR"/>
                                             <constraint firstAttribute="bottom" secondItem="I5B-Tu-rtM" secondAttribute="bottom" constant="50" id="ptT-uD-UM1"/>
                                             <constraint firstItem="LcF-FC-ec6" firstAttribute="leading" secondItem="MNq-I4-i1y" secondAttribute="leading" constant="16" id="qT6-qT-abw"/>
+                                            <constraint firstAttribute="trailing" relation="lessThanOrEqual" secondItem="nPf-Qr-Axw" secondAttribute="trailing" constant="216" id="tjN-Yd-4Uc"/>
                                             <constraint firstItem="KxS-qL-ftz" firstAttribute="leading" secondItem="MNq-I4-i1y" secondAttribute="leading" constant="10" id="vEf-dT-g43"/>
                                             <constraint firstAttribute="trailing" secondItem="U9h-xr-6yx" secondAttribute="trailing" id="va0-CJ-U2n"/>
                                             <constraint firstAttribute="trailing" secondItem="KxS-qL-ftz" secondAttribute="trailing" constant="10" id="xsE-bD-615"/>
@@ -251,8 +281,12 @@
                     <navigationItem key="navigationItem" id="L6C-hq-ggT"/>
                     <connections>
                         <outlet property="eventAgeInfo" destination="FnU-DU-vOB" id="L2I-sx-8gD"/>
+                        <outlet property="eventCategory" destination="pFQ-ad-dVo" id="wNy-Xa-126"/>
                         <outlet property="eventCost" destination="vbP-ow-Q3x" id="XJA-2n-lqV"/>
                         <outlet property="eventDescription" destination="KxS-qL-ftz" id="hCe-HZ-oLr"/>
+                        <outlet property="eventFeaturedLabel" destination="xbd-OS-MgO" id="kSw-wk-GkL"/>
+                        <outlet property="eventFeaturedStar" destination="EFG-fz-vpx" id="dp0-ZF-C4t"/>
+                        <outlet property="eventFullDateLabel" destination="1bV-V6-72Q" id="EMC-TS-mO7"/>
                         <outlet property="eventHours" destination="LcF-FC-ec6" id="qbX-0I-7Xw"/>
                         <outlet property="eventImage" destination="DYO-TX-Z2k" id="SZr-2k-WNH"/>
                         <outlet property="mapView" destination="I5B-Tu-rtM" id="v7U-ub-wGL"/>

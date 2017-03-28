@@ -14,6 +14,12 @@ import CoreLocation
 import MapKit
 import Crashlytics
 
+enum TabBarItems : Int {
+    case today = 0
+    case tomorrow
+    case later
+}
+
 class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDelegate {
     
     @IBOutlet weak var mapView: MKMapView!
@@ -25,9 +31,14 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
     @IBOutlet weak var eventHours: UILabel!
     @IBOutlet weak var eventCost: UILabel!
     @IBOutlet weak var moreInfoButton: UIButton!
+    @IBOutlet weak var eventCategory: UIButton!
+    @IBOutlet weak var eventFeaturedLabel: UILabel!
+    @IBOutlet weak var eventFeaturedStar: UIImageView!
+    @IBOutlet weak var eventFullDateLabel: UILabel!
 
     var event: Event!
     var image: UIImage!
+    var currentTab: TabBarItems!
     var cachedImageViewSize: CGRect!
     var region: MKCoordinateRegion!
     var locationCoordinates: CLLocationCoordinate2D? {
@@ -74,6 +85,44 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
             self.moreInfoButton.setTitle("", for: .normal)
             self.moreInfoButton.isUserInteractionEnabled = false
         }
+
+        self.eventFeaturedLabel.isHidden = !event.featuredFlag
+        self.eventFeaturedStar.isHidden = !event.featuredFlag
+
+        self.eventCategory.isHidden = event.category == "Other" ? true : false
+        self.eventCategory.setTitle(event.category, for: .normal)
+        self.eventCategory.layer.cornerRadius = 8
+        self.eventCategory.layer.masksToBounds = true
+        let formatedString = event.category.uppercased()
+        self.eventCategory?.setTitle(formatedString, for: .normal)
+
+        if event.allDayFlag == true {
+            self.eventFullDateLabel.text = DateUtil.shared.fullDateStringWithDateStyle(from: event.dates.first!)
+        } else  {
+            self.eventFullDateLabel.text = DateUtil.shared.fullDateStringWithDateTimeStyle(from: event.dates.first!)
+        }
+
+        switch currentTab! {
+        case .today:
+            if event.allDayFlag == true {
+                self.eventFullDateLabel.text = DateUtil.shared.fullDateStringWithDateStyle(from: Date())
+            } else  {
+                self.eventFullDateLabel.text = DateUtil.shared.fullDateStringWithDateTimeStyle(from: Date())
+            }
+        case .tomorrow:
+            if event.allDayFlag == true {
+                self.eventFullDateLabel.text = DateUtil.shared.fullDateStringWithDateStyle(from: DateUtil.shared.tomorrow()!)
+            } else  {
+                self.eventFullDateLabel.text = DateUtil.shared.fullDateStringWithDateTimeStyle(from: DateUtil.shared.tomorrow()!)
+            }
+        case .later:
+            if event.allDayFlag == true {
+                self.eventFullDateLabel.text = DateUtil.shared.fullDateStringWithDateStyle(from: event.dates.first!)
+            } else  {
+                self.eventFullDateLabel.text = DateUtil.shared.fullDateStringWithDateTimeStyle(from: event.dates.first!)
+            }
+        }
+
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {

@@ -291,10 +291,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
     }
 
 
-
-
-    //MARK: Stup Navigation Bar
-
+    //MARK: Setup Navigation Bar
     private func setUpNavigationBar() {
         let newColor = UIColor(red:0.25, green:0.18, blue:0.35, alpha:1.0)
         navigationController?.navigationBar.tintColor = UIColor.white
@@ -308,7 +305,6 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 
     }
 
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
         
@@ -320,6 +316,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
             if let destinationViewController = segue.destination as? DetailViewController {
                 destinationViewController.event = selectedEvent
                 destinationViewController.image = currentCell.eventImage?.image
+                destinationViewController.currentTab = TabBarItems(rawValue: segmentedControl.selectedIndex)
             }
         }
     }
