@@ -276,12 +276,16 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         return e
     }
 
+    // There is first conversion of the string to date object and then sort. This needs to be fixed as some point. We can startTime and endTime as Date() objects.
     func sortEventsSham(events: [Event]) -> [Event]{
         var e = events
-        var a = e.filter { $0.allDayFlag == false }
-        let b = e.filter { $0.allDayFlag == true }
-        a.sort { (DateUtil.shared.createShortTimeDate(from: $0.startTime)).compare(DateUtil.shared.createShortTimeDate(from: $1.startTime)) == ComparisonResult.orderedAscending }
-        e = a + b
+        let a = e.filter { $0.featuredFlag == true }
+        let aComplement = e.filter { $0.featuredFlag == false }
+        var b = aComplement.filter { $0.allDayFlag == false }
+        let c = aComplement.filter { $0.allDayFlag == true }
+
+        b.sort { (DateUtil.shared.createShortTimeDate(from: $0.startTime)).compare(DateUtil.shared.createShortTimeDate(from: $1.startTime)) == ComparisonResult.orderedAscending }
+        e = a + b + c
 
         return e
     }

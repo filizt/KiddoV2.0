@@ -55,15 +55,14 @@ class SplashAnimateViewController: UIViewController, PFLogInViewControllerDelega
             if !facebookLoginNeeded() {
                 self.performSegue(withIdentifier: "showTimeline", sender: nil)
             }
-            let logInViewController = LogInViewController()
-            logInViewController.fields = [PFLogInFields.facebook, PFLogInFields.dismissButton]
-            logInViewController.delegate = self
-            logInViewController.emailAsUsername = false
-            logInViewController.signUpController?.delegate = self
-            logInViewController.facebookPermissions = ["public_profile", "email"]
+                let logInViewController = LogInViewController()
+                logInViewController.fields = [PFLogInFields.facebook, PFLogInFields.dismissButton]
+                logInViewController.delegate = self
+                logInViewController.emailAsUsername = false
+                logInViewController.signUpController?.delegate = self
+                logInViewController.facebookPermissions = ["public_profile", "email"]
 
-            self.present(logInViewController, animated: false, completion: nil )
-
+                self.present(logInViewController, animated: false, completion: nil )
         }
     }
 
