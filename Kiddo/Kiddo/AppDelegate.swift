@@ -117,7 +117,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     func scheduleLocalNotifications() {
         //time interval is every 3 days
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: (60*60*24*3), repeats: true)
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: (60*60*24*2), repeats: true)
 
         let content = UNMutableNotificationContent()
         content.title = "Kiddo"

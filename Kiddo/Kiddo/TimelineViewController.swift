@@ -80,7 +80,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         activityIndicator.hidesWhenStopped = true
         activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
         
-        NotificationCenter.default.addObserver(self, selector: #selector(applationEnteredForeground), name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(applicationEnteredForeground), name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
 
         //First time the app loads, default view is today tab. Let's log that.
         Answers.logContentView(withName: "Today Tab", contentType: nil, contentId: nil, customAttributes: nil)
@@ -102,7 +102,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
     }
 
 
-    func applationEnteredForeground() {
+    func applicationEnteredForeground() {
         activityIndicator.startAnimating()
         self.fetchAllEvents()
 
