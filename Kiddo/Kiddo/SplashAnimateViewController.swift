@@ -54,7 +54,7 @@ class SplashAnimateViewController: UIViewController, PFLogInViewControllerDelega
         } else {
             if !facebookLoginNeeded() {
                 self.performSegue(withIdentifier: "showTimeline", sender: nil)
-            }
+            } else {
                 let logInViewController = LogInViewController()
                 logInViewController.fields = [PFLogInFields.facebook, PFLogInFields.dismissButton]
                 logInViewController.delegate = self
@@ -63,6 +63,7 @@ class SplashAnimateViewController: UIViewController, PFLogInViewControllerDelega
                 logInViewController.facebookPermissions = ["public_profile", "email"]
 
                 self.present(logInViewController, animated: false, completion: nil )
+            }
         }
     }
 
