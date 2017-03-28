@@ -96,31 +96,18 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
         let formatedString = event.category.uppercased()
         self.eventCategory?.setTitle(formatedString, for: .normal)
 
-        if event.allDayFlag == true {
-            self.eventFullDateLabel.text = DateUtil.shared.fullDateStringWithDateStyle(from: event.dates.first!)
-        } else  {
-            self.eventFullDateLabel.text = DateUtil.shared.fullDateStringWithDateTimeStyle(from: event.dates.first!)
-        }
+        self.eventFullDateLabel.text =  event.allDayFlag == true ? DateUtil.shared.fullDateStringWithDateStyle(from: event.dates.first!) : DateUtil.shared.fullDateStringWithDateTimeStyle(from: event.dates.first!)
 
         switch currentTab! {
         case .today:
-            if event.allDayFlag == true {
-                self.eventFullDateLabel.text = DateUtil.shared.fullDateStringWithDateStyle(from: Date())
-            } else  {
-                self.eventFullDateLabel.text = DateUtil.shared.fullDateStringWithDateTimeStyle(from: Date())
-            }
+            self.eventFullDateLabel.text = event.allDayFlag == true ? DateUtil.shared.fullDateStringWithDateStyle(from: Date()) : DateUtil.shared.fullDateStringWithDateTimeStyle(from: Date())
         case .tomorrow:
-            if event.allDayFlag == true {
-                self.eventFullDateLabel.text = DateUtil.shared.fullDateStringWithDateStyle(from: DateUtil.shared.tomorrow()!)
-            } else  {
-                self.eventFullDateLabel.text = DateUtil.shared.fullDateStringWithDateTimeStyle(from: DateUtil.shared.tomorrow()!)
-            }
+            self.eventFullDateLabel.text = event.allDayFlag == true ? DateUtil.shared.fullDateStringWithDateStyle(from: DateUtil.shared.tomorrow()!) : DateUtil.shared.fullDateStringWithDateTimeStyle(from: DateUtil.shared.tomorrow()!)
         case .later:
-            if event.allDayFlag == true {
-                self.eventFullDateLabel.text = DateUtil.shared.fullDateStringWithDateStyle(from: event.dates.first!)
-            } else  {
-                self.eventFullDateLabel.text = DateUtil.shared.fullDateStringWithDateTimeStyle(from: event.dates.first!)
-            }
+            self.eventFullDateLabel.text = event.allDayFlag == true ? DateUtil.shared.fullDateStringWithDateStyle(from: event.dates.first!) : DateUtil.shared.fullDateStringWithDateTimeStyle(from: event.dates.first!)
+
+            self.eventFeaturedLabel.isHidden = true
+            self.eventFeaturedStar.isHidden = true
         }
 
     }

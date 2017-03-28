@@ -334,6 +334,8 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 
         if self.segmentedControl.selectedIndex == 2 {
             cell.eventStartTime.text = DateUtil.shared.shortDateString(from: selectedEvent.dates.first!)
+            cell.eventFeaturedStar.isHidden = true
+            cell.eventFeaturedLabel.isHidden = true
         }
         return cell
     }

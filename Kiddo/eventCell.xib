@@ -26,7 +26,7 @@
                             <constraint firstAttribute="width" constant="375" id="uVB-b8-ewm"/>
                         </constraints>
                     </imageView>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="gradientHigh" translatesAutoresizingMaskIntoConstraints="NO" id="dIg-Rg-YSx" userLabel="gradient">
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="gradient" translatesAutoresizingMaskIntoConstraints="NO" id="dIg-Rg-YSx" userLabel="gradient">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="260"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="260" id="86N-BS-xfx"/>
@@ -144,7 +144,7 @@
     </objects>
     <resources>
         <image name="free" width="200" height="200"/>
-        <image name="gradientHigh" width="2100" height="690"/>
+        <image name="gradient" width="2100" height="690"/>
         <image name="location_pin" width="512" height="512"/>
         <image name="star" width="512" height="512"/>
     </resources>
