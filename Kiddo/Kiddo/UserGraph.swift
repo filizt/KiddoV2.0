@@ -11,21 +11,21 @@ import Parse
 
 struct UserGraph {
     let id: String
-    let first_name: String?
-    let last_name: String?
-    let email: String?
-    let gender: String?
-    let locale: String?
+    let first_name: String
+    let last_name: String
+    let email: String
+    let gender: String
+    let locale: String
 
     static func create(from fbUserFetchResult: Any) -> UserGraph {
         var userGraphInfo = fbUserFetchResult as! Dictionary<String, Any>
 
         let id = userGraphInfo["id"] as! String
-        let first_name = userGraphInfo["first_name"] as? String
-        let last_name = userGraphInfo["last_name"] as? String
-        let email = userGraphInfo["email"] as? String
-        let gender = userGraphInfo["gender"] as? String
-        let locale = userGraphInfo["locale"] as? String
+        let first_name = userGraphInfo["first_name"] as? String ?? ""
+        let last_name = userGraphInfo["last_name"] as? String ?? ""
+        let email = userGraphInfo["email"] as? String ?? ""
+        let gender = userGraphInfo["gender"] as? String ?? ""
+        let locale = userGraphInfo["locale"] as? String ?? ""
 
 
         return UserGraph(id: id,

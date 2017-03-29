@@ -144,7 +144,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 
                                             userInfo.saveInBackground()
                                         } else {
-                                            print("Uh oh. There was an problem getting the  in.")
+                                            print("Uh oh. There was an problem getting the fb graph info in.")
                                         }
                                     }
                                 }
