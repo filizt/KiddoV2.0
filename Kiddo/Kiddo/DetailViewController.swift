@@ -13,6 +13,7 @@ import UserNotifications
 import CoreLocation
 import MapKit
 import Crashlytics
+import MessageUI
 
 enum TabBarItems : Int {
     case today = 0
@@ -20,7 +21,7 @@ enum TabBarItems : Int {
     case later
 }
 
-class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDelegate {
+class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDelegate, MFMailComposeViewControllerDelegate {
     
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var eventImage: UIImageView!
@@ -71,6 +72,43 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
         self.cachedImageViewSize = self.eventImage.frame;
     }
 
+    @IBAction func sendFeedbackPressed(_ sender: UIButton) {
+        if MFMailComposeViewController.canSendMail() {
+            let mail = MFMailComposeViewController()
+            mail.mailComposeDelegate = self
+            mail.setToRecipients(["feedback@thekiddoapp.com"])
+            mail.setSubject("Kiddo User Feedback")
+
+            var messageBody = "Let us know what you think about this event or Kiddo in general. We're listening."
+            messageBody += "<br/><br/><br/><br> <br> --------------------------"
+            messageBody += "<br/> Event Id: " + event.id
+            messageBody += "<br/> Event Title: " + event.title
+            messageBody += "<br/> Event Date: " + (self.eventFullDateLabel.text ?? "")
+            messageBody += "<br/> Current Tab: " + currentTab.rawValue.description
+            messageBody += "<br/> User Id: " + (PFUser.current()?.objectId ?? "Anonymous User")
+            messageBody += "<br/> IOS version: " + UIDevice.current.systemVersion
+            messageBody += "<br/> Device model: " + UIDevice.current.localizedModel
+            messageBody += "<br/> App version: " + (Bundle.main.infoDictionary?["CFBundleShortVersionString"] as! String)
+            messageBody += "<br/> --------------------------<br/><br/>"
+            mail.setMessageBody(messageBody, isHTML: true)
+
+            self.present(mail, animated: true, completion: nil)
+        }
+        else {
+            self.showSendMailErrorAlert()
+        }
+    }
+
+    private func showSendMailErrorAlert() {
+        let sendMailErrorAlert = UIAlertController(title: "Email Error", message: "Your device cannot send emails.  Please check email configuration and try again.", preferredStyle: UIAlertControllerStyle.alert)
+        sendMailErrorAlert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+        present(sendMailErrorAlert, animated:true, completion: nil)
+    }
+
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        controller.dismiss(animated: true)
+    }
+
     private func loadEventInfo() {
         self.title = event.title
         self.eventImage.image = self.image
@@ -80,7 +118,7 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
         self.eventHours.text = event.allDayFlag == true ? "LOCATION HOURS: \(event.locationHours)" : "HOURS: \(event.startTime) - \(event.endTime)"
 
         if event.originalEventURL != nil {
-            self.moreInfoButton.setTitle("Visit Event Website", for: .normal)
+            self.moreInfoButton.setTitle("VISIT EVENT WEBSITE", for: .normal)
         } else {
             self.moreInfoButton.setTitle("", for: .normal)
             self.moreInfoButton.isUserInteractionEnabled = false
@@ -96,7 +134,7 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
         let formatedString = event.category.uppercased()
         self.eventCategory?.setTitle(formatedString, for: .normal)
 
-        self.eventFullDateLabel.text =  event.allDayFlag == true ? DateUtil.shared.fullDateStringWithDateStyle(from: event.dates.first!) : DateUtil.shared.fullDateStringWithDateTimeStyle(from: event.dates.first!)
+        //self.eventFullDateLabel.text =  event.allDayFlag == true ? DateUtil.shared.fullDateStringWithDateStyle(from: event.dates.first!) : DateUtil.shared.fullDateStringWithDateTimeStyle(from: event.dates.first!)
 
         switch currentTab! {
         case .today:
