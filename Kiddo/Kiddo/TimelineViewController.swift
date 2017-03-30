@@ -124,7 +124,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
                         PFFacebookUtils.logInInBackground(with: accessToken) { (user, error) in
                             guard error == nil else { print("\(error?.localizedDescription)"); return }
                             if user != nil {
-                                let requestParameters = ["fields": "id, first_name, last_name, email, age_range, gender, locale"]
+                                let requestParameters = ["fields": "id, first_name, last_name, name, email, age_range, gender, locale"]
                                 if let userDetails = FBSDKGraphRequest(graphPath: "me", parameters: requestParameters){
                                     userDetails.start { (connection, result, error) -> Void in
                                         guard error == nil else { print("\(error?.localizedDescription)"); return }
@@ -135,6 +135,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
                                             userInfo["facebookId"] = userGraphObject.id
                                             userInfo["firstName"] = userGraphObject.first_name
                                             userInfo["lastName"] = userGraphObject.last_name
+                                            userInfo["fullName"] = userGraphObject.full_name
                                             userInfo["email"] = userGraphObject.email
                                             userInfo["gender"] = userGraphObject.gender
                                             userInfo["locale"] = userGraphObject.locale
@@ -144,7 +145,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 
                                             userInfo.saveInBackground()
                                         } else {
-                                            print("Uh oh. There was an problem getting the fb graph info in.")
+                                            print("Uh oh. There was an problem getting the fb graph info.")
                                         }
                                     }
                                 }

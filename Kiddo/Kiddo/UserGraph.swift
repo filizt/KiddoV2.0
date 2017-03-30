@@ -13,6 +13,7 @@ struct UserGraph {
     let id: String
     let first_name: String
     let last_name: String
+    let full_name: String
     let email: String
     let gender: String
     let locale: String
@@ -23,6 +24,7 @@ struct UserGraph {
         let id = userGraphInfo["id"] as! String
         let first_name = userGraphInfo["first_name"] as? String ?? ""
         let last_name = userGraphInfo["last_name"] as? String ?? ""
+        let full_name = userGraphInfo["name"] as? String ?? ""
         let email = userGraphInfo["email"] as? String ?? ""
         let gender = userGraphInfo["gender"] as? String ?? ""
         let locale = userGraphInfo["locale"] as? String ?? ""
@@ -31,6 +33,7 @@ struct UserGraph {
         return UserGraph(id: id,
                          first_name: first_name,
                          last_name: last_name,
+                         full_name: full_name,
                          email: email,
                          gender: gender,
                          locale: locale
