@@ -16,7 +16,13 @@ class DateUtil {
     private init() {
         formatter = DateFormatter()
         formatter.locale = Locale(identifier: "en_US")
-        formatter.timeZone = TimeZone.current
+        //below code is just for now. We want users to at least see something in the UI.
+        if TimeZone.current.abbreviation() != "PST" {
+            formatter.timeZone = TimeZone(abbreviation:"PST")
+        } else {
+            formatter.timeZone = TimeZone.current
+        }
+
     }
 
     func shortDate(from dateString: String) -> String {
