@@ -19,6 +19,8 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
     @IBOutlet weak var segmentedControl: CustomSegmentedControl!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     private var request:PFQuery<PFObject>?
+    private var lastModified: Date?
+
 
     private var events = [Event]() {
         didSet {
@@ -90,6 +92,8 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         self.fetchAllEvents()
 
         updateUserGraphDataIfNecessary()
+
+        self.setLastModified()
     }
 
     deinit {
@@ -107,6 +111,66 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         self.fetchAllEvents()
 
         self.updateUserGraphDataIfNecessary()
+        fetchPhotosIfNecessary()
+
+    }
+    func setLastModified() {
+        let query = PFQuery(className: "EventImage")
+        query.order(byDescending: "updatedAt")
+        query.getFirstObjectInBackground { (object, error) in
+            guard error == nil else {
+                print ("Error retrieving image data from Parse")
+                return
+            }
+            if let object = object {
+                self.lastModified = object.updatedAt
+            }
+        }
+    }
+
+    func fetchPhotosIfNecessary() {
+        let query = PFQuery(className: "EventImage")
+        query.order(byDescending: "updatedAt")
+        query.getFirstObjectInBackground { (object, error) in
+            guard error == nil else {
+                print ("Error retrieving image data from Parse")
+                return
+            }
+
+            if let object = object {
+                guard let currentUpdatedAtValue = object.updatedAt else { return }
+                if let lastModified = self.lastModified {
+                    if (lastModified.timeIntervalSinceNow * -1) > (currentUpdatedAtValue.timeIntervalSinceNow * -1){
+                        self.lastModified = currentUpdatedAtValue
+                        let queryImageFetch = PFQuery(className: "EventImage")
+                        queryImageFetch.limit = SimpleCache.shared.capacity
+                        queryImageFetch.findObjectsInBackground(block: { (objects, error) in
+                            guard error == nil else {
+                                print ("Error retrieving image data from Parse")
+                                return
+                            }
+
+                            if let objects = objects {
+                                for object in objects {
+                                    guard let imageFile = object["image"] as? PFFile else { return }
+
+                                    imageFile.getDataInBackground({ (data, error) in
+                                        guard error == nil else {
+                                            print ("Error retrieving image data from Parse")
+                                            return
+                                        }
+                                        guard let imageData = data else { return }
+                                        guard let image = UIImage(data: imageData) else { return }
+                                        
+                                        SimpleCache.shared.setImage(image, key: object.objectId!)
+                                    })
+                                }
+                            }
+                        })
+                    }//if backend is updated
+                }
+            }
+        }
     }
 
     func updateUserGraphDataIfNecessary() {
