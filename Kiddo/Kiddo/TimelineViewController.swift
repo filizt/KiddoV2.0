@@ -111,7 +111,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         self.fetchAllEvents()
 
         self.updateUserGraphDataIfNecessary()
-        fetchPhotosIfNecessary()
+        self.fetchPhotosIfNecessary()
 
     }
     func setLastModified() {
@@ -367,7 +367,6 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         backItem.title = ""
         navigationController?.navigationBar.topItem?.backBarButtonItem = backItem
         navigationController?.navigationBar.topItem?.title = "PLANS FOR"
-
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
