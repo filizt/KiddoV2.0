@@ -98,7 +98,6 @@ class EventTableViewCell: UITableViewCell {
 
                         self.cache.setImage(image, key: event.imageObjectId)
                         self.eventImage?.image = image
-
                     })
                 })
             }

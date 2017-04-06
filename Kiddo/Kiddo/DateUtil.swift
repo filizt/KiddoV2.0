@@ -90,6 +90,12 @@ class DateUtil {
 
     }
 
+    func todayDate() -> Date? {
+        formatter.dateFormat = "MM-dd-yyyy"
+        return formatter.date(from: today())
+
+    }
+
     func tomorrow() -> String {
         var components = DateComponents()
         components.day = 1

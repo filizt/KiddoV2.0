@@ -138,12 +138,14 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
 
         switch currentTab! {
         case .today:
-            self.eventFullDateLabel.text = event.allDayFlag == true ? DateUtil.shared.fullDateStringWithDateStyle(from: Date()) : DateUtil.shared.fullDateStringWithDateTimeStyle(from: Date())
+             let eventDate = DateUtil.shared.fullDateStringWithDateStyle(from: DateUtil.shared.todayDate()!)
+             self.eventFullDateLabel.text = event.allDayFlag == true ? eventDate : eventDate + " at " + event.startTime
         case .tomorrow:
-            self.eventFullDateLabel.text = event.allDayFlag == true ? DateUtil.shared.fullDateStringWithDateStyle(from: DateUtil.shared.tomorrow()!) : DateUtil.shared.fullDateStringWithDateTimeStyle(from: DateUtil.shared.tomorrow()!)
+            let eventDate = DateUtil.shared.fullDateStringWithDateStyle(from: DateUtil.shared.tomorrow()!)
+            self.eventFullDateLabel.text = event.allDayFlag == true ? eventDate : eventDate + " at " + event.startTime
         case .later:
-            self.eventFullDateLabel.text = event.allDayFlag == true ? DateUtil.shared.fullDateStringWithDateStyle(from: event.dates.first!) : DateUtil.shared.fullDateStringWithDateTimeStyle(from: event.dates.first!)
-
+            let eventDate = DateUtil.shared.fullDateStringWithDateStyle(from: event.dates.first!)
+            self.eventFullDateLabel.text = event.allDayFlag == true ? eventDate : eventDate + " at " + event.startTime
             self.eventFeaturedLabel.isHidden = true
             self.eventFeaturedStar.isHidden = true
         }
@@ -151,6 +153,7 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
+
         let y = -scrollView.contentOffset.y;
 
         if (y > 0) {
