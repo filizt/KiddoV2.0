@@ -297,7 +297,8 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         laterDates.append(laterDatePlusOne)
         queryLater.whereKey("allEventDates", containedIn: laterDates)
         queryLater.whereKey("isActive", equalTo: true)
-        queryLater.limit = 10
+        queryLater.whereKey("isPopular", equalTo: true)
+        queryLater.limit = 35
         queryLater.findObjectsInBackground { [weak weakSelf = self] (objects, error) in
             guard error == nil else {
                 print ("Error fetching later events from Parse")
@@ -312,7 +313,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
                 queryPopular.whereKey("allEventDates", greaterThanOrEqualTo: date)
                 queryPopular.whereKey("isActive", equalTo: true)
                 queryPopular.whereKey("isPopular", equalTo: true)
-                queryPopular.limit = 12
+                queryPopular.limit = 35
                 queryPopular.findObjectsInBackground { [weak weakSelf = self] (popularObjects, error) in
                     if let popularObjects = popularObjects {
                         let returnedEvents = popularObjects.map { Event.create(from: $0) }

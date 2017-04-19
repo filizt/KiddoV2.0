@@ -63,12 +63,15 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
         let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
         mapView.addGestureRecognizer(gestureRecognizer)
 
-        Answers.logCustomEvent(withName: "Detail View", customAttributes:["Event Title": event.title, "Event Cost": event.freeFlag == true ? "Free" : "Paid"])
+        Answers.logCustomEvent(withName: "Detail View", customAttributes:["Event Title": event.title, "Event Category": event.category, "Event Cost": event.freeFlag == true ? "Free" : "Paid"])
 
     }
 
     override func viewWillAppear(_ animated: Bool) {
-        addressStringToGeocode(for: event.address)
+        if event.address != nil {
+            addressStringToGeocode(for: event.address)
+        }
+
         self.cachedImageViewSize = self.eventImage.frame;
     }
 
@@ -163,6 +166,8 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
     }
 
     func handleTap(_ gestureRecognizer: UITapGestureRecognizer) {
+
+        Answers.logCustomEvent(withName: "Directions Requested", customAttributes:["Event Occurs": currentTab])
 
         guard locationCoordinates != nil else { return }
 
