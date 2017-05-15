@@ -19,6 +19,7 @@ enum TabBarItems : Int {
     case today = 0
     case tomorrow
     case later
+    case special
 }
 
 class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDelegate, MFMailComposeViewControllerDelegate {
@@ -151,6 +152,9 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
             self.eventFullDateLabel.text = event.allDayFlag == true ? eventDate : eventDate + " at " + event.startTime
             self.eventFeaturedLabel.isHidden = true
             self.eventFeaturedStar.isHidden = true
+        default:
+            self.eventFullDateLabel.text = event.location
+
         }
 
     }

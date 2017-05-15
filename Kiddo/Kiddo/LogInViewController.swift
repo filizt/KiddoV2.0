@@ -23,12 +23,12 @@ class LogInViewController: PFLogInViewController {
         self.logInView!.insertSubview(backgroundImage, at: 0)
 
         logInView?.logo = nil
-        self.logInView?.dismissButton?.isEnabled = false
+        self.logInView?.dismissButton?.isEnabled = true
         self.logInView?.dismissButton?.setImage(nil, for: .normal)
         
-        //self.logInView?.dismissButton?.setTitle("Skip", for: .normal)
-        //self.logInView?.dismissButton?.setTitleColor(UIColor.lightGray, for: .normal)
-        //self.logInView?.dismissButton?.setTitleShadowColor(UIColor.black, for: .normal)
+        self.logInView?.dismissButton?.setTitle("Skip", for: .normal)
+        self.logInView?.dismissButton?.setTitleColor(UIColor.lightGray, for: .normal)
+        self.logInView?.dismissButton?.setTitleShadowColor(UIColor.black, for: .normal)
 
     }
 
@@ -39,8 +39,8 @@ class LogInViewController: PFLogInViewController {
         // stretch background image to fill screen
         backgroundImage.frame = CGRect(x: 0,y:  0,width:  self.logInView!.frame.width, height: self.logInView!.frame.height)
 
-        //let dismissButtonFrame = logInView?.dismissButton?.frame
-        //logInView?.dismissButton?.frame = CGRect(x:(self.logInView?.frame.width)! - 56, y: 28,  width:50, height: (dismissButtonFrame?.height)!)
+        let dismissButtonFrame = logInView?.dismissButton?.frame
+        logInView?.dismissButton?.frame = CGRect(x:(self.logInView?.frame.width)! - 56, y: 28,  width:50, height: (dismissButtonFrame?.height)!)
 
     }
 

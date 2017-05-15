@@ -61,6 +61,15 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         }
     }
 
+    private var specialEventDay = [Event]() {
+        didSet {
+            if specialEventDay.count > 0 {
+                specialEventDay = self.sortEventsSham(events: specialEventDay )
+            }
+        }
+    }
+
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -76,7 +85,8 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 
         self.setUpNavigationBar()
 
-        self.segmentedControl.items = ["TODAY","TOMORROW","LATER"]
+        updateSegmentedControl()
+
         self.segmentedControl.delegate = self
 
         activityIndicator.hidesWhenStopped = true
@@ -108,12 +118,68 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 
     func applicationEnteredForeground() {
         activityIndicator.startAnimating()
+        self.updateTabBarIfNecessary()
         self.fetchAllEvents()
 
         self.updateUserGraphDataIfNecessary()
         self.fetchPhotosIfNecessary()
 
     }
+
+    func fetchSpecialEventReqs() {
+        if SpecialEvent.shared.isEnabled == true {
+            let querySE = PFQuery(className: "EventObject")
+            querySE.whereKey("isSpecialEvent", equalTo: true)
+            querySE.whereKey("isActive", equalTo: true)
+            querySE.findObjectsInBackground { [weak weakSelf = self] (eventObjects, error) in
+                guard error == nil else {
+                    print ("Error fetching tomorrow's events from Parse")
+                    return
+                }
+
+                if let eventObjects = eventObjects {
+                    weakSelf?.specialEventDay = eventObjects.map { Event.create(from: $0) }
+                }
+            }
+        }
+    }
+
+    func updateSegmentedControl() {
+        if SpecialEvent.shared.isEnabled == false {
+            //not ideal but need to prevent a crash
+            if self.segmentedControl.selectedIndex == 3 {
+                self.segmentedControl.resetViews()
+            }
+            self.segmentedControl.items = ["TODAY","TOMORROW","LATER"]
+
+        } else {
+            let s = SpecialEvent.shared.name
+            var a = ["TODAY","TOMORROW","LATER"]
+            a.append(s)
+            self.segmentedControl.items = a
+        }
+
+    }
+
+    func updateTabBarIfNecessary() {
+        let query = PFQuery(className: "SpecialEventReq")
+        query.getFirstObjectInBackground(block: { (object, error) in
+            guard error == nil else {
+                print ("Error retrieving image cache limit from Parse")
+                return
+            }
+
+            if let object = object {
+                SpecialEvent.shared.isEnabled = object["isEnabled"] as! Bool
+                SpecialEvent.shared.name = object["name"] as! String
+                SpecialEvent.shared.sizeMultiplier = object["labelSizeMultiplier"] as! CGFloat
+
+                self.fetchSpecialEventReqs()
+                self.updateSegmentedControl()
+            }
+        })
+    }
+
     func setLastModified() {
         let query = PFQuery(className: "EventImage")
         query.order(byDescending: "updatedAt")
@@ -330,6 +396,9 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
                 }
             }
         }
+
+        fetchSpecialEventReqs()
+
     }
 
     func sortEvents(events: [Event]) -> [Event]{
@@ -424,6 +493,9 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         case 2:
             self.events = self.later
              Answers.logContentView(withName: "Later Tab", contentType: nil, contentId: nil, customAttributes: nil)
+        case 3:
+            self.events = self.specialEventDay
+            Answers.logContentView(withName: SpecialEvent.shared.name, contentType: nil, contentId: nil, customAttributes: nil)
         default:
             self.events = self.today
         }
