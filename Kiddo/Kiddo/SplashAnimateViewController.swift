@@ -17,6 +17,8 @@ class SplashAnimateViewController: UIViewController, PFLogInViewControllerDelega
     @IBOutlet weak var kiddoLogo: UIView!
     @IBOutlet weak var kiddoHeart: UIView!
 
+    var isFirstTime: Bool = true
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -25,46 +27,58 @@ class SplashAnimateViewController: UIViewController, PFLogInViewControllerDelega
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        if isFirstTime {
+            UIView.animate(withDuration: 1.5,
+                           delay: 0,
+                           options: .curveEaseInOut,
+                           animations: {
+                                self.kiddoLogo.alpha = 0
+                           },
+                           completion: { (finished) in
+                                self.kiddoLogo.isHidden = true
+                                UIView.animate(withDuration: 2.0,
+                                               delay: 0.05,
+                                               options: .curveEaseInOut,
+                                               animations: {
+                                                    self.kiddoHeart.transform = CGAffineTransform(translationX: 0, y: -(self.view.frame.size.height/2))
+                                               },
+                                               completion: { (finished) in
+                                                    self.kiddoHeart.isHidden = true
+                                                    self.isFirstTime = false
+                                                    self.prepareForLaunch()
 
-        UIView.animate(withDuration: 1.5,
-                       delay: 0,
-                       options: .curveEaseInOut,
-                       animations: {
-                            self.kiddoLogo.alpha = 0
-                       },
-                       completion: { (finished) in
-                            self.kiddoLogo.isHidden = true
-                            UIView.animate(withDuration: 2.0,
-                                           delay: 0.05,
-                                           options: .curveEaseInOut,
-                                           animations: {
-                                                self.kiddoHeart.transform = CGAffineTransform(translationX: 0, y: -(self.view.frame.size.height/2))
-                                           },
-                                           completion: { (finished) in
-                                                self.kiddoHeart.isHidden = true
-                                                self.prepareForLaunch()
-
-                                           })
-                       })
+                                               })
+                           })
+        } else {
+            prepareForLaunch()
+        }
     }
     
     func prepareForLaunch() {
         if PFUser.current() != nil {
             self.performSegue(withIdentifier: "showTimeline", sender: nil)
         } else {
-            if !facebookLoginNeeded() {
+            if !emailSubmisionNeeded() {
                 self.performSegue(withIdentifier: "showTimeline", sender: nil)
             } else {
                 let logInViewController = LogInViewController()
-                logInViewController.fields = [PFLogInFields.facebook, PFLogInFields.dismissButton]
+                logInViewController.fields = [PFLogInFields.facebook,PFLogInFields.dismissButton]
                 logInViewController.delegate = self
                 logInViewController.emailAsUsername = false
                 logInViewController.signUpController?.delegate = self
                 logInViewController.facebookPermissions = ["public_profile", "email"]
 
-                self.present(logInViewController, animated: false, completion: nil )
+                self.present(logInViewController, animated: true, completion: nil )
             }
         }
+    }
+
+    func emailSubmisionNeeded() -> Bool {
+        if let _ = UserDefaults.standard.object(forKey: "email") as? String {
+            return false
+        }
+
+        return true
     }
 
     func facebookLoginNeeded() -> Bool {
@@ -96,10 +110,23 @@ class SplashAnimateViewController: UIViewController, PFLogInViewControllerDelega
 
     //Skipping log in triggers this.
     func logInViewControllerDidCancelLog(in logInController: PFLogInViewController) {
-        Answers.logSignUp(withMethod: "Facebook", success: 0, customAttributes: ["FacebookLogin": "Skipped"])
-        UserDefaults.standard.set(Date(), forKey: "FacebookLoginSkipped")
+        //Answers.logSignUp(withMethod: "Facebook", success: 0, customAttributes: ["FacebookLogin": "Skipped"])
+        //UserDefaults.standard.set(Date(), forKey: "FacebookLoginSkipped")
+        //presentTimeline()
+
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "SignUpViewController")
+        //self.present(controller, animated: true, completion: nil)
+        
+        self.dismiss(animated: true, completion: { self.present(controller, animated: true, completion: nil) } )
+
+
+    }
+
+    func signUpViewController(signUpController: PFSignUpViewController, didSignUpUser user: PFUser) {
         presentTimeline()
     }
+
 
     func presentTimeline() {
         self.dismiss(animated: true, completion: { self.performSegue(withIdentifier: "showTimeline", sender: nil) } )

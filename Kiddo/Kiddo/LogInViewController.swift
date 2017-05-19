@@ -18,17 +18,20 @@ class LogInViewController: PFLogInViewController {
     override func viewDidLoad() {
          super.viewDidLoad()
         //set background image
-        backgroundImage = UIImageView(image: UIImage(named: "bg_portraitNew.png"))
+        backgroundImage = UIImageView(image: UIImage(named: "bg_portraitBlur2.png"))
         backgroundImage.contentMode = UIViewContentMode.scaleAspectFill
         self.logInView!.insertSubview(backgroundImage, at: 0)
 
         logInView?.logo = nil
+
         self.logInView?.dismissButton?.isEnabled = true
         self.logInView?.dismissButton?.setImage(nil, for: .normal)
+        self.logInView?.dismissButton?.backgroundColor = UIColor(red: 52/255, green: 191/255, blue: 73/255, alpha: 1)
         
-        self.logInView?.dismissButton?.setTitle("Skip", for: .normal)
-        self.logInView?.dismissButton?.setTitleColor(UIColor.lightGray, for: .normal)
-        self.logInView?.dismissButton?.setTitleShadowColor(UIColor.black, for: .normal)
+        self.logInView?.dismissButton?.setTitle("Subscribe", for: .normal)
+        self.logInView?.dismissButton?.setTitleColor(UIColor.white, for: .normal)
+        self.logInView?.dismissButton?.layer.cornerRadius = 5
+
 
     }
 
@@ -39,8 +42,8 @@ class LogInViewController: PFLogInViewController {
         // stretch background image to fill screen
         backgroundImage.frame = CGRect(x: 0,y:  0,width:  self.logInView!.frame.width, height: self.logInView!.frame.height)
 
-        let dismissButtonFrame = logInView?.dismissButton?.frame
-        logInView?.dismissButton?.frame = CGRect(x:(self.logInView?.frame.width)! - 56, y: 28,  width:50, height: (dismissButtonFrame?.height)!)
+        //let dismissButtonFrame = logInView?.dismissButton?.frame
+        logInView?.dismissButton?.frame = CGRect(x:(self.logInView?.facebookButton?.frame.origin.x)!, y: (self.logInView?.facebookButton?.frame.origin.y)! - 65,  width:(self.logInView?.facebookButton?.frame.width)!, height: (self.logInView?.facebookButton?.frame.height)!)
 
     }
 
