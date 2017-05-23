@@ -31,6 +31,7 @@ struct Event {
     let category: String!
     let featuredFlag: Bool
     let imageObjectId: String
+    let geoLocation: PFGeoPoint?
 
     static func create(from object: PFObject) -> Event {
         let id = object.objectId ?? "0"
@@ -54,6 +55,7 @@ struct Event {
         let category = object["category"] as! String
         let featuredFlag = object["isFeatured"] as! Bool
         let imageObjectId = object["imageObjectId"] as! String
+        let geoLocation = object["geoLocation"] as? PFGeoPoint
 
         return Event(id: id,
                      title: title,
@@ -75,7 +77,8 @@ struct Event {
                      photo: photo,
                      category: category,
                      featuredFlag: featuredFlag,
-                     imageObjectId: imageObjectId
+                     imageObjectId: imageObjectId,
+                     geoLocation: geoLocation
         )
     }
 

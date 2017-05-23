@@ -69,9 +69,9 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
     }
 
     override func viewWillAppear(_ animated: Bool) {
-        if event.address != nil {
-            addressStringToGeocode(for: event.address)
-        }
+//        if event.address != nil {
+//            addressStringToGeocode(for: event.address)
+//        }
 
         self.cachedImageViewSize = self.eventImage.frame;
     }
@@ -138,7 +138,9 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
         let formatedString = event.category.uppercased()
         self.eventCategory?.setTitle(formatedString, for: .normal)
 
-        //self.eventFullDateLabel.text =  event.allDayFlag == true ? DateUtil.shared.fullDateStringWithDateStyle(from: event.dates.first!) : DateUtil.shared.fullDateStringWithDateTimeStyle(from: event.dates.first!)
+        if let geoLocation = event.geoLocation {
+            self.locationCoordinates = geoLocation.location()
+        }
 
         switch currentTab! {
         case .today:
@@ -187,6 +189,7 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
         mapItem.openInMaps(launchOptions: options)
     }
 
+    //Below function is depricated. We store PFGeoPoint object with EventObject at Parse
     func addressStringToGeocode(for addressString: String) {
         let address = addressString
         let geocoder = CLGeocoder()
@@ -214,4 +217,11 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
     }
 
 
+}
+
+extension PFGeoPoint {
+
+    func location() -> CLLocationCoordinate2D {
+        return CLLocationCoordinate2D(latitude: self.latitude, longitude: self.longitude)
+    }
 }
