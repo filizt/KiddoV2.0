@@ -46,6 +46,7 @@
 		BD68B9B01DD0F2F300CE39CA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		BD68B9B21DD0F2F300CE39CA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BD68B9BE1DD0FA1C00CE39CA /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		BD9EFEB41EDA28B500F80296 /* Kiddo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Kiddo.entitlements; sourceTree = "<group>"; };
 		BDB5B0911E4D534400D59AEA /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = SOURCE_ROOT; };
 		BDB5B0951E4D54B600D59AEA /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = SOURCE_ROOT; };
 		BDC903D31E413B82006CD7D6 /* CustomSegmentedControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomSegmentedControl.swift; sourceTree = "<group>"; };
@@ -133,6 +134,7 @@
 		BD68B9A51DD0F2F300CE39CA /* Kiddo */ = {
 			isa = PBXGroup;
 			children = (
+				BD9EFEB41EDA28B500F80296 /* Kiddo.entitlements */,
 				BD68B9A61DD0F2F300CE39CA /* AppDelegate.swift */,
 				BDC903D51E43C65C006CD7D6 /* Fonts */,
 				BD506DDA1E294175001A98B0 /* Storyboards */,
@@ -233,6 +235,11 @@
 						CreatedOnToolsVersion = 8.0;
 						DevelopmentTeam = AWF997WQMM;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.SafariKeychain = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -472,6 +479,7 @@
 			baseConfigurationReference = 540CFF22675486906CCC738D /* Pods-Kiddo.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Kiddo/Kiddo.entitlements;
 				DEVELOPMENT_TEAM = AWF997WQMM;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -490,6 +498,7 @@
 			baseConfigurationReference = DCF89C9892D94F333D0A06CA /* Pods-Kiddo.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Kiddo/Kiddo.entitlements;
 				DEVELOPMENT_TEAM = AWF997WQMM;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

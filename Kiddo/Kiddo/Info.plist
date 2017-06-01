@@ -26,6 +26,14 @@
 				<string>fb1484136211894374</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>kiddo</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>
@@ -79,5 +87,12 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
+	<key>branch_app_domain</key>
+	<string>kiddo.app.link</string>
+	<key>branch_key</key>
+	<dict>
+		<key>live</key>
+		<string>key_live_miwrRadkyHpesDk6UfbX8kghuzkA88LE</string>
+	</dict>
 </dict>
 </plist>

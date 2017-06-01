@@ -33,6 +33,8 @@ struct Event {
     let imageObjectId: String
     let geoLocation: PFGeoPoint?
 
+    static var pushedEvent: Event?
+
     static func create(from object: PFObject) -> Event {
         let id = object.objectId ?? "0"
         let title = object["title"] as! String

@@ -13,6 +13,7 @@ import ParseFacebookUtilsV4
 import UserNotifications
 import Fabric
 import Crashlytics
+import Branch
 
 
 @UIApplicationMain
@@ -32,6 +33,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
         Parse.initialize(with: configuration)
         PFFacebookUtils.initializeFacebook(applicationLaunchOptions: launchOptions)
+
+        let branch = Branch.getInstance()
+
+        branch?.initSession(launchOptions: launchOptions, andRegisterDeepLinkHandler: { (params, error) in
+            if error == nil && params?["+clicked_branch_link"] != nil && params?["eventId"] != nil {
+                let eventId = params?["eventId"] as! String
+                self.deepLinkCallHandle(eventId: eventId)
+            }
+        })
 
         if !isSimulator() {
              Fabric.with([Crashlytics.self])
@@ -161,6 +171,43 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         Answers.logCustomEvent(withName: "NotificationViewed", customAttributes: ["Date":date])
     }
 
+
+    // Respond to Universal Links
+    func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([Any]?) -> Void) -> Bool {
+        // pass the url to the handle deep link call
+
+        Branch.getInstance().continue(userActivity)
+        
+        return true
+    }
+
+    func application(_ application: UIApplication,
+                     open url: URL,
+                     sourceApplication: String?,
+                     annotation: Any) -> Bool {
+
+        Branch.getInstance().handleDeepLink(url)
+
+        return FBSDKApplicationDelegate.sharedInstance().application(application,
+                                                                     open: url,
+                                                                     sourceApplication: sourceApplication,
+                                                                     annotation: annotation)
+    }
+
+    func deepLinkCallHandle(eventId: String) {
+        let query = PFQuery(className:"EventObject")
+        query.getObjectInBackground(withId: eventId) {(event, error) -> Void in
+            guard error == nil else {
+                print ("Error retrieving data from Parse")
+                return
+            }
+            if let event = event {
+                Event.pushedEvent = Event.create(from: event)
+                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                self.window?.rootViewController = storyboard.instantiateInitialViewController()
+            } 
+        }
+    }
     
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
@@ -186,15 +233,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 
-    func application(_ application: UIApplication,
-                     open url: URL,
-                     sourceApplication: String?,
-                     annotation: Any) -> Bool {
-        return FBSDKApplicationDelegate.sharedInstance().application(application,
-                                                                     open: url,
-                                                                     sourceApplication: sourceApplication,
-                                                                     annotation: annotation)
-    }   
+
 
 }
 

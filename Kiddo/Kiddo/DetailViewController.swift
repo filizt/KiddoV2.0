@@ -20,6 +20,7 @@ enum TabBarItems : Int {
     case tomorrow
     case later
     case special
+    case none
 }
 
 class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDelegate, MFMailComposeViewControllerDelegate {
@@ -40,7 +41,7 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
 
     var event: Event!
     var image: UIImage!
-    var currentTab: TabBarItems!
+    var currentTab: TabBarItems = TabBarItems.today
     var cachedImageViewSize: CGRect!
     var region: MKCoordinateRegion!
     var locationCoordinates: CLLocationCoordinate2D? {
@@ -142,7 +143,7 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
             self.locationCoordinates = geoLocation.location()
         }
 
-        switch currentTab! {
+        switch currentTab {
         case .today:
              let eventDate = DateUtil.shared.fullDateStringWithDateStyle(from: DateUtil.shared.todayDate()!)
              self.eventFullDateLabel.text = event.allDayFlag == true ? eventDate : eventDate + " at " + event.startTime

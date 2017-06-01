@@ -112,7 +112,9 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 
 
     override func viewWillAppear(_ animated: Bool) {
-
+        if let pushedEvent = Event.pushedEvent {
+            performSegue(withIdentifier: "showDetailViewForPushedEvent", sender: nil)
+        }
     }
 
 
@@ -449,10 +451,22 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 
             if let destinationViewController = segue.destination as? DetailViewController {
                 destinationViewController.event = selectedEvent
-                destinationViewController.image = currentCell.eventImage?.image
-                destinationViewController.currentTab = TabBarItems(rawValue: segmentedControl.selectedIndex)
+                destinationViewController.image = (currentCell.eventImage?.image)!
+                destinationViewController.currentTab = TabBarItems(rawValue: segmentedControl.selectedIndex)!
+            }
+        } else if segue.identifier == "showDetailViewForPushedEvent" {
+            if let destinationViewController = segue.destination as? DetailViewController {
+                destinationViewController.event = Event.pushedEvent
+                if let image = SimpleCache.shared.image(key: (Event.pushedEvent?.imageObjectId)!) {
+                    destinationViewController.image = image
+                } else{
+                    destinationViewController.image =  UIImage(named: "image_placeholder")
+                }
+                destinationViewController.currentTab = TabBarItems.none
+                Event.pushedEvent = nil
             }
         }
+
     }
 
     //MARK: TableView Delegates

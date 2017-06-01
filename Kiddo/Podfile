@@ -7,7 +7,7 @@ target 'Kiddo' do
   pod 'Parse'
   pod 'ParseUI'
   pod 'ParseFacebookUtilsV4'
-  
+  pod 'Branch'
   # Pods for Kiddo
 
 end
