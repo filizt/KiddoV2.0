@@ -30,9 +30,10 @@ struct Event {
     let photo: PFFile?
     let category: String!
     let featuredFlag: Bool
-    let imageObjectId: String
+    var imageObjectId: String!
     let geoLocation: PFGeoPoint?
 
+    static var pushedEventId: String?
     static var pushedEvent: Event?
 
     static func create(from object: PFObject) -> Event {

@@ -13,7 +13,7 @@ import UserNotifications
 import Crashlytics
 import ParseFacebookUtilsV4
 
-class TimelineViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, CustomSegmentedControlDelegate  {
+class TimelineViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, CustomSegmentedControlDelegate, CellFreeButtonDelegate  {
 
     @IBOutlet weak var timelineTableView: UITableView!
     @IBOutlet weak var segmentedControl: CustomSegmentedControl!
@@ -21,6 +21,28 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
     private var request:PFQuery<PFObject>?
     private var lastModified: Date?
 
+    private var freeButtonToggled = false {
+        didSet {
+            if freeButtonToggled {
+                self.events = events.filter { $0.freeFlag == true }
+                Answers.logCustomEvent(withName: "FreeButtonTapped", customAttributes:nil)
+            } else {
+                let selectedIndex = self.segmentedControl.selectedIndex
+                switch selectedIndex {
+                case 0:
+                    self.events = self.today
+                case 1:
+                    self.events = self.tomorrow
+                case 2:
+                    self.events = self.later
+                case 3:
+                    self.events = self.specialEventDay
+                default:
+                    self.events = self.today
+                }
+            }
+        }
+    }
 
     private var events = [Event]() {
         didSet {
@@ -112,11 +134,24 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 
 
     override func viewWillAppear(_ animated: Bool) {
-        if let pushedEvent = Event.pushedEvent {
-            performSegue(withIdentifier: "showDetailViewForPushedEvent", sender: nil)
-        }
+       self.deepLinkHandler()
     }
 
+    func deepLinkHandler() {
+       if let eventId = Event.pushedEventId {
+            let query = PFQuery(className:"EventObject")
+            query.getObjectInBackground(withId: eventId) {(event, error) -> Void in
+                guard error == nil else {
+                    print ("Error retrieving data from Parse")
+                    return
+                }
+                if let event = event {
+                    Event.pushedEvent = Event.create(from: event)
+                    self.performSegue(withIdentifier: "showDetailViewForPushedEvent", sender: nil)
+                }
+            }
+        }
+    }
 
     func applicationEnteredForeground() {
         activityIndicator.startAnimating()
@@ -144,6 +179,12 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
                 }
             }
         }
+    }
+
+    //free button toggles between free events and all events.
+    func handleFreeButtonTap() {
+        freeButtonToggled = !freeButtonToggled
+
     }
 
     func updateSegmentedControl() {
@@ -250,6 +291,13 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
                 if let object = object {
                     //user graph data already saved, just update the lastSeen field
                     object["lastSeen"] = Date()
+                    if object["appLaunchHistory"] != nil {
+                        var a = object["appLaunchHistory"] as! [Date]
+                        a.append(Date())
+                        object["appLaunchHistory"] = a
+                    } else {
+                        object["appLaunchHistory"] = [Date()]
+                    }
                     object.saveInBackground()
                 } else { //below is the case where users signed up with facebook but we don't have their userGraph info yet
                     if let accessToken = FBSDKAccessToken.current() {
@@ -285,6 +333,26 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
                         }
                     }
                 }
+            }
+        } else { //where user didn't log in with FB but used their email to sign up
+            let query = PFQuery(className: "UserEmail")
+            if let vendorIdentifier = UIDevice.current.identifierForVendor {
+                query.whereKey("deviceUUID", equalTo: vendorIdentifier.uuidString)
+                query.getFirstObjectInBackground(block: { (object, error) in
+                    guard error == nil else { print("\(error?.localizedDescription)"); return }
+                    if let object = object {
+                        object["lastSeen"] = Date()
+                        if object["appLaunchHistory"] != nil {
+                            var a = object["appLaunchHistory"] as! [Date]
+                            a.append(Date())
+                            object["appLaunchHistory"] = a
+                        } else {
+                            object["appLaunchHistory"] = [Date()]
+                        }
+
+                        object.saveInBackground()
+                    }
+                })
             }
         }
     }
@@ -457,13 +525,10 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         } else if segue.identifier == "showDetailViewForPushedEvent" {
             if let destinationViewController = segue.destination as? DetailViewController {
                 destinationViewController.event = Event.pushedEvent
-                if let image = SimpleCache.shared.image(key: (Event.pushedEvent?.imageObjectId)!) {
-                    destinationViewController.image = image
-                } else{
-                    destinationViewController.image =  UIImage(named: "image_placeholder")
-                }
+                destinationViewController.image = SimpleCache.shared.image(key: (Event.pushedEvent?.imageObjectId)!)
                 destinationViewController.currentTab = TabBarItems.none
                 Event.pushedEvent = nil
+                Event.pushedEventId = nil
             }
         }
 
@@ -479,7 +544,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         let selectedEvent = self.events[indexPath.row]
         let cell = self.timelineTableView.dequeueReusableCell(withIdentifier: EventTableViewCell.identifier(), for: indexPath) as! EventTableViewCell
         cell.event = selectedEvent
-
+        cell.delegate = self
         if self.segmentedControl.selectedIndex == 2 {
             cell.eventStartTime.text = DateUtil.shared.shortDateString(from: selectedEvent.dates.first!)
             cell.eventFeaturedStar.isHidden = true
@@ -514,4 +579,5 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
             self.events = self.today
         }
     }
+
 }

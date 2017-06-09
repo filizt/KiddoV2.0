@@ -9,6 +9,11 @@
 import UIKit
 import Parse
 
+protocol CellFreeButtonDelegate {
+    func handleFreeButtonTap()
+}
+
+
 class EventTableViewCell: UITableViewCell {
     
     @IBOutlet weak var eventImage: UIImageView!
@@ -21,6 +26,8 @@ class EventTableViewCell: UITableViewCell {
     @IBOutlet weak var eventFeaturedStar: UIImageView!
 
     private let cache = SimpleCache.shared
+
+    var delegate:CellFreeButtonDelegate?
 
     var event: Event? {
         didSet {
@@ -104,8 +111,15 @@ class EventTableViewCell: UITableViewCell {
         }
     }
 
+    func handleTap(_ sender: UITapGestureRecognizer) {
+        delegate?.handleFreeButtonTap()
+    }
+
     override func awakeFromNib() {
         super.awakeFromNib()
+
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(EventTableViewCell.handleTap(_:)))
+        self.eventFreeImage.addGestureRecognizer(tapGesture)
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

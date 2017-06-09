@@ -40,7 +40,7 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
     @IBOutlet weak var eventFullDateLabel: UILabel!
 
     var event: Event!
-    var image: UIImage!
+    var image: UIImage? = nil
     var currentTab: TabBarItems = TabBarItems.today
     var cachedImageViewSize: CGRect!
     var region: MKCoordinateRegion!
@@ -48,9 +48,12 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
         didSet {
             let annotation = MKPointAnnotation()
             annotation.coordinate = self.locationCoordinates!
+            annotation.title = event.location
+            annotation.subtitle = "Tap to get directions"
             region = MKCoordinateRegionMakeWithDistance(locationCoordinates!, 500, 500);
             self.mapView.setRegion(region, animated: true)
             self.mapView.addAnnotation(annotation)
+            self.mapView.selectAnnotation(annotation, animated: true)
         }
     }
 
@@ -74,7 +77,34 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
 //            addressStringToGeocode(for: event.address)
 //        }
 
+        //check one more time to find an image, if self.image is still nil.
+
         self.cachedImageViewSize = self.eventImage.frame;
+
+        guard self.image == nil else {
+            return
+        }
+
+        if let image = SimpleCache.shared.image(key: (event.imageObjectId)) {
+            self.image = image
+        } else {
+            let query = PFQuery(className: "EventImage")
+            query.getObjectInBackground(withId: event.imageObjectId) {(object, error) -> Void in
+                    guard let imageFile = object?["image"] as? PFFile else { return }
+
+                    imageFile.getDataInBackground({ (data, error) in
+                    guard error == nil else {
+                        print ("Error retrieving image data from Parse")
+                        return
+                    }
+                    guard let imageData = data else { return }
+                    guard let image = UIImage(data: imageData) else { return }
+
+                    self.image = image
+                    self.eventImage.image = self.image
+                })
+            }
+        }
     }
 
     @IBAction func sendFeedbackPressed(_ sender: UIButton) {
@@ -116,7 +146,11 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
 
     private func loadEventInfo() {
         self.title = event.title
-        self.eventImage.image = self.image
+        if let image = self.image {
+            self.eventImage.image = self.image
+        } else {
+            self.eventImage.image = UIImage(named: "image_placeholder")
+        }
         self.eventDescription.text = event.description
         self.eventAgeInfo.text = "AGES: \(event.ages)"
         self.eventCost.text = event.freeFlag == true ? "COST: Free" : "COST: \(event.price)"

@@ -21,6 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     var window: UIWindow?
     var rootVC: UIViewController?
+
     private let userDefaults = UserDefaults.standard
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
@@ -34,24 +35,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         Parse.initialize(with: configuration)
         PFFacebookUtils.initializeFacebook(applicationLaunchOptions: launchOptions)
 
-        let branch = Branch.getInstance()
-
-        branch?.initSession(launchOptions: launchOptions, andRegisterDeepLinkHandler: { (params, error) in
-            if error == nil && params?["+clicked_branch_link"] != nil && params?["eventId"] != nil {
-                let eventId = params?["eventId"] as! String
-                self.deepLinkCallHandle(eventId: eventId)
-            }
-        })
-
         if !isSimulator() {
              Fabric.with([Crashlytics.self])
         }
 
         UNUserNotificationCenter.current().delegate = self
 
-        fetchSpecialEventRequirements()
         fetchImageCacheLimitAndImages()
+        fetchSpecialEventRequirements()
         requestAuthForNotifications()
+
+        Branch.getInstance()?.initSession(launchOptions: launchOptions, andRegisterDeepLinkHandler: { (params, error) in
+            if error == nil && params?["+clicked_branch_link"] != nil && params?["eventId"] != nil {
+                let eventId = params?["eventId"] as! String
+                Event.pushedEventId = eventId
+
+                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                let navController = storyboard.instantiateViewController(withIdentifier: "navController")
+                self.window!.rootViewController = navController
+            }
+        })
 
         return true
     }
@@ -175,9 +178,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     // Respond to Universal Links
     func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([Any]?) -> Void) -> Bool {
         // pass the url to the handle deep link call
-
         Branch.getInstance().continue(userActivity)
-        
+
         return true
     }
 
@@ -186,27 +188,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                      sourceApplication: String?,
                      annotation: Any) -> Bool {
 
-        Branch.getInstance().handleDeepLink(url)
-
-        return FBSDKApplicationDelegate.sharedInstance().application(application,
+        if (!Branch.getInstance().handleDeepLink(url)) {
+            return FBSDKApplicationDelegate.sharedInstance().application(application,
                                                                      open: url,
                                                                      sourceApplication: sourceApplication,
                                                                      annotation: annotation)
-    }
-
-    func deepLinkCallHandle(eventId: String) {
-        let query = PFQuery(className:"EventObject")
-        query.getObjectInBackground(withId: eventId) {(event, error) -> Void in
-            guard error == nil else {
-                print ("Error retrieving data from Parse")
-                return
-            }
-            if let event = event {
-                Event.pushedEvent = Event.create(from: event)
-                let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                self.window?.rootViewController = storyboard.instantiateInitialViewController()
-            } 
         }
+
+        return true
     }
     
     func applicationWillResignActive(_ application: UIApplication) {

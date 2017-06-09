@@ -47,6 +47,12 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
             let emailObject: PFObject = PFObject(className: "UserEmail")
             emailObject["email"] = emailField.text!
 
+            if let vendorIdentifier = UIDevice.current.identifierForVendor {
+                emailObject["deviceUUID"] = vendorIdentifier.uuidString
+            } else {
+                emailObject["deviceUUID"] = "0"
+            }
+
             emailObject.saveInBackground(block: { (result, error) in
                 self.performSegue(withIdentifier: "pushTimeline", sender: nil)
             })
