@@ -1,15 +1,27 @@
+#ifdef __OBJC__
 #import <UIKit/UIKit.h>
+#else
+#ifndef FOUNDATION_EXPORT
+#if defined(__cplusplus)
+#define FOUNDATION_EXPORT extern "C"
+#else
+#define FOUNDATION_EXPORT extern
+#endif
+#endif
+#endif
 
 #import "BNCCallbacks.h"
 #import "BNCCommerceEvent.h"
 #import "BNCConfig.h"
 #import "BNCContentDiscoveryManager.h"
+#import "BNCDebug.h"
 #import "BNCDeviceInfo.h"
 #import "BNCEncodingUtils.h"
 #import "BNCError.h"
 #import "BNCFabricAnswers.h"
 #import "BNCLinkCache.h"
 #import "BNCLinkData.h"
+#import "BNCLog.h"
 #import "BNCPreferenceHelper.h"
 #import "BNCServerInterface.h"
 #import "BNCServerRequestQueue.h"
@@ -26,9 +38,12 @@
 #import "BranchCSSearchableItemAttributeSet.h"
 #import "BranchDeepLinkingController.h"
 #import "BranchLinkProperties.h"
+#import "BranchShareLink.h"
 #import "BranchUniversalObject.h"
 #import "BranchView.h"
 #import "BranchViewHandler.h"
+#import "NSMutableDictionary+Branch.h"
+#import "NSString+Branch.h"
 #import "BNCServerRequest.h"
 #import "BranchCloseRequest.h"
 #import "BranchCreditHistoryRequest.h"
@@ -48,12 +63,14 @@
 #import "BNCCommerceEvent.h"
 #import "BNCConfig.h"
 #import "BNCContentDiscoveryManager.h"
+#import "BNCDebug.h"
 #import "BNCDeviceInfo.h"
 #import "BNCEncodingUtils.h"
 #import "BNCError.h"
 #import "BNCFabricAnswers.h"
 #import "BNCLinkCache.h"
 #import "BNCLinkData.h"
+#import "BNCLog.h"
 #import "BNCPreferenceHelper.h"
 #import "BNCServerInterface.h"
 #import "BNCServerRequestQueue.h"
@@ -70,9 +87,12 @@
 #import "BranchCSSearchableItemAttributeSet.h"
 #import "BranchDeepLinkingController.h"
 #import "BranchLinkProperties.h"
+#import "BranchShareLink.h"
 #import "BranchUniversalObject.h"
 #import "BranchView.h"
 #import "BranchViewHandler.h"
+#import "NSMutableDictionary+Branch.h"
+#import "NSString+Branch.h"
 #import "BNCServerRequest.h"
 #import "BranchCloseRequest.h"
 #import "BranchCreditHistoryRequest.h"

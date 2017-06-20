@@ -175,6 +175,9 @@
     
     [urlString appendFormat:@"&branch_key=%@", branchKey];
     [urlString appendFormat:@"&sdk=ios%@", BNC_SDK_VERSION];
+
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wdeprecated-declarations"
     
     if (redirectUrl) {
         [urlString appendFormat:@"&redirect_url=%@",
@@ -184,6 +187,8 @@
     NSString *escapedURL =
         [urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     return [NSURL URLWithString:escapedURL];
+
+    #pragma clang diagnostic pop
 }
 
 - (void)createStrongMatchWithBranchKey:(NSString *)branchKey {
@@ -249,7 +254,7 @@
 }
 
 /**
-  Find the top view controller that is not of type UINavigationController or UITabBarController
+  Find the top view controller that is not of type UINavigationController, UITabBarController, UISplitViewController
  */
 - (UIViewController *)topViewController:(UIViewController *)baseViewController {
     if ([baseViewController isKindOfClass:[UINavigationController class]]) {
@@ -258,6 +263,10 @@
 
     if ([baseViewController isKindOfClass:[UITabBarController class]]) {
         return [self topViewController: ((UITabBarController *)baseViewController).selectedViewController];
+    }
+
+    if ([baseViewController isKindOfClass:[UISplitViewController class]]) {
+        return [self topViewController: ((UISplitViewController *)baseViewController).viewControllers.firstObject];
     }
 
     if ([baseViewController presentedViewController] != nil) {
@@ -297,7 +306,7 @@
         objc_registerClassPair(BNCMatchViewControllerSubclass);
     }
 
-    NSLog(@"Safari initializing."); //  eDebug
+    //NSLog(@"Safari initializing."); //  eDebug
     self.primaryWindow = [self keyWindow];
 
     self.matchViewController = [[BNCMatchViewControllerSubclass alloc] initWithURL:matchURL];
@@ -322,7 +331,7 @@
 }
 
 - (void) unloadViewController {
-    NSLog(@"Safari unloadViewController");  // eDebug
+    //NSLog(@"Safari unloadViewController");  // eDebug
     
     [self.matchViewController willMoveToParentViewController:nil];
     [self.matchViewController.view removeFromSuperview];
@@ -342,7 +351,7 @@
 
 - (void)safariViewController:(SFSafariViewController *)controller
       didCompleteInitialLoad:(BOOL)didLoadSuccessfully {
-    NSLog(@"Safari Did load. Success: %d.", didLoadSuccessfully);   //  eDebug
+    //NSLog(@"Safari Did load. Success: %d.", didLoadSuccessfully);   //  eDebug
     [self unloadViewController];
 }
 

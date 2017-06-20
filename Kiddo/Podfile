@@ -8,6 +8,8 @@ target 'Kiddo' do
   pod 'ParseUI'
   pod 'ParseFacebookUtilsV4'
   pod 'Branch'
+  pod 'UIViewController+ODStatusBar'
+  pod 'Cluster'
   # Pods for Kiddo
 
 end
