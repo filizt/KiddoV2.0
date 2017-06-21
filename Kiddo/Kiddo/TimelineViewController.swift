@@ -12,6 +12,12 @@ import ParseUI
 import UserNotifications
 import Crashlytics
 import ParseFacebookUtilsV4
+import MapKit
+import Cluster
+
+class EventAnnotation : Annotation {
+    var event : Event!
+}
 
 class TimelineViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, CustomSegmentedControlDelegate, CellFreeButtonDelegate  {
 
@@ -20,6 +26,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     private var request:PFQuery<PFObject>?
     private var lastModified: Date?
+    let clusterManager = ClusterManager()
 
     private var freeButtonToggled = false {
         didSet {
@@ -47,9 +54,49 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
     private var events = [Event]() {
         didSet {
             if events.count > 0 {
-                timelineTableView.reloadData()
-                timelineTableView.scrollToRow(at: IndexPath(item: 0, section: 0), at: .top, animated: false)
-                animateTimelineCells()
+                if isListSelected {
+                    timelineTableView.reloadData()
+                    timelineTableView.scrollToRow(at: IndexPath(item: 0, section: 0), at: .top, animated: false)
+                    animateTimelineCells()
+                } else {
+                    if let map = mapView {
+                        map.removeAnnotations(map.annotations)
+                        clusterManager.remove(clusterManager.annotations)
+                        clusterManager.zoomLevel = 17
+
+                        for event in events{
+                            if let location = event.geoLocation {
+                                let annotation = EventAnnotation()
+                                annotation.event = event
+                                annotation.coordinate = location.location()
+                                annotation.type = .color(UIColor(red:0.25, green:0.18, blue:0.35, alpha:1.0), radius: 25) // .image(UIImage(named: "pin"))
+                                annotation.title = event.title
+                                annotation.subtitle = (self.segmentedControl.selectedIndex == 2 ? DateUtil.shared.shortDateString(from: event.dates.first!) : (event.allDayFlag == true ? "ALL DAY" : "\(DateUtil.shared.shortTime(from:event.startTime))")) + " - " + event.location
+
+                                clusterManager.add(annotation)
+
+                                var zoomRect = MKMapRectNull
+                                for annotation in clusterManager.annotations {
+                                    let annotationPoint = MKMapPointForCoordinate(annotation.coordinate)
+                                    let pointRect = MKMapRectMake(annotationPoint.x, annotationPoint.y, 0, 0)
+                                    if MKMapRectIsNull(zoomRect) {
+                                        zoomRect = pointRect
+                                    } else {
+                                        zoomRect = MKMapRectUnion(zoomRect, pointRect)
+                                    }
+                                }
+
+                                zoomRect = MKMapRectMake(zoomRect.origin.x - zoomRect.size.width * 0.1 , zoomRect.origin.y - zoomRect.size.height * 0.1, zoomRect.size.width * 1.2, zoomRect.size.height * 1.2)
+                                clusterManager.reload(map, visibleMapRect: zoomRect)
+                                map.setVisibleMapRect(zoomRect, animated: true)
+                            }
+                        }
+//                        for annotation in clusterManager.annotations {
+//                            map.addAnnotation(annotation)
+//                        }
+//                        map.showAnnotations(map.annotations, animated: true)
+                    }
+                }
             }
         }
     }
@@ -91,9 +138,14 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         }
     }
 
-
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        let mapBarButtonItem = UIBarButtonItem(image: UIImage(named: "mapIcon")!, style: .done, target: self, action: #selector(switchViewType))
+        self.navigationItem.rightBarButtonItem = mapBarButtonItem
+
+        mapContainerView.alpha = 0
+        mapContainerView.isHidden = true
 
         self.timelineTableView.dataSource = self
         self.timelineTableView.delegate = self
@@ -135,6 +187,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 
     override func viewWillAppear(_ animated: Bool) {
        self.deepLinkHandler()
+       showStatusBar(style: .lightContent)
     }
 
     func deepLinkHandler() {
@@ -160,7 +213,6 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 
         self.updateUserGraphDataIfNecessary()
         self.fetchPhotosIfNecessary()
-
     }
 
     func fetchSpecialEventReqs() {
@@ -553,10 +605,8 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         return cell
     }
 
-
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         self.performSegue(withIdentifier: "showDetailView", sender: nil)
-
     }
 
     //MARK: Segmented Control Delegate
@@ -580,4 +630,199 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         }
     }
 
+    // MARK: Map or List Switching
+
+    @IBOutlet weak var mapContainerView: UIView!
+    var mapView : MKMapView?
+    var isListSelected = true
+
+    func switchViewType(){
+        let mapBarButtonItem = UIBarButtonItem(image: UIImage(named: "mapIcon")!, style: .done, target: self, action: #selector(switchViewType))
+        let listBarButtonItem = UIBarButtonItem(image: UIImage(named: "listIcon")!, style: .done, target: self, action: #selector(switchViewType))
+
+        isListSelected = !isListSelected
+        if isListSelected {
+            Answers.logCustomEvent(withName: "Map/List View Toggled", customAttributes: nil)
+            self.navigationItem.rightBarButtonItem = mapBarButtonItem
+            timelineTableView.isHidden = false
+            didSelectItem(sender: segmentedControl, selectedIndex: segmentedControl.selectedIndex)
+
+            UIView.animate(withDuration: 0.5, animations: {
+                self.mapContainerView.alpha = 0
+                self.timelineTableView.alpha = 1
+            }, completion: { (finished) in
+                if finished {
+                    self.mapContainerView.isHidden = true
+                    self.mapView?.removeFromSuperview()
+                    self.mapView?.delegate = nil
+                    self.mapView = nil
+                }
+            })
+        } else {
+            self.navigationItem.rightBarButtonItem = listBarButtonItem
+            mapContainerView.isHidden = false
+            mapView = MKMapView(frame: CGRect(x: 0, y: 0, width: mapContainerView.frame.size.width, height: mapContainerView.frame.size.height))
+            mapView?.delegate = self
+            mapContainerView.addSubview(mapView!)
+            didSelectItem(sender: segmentedControl, selectedIndex: segmentedControl.selectedIndex)
+
+            UIView.animate(withDuration: 0.5, animations: {
+                self.mapContainerView.alpha = 1
+                self.timelineTableView.alpha = 0
+            }, completion: { (finished) in
+                if finished {
+                    self.timelineTableView.isHidden = true
+                }
+            })
+        }
+    }
+}
+
+class BorderedClusterAnnotationView: ClusterAnnotationView {
+    var borderColor: UIColor?
+
+    convenience init(annotation: MKAnnotation?, reuseIdentifier: String?, type: ClusterAnnotationType, borderColor: UIColor) {
+        self.init(annotation: annotation, reuseIdentifier: reuseIdentifier, type: type)
+        self.borderColor = borderColor
+    }
+
+    override func configure() {
+        super.configure()
+        switch type {
+        case .image:
+            break
+        case .color:
+            layer.borderColor = borderColor?.cgColor
+            layer.borderWidth = 2
+        }
+    }
+}
+
+extension TimelineViewController: MKMapViewDelegate {
+
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        if let annotation = annotation as? ClusterAnnotation {
+            let identifier = "Cluster"
+            var view = mapView.dequeueReusableAnnotationView(withIdentifier: identifier)
+            view?.canShowCallout = false
+
+            if view == nil {
+                if let annotation = annotation.annotations.first as? Annotation, let type = annotation.type {
+                    view = BorderedClusterAnnotationView(annotation: annotation, reuseIdentifier: identifier, type: type, borderColor: .white)
+                } else {
+                    view = ClusterAnnotationView(annotation: annotation, reuseIdentifier: identifier, type: .color(UIColor.appPurpleColor, radius: 25))
+                }
+            } else {
+                view?.annotation = annotation
+            }
+            view?.canShowCallout = false
+            return view
+        } else {
+            let eventAnnotation = annotation as! EventAnnotation
+            let annotationEvent = eventAnnotation.event!
+
+            let identifier = "Pin"
+            var view = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MKPinAnnotationView
+            if view == nil {
+                view = MKPinAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+                view?.pinTintColor = UIColor.appPurpleColor
+            } else {
+                view?.annotation = annotation
+            }
+
+            let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+            imageView.backgroundColor = UIColor.clear
+            imageView.layer.cornerRadius = 5
+            imageView.clipsToBounds = true
+            imageView.contentMode = .scaleAspectFill
+
+            imageView.image = nil
+
+            let cache = SimpleCache.shared
+
+            if let image = cache.image(key:annotationEvent.imageObjectId) {
+                imageView.image = image
+            }
+
+            //We don't have imageFile in the cache; let's retreive it from the server. Event photo is a PFFile in this state
+            if !annotationEvent.imageObjectId.isEmpty {
+                let imageObjectId = annotationEvent.imageObjectId
+                let query = PFQuery(className: "EventImage")
+                query.whereKey("objectId", equalTo: imageObjectId)
+                query.getFirstObjectInBackground(block: { (object, error) in
+                    guard error == nil else {
+                        print ("Error retrieving image data from Parse")
+                        return
+                    }
+
+                    guard let object = object else { return }
+                    guard let imageFile = object["image"] as? PFFile else { return }
+
+                    imageFile.getDataInBackground({ (data, error) in
+                        guard error == nil else {
+                            print ("Error retrieving image data from Parse")
+                            return
+                        }
+                        guard let imageData = data else { return }
+                        guard let image = UIImage(data: imageData) else { return }
+
+                        cache.setImage(image, key: annotationEvent.imageObjectId)
+                        imageView.image = image
+                    })
+                })
+            }
+
+            view?.leftCalloutAccessoryView = imageView
+
+            let detailButton = UIButton(type: .detailDisclosure)
+            view?.rightCalloutAccessoryView = detailButton
+
+            view?.canShowCallout = true
+            return view
+        }
+    }
+
+    func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
+        clusterManager.reload(mapView, visibleMapRect: mapView.visibleMapRect)
+    }
+
+    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        guard let annotation = view.annotation else { return }
+
+        if let cluster = annotation as? ClusterAnnotation {
+            mapView.removeAnnotations(mapView.annotations)
+
+            var zoomRect = MKMapRectNull
+            for annotation in cluster.annotations {
+                let annotationPoint = MKMapPointForCoordinate(annotation.coordinate)
+                let pointRect = MKMapRectMake(annotationPoint.x, annotationPoint.y, 0, 0)
+                if MKMapRectIsNull(zoomRect) {
+                    zoomRect = pointRect
+                } else {
+                    zoomRect = MKMapRectUnion(zoomRect, pointRect)
+                }
+            }
+
+            zoomRect = MKMapRectMake(zoomRect.origin.x - zoomRect.size.width * 0.1 , zoomRect.origin.y - zoomRect.size.height * 0.1, zoomRect.size.width * 1.2, zoomRect.size.height * 1.2)
+
+            clusterManager.reload(mapView, visibleMapRect: zoomRect)
+            mapView.setVisibleMapRect(zoomRect, animated: true)
+        }
+    }
+
+    func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
+        let eventAnnotation = view.annotation as! EventAnnotation
+        let annotationEvent = eventAnnotation.event!
+
+        let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
+        let detailViewController = storyboard.instantiateViewController(withIdentifier: "DetailViewController") as! DetailViewController
+        detailViewController.event = annotationEvent
+
+        if let imageView = view.leftCalloutAccessoryView as? UIImageView {
+            detailViewController.image = imageView.image
+        }
+
+        detailViewController.currentTab = TabBarItems(rawValue: segmentedControl.selectedIndex)!
+        self.navigationController?.pushViewController(detailViewController, animated: true)
+    }
 }

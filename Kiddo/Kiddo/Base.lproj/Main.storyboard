@@ -9,6 +9,12 @@
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="Avenir.ttc">
+            <string>Avenir-Book</string>
+            <string>Avenir-Heavy</string>
+        </array>
+    </customFonts>
     <scenes>
         <!--Title-->
         <scene sceneID="tne-QT-ifu">
@@ -26,6 +32,10 @@
                                 <rect key="frame" x="0.0" y="96" width="375" height="571"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </tableView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XmL-24-Cn7">
+                                <rect key="frame" x="0.0" y="96" width="375" height="571"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="L5u-Zr-Q8o" customClass="CustomSegmentedControl" customModule="Kiddo" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="64" width="375" height="32"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -46,7 +56,11 @@
                             <constraint firstAttribute="trailing" secondItem="L5u-Zr-Q8o" secondAttribute="trailing" id="DnL-IS-b4s"/>
                             <constraint firstItem="EUR-ae-as2" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="EVj-cj-O7L"/>
                             <constraint firstItem="bl0-SP-8aP" firstAttribute="top" secondItem="L5u-Zr-Q8o" secondAttribute="bottom" id="JpJ-nE-m0t"/>
+                            <constraint firstItem="XmL-24-Cn7" firstAttribute="bottom" secondItem="bl0-SP-8aP" secondAttribute="bottom" id="MSS-vE-i6g"/>
+                            <constraint firstItem="XmL-24-Cn7" firstAttribute="trailing" secondItem="bl0-SP-8aP" secondAttribute="trailing" id="Ulk-Wg-JkE"/>
+                            <constraint firstItem="XmL-24-Cn7" firstAttribute="top" secondItem="bl0-SP-8aP" secondAttribute="top" id="Vew-9N-xco"/>
                             <constraint firstItem="L5u-Zr-Q8o" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="WlT-td-lMs"/>
+                            <constraint firstItem="XmL-24-Cn7" firstAttribute="leading" secondItem="bl0-SP-8aP" secondAttribute="leading" id="bCz-l1-XL9"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="EUR-ae-as2" secondAttribute="bottom" id="blq-ag-4ZV"/>
                             <constraint firstItem="EUR-ae-as2" firstAttribute="top" secondItem="L5u-Zr-Q8o" secondAttribute="bottom" id="r0A-hW-8fG"/>
                             <constraint firstAttribute="trailing" secondItem="EUR-ae-as2" secondAttribute="trailing" id="s8H-1F-i6j"/>
@@ -56,6 +70,7 @@
                     <navigationItem key="navigationItem" title="Title" id="fJv-Hi-iQY"/>
                     <connections>
                         <outlet property="activityIndicator" destination="EUR-ae-as2" id="J7v-ci-NjN"/>
+                        <outlet property="mapContainerView" destination="XmL-24-Cn7" id="Hno-uc-SH4"/>
                         <outlet property="segmentedControl" destination="L5u-Zr-Q8o" id="UPy-pC-Hn9"/>
                         <outlet property="timelineTableView" destination="bl0-SP-8aP" id="Ur3-Dv-amR"/>
                         <segue destination="voi-bg-x8q" kind="show" identifier="showDetailView" id="BeH-JL-aHl"/>
@@ -281,10 +296,10 @@ Needless to say, we never share your information.  </string>
                                                     <constraint firstAttribute="height" constant="200" id="rVQ-EY-U9H"/>
                                                 </constraints>
                                             </mapView>
-                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="nPf-Qr-Axw" userLabel="AllEventInfoOverImage">
-                                                <rect key="frame" x="16" y="240.5" width="143" height="59.5"/>
+                                            <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" alignment="top" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="nPf-Qr-Axw" userLabel="AllEventInfoOverImage">
+                                                <rect key="frame" x="16" y="240.5" width="143" height="41.5"/>
                                                 <subviews>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pFQ-ad-dVo">
+                                                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pFQ-ad-dVo">
                                                         <rect key="frame" x="0.0" y="0.0" width="69" height="16"/>
                                                         <color key="backgroundColor" red="1" green="0.82621631920000005" blue="0.13725490200000001" alpha="1" colorSpace="calibratedRGB"/>
                                                         <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="9"/>
@@ -293,21 +308,20 @@ Needless to say, we never share your information.  </string>
                                                             <color key="titleColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
                                                         </state>
                                                     </button>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="lsq-rG-7vH" userLabel="FeaturedAndDate">
-                                                        <rect key="frame" x="0.0" y="21" width="142.5" height="38.5"/>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" alignment="top" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="lsq-rG-7vH" userLabel="FeaturedAndDate">
+                                                        <rect key="frame" x="0.0" y="21" width="142.5" height="20.5"/>
                                                         <subviews>
-                                                            <stackView opaque="NO" contentMode="scaleToFill" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="3mo-qq-sG3" userLabel="Featured">
-                                                                <rect key="frame" x="0.0" y="0.0" width="87.5" height="18"/>
+                                                            <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="3mo-qq-sG3" userLabel="Featured">
                                                                 <subviews>
-                                                                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="star" translatesAutoresizingMaskIntoConstraints="NO" id="EFG-fz-vpx">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="18" height="18"/>
+                                                                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" image="star" translatesAutoresizingMaskIntoConstraints="NO" id="EFG-fz-vpx">
+                                                                        <rect key="frame" x="-16" y="-343.5" width="0.0" height="18"/>
                                                                         <constraints>
                                                                             <constraint firstAttribute="height" constant="18" id="ZUF-ow-pbW"/>
                                                                             <constraint firstAttribute="width" constant="18" id="tN9-7W-UgY"/>
                                                                         </constraints>
                                                                     </imageView>
-                                                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="FEATURED" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xbd-OS-MgO">
-                                                                        <rect key="frame" x="21" y="0.0" width="66.5" height="18"/>
+                                                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="FEATURED" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xbd-OS-MgO">
+                                                                        <rect key="frame" x="-16" y="-343.5" width="0.0" height="18"/>
                                                                         <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="13"/>
                                                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                         <nil key="highlightedColor"/>
@@ -315,7 +329,7 @@ Needless to say, we never share your information.  </string>
                                                                 </subviews>
                                                             </stackView>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Thu, Mar 30, 5:00 PM" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1bV-V6-72Q">
-                                                                <rect key="frame" x="0.0" y="19" width="142.5" height="19.5"/>
+                                                                <rect key="frame" x="0.0" y="1" width="142.5" height="19.5"/>
                                                                 <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="14"/>
                                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                 <nil key="highlightedColor"/>

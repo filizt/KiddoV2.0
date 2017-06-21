@@ -14,6 +14,7 @@ import CoreLocation
 import MapKit
 import Crashlytics
 import MessageUI
+import Branch
 
 enum TabBarItems : Int {
     case today = 0
@@ -70,6 +71,9 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
 
         Answers.logCustomEvent(withName: "Detail View", customAttributes:["Event Title": event.title, "Event Category": event.category, "Event Cost": event.freeFlag == true ? "Free" : "Paid"])
 
+        let shareButtonItem = UIBarButtonItem(image: UIImage(named: "shareIcon")!, style: .done, target: self, action: #selector(share))
+        self.navigationItem.rightBarButtonItem = shareButtonItem
+
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -104,6 +108,36 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
                     self.eventImage.image = self.image
                 })
             }
+        }
+    }
+
+    func share() {
+        let canonicalIdentifier = "eventId/" + event.id
+        let branchUniversalObject: BranchUniversalObject = BranchUniversalObject(canonicalIdentifier: canonicalIdentifier)
+        branchUniversalObject.title = event.title
+        branchUniversalObject.contentDescription = event.description
+        branchUniversalObject.imageUrl = "http://kiddoapp.herokuapp.com/parse/files/1G2h3j45Rtf3s/0fb21cca5841db0816d3fbc8b598ece2_file.jpeg"
+
+        let query = PFQuery(className: "EventImage")
+        if let imageObject:PFObject = try? query.getObjectWithId(event.imageObjectId) {
+            guard let imageFile = imageObject["image"] as? PFFile else { return }
+            branchUniversalObject.imageUrl = imageFile.url
+        }
+
+        let linkProperties: BranchLinkProperties = BranchLinkProperties()
+        linkProperties.addControlParam("eventId", withValue: event.id)
+        linkProperties.feature = "share"
+
+        if let shareUrl = branchUniversalObject.getShortUrl(with: linkProperties) {
+            Answers.logCustomEvent(withName: "Event Shared", customAttributes:["Event Title": event.title, "Event Category": event.category, "Event Cost": event.freeFlag == true ? "Free" : "Paid"])
+
+            let shareString =  event.title + " " + shareUrl
+            var activityItems : [Any] = [shareString]
+
+            let activityViewController: UIActivityViewController = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
+            activityViewController.excludedActivityTypes = [.airDrop, .print, .assignToContact, .postToFlickr, .postToVimeo]
+            self.present(activityViewController, animated: true, completion: nil)
+
         }
     }
 
@@ -250,8 +284,6 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
             self.present(safariVC, animated: true, completion: nil)
         }
     }
-
-
 }
 
 extension PFGeoPoint {

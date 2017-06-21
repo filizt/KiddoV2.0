@@ -14,7 +14,7 @@ import UserNotifications
 import Fabric
 import Crashlytics
 import Branch
-
+import UIViewController_ODStatusBar
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate  {
@@ -45,6 +45,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         fetchSpecialEventRequirements()
         requestAuthForNotifications()
 
+        if launchOptions != nil {
+            if let remoteNotificationDict = launchOptions![UIApplicationLaunchOptionsKey.remoteNotification] as? NSDictionary{
+                handleNotification(notificationDict: remoteNotificationDict)
+            }
+        }
+
         Branch.getInstance()?.initSession(launchOptions: launchOptions, andRegisterDeepLinkHandler: { (params, error) in
             if error == nil && params?["+clicked_branch_link"] != nil && params?["eventId"] != nil {
                 let eventId = params?["eventId"] as! String
@@ -55,7 +61,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 self.window!.rootViewController = navController
             }
         })
-
         return true
     }
 
@@ -125,7 +130,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func requestAuthForNotifications() {
         UNUserNotificationCenter.current().getNotificationSettings(completionHandler: { (settings) in
             if settings.authorizationStatus != .authorized {
-                UNUserNotificationCenter.current().requestAuthorization(options: [ .alert, .sound]) {(granted, error) in
+                UNUserNotificationCenter.current().requestAuthorization(options: [ .alert, .sound,.badge]) {(granted, error) in
                     if granted {
                         //schedule notifications.
                         self.scheduleLocalNotifications()
@@ -222,7 +227,43 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 
+    // MARK: Push Notification
 
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        print(deviceToken)
 
+        let currentInstallation = PFInstallation.current()
+        currentInstallation?.setDeviceTokenFrom(deviceToken)
+        currentInstallation?.saveInBackground()
+    }
+
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+
+        let userInfoDict = notification.request.content.userInfo as NSDictionary
+
+        if let aps = userInfoDict["aps"] as? NSDictionary {
+            if let message = aps["alert"] as? String {
+                let notificationAlert = UIAlertController(title: "Notification", message: message, preferredStyle: UIAlertControllerStyle.alert)
+                notificationAlert.addAction(UIAlertAction(title: "Show", style: .default, handler: { (action) in
+                    self.handleNotification(notificationDict: userInfoDict)
+                }))
+                notificationAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+                window?.rootViewController?.present(notificationAlert, animated: true, completion: nil)
+            }
+        }
+    }
+
+    func handleNotification(notificationDict: NSDictionary){
+        if let notificationType = notificationDict["t"] as? Int {
+            if notificationType == 1 {
+                if let eventId = notificationDict["id"] as? String {
+                    Event.pushedEventId = eventId
+                    let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                    let navController = storyboard.instantiateViewController(withIdentifier: "navController")
+                    self.window!.rootViewController = navController
+                }
+            }
+        }
+    }
 }
 

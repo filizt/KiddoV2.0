@@ -54,7 +54,7 @@ struct Event {
         let address = object["address"] as! String
         let description = object["description"] as! String
         let ages = object["ages"] as! String
-        let photo = object["photo"] as? PFFile
+        let photo = object["photo"] as? PFFile //This might become heavy as we store lots of events.
         let category = object["category"] as! String
         let featuredFlag = object["isFeatured"] as! Bool
         let imageObjectId = object["imageObjectId"] as! String

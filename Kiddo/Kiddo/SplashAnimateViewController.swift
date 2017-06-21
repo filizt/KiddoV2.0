@@ -27,6 +27,9 @@ class SplashAnimateViewController: UIViewController, PFLogInViewControllerDelega
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
+        showStatusBar(style: .lightContent)
+
         if isFirstTime {
             UIView.animate(withDuration: 1.5,
                            delay: 0,

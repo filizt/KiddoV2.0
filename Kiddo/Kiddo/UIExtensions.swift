@@ -23,6 +23,10 @@ extension UIColor {
 
         self.init(red: newRed, green: newGreen, blue: newBlue, alpha: 1.0)
     }
+
+    class var appPurpleColor : UIColor {
+        return UIColor(red:0.25, green:0.18, blue:0.35, alpha:1.0)
+    }
 }
 
 extension String {
@@ -54,5 +58,13 @@ public extension UIImage {
     }
 }
 
+extension UIViewController {
+    func hideStatusBar(){
+        self.od_setStatusBarHidden(true)
+    }
 
-
+    func showStatusBar(style: UIStatusBarStyle){
+        self.od_setStatusBarHidden(false)
+        self.od_setStatusBarStyle(style)
+    }
+}
