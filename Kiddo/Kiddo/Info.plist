@@ -21,6 +21,14 @@
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
+			<key>CFBundleURLName</key>
+			<string></string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>amzn-filizk.Kiddo</string>
+			</array>
+		</dict>
+		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>fb1484136211894374</string>
@@ -93,6 +101,8 @@
 	</array>
 	<key>branch_app_domain</key>
 	<string>kiddo.app.link</string>
+	<key>APIKey</key>
+	<string>2a7da13580bc42e0a0ebca30d1b4038b</string>
 	<key>branch_key</key>
 	<dict>
 		<key>live</key>
