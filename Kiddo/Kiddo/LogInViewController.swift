@@ -129,9 +129,7 @@ class LogInViewController: PFLogInViewController {
         }));
     }
     
-    func showLogInPage() {
     
-    }
     
     
     

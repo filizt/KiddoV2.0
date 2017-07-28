@@ -205,7 +205,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
-        return AMZNAuthorizationManager.handleOpen(url, sourceApplication: sourceApplication)
+//        return AMZNAuthorizationManager.handleOpen(url, sourceApplication: sourceApplication)
+        return AIMobileLib.handleOpen(url, sourceApplication: UIApplicationOpenURLOptionsKey.sourceApplication.rawValue)
     }
     
     func applicationWillResignActive(_ application: UIApplication) {

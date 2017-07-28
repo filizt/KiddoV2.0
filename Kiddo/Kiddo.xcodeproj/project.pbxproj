@@ -25,6 +25,7 @@
 		BDEB9E911E05AB06002F7222 /* bg_portrait.jpg in Resources */ = {isa = PBXBuildFile; fileRef = BDEB9E901E05AB06002F7222 /* bg_portrait.jpg */; };
 		BDFA18571EBECC8F00E90C86 /* SpecialEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDFA18561EBECC8F00E90C86 /* SpecialEvent.swift */; };
 		C0C40AA81F2BE13900A8CC29 /* AIAuthenticationEventHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C40AA71F2BE13900A8CC29 /* AIAuthenticationEventHandler.swift */; };
+		C0C40AAA1F2BE3D100A8CC29 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C40AA91F2BE3D100A8CC29 /* Settings.swift */; };
 		C0C795611F26B12B002F9CB7 /* LoginWithAmazon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0C795601F26B12B002F9CB7 /* LoginWithAmazon.framework */; };
 		C0C795631F26B183002F9CB7 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0C795621F26B183002F9CB7 /* Security.framework */; };
 		C0C795651F26B193002F9CB7 /* SafariServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0C795641F26B193002F9CB7 /* SafariServices.framework */; };
@@ -58,6 +59,7 @@
 		BDEB9E901E05AB06002F7222 /* bg_portrait.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = bg_portrait.jpg; sourceTree = "<group>"; };
 		BDFA18561EBECC8F00E90C86 /* SpecialEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpecialEvent.swift; sourceTree = "<group>"; };
 		C0C40AA71F2BE13900A8CC29 /* AIAuthenticationEventHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIAuthenticationEventHandler.swift; sourceTree = "<group>"; };
+		C0C40AA91F2BE3D100A8CC29 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		C0C795601F26B12B002F9CB7 /* LoginWithAmazon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = LoginWithAmazon.framework; sourceTree = "<group>"; };
 		C0C795621F26B183002F9CB7 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		C0C795641F26B193002F9CB7 /* SafariServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SafariServices.framework; path = System/Library/Frameworks/SafariServices.framework; sourceTree = SDKROOT; };
@@ -168,6 +170,7 @@
 				C26E626E1DD1038C00BDC568 /* TimelineViewController.swift */,
 				BD68B9BE1DD0FA1C00CE39CA /* DetailViewController.swift */,
 				BDEB9E8E1E05A64F002F7222 /* LogInViewController.swift */,
+				C0C40AA91F2BE3D100A8CC29 /* Settings.swift */,
 				BD0994401ECB5FCC0045F749 /* SignUpViewController.swift */,
 			);
 			name = "View Controller";
@@ -367,6 +370,7 @@
 				BD506DDD1E316A5C001A98B0 /* SimpleCache.swift in Sources */,
 				BD0994411ECB5FCC0045F749 /* SignUpViewController.swift in Sources */,
 				BD1A4F241E82D3B800BF036D /* UserGraph.swift in Sources */,
+				C0C40AAA1F2BE3D100A8CC29 /* Settings.swift in Sources */,
 				C0C40AA81F2BE13900A8CC29 /* AIAuthenticationEventHandler.swift in Sources */,
 				C26E626F1DD1038C00BDC568 /* TimelineViewController.swift in Sources */,
 				C26E62751DD111AF00BDC568 /* Event.swift in Sources */,
