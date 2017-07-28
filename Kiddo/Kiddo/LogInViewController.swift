@@ -79,6 +79,13 @@ class LogInViewController: PFLogInViewController {
         amazonButton.frame = CGRect(x: view.frame.width/2 - 50, y: view.frame.height/2, width: 150, height: 36)
         amazonButton.layer.cornerRadius = 7
         view.addSubview(amazonButton)
+        amazonButton.addTarget(self, action: #selector(pressButton(button:)), for: .touchUpInside)
+        amazonButton.setImage(#imageLiteral(resourceName: "amazonButton"), for: .normal)
+        amazonButton.setImage(#imageLiteral(resourceName: "amazonButtonPressed"), for: .selected)
         
+    }
+    
+    func pressButton(button: UIButton) {
+        print("Amazon Login pressed")
     }
 }
