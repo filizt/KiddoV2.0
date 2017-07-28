@@ -15,6 +15,7 @@ import Fabric
 import Crashlytics
 import Branch
 import UIViewController_ODStatusBar
+import LoginWithAmazon
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate  {
@@ -201,6 +202,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
 
         return true
+    }
+    
+    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
+        return AMZNAuthorizationManager.handleOpen(url, sourceApplication: sourceApplication)
     }
     
     func applicationWillResignActive(_ application: UIApplication) {
