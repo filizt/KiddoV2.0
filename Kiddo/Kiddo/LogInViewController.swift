@@ -15,6 +15,7 @@ class LogInViewController: PFLogInViewController {
 
     var backgroundImage: UIImageView!
     private var facebookButtonAnimationShown: Bool = false
+    var amazonButton = UIButton()
 
     override func viewDidLoad() {
          super.viewDidLoad()
@@ -73,8 +74,6 @@ class LogInViewController: PFLogInViewController {
     }
     
     func createAmazonLogin() {
-        
-        var amazonButton = UIButton()
         amazonButton.setTitle("Amazon Login", for: .normal)
         amazonButton.frame = CGRect(x: view.frame.width/2 - 50, y: view.frame.height/2, width: 150, height: 36)
         amazonButton.layer.cornerRadius = 7
@@ -82,10 +81,32 @@ class LogInViewController: PFLogInViewController {
         amazonButton.addTarget(self, action: #selector(pressButton(button:)), for: .touchUpInside)
         amazonButton.setImage(#imageLiteral(resourceName: "amazonButton"), for: .normal)
         amazonButton.setImage(#imageLiteral(resourceName: "amazonButtonPressed"), for: .selected)
-        
     }
     
     func pressButton(button: UIButton) {
         print("Amazon Login pressed")
+        let request = AMZNAuthorizeRequest()
+        request.scopes = [AMZNProfileScope.profile(), AMZNProfileScope.userID()]
+        AMZNAuthorizationManager.shared().authorize(request, withHandler: requestHandler())
     }
+    
+    func requestHandler() -> AMZNAuthorizationRequestHandler {
+        let requestHandler: AMZNAuthorizationRequestHandler? = {(_ result: AMZNAuthorizeResult, _ userDidCancel: Bool, _ error: Error?) -> Void in
+            if error != nil {
+                // If error code = kAIApplicationNotAuthorized, allow user to log in again.
+                if error?.code == kAIApplicationNotAuthorized {
+                    // Show authorize user button.
+                    self.showLogInPage()
+                }
+                else {
+                    // Handle other errors
+                    let errorMessage: String? = error?.userInfo["AMZNLWAErrorNonLocalizedDescription"]
+                    UIAlertView(title: "", message: "Error occured with message: \(errorMessage)", delegate: nil, cancelButtonTitle: "OK", otherButtonTitles: "").show()
+                }
+                
+            }
+            
+        }
+    }
+    
 }
