@@ -16,6 +16,7 @@ class LogInViewController: PFLogInViewController {
     var backgroundImage: UIImageView!
     private var facebookButtonAnimationShown: Bool = false
     var amazonButton = UIButton()
+    var isUserSignedIn: Bool?
 
     override func viewDidLoad() {
          super.viewDidLoad()
@@ -35,6 +36,7 @@ class LogInViewController: PFLogInViewController {
         self.logInView?.dismissButton?.layer.cornerRadius = 5
         
         createAmazonLogin()
+        clearAuthState()
     }
 
     //gets called right after viewDidLoad
@@ -85,21 +87,28 @@ class LogInViewController: PFLogInViewController {
     
     func pressButton(button: UIButton) {
         print("Amazon Login pressed")
+        //Switches to Safari View Controller
         let request = AMZNAuthorizeRequest()
         request.scopes = [AMZNProfileScope.profile(), AMZNProfileScope.userID()]
         AMZNAuthorizationManager.shared().authorize(request, withHandler: requestHandler())
     }
     
+    //processes the result of the auth call
     func requestHandler() -> AMZNAuthorizationRequestHandler {
         let requestHandler: AMZNAuthorizationRequestHandler? = {(_ result: AMZNAuthorizeResult, _ userDidCancel: Bool, _ error: Error?) -> Void in
             if error != nil {
                 // If error code = kAIApplicationNotAuthorized, allow user to log in again.
+                
                 if error?.code == kAIApplicationNotAuthorized {
                     // Show authorize user button.
                     self.showLogInPage()
+                    
+                    //get token here
+                    
                 }
                 else {
                     // Handle other errors
+                    // Handle errors from the SDK or authorization server.
                     let errorMessage: String? = error?.userInfo["AMZNLWAErrorNonLocalizedDescription"]
                     UIAlertView(title: "", message: "Error occured with message: \(errorMessage)", delegate: nil, cancelButtonTitle: "OK", otherButtonTitles: "").show()
                 }
@@ -108,5 +117,17 @@ class LogInViewController: PFLogInViewController {
             
         }
     }
+    
+    func clearAuthState() {
+        AIMobileLib.clearAuthorizationState(AIAuthenticationEventHandler(
+            name: "Clear Or Logout",
+            fail: {() -> Void in
+                NSLog("Clear Or Logout Fail")
+        },
+            success: {(result : APIResult!) -> Void in
+                NSLog("Clear Or Logout Success")
+        }));
+    }
+    
     
 }
