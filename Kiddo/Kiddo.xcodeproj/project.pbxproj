@@ -245,7 +245,7 @@
 				TargetAttributes = {
 					BD68B9A21DD0F2F200CE39CA = {
 						CreatedOnToolsVersion = 8.0;
-						DevelopmentTeam = AWF997WQMM;
+						DevelopmentTeam = KAQ72YLS2D;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.SafariKeychain = {
@@ -492,7 +492,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Kiddo/Kiddo.entitlements;
-				DEVELOPMENT_TEAM = AWF997WQMM;
+				DEVELOPMENT_TEAM = KAQ72YLS2D;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -511,7 +511,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Kiddo/Kiddo.entitlements;
-				DEVELOPMENT_TEAM = AWF997WQMM;
+				DEVELOPMENT_TEAM = KAQ72YLS2D;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",

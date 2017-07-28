@@ -9,6 +9,7 @@
 import UIKit
 import ParseUI
 import ParseFacebookUtilsV4
+import LoginWithAmazon
 
 class LogInViewController: PFLogInViewController {
 
@@ -31,8 +32,8 @@ class LogInViewController: PFLogInViewController {
         self.logInView?.dismissButton?.setTitle("Subscribe", for: .normal)
         self.logInView?.dismissButton?.setTitleColor(UIColor.white, for: .normal)
         self.logInView?.dismissButton?.layer.cornerRadius = 5
-
-
+        
+        createAmazonLogin()
     }
 
     //gets called right after viewDidLoad
@@ -69,5 +70,15 @@ class LogInViewController: PFLogInViewController {
             )
         }
 
+    }
+    
+    func createAmazonLogin() {
+        
+        var amazonButton = UIButton()
+        amazonButton.setTitle("Amazon Login", for: .normal)
+        amazonButton.frame = CGRect(x: view.frame.width/2 - 50, y: view.frame.height/2, width: 150, height: 36)
+        amazonButton.layer.cornerRadius = 7
+        view.addSubview(amazonButton)
+        
     }
 }
