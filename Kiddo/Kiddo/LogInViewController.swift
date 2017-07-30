@@ -11,13 +11,16 @@ import ParseUI
 import ParseFacebookUtilsV4
 import LoginWithAmazon
 
-class LogInViewController: PFLogInViewController {
+class LogInViewController: PFLogInViewController, AIAuthenticationDelegate {
 
     var backgroundImage: UIImageView!
     private var facebookButtonAnimationShown: Bool = false
     var amazonButton = UIButton()
     var isUserSignedIn: Bool?
-
+    
+//    let options = [kAIOptionScopeData: "{\"alexa:all\":{\"productID\":\"Application Product Id\",
+//        \"productInstanceAttributes\": {\"deviceSerialNumber\":\"1234567890\"}}}"]
+    
     override func viewDidLoad() {
          super.viewDidLoad()
         //set background image
@@ -36,7 +39,6 @@ class LogInViewController: PFLogInViewController {
         self.logInView?.dismissButton?.layer.cornerRadius = 5
         
         createAmazonLogin()
-        clearAuthState()
     }
 
     //gets called right after viewDidLoad
@@ -80,12 +82,12 @@ class LogInViewController: PFLogInViewController {
         amazonButton.frame = CGRect(x: view.frame.width/2 - 50, y: view.frame.height/2, width: 150, height: 36)
         amazonButton.layer.cornerRadius = 7
         view.addSubview(amazonButton)
-        amazonButton.addTarget(self, action: #selector(pressButton(button:)), for: .touchUpInside)
+        amazonButton.addTarget(self, action: #selector(pressLoginButton(button:)), for: .touchUpInside)
         amazonButton.setImage(#imageLiteral(resourceName: "amazonButton"), for: .normal)
         amazonButton.setImage(#imageLiteral(resourceName: "amazonButtonPressed"), for: .selected)
     }
     
-    func pressButton(button: UIButton) {
+    func pressLoginButton(button: UIButton) {
         print("Amazon Login pressed")
         //Switches to Safari View Controller
         let request = AMZNAuthorizeRequest()
@@ -117,20 +119,5 @@ class LogInViewController: PFLogInViewController {
             
         }
     }
-    
-    func clearAuthState() {
-        AIMobileLib.clearAuthorizationState(AIAuthenticationEventHandler(
-            name: "Clear Or Logout",
-            fail: {() -> Void in
-                NSLog("Clear Or Logout Fail")
-        },
-            success: {(result : APIResult!) -> Void in
-                NSLog("Clear Or Logout Success")
-        }));
-    }
-    
-    
-    
-    
     
 }
