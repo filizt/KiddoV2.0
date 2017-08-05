@@ -24,6 +24,10 @@
 		BDEB9E8F1E05A64F002F7222 /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDEB9E8E1E05A64F002F7222 /* LogInViewController.swift */; };
 		BDEB9E911E05AB06002F7222 /* bg_portrait.jpg in Resources */ = {isa = PBXBuildFile; fileRef = BDEB9E901E05AB06002F7222 /* bg_portrait.jpg */; };
 		BDFA18571EBECC8F00E90C86 /* SpecialEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDFA18561EBECC8F00E90C86 /* SpecialEvent.swift */; };
+		C0C40AAA1F2BE3D100A8CC29 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C40AA91F2BE3D100A8CC29 /* Settings.swift */; };
+		C0C795611F26B12B002F9CB7 /* LoginWithAmazon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0C795601F26B12B002F9CB7 /* LoginWithAmazon.framework */; };
+		C0C795631F26B183002F9CB7 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0C795621F26B183002F9CB7 /* Security.framework */; };
+		C0C795651F26B193002F9CB7 /* SafariServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0C795641F26B193002F9CB7 /* SafariServices.framework */; };
 		C22AC4681E60168D00F79926 /* SplashAnimateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22AC4671E60168D00F79926 /* SplashAnimateViewController.swift */; };
 		C26E626F1DD1038C00BDC568 /* TimelineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C26E626E1DD1038C00BDC568 /* TimelineViewController.swift */; };
 		C26E62711DD103B900BDC568 /* eventCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C26E62701DD103B900BDC568 /* eventCell.xib */; };
@@ -53,6 +57,10 @@
 		BDEB9E8E1E05A64F002F7222 /* LogInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
 		BDEB9E901E05AB06002F7222 /* bg_portrait.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = bg_portrait.jpg; sourceTree = "<group>"; };
 		BDFA18561EBECC8F00E90C86 /* SpecialEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpecialEvent.swift; sourceTree = "<group>"; };
+		C0C40AA91F2BE3D100A8CC29 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
+		C0C795601F26B12B002F9CB7 /* LoginWithAmazon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = LoginWithAmazon.framework; sourceTree = "<group>"; };
+		C0C795621F26B183002F9CB7 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		C0C795641F26B193002F9CB7 /* SafariServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SafariServices.framework; path = System/Library/Frameworks/SafariServices.framework; sourceTree = SDKROOT; };
 		C22AC4671E60168D00F79926 /* SplashAnimateViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplashAnimateViewController.swift; sourceTree = "<group>"; };
 		C26E626E1DD1038C00BDC568 /* TimelineViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimelineViewController.swift; sourceTree = "<group>"; };
 		C26E62701DD103B900BDC568 /* eventCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = eventCell.xib; path = ../eventCell.xib; sourceTree = "<group>"; };
@@ -66,6 +74,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C0C795651F26B193002F9CB7 /* SafariServices.framework in Frameworks */,
+				C0C795631F26B183002F9CB7 /* Security.framework in Frameworks */,
+				C0C795611F26B12B002F9CB7 /* LoginWithAmazon.framework in Frameworks */,
 				3D0E85AC124827498950F2FA /* Pods_Kiddo.framework in Frameworks */,
 				BDB5B0961E4D54B600D59AEA /* Crashlytics.framework in Frameworks */,
 				BDB5B0931E4D534400D59AEA /* Fabric.framework in Frameworks */,
@@ -78,6 +89,9 @@
 		3220BF4C279B9A5E1CF5D8BA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C0C795601F26B12B002F9CB7 /* LoginWithAmazon.framework */,
+				C0C795641F26B193002F9CB7 /* SafariServices.framework */,
+				C0C795621F26B183002F9CB7 /* Security.framework */,
 				BDB5B0911E4D534400D59AEA /* Fabric.framework */,
 				BDB5B0951E4D54B600D59AEA /* Crashlytics.framework */,
 				4FFC514A966709BA92D1974B /* Pods_Kiddo.framework */,
@@ -166,6 +180,7 @@
 				BD506DDC1E316A5C001A98B0 /* SimpleCache.swift */,
 				BD1A4F231E82D3B800BF036D /* UserGraph.swift */,
 				BDFA18561EBECC8F00E90C86 /* SpecialEvent.swift */,
+				C0C40AA91F2BE3D100A8CC29 /* Settings.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -233,7 +248,7 @@
 				TargetAttributes = {
 					BD68B9A21DD0F2F200CE39CA = {
 						CreatedOnToolsVersion = 8.0;
-						DevelopmentTeam = AWF997WQMM;
+						DevelopmentTeam = KAQ72YLS2D;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.SafariKeychain = {
@@ -352,6 +367,7 @@
 				BD506DDD1E316A5C001A98B0 /* SimpleCache.swift in Sources */,
 				BD0994411ECB5FCC0045F749 /* SignUpViewController.swift in Sources */,
 				BD1A4F241E82D3B800BF036D /* UserGraph.swift in Sources */,
+				C0C40AAA1F2BE3D100A8CC29 /* Settings.swift in Sources */,
 				C26E626F1DD1038C00BDC568 /* TimelineViewController.swift in Sources */,
 				C26E62751DD111AF00BDC568 /* Event.swift in Sources */,
 				BDC903D41E413B82006CD7D6 /* CustomSegmentedControl.swift in Sources */,
@@ -480,7 +496,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Kiddo/Kiddo.entitlements;
-				DEVELOPMENT_TEAM = AWF997WQMM;
+				DEVELOPMENT_TEAM = KAQ72YLS2D;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -499,7 +515,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Kiddo/Kiddo.entitlements;
-				DEVELOPMENT_TEAM = AWF997WQMM;
+				DEVELOPMENT_TEAM = KAQ72YLS2D;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
