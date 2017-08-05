@@ -22,7 +22,7 @@
 	<array>
 		<dict>
 			<key>CFBundleURLName</key>
-			<string></string>
+			<string>filizk.Kiddo</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>amzn-filizk.Kiddo</string>
@@ -102,7 +102,7 @@
 	<key>branch_app_domain</key>
 	<string>kiddo.app.link</string>
 	<key>APIKey</key>
-	<string>2a7da13580bc42e0a0ebca30d1b4038b</string>
+	<string>eyJhbGciOiJSU0EtU0hBMjU2IiwidmVyIjoiMSJ9.eyJ2ZXIiOiIzIiwiZW5kcG9pbnRzIjp7ImF1dGh6IjoiaHR0cHM6Ly93d3cuYW1hem9uLmNvbS9hcC9vYSIsInRva2VuRXhjaGFuZ2UiOiJodHRwczovL2FwaS5hbWF6b24uY29tL2F1dGgvbzIvdG9rZW4ifSwiY2xpZW50SWQiOiJhbXpuMS5hcHBsaWNhdGlvbi1vYTItY2xpZW50LjM5ZWE1YjE1ZDdkNDQzMDZiNTI3NWM0OWFmMmI0MWMwIiwiYXBwRmFtaWx5SWQiOiJhbXpuMS5hcHBsaWNhdGlvbi4yZDc2MDk1ZmUyNDE0NjIxYjY3YmYwMmI3MDg1MTYzZiIsImJ1bmRsZVNlZWRJZCI6ImZpbGl6ay5LaWRkbyIsImJ1bmRsZUlkIjoiZmlsaXprLktpZGRvIiwiaXNzIjoiQW1hem9uIiwidHlwZSI6IkFQSUtleSIsImFwcFZhcmlhbnRJZCI6ImFtem4xLmFwcGxpY2F0aW9uLWNsaWVudC4yYTYwNTlmOTNjZjc0NjUyYTQ2OGNiOGQ2ZWI1OTU4MSIsInRydXN0UG9vbCI6bnVsbCwiYXBwSWQiOiJhbXpuMS5hcHBsaWNhdGlvbi1jbGllbnQuMmE2MDU5ZjkzY2Y3NDY1MmE0NjhjYjhkNmViNTk1ODEiLCJpZCI6IjMyM2I5ODFlLTdhMmUtMTFlNy1iNTRiLWM3NzQ0MmFjODkzMyIsImlhdCI6IjE1MDE5NzI0NDg3OTYifQ==.oT1+p7OmOjBUN6wO0o6N4WyC0Ljn/7F+wNXHYDSbFTIlO0hPmIwCOQwPbjJYge/ITieHq+yOiKVz3gePUhy/4nmWOcKzMnROvQanlmzFUqldq1rAucjLJ428ivT+jtkfINKnTKZkFh8P5QZaAj8ytdKmI4Y0a90OPZbmiy4SpwR1I3Tq3/NIvUANV+WNjdXffJoezFwSM5NDil5GOwEw9w9kbs4KetOcY6+mOxfrXjieiHc8fxcv1MFyOyQLkXdSHQTlDG8WlM009RAIYYzGB4g1UHbE0E1xgsuEU1wGXcAfKl+a8uDAMcR4ZrsYVJpjOc3n6cTtQtb3BG1Oq8xyTw==</string>
 	<key>branch_key</key>
 	<dict>
 		<key>live</key>

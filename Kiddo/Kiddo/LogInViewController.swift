@@ -11,15 +11,20 @@ import ParseUI
 import ParseFacebookUtilsV4
 import LoginWithAmazon
 
-class LogInViewController: PFLogInViewController, AIAuthenticationDelegate {
+class LogInViewController: PFLogInViewController {
 
     var backgroundImage: UIImageView!
     private var facebookButtonAnimationShown: Bool = false
     var amazonButton = UIButton()
     var isUserSignedIn: Bool?
+    var token: String?
     
-//    let options = [kAIOptionScopeData: "{\"alexa:all\":{\"productID\":\"Application Product Id\",
-//        \"productInstanceAttributes\": {\"deviceSerialNumber\":\"1234567890\"}}}"]
+    var productID = "amzn1.application.2d76095fe2414621b67bf02b7085163f"
+    var productDsn: String?
+    var kClientID = "amzn1.application-oa2-client.0f87c43ca1b048b7931c07f2d2404407"
+    var kSecretClientID = "f859d12ce08556f73e0eac401472eaaee368514e14e92c148d21a8ca4a54aaa7"
+    var APIKey = "eyJhbGciOiJSU0EtU0hBMjU2IiwidmVyIjoiMSJ9.eyJ2ZXIiOiIzIiwiZW5kcG9pbnRzIjp7ImF1dGh6IjoiaHR0cHM6Ly93d3cuYW1hem9uLmNvbS9hcC9vYSIsInRva2VuRXhjaGFuZ2UiOiJodHRwczovL2FwaS5hbWF6b24uY29tL2F1dGgvbzIvdG9rZW4ifSwiY2xpZW50SWQiOiJhbXpuMS5hcHBsaWNhdGlvbi1vYTItY2xpZW50LjM5ZWE1YjE1ZDdkNDQzMDZiNTI3NWM0OWFmMmI0MWMwIiwiYXBwRmFtaWx5SWQiOiJhbXpuMS5hcHBsaWNhdGlvbi4yZDc2MDk1ZmUyNDE0NjIxYjY3YmYwMmI3MDg1MTYzZiIsImJ1bmRsZVNlZWRJZCI6ImZpbGl6ay5LaWRkbyIsImJ1bmRsZUlkIjoiZmlsaXprLktpZGRvIiwiaXNzIjoiQW1hem9uIiwidHlwZSI6IkFQSUtleSIsImFwcFZhcmlhbnRJZCI6ImFtem4xLmFwcGxpY2F0aW9uLWNsaWVudC4yYTYwNTlmOTNjZjc0NjUyYTQ2OGNiOGQ2ZWI1OTU4MSIsInRydXN0UG9vbCI6bnVsbCwiYXBwSWQiOiJhbXpuMS5hcHBsaWNhdGlvbi1jbGllbnQuMmE2MDU5ZjkzY2Y3NDY1MmE0NjhjYjhkNmViNTk1ODEiLCJpZCI6IjMyM2I5ODFlLTdhMmUtMTFlNy1iNTRiLWM3NzQ0MmFjODkzMyIsImlhdCI6IjE1MDE5NzI0NDg3OTYifQ==.oT1+p7OmOjBUN6wO0o6N4WyC0Ljn/7F+wNXHYDSbFTIlO0hPmIwCOQwPbjJYge/ITieHq+yOiKVz3gePUhy/4nmWOcKzMnROvQanlmzFUqldq1rAucjLJ428ivT+jtkfINKnTKZkFh8P5QZaAj8ytdKmI4Y0a90OPZbmiy4SpwR1I3Tq3/NIvUANV+WNjdXffJoezFwSM5NDil5GOwEw9w9kbs4KetOcY6+mOxfrXjieiHc8fxcv1MFyOyQLkXdSHQTlDG8WlM009RAIYYzGB4g1UHbE0E1xgsuEU1wGXcAfKl+a8uDAMcR4ZrsYVJpjOc3n6cTtQtb3BG1Oq8xyTw=="
+  
     
     override func viewDidLoad() {
          super.viewDidLoad()
@@ -39,6 +44,7 @@ class LogInViewController: PFLogInViewController, AIAuthenticationDelegate {
         self.logInView?.dismissButton?.layer.cornerRadius = 5
         
         createAmazonLogin()
+        checkUserLogin()
     }
 
     //gets called right after viewDidLoad
@@ -78,9 +84,9 @@ class LogInViewController: PFLogInViewController, AIAuthenticationDelegate {
     }
     
     func createAmazonLogin() {
-        amazonButton.setTitle("Amazon Login", for: .normal)
-        amazonButton.frame = CGRect(x: view.frame.width/2 - 50, y: view.frame.height/2, width: 150, height: 36)
-        amazonButton.layer.cornerRadius = 7
+        amazonButton.setTitle("", for: .normal)
+        amazonButton.frame = CGRect(x: 10, y: 550, width: 400, height: 45)
+        amazonButton.layer.cornerRadius = 20
         view.addSubview(amazonButton)
         amazonButton.addTarget(self, action: #selector(pressLoginButton(button:)), for: .touchUpInside)
         amazonButton.setImage(#imageLiteral(resourceName: "amazonButton"), for: .normal)
@@ -88,36 +94,55 @@ class LogInViewController: PFLogInViewController, AIAuthenticationDelegate {
     }
     
     func pressLoginButton(button: UIButton) {
-        print("Amazon Login pressed")
-        //Switches to Safari View Controller
+        
+        let scopeData: [AnyHashable: Any] = ["productID": productID, "productInstanceAttributes": ["deviceSerialNumber": productDsn]]
+        let alexaAllScope: AMZNScope = AMZNScopeFactory.scope(withName: "alexa:all", data: scopeData)
+        
         let request = AMZNAuthorizeRequest()
-        request.scopes = [AMZNProfileScope.profile(), AMZNProfileScope.userID()]
-        AMZNAuthorizationManager.shared().authorize(request, withHandler: requestHandler())
+        request.scopes = [alexaAllScope]
+        request.grantType = AMZNAuthorizationGrantType.token
+        
+        let authManager = AMZNAuthorizationManager.shared()
+        authManager.authorize(request) { (result, userDidCancel, error) in
+              // processes the result of the auth call
+            if ((error) != nil) {
+                print("auth failed due to error")
+              
+            } else if (userDidCancel) {
+                print("auth was cancelled, try again")
+            } else {
+                // fetch the access token and return to controller
+                self.token = result?.token
+                self.checkUserLogin()
+            }
+        }
+        
     }
     
-    //processes the result of the auth call
-    func requestHandler() -> AMZNAuthorizationRequestHandler {
-        let requestHandler: AMZNAuthorizationRequestHandler? = {(_ result: AMZNAuthorizeResult, _ userDidCancel: Bool, _ error: Error?) -> Void in
+    func checkUserLogin() {
+        
+        let scopeData: [AnyHashable: Any] = ["productID": productID, "productInstanceAttributes": ["deviceSerialNumber": productDsn]]
+        let alexaAllScope: AMZNScope = AMZNScopeFactory.scope(withName: "alexa:all", data: scopeData)
+        
+        let request = AMZNAuthorizeRequest()
+        request.scopes = [alexaAllScope]
+        request.interactiveStrategy = AMZNInteractiveStrategy.never
+        
+        let auth = AMZNAuthorizationManager.shared()
+        auth.authorize(request) { (result, userDidCancel, error) in
             if error != nil {
-                // If error code = kAIApplicationNotAuthorized, allow user to log in again.
-                
-                if error?.code == kAIApplicationNotAuthorized {
-                    // Show authorize user button.
-                    self.showLogInPage()
-                    
-                    //get token here
-                    
-                }
-                else {
-                    // Handle other errors
-                    // Handle errors from the SDK or authorization server.
-                    let errorMessage: String? = error?.userInfo["AMZNLWAErrorNonLocalizedDescription"]
-                    UIAlertView(title: "", message: "Error occured with message: \(errorMessage)", delegate: nil, cancelButtonTitle: "OK", otherButtonTitles: "").show()
-                }
-                
+                // Error from the SDK, indicating the user was not previously authorized to your app for the requested scopes.
             }
-            
+            else {
+                // Fetch the access token and return to controller
+                self.token = result?.token
+                print(result?.token)
+                self.checkUserLogin()
+            }
         }
     }
+    
+  
+
     
 }

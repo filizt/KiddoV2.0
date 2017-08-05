@@ -24,9 +24,7 @@
 		BDEB9E8F1E05A64F002F7222 /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDEB9E8E1E05A64F002F7222 /* LogInViewController.swift */; };
 		BDEB9E911E05AB06002F7222 /* bg_portrait.jpg in Resources */ = {isa = PBXBuildFile; fileRef = BDEB9E901E05AB06002F7222 /* bg_portrait.jpg */; };
 		BDFA18571EBECC8F00E90C86 /* SpecialEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDFA18561EBECC8F00E90C86 /* SpecialEvent.swift */; };
-		C0C40AA81F2BE13900A8CC29 /* AIAuthenticationEventHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C40AA71F2BE13900A8CC29 /* AIAuthenticationEventHandler.swift */; };
 		C0C40AAA1F2BE3D100A8CC29 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C40AA91F2BE3D100A8CC29 /* Settings.swift */; };
-		C0C40AAC1F2BE41400A8CC29 /* LoginWithAmazonProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C40AAB1F2BE41400A8CC29 /* LoginWithAmazonProxy.swift */; };
 		C0C795611F26B12B002F9CB7 /* LoginWithAmazon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0C795601F26B12B002F9CB7 /* LoginWithAmazon.framework */; };
 		C0C795631F26B183002F9CB7 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0C795621F26B183002F9CB7 /* Security.framework */; };
 		C0C795651F26B193002F9CB7 /* SafariServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0C795641F26B193002F9CB7 /* SafariServices.framework */; };
@@ -59,9 +57,7 @@
 		BDEB9E8E1E05A64F002F7222 /* LogInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
 		BDEB9E901E05AB06002F7222 /* bg_portrait.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = bg_portrait.jpg; sourceTree = "<group>"; };
 		BDFA18561EBECC8F00E90C86 /* SpecialEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpecialEvent.swift; sourceTree = "<group>"; };
-		C0C40AA71F2BE13900A8CC29 /* AIAuthenticationEventHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIAuthenticationEventHandler.swift; sourceTree = "<group>"; };
 		C0C40AA91F2BE3D100A8CC29 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
-		C0C40AAB1F2BE41400A8CC29 /* LoginWithAmazonProxy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginWithAmazonProxy.swift; sourceTree = "<group>"; };
 		C0C795601F26B12B002F9CB7 /* LoginWithAmazon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = LoginWithAmazon.framework; sourceTree = "<group>"; };
 		C0C795621F26B183002F9CB7 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		C0C795641F26B193002F9CB7 /* SafariServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SafariServices.framework; path = System/Library/Frameworks/SafariServices.framework; sourceTree = SDKROOT; };
@@ -184,8 +180,6 @@
 				BD506DDC1E316A5C001A98B0 /* SimpleCache.swift */,
 				BD1A4F231E82D3B800BF036D /* UserGraph.swift */,
 				BDFA18561EBECC8F00E90C86 /* SpecialEvent.swift */,
-				C0C40AA71F2BE13900A8CC29 /* AIAuthenticationEventHandler.swift */,
-				C0C40AAB1F2BE41400A8CC29 /* LoginWithAmazonProxy.swift */,
 				C0C40AA91F2BE3D100A8CC29 /* Settings.swift */,
 			);
 			name = Model;
@@ -364,7 +358,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				BDFA18571EBECC8F00E90C86 /* SpecialEvent.swift in Sources */,
-				C0C40AAC1F2BE41400A8CC29 /* LoginWithAmazonProxy.swift in Sources */,
 				C26E62731DD1098600BDC568 /* EventTableViewCell.swift in Sources */,
 				BDEB9E8F1E05A64F002F7222 /* LogInViewController.swift in Sources */,
 				BD68B9BF1DD0FA1C00CE39CA /* DetailViewController.swift in Sources */,
@@ -375,7 +368,6 @@
 				BD0994411ECB5FCC0045F749 /* SignUpViewController.swift in Sources */,
 				BD1A4F241E82D3B800BF036D /* UserGraph.swift in Sources */,
 				C0C40AAA1F2BE3D100A8CC29 /* Settings.swift in Sources */,
-				C0C40AA81F2BE13900A8CC29 /* AIAuthenticationEventHandler.swift in Sources */,
 				C26E626F1DD1038C00BDC568 /* TimelineViewController.swift in Sources */,
 				C26E62751DD111AF00BDC568 /* Event.swift in Sources */,
 				BDC903D41E413B82006CD7D6 /* CustomSegmentedControl.swift in Sources */,
