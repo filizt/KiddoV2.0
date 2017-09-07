@@ -112,6 +112,25 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
     }
 
     func share() {
+        //fetch user information for recording the share
+        let userInfo: PFObject = PFObject(className: "UserShareHistory")
+        if let currentParseUserObjectId = PFUser.current()?.objectId {
+            userInfo["parseUser"] = PFUser.current()
+            userInfo["parseUserId"] = PFUser.current()?.objectId
+        } else { //where user didn't log in with FB but used their email to sign up
+            let query = PFQuery(className: "UserEmail")
+            if let vendorIdentifier = UIDevice.current.identifierForVendor {
+                query.whereKey("deviceUUID", equalTo: vendorIdentifier.uuidString)
+                query.getFirstObjectInBackground(block: { (object, error) in
+                    guard error == nil else { print("\(error?.localizedDescription)"); return }
+                    if let object = object {
+                        userInfo["email"] = object["email"] as! String
+                    }
+                })
+            }
+        }
+
+        //share prep
         let canonicalIdentifier = "eventId/" + event.id
         let branchUniversalObject: BranchUniversalObject = BranchUniversalObject(canonicalIdentifier: canonicalIdentifier)
         branchUniversalObject.title = event.title
@@ -129,15 +148,31 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
         linkProperties.feature = "share"
 
         if let shareUrl = branchUniversalObject.getShortUrl(with: linkProperties) {
-            Answers.logCustomEvent(withName: "Event Shared", customAttributes:["Event Title": event.title, "Event Category": event.category, "Event Cost": event.freeFlag == true ? "Free" : "Paid"])
-
             let shareString =  event.title + " " + shareUrl
             var activityItems : [Any] = [shareString]
 
             let activityViewController: UIActivityViewController = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
             activityViewController.excludedActivityTypes = [.airDrop, .print, .assignToContact, .postToFlickr, .postToVimeo]
-            self.present(activityViewController, animated: true, completion: nil)
+            activityViewController.completionWithItemsHandler = {(activity, success, items, err) in
+                // Return if cancelled
+                if (!success) {
+                    return
+                }
 
+                userInfo["eventId"] = self.event.id
+                userInfo["eventCategory"] = self.event.category
+                userInfo["eventTitle"] = self.event.title
+                userInfo["eventCost"] = self.event.freeFlag == true ? "Free" : "Paid"
+                userInfo["shareType"] = activity?.rawValue
+                userInfo.saveInBackground()
+
+                Answers.logCustomEvent(withName: "Event Shared", customAttributes:["Event Title": self.event.title, "Event Category": self.event.category, "Event Cost": self.event.freeFlag == true ? "Free" : "Paid"])
+
+            }
+
+            self.present(activityViewController, animated: true) {
+                print ("In the completion handler")
+            }
         }
     }
 
@@ -292,3 +327,4 @@ extension PFGeoPoint {
         return CLLocationCoordinate2D(latitude: self.latitude, longitude: self.longitude)
     }
 }
+
