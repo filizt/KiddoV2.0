@@ -13,6 +13,10 @@
 		BD1A4F241E82D3B800BF036D /* UserGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD1A4F231E82D3B800BF036D /* UserGraph.swift */; };
 		BD506DD81E293CD6001A98B0 /* DateUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD506DD71E293CD6001A98B0 /* DateUtil.swift */; };
 		BD506DDD1E316A5C001A98B0 /* SimpleCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD506DDC1E316A5C001A98B0 /* SimpleCache.swift */; };
+		BD600A9D1F620CAC00DCC0D3 /* ParseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD600A9C1F620CAC00DCC0D3 /* ParseService.swift */; };
+		BD600A9F1F62130400DCC0D3 /* FilterUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD600A9E1F62130400DCC0D3 /* FilterUtil.swift */; };
+		BD600AA11F621B2700DCC0D3 /* CustomFilterButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD600AA01F621B2700DCC0D3 /* CustomFilterButton.swift */; };
+		BD600AA31F73F78800DCC0D3 /* FiltersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD600AA21F73F78800DCC0D3 /* FiltersViewController.swift */; };
 		BD68B9A71DD0F2F300CE39CA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD68B9A61DD0F2F300CE39CA /* AppDelegate.swift */; };
 		BD68B9AC1DD0F2F300CE39CA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD68B9AA1DD0F2F300CE39CA /* Main.storyboard */; };
 		BD68B9AE1DD0F2F300CE39CA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BD68B9AD1DD0F2F300CE39CA /* Assets.xcassets */; };
@@ -39,6 +43,10 @@
 		BD1A4F231E82D3B800BF036D /* UserGraph.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserGraph.swift; sourceTree = "<group>"; };
 		BD506DD71E293CD6001A98B0 /* DateUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateUtil.swift; sourceTree = "<group>"; };
 		BD506DDC1E316A5C001A98B0 /* SimpleCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleCache.swift; sourceTree = "<group>"; };
+		BD600A9C1F620CAC00DCC0D3 /* ParseService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParseService.swift; sourceTree = "<group>"; };
+		BD600A9E1F62130400DCC0D3 /* FilterUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterUtil.swift; sourceTree = "<group>"; };
+		BD600AA01F621B2700DCC0D3 /* CustomFilterButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomFilterButton.swift; sourceTree = "<group>"; };
+		BD600AA21F73F78800DCC0D3 /* FiltersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FiltersViewController.swift; sourceTree = "<group>"; };
 		BD68B9A31DD0F2F200CE39CA /* Kiddo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kiddo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD68B9A61DD0F2F300CE39CA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BD68B9AB1DD0F2F300CE39CA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -90,6 +98,7 @@
 			children = (
 				BD506DD71E293CD6001A98B0 /* DateUtil.swift */,
 				50584E061DD122ED00A2BEA9 /* UIExtensions.swift */,
+				BD600A9E1F62130400DCC0D3 /* FilterUtil.swift */,
 			);
 			name = Util;
 			sourceTree = "<group>";
@@ -143,6 +152,7 @@
 				BD68B9BA1DD0F98000CE39CA /* View Controller */,
 				BD506DD91E29412E001A98B0 /* Util */,
 				BD506DDB1E2941B6001A98B0 /* Resources */,
+				BD600A9C1F620CAC00DCC0D3 /* ParseService.swift */,
 			);
 			path = Kiddo;
 			sourceTree = "<group>";
@@ -155,6 +165,7 @@
 				BD68B9BE1DD0FA1C00CE39CA /* DetailViewController.swift */,
 				BDEB9E8E1E05A64F002F7222 /* LogInViewController.swift */,
 				BD0994401ECB5FCC0045F749 /* SignUpViewController.swift */,
+				BD600AA21F73F78800DCC0D3 /* FiltersViewController.swift */,
 			);
 			name = "View Controller";
 			sourceTree = "<group>";
@@ -176,6 +187,7 @@
 				BDC903D31E413B82006CD7D6 /* CustomSegmentedControl.swift */,
 				C26E62721DD1098600BDC568 /* EventTableViewCell.swift */,
 				C26E62701DD103B900BDC568 /* eventCell.xib */,
+				BD600AA01F621B2700DCC0D3 /* CustomFilterButton.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -343,6 +355,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BDFA18571EBECC8F00E90C86 /* SpecialEvent.swift in Sources */,
+				BD600A9D1F620CAC00DCC0D3 /* ParseService.swift in Sources */,
 				C26E62731DD1098600BDC568 /* EventTableViewCell.swift in Sources */,
 				BDEB9E8F1E05A64F002F7222 /* LogInViewController.swift in Sources */,
 				BD68B9BF1DD0FA1C00CE39CA /* DetailViewController.swift in Sources */,
@@ -356,6 +369,9 @@
 				C26E62751DD111AF00BDC568 /* Event.swift in Sources */,
 				BDC903D41E413B82006CD7D6 /* CustomSegmentedControl.swift in Sources */,
 				C22AC4681E60168D00F79926 /* SplashAnimateViewController.swift in Sources */,
+				BD600AA11F621B2700DCC0D3 /* CustomFilterButton.swift in Sources */,
+				BD600AA31F73F78800DCC0D3 /* FiltersViewController.swift in Sources */,
+				BD600A9F1F62130400DCC0D3 /* FilterUtil.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

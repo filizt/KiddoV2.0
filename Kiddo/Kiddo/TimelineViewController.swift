@@ -19,6 +19,7 @@ class EventAnnotation : Annotation {
     var event : Event!
 }
 
+
 class TimelineViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, CustomSegmentedControlDelegate, CellFreeButtonDelegate  {
 
     @IBOutlet weak var timelineTableView: UITableView!
@@ -27,6 +28,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
     private var request:PFQuery<PFObject>?
     private var lastModified: Date?
     let clusterManager = ClusterManager()
+
 
     private var freeButtonToggled = false {
         didSet {
@@ -144,6 +146,9 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         let mapBarButtonItem = UIBarButtonItem(image: UIImage(named: "mapIcon")!, style: .done, target: self, action: #selector(switchViewType))
         self.navigationItem.rightBarButtonItem = mapBarButtonItem
 
+        let filterBarButtonItem = UIBarButtonItem(title: "Filter", style: .plain, target: self, action: #selector(showFiltersView))
+        self.navigationItem.leftBarButtonItem = filterBarButtonItem
+
         mapContainerView.alpha = 0
         mapContainerView.isHidden = true
 
@@ -188,6 +193,10 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
     override func viewWillAppear(_ animated: Bool) {
        self.deepLinkHandler()
        showStatusBar(style: .lightContent)
+    }
+
+    func showFiltersView() {
+        self.performSegue(withIdentifier: "showFilterOptions", sender: nil)
     }
 
     func deepLinkHandler() {
@@ -430,6 +439,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
     //MARK: Fetch Events
 
     private var lastRequest: PFQuery<PFObject>?
+    //need last request for fetch: today, tomorrow, later 
 
     private func fetchAllEvents() {
         let eventToday = PFQuery(className: "EventDate")
@@ -581,6 +591,14 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
                 destinationViewController.currentTab = TabBarItems.none
                 Event.pushedEvent = nil
                 Event.pushedEventId = nil
+            }
+        } else if segue.identifier == "showFilterOptions" { //below callback is when we're returning back from modal filters window.
+            if let filtersViewController = segue.destination as? FiltersViewController {
+                filtersViewController.onShowEventsPressed = {[weak self](data) in
+                    if let weakSelf = self {
+                        //weakSelf.doSomethingWithData(data)
+                    }
+                }
             }
         }
 
