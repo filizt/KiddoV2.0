@@ -14,21 +14,64 @@ import Crashlytics
 import ParseFacebookUtilsV4
 import MapKit
 import Cluster
+import ForecastIO
 
 class EventAnnotation : Annotation {
     var event : Event!
 }
 
 
-class TimelineViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, CustomSegmentedControlDelegate, CellFreeButtonDelegate  {
+class TimelineViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, CustomSegmentedControlDelegate, CellFreeButtonDelegate, UICollectionViewDataSource, UICollectionViewDelegate, CellFilterButtonDelegate {
 
+    @IBOutlet weak var filtersCollectionView: UICollectionView!
     @IBOutlet weak var timelineTableView: UITableView!
     @IBOutlet weak var segmentedControl: CustomSegmentedControl!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     private var request:PFQuery<PFObject>?
     private var lastModified: Date?
     let clusterManager = ClusterManager()
+    fileprivate var filters = ["ALL","📍Nearby","❄️ Holiday","🍀 Free","🌕 Indoor","🎨 Arts"]
 
+
+    var currentForecast: DataPoint? {
+        didSet {
+            let setView = UIView(frame: CGRect(x: 0, y: 0, width: 100, height: 30))
+            let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
+            
+            if let currentForecastWeatherIcon = currentForecast?.icon?.rawValue {
+                imageView.image = UIImage(named: currentForecastWeatherIcon)
+                //need a bit fine tuning for the switch cases of below
+                switch currentForecastWeatherIcon {
+                case "clear-day":
+                    if let cloudCoverRate = currentForecast?.cloudCover {
+                        imageView.image = UIImage(named: (cloudCoverRate > 0.2) ? "partly-cloudy-day": "clear" )
+                    }
+                case "partly-cloudy-day":
+                    if let cloudCoverRate = currentForecast?.cloudCover {
+                        imageView.image = UIImage(named: (cloudCoverRate > 0.4) ? "cloudy" : "partly-cloudy-day" )
+                    }
+                case "rain":
+                    if let rainIntensity = currentForecast?.precipitationIntensity {
+                        imageView.image = UIImage(named: (rainIntensity > 1.50) ? "sleet" : "rain" )
+                    }
+                default:
+                break
+                }
+            }
+
+            let label = UILabel(frame: CGRect(x: 35, y: 0, width: 50, height: 30))
+            label.numberOfLines = 0
+            label.text = "Seattle " + String(Int((self.currentForecast?.temperature ?? 0 ))) + "°F" //"Seattle 46°F"
+            label.textColor = UIColor.white
+            label.font = UIFont(name: "Avenir-Book", size: 10)
+            label.lineBreakMode = NSLineBreakMode.byWordWrapping
+            setView.addSubview(label)
+            setView.addSubview(imageView)
+
+            let barButton = UIBarButtonItem.init(customView: setView)
+            self.navigationItem.setLeftBarButton(barButton, animated: true)
+        }
+    }
 
     private var freeButtonToggled = false {
         didSet {
@@ -147,7 +190,27 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         self.navigationItem.rightBarButtonItem = mapBarButtonItem
 
         let filterBarButtonItem = UIBarButtonItem(title: "Filter", style: .plain, target: self, action: #selector(showFiltersView))
-        self.navigationItem.leftBarButtonItem = filterBarButtonItem
+//        self.navigationItem.leftBarButtonItem = filterBarButtonItem
+
+         let weatherButtonItem = UIBarButtonItem(image: UIImage(named: "rain")!, style: .done, target: self, action: #selector(switchViewType))
+
+        let delegate = UIApplication.shared.delegate as! AppDelegate
+
+        //For now, longitude latitude hard coded for Seattle.
+        delegate.forecastIO.getForecast(latitude: 47.6062, longitude: -122.3321) { result in
+            switch result {
+            case .success(let currentForecast, let requestMetadata):
+                if let currentWeather = currentForecast.currently{
+                    DispatchQueue.main.async {
+                        self.currentForecast = currentWeather
+                    }
+                }
+                break
+            case .failure(let error):
+                //  Uh-oh. We have an error!
+                break
+            }
+        }
 
         mapContainerView.alpha = 0
         mapContainerView.isHidden = true
@@ -161,6 +224,9 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         self.timelineTableView.estimatedRowHeight = 100
         self.timelineTableView.rowHeight = UITableViewAutomaticDimension
         self.timelineTableView.separatorStyle = .none
+
+        filtersCollectionView.delegate = self
+        filtersCollectionView.dataSource = self
 
         self.setUpNavigationBar()
 
@@ -189,11 +255,53 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         NotificationCenter.default.removeObserver(self)
     }
 
-
     override func viewWillAppear(_ animated: Bool) {
        self.deepLinkHandler()
        showStatusBar(style: .lightContent)
     }
+
+    private func resetCollectionViewSelection() {
+        //filtersCollectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: UICollectionViewScrollPosition.left, animated: false)
+        filtersCollectionView.selectItem(at: IndexPath(row: 0, section: 0), animated: false, scrollPosition: UICollectionViewScrollPosition.left)
+    }
+
+    func recordUserFilterAction(forFilter: String) {
+        let userInfo: PFObject = PFObject(className: "UserTimelineFilterHistory")
+        if let currentParseUserObjectId = PFUser.current()?.objectId {
+            userInfo["parseUser"] = PFUser.current()
+            userInfo["parseUserId"] = PFUser.current()?.objectId
+        } else { //where user didn't log in with FB but used their email to sign up
+            if let vendorIdentifier = UIDevice.current.identifierForVendor {
+                userInfo["UUID"] = vendorIdentifier.uuidString
+            }
+            if let email = UserDefaults.standard.object(forKey: "email") as? String {
+                userInfo["email"] = email
+            }
+        }
+
+        userInfo["filter"] = forFilter
+        userInfo["day"] = segmentedControl.selectedIndex
+        userInfo.saveInBackground()
+    }
+
+    func recordUserSegmentedControlAction(forDay: String) {
+        let userInfo: PFObject = PFObject(className: "UserTimelineDayHistory")
+        if let currentParseUserObjectId = PFUser.current()?.objectId {
+            userInfo["parseUser"] = PFUser.current()
+            userInfo["parseUserId"] = PFUser.current()?.objectId
+        } else { //where user didn't log in with FB but used their email to sign up
+            if let vendorIdentifier = UIDevice.current.identifierForVendor {
+                userInfo["UUID"] = vendorIdentifier.uuidString
+            }
+            if let email = UserDefaults.standard.object(forKey: "email") as? String {
+                userInfo["email"] = email
+            }
+        }
+
+        userInfo["day"] = forDay
+        userInfo.saveInBackground()
+    }
+
 
     func showFiltersView() {
         self.performSegue(withIdentifier: "showFilterOptions", sender: nil)
@@ -442,6 +550,13 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
     //need last request for fetch: today, tomorrow, later 
 
     private func fetchAllEvents() {
+        fetchTodayEvents()
+        fetchTomorrrowEvents()
+        fetchLaterEvents()
+        fetchSpecialEventReqs()
+    }
+
+    private func fetchTodayEvents() {
         let eventToday = PFQuery(className: "EventDate")
         let date = DateUtil.shared.createDate(from: DateUtil.shared.today())
         eventToday.whereKey("eventDate", equalTo: date)
@@ -464,7 +579,9 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
                 }
             }
         }
+    }
 
+    private func fetchTomorrrowEvents() {
         let queryTomorrow = PFQuery(className: "EventDate")
         let dateTomorrow = DateUtil.shared.createDate(from: DateUtil.shared.tomorrow())
         queryTomorrow.whereKey("eventDate", equalTo: dateTomorrow)
@@ -487,6 +604,10 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
             }
         }
 
+
+    }
+
+    private func fetchLaterEvents() {
         let queryLater = PFQuery(className: "EventObject")
         var laterDates = [Date]()
         guard let laterDate = DateUtil.shared.later() else { return }
@@ -528,10 +649,26 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
                 }
             }
         }
+    }
 
-        fetchSpecialEventReqs()
+    func filterEventsByCriteria() {
+//        let category = EventType.All
+//
+//        switch category {
+//        case .All :
+//            print("NoOp")
+//        case .Place :
+//            //print("Outdoor")
+//            self.events = events.filter { $0.categoryKeywords?.contains("Place") == true }
+//        case .Event :
+//            self.events = events.filter { $0.categoryKeywords?.contains("Event") == true }
+//            print("filtered")
+//        case .Free :
+//            self.events = events.filter { $0.freeFlag == true }
+//        }
 
     }
+    
 
     func sortEvents(events: [Event]) -> [Event]{
         var e = events
@@ -628,24 +765,129 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
     }
 
     //MARK: Segmented Control Delegate
-
+    var allCell: UICollectionViewCell?
+    var testBool = false
     func didSelectItem(sender: CustomSegmentedControl, selectedIndex: Int) {
         switch selectedIndex {
         case 0:
             self.events = self.today
+            resetCollectionViewSelection()
+            recordUserSegmentedControlAction(forDay: "Today")
             Answers.logContentView(withName: "Today Tab", contentType: nil, contentId: nil, customAttributes: nil)
         case 1:
             self.events = self.tomorrow
-             Answers.logContentView(withName: "Tomorrow Tab", contentType: nil, contentId: nil, customAttributes: nil)
+            //filtersCollectionView.reloadData()
+            //filtersCollectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .top, animated: false)
+//            if let indexPaths = filtersCollectionView.indexPathsForSelectedItems {
+//                filtersCollectionView.scrollToItem(at: indexPaths[0], at: UICollectionViewScrollPosition.left, animated: false)
+//            }
+
+            //filtersCollectionView.cellForItem(at: <#T##IndexPath#>)
+
+            //var ip = filtersCollectionView.indexPath(for: <#T##UICollectionViewCell#>)
+
+            var ip = IndexPath(row: 0, section: 0)
+            var arraip = [IndexPath]()
+            arraip.append(ip)
+            filtersCollectionView.reloadItems(at:arraip )
+
+            var isThisAll = filtersCollectionView.cellForItem(at: ip)
+            var visibleCells = filtersCollectionView.visibleCells
+
+            for vc in visibleCells {
+                //vc.collectio
+                print("cell:", filtersCollectionView.indexPath(for: vc))
+            }
+
+            //self.initial
+                allCell = visibleCells[0]
+
+
+            if allCell != nil {
+                var ip2 = filtersCollectionView.indexPath(for: allCell!)
+
+
+                filtersCollectionView.selectItem(at:ip2 , animated: false, scrollPosition: UICollectionViewScrollPosition.left)
+            }
+            resetCollectionViewSelection()
+            Answers.logContentView(withName: "Tomorrow Tab", contentType: nil, contentId: nil, customAttributes: nil)
+            recordUserSegmentedControlAction(forDay: "Tomorrow")
         case 2:
             self.events = self.later
-             Answers.logContentView(withName: "Later Tab", contentType: nil, contentId: nil, customAttributes: nil)
+            filtersCollectionView.reloadData()
+            //resetCollectionViewSelection()
+            Answers.logContentView(withName: "Later Tab", contentType: nil, contentId: nil, customAttributes: nil)
+            recordUserSegmentedControlAction(forDay: "Later")
         case 3:
             self.events = self.specialEventDay
+
+            resetCollectionViewSelection()
             Answers.logContentView(withName: SpecialEvent.shared.name, contentType: nil, contentId: nil, customAttributes: nil)
+             recordUserSegmentedControlAction(forDay: "SpecialDay")
         default:
             self.events = self.today
         }
+    }
+
+    // MARK: CollectionView Delegates
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return filters.count
+    }
+
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "filterCollectionViewCell", for: indexPath) as! FilterCollectionViewCell
+        cell.setFilterLabel(title: filters[indexPath.row])
+        cell.delegate = self
+
+        return cell
+    }
+
+
+    // MARK: Filter Cell Delegate
+    // ["All","Nearby","Holiday","Free","Indoor","Arts"]
+    func handleFilterButtonTap(selectedFilter: String) {
+
+        var e = [Event]()
+        let selectedIndex = self.segmentedControl.selectedIndex
+
+        switch selectedIndex {
+        case 0:
+            e = self.today
+        case 1:
+            e = self.tomorrow
+        case 2:
+            e = self.later
+        default:
+            e = self.today
+        }
+
+
+        switch selectedFilter {
+        case filters[0]: //ALL
+            self.events = e
+            recordUserFilterAction(forFilter: "All")
+        case filters[1]: //Nearby
+            self.events = e
+            recordUserFilterAction(forFilter: "📍 Nearby")
+        case filters[2]: //Holiday
+            self.events = e
+            recordUserFilterAction(forFilter: "❄︎ Holiday")
+        case filters[3]: //Free
+            self.events = e.filter { $0.freeFlag == true }
+            recordUserFilterAction(forFilter: "Free")
+        case filters[4]: //Indoor
+            self.events = e
+            recordUserFilterAction(forFilter: "Indoor")
+        case filters[5]: //Arts
+            self.events = e
+            recordUserFilterAction(forFilter: "🎭 Arts")
+        default:
+            self.events = e
+            recordUserFilterAction(forFilter: "Default")
+        }
+
+        //filter based on the criteria
+
     }
 
     // MARK: Map or List Switching
@@ -844,3 +1086,5 @@ extension TimelineViewController: MKMapViewDelegate {
         self.navigationController?.pushViewController(detailViewController, animated: true)
     }
 }
+
+

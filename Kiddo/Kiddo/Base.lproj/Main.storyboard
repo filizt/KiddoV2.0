@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="WBr-Ha-32t">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="WBr-Ha-32t">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -13,6 +13,7 @@
         <array key="Avenir.ttc">
             <string>Avenir-Book</string>
             <string>Avenir-Heavy</string>
+            <string>Avenir-Medium</string>
         </array>
     </customFonts>
     <scenes>
@@ -29,11 +30,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="bl0-SP-8aP">
-                                <rect key="frame" x="0.0" y="96" width="375" height="571"/>
+                                <rect key="frame" x="0.0" y="136" width="375" height="531"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </tableView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XmL-24-Cn7">
-                                <rect key="frame" x="0.0" y="96" width="375" height="571"/>
+                                <rect key="frame" x="0.0" y="136" width="375" height="531"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="L5u-Zr-Q8o" customClass="CustomSegmentedControl" customModule="Kiddo" customModuleProvider="target">
@@ -44,25 +45,72 @@
                                 </constraints>
                             </view>
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="EUR-ae-as2">
-                                <rect key="frame" x="0.0" y="96" width="375" height="571"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <rect key="frame" x="0.0" y="90" width="375" height="577"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             </activityIndicatorView>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="K2B-DB-e6z">
+                                <rect key="frame" x="0.0" y="96" width="375" height="40"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="XzM-xU-wx5"/>
+                                </constraints>
+                                <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="drY-Jq-EQk">
+                                    <size key="itemSize" width="90" height="40"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="9" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="filterCollectionViewCell" id="aiP-N2-ZCC" customClass="FilterCollectionViewCell" customModule="Kiddo" customModuleProvider="target">
+                                        <rect key="frame" x="9" y="0.0" width="90" height="40"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                            <rect key="frame" x="0.0" y="0.0" width="90" height="40"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fVl-Uk-iA4">
+                                                    <rect key="frame" x="8" y="8" width="74" height="24"/>
+                                                    <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="12"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </view>
+                                        <constraints>
+                                            <constraint firstItem="fVl-Uk-iA4" firstAttribute="leading" secondItem="aiP-N2-ZCC" secondAttribute="leadingMargin" id="IoR-ZL-tXg"/>
+                                            <constraint firstAttribute="bottomMargin" secondItem="fVl-Uk-iA4" secondAttribute="bottom" id="cYd-he-vz3"/>
+                                            <constraint firstAttribute="trailingMargin" secondItem="fVl-Uk-iA4" secondAttribute="trailing" id="sWP-2f-Vb0"/>
+                                            <constraint firstItem="fVl-Uk-iA4" firstAttribute="top" secondItem="aiP-N2-ZCC" secondAttribute="topMargin" id="vTP-Ak-1HP"/>
+                                        </constraints>
+                                        <connections>
+                                            <outlet property="filterLabel" destination="fVl-Uk-iA4" id="shY-oD-kNe"/>
+                                        </connections>
+                                    </collectionViewCell>
+                                </cells>
+                                <connections>
+                                    <outlet property="dataSource" destination="BYZ-38-t0r" id="pbQ-zc-bOv"/>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="3Hh-BZ-ZOI"/>
+                                </connections>
+                            </collectionView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="bl0-SP-8aP" firstAttribute="top" secondItem="K2B-DB-e6z" secondAttribute="bottom" id="0O4-As-WQU"/>
                             <constraint firstItem="L5u-Zr-Q8o" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="30y-jf-WX0"/>
                             <constraint firstItem="bl0-SP-8aP" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="42t-Ey-FKb"/>
                             <constraint firstAttribute="trailing" secondItem="bl0-SP-8aP" secondAttribute="trailing" id="7Fl-ba-4tm"/>
                             <constraint firstAttribute="trailing" secondItem="L5u-Zr-Q8o" secondAttribute="trailing" id="DnL-IS-b4s"/>
                             <constraint firstItem="EUR-ae-as2" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="EVj-cj-O7L"/>
-                            <constraint firstItem="bl0-SP-8aP" firstAttribute="top" secondItem="L5u-Zr-Q8o" secondAttribute="bottom" id="JpJ-nE-m0t"/>
+                            <constraint firstAttribute="trailing" secondItem="K2B-DB-e6z" secondAttribute="trailing" id="I4w-Sm-an5"/>
+                            <constraint firstItem="K2B-DB-e6z" firstAttribute="top" secondItem="L5u-Zr-Q8o" secondAttribute="bottom" id="J6u-cy-8Iy"/>
+                            <constraint firstItem="K2B-DB-e6z" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="JCZ-nz-Cq3"/>
                             <constraint firstItem="XmL-24-Cn7" firstAttribute="bottom" secondItem="bl0-SP-8aP" secondAttribute="bottom" id="MSS-vE-i6g"/>
                             <constraint firstItem="XmL-24-Cn7" firstAttribute="trailing" secondItem="bl0-SP-8aP" secondAttribute="trailing" id="Ulk-Wg-JkE"/>
                             <constraint firstItem="XmL-24-Cn7" firstAttribute="top" secondItem="bl0-SP-8aP" secondAttribute="top" id="Vew-9N-xco"/>
                             <constraint firstItem="L5u-Zr-Q8o" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="WlT-td-lMs"/>
                             <constraint firstItem="XmL-24-Cn7" firstAttribute="leading" secondItem="bl0-SP-8aP" secondAttribute="leading" id="bCz-l1-XL9"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="EUR-ae-as2" secondAttribute="bottom" id="blq-ag-4ZV"/>
-                            <constraint firstItem="EUR-ae-as2" firstAttribute="top" secondItem="L5u-Zr-Q8o" secondAttribute="bottom" id="r0A-hW-8fG"/>
+                            <constraint firstItem="EUR-ae-as2" firstAttribute="top" secondItem="L5u-Zr-Q8o" secondAttribute="bottom" constant="-6" id="r0A-hW-8fG"/>
                             <constraint firstAttribute="trailing" secondItem="EUR-ae-as2" secondAttribute="trailing" id="s8H-1F-i6j"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="bl0-SP-8aP" secondAttribute="bottom" id="xSn-JK-8rc"/>
                         </constraints>
@@ -70,6 +118,7 @@
                     <navigationItem key="navigationItem" title="Title" id="fJv-Hi-iQY"/>
                     <connections>
                         <outlet property="activityIndicator" destination="EUR-ae-as2" id="J7v-ci-NjN"/>
+                        <outlet property="filtersCollectionView" destination="K2B-DB-e6z" id="2Cv-PT-lSw"/>
                         <outlet property="mapContainerView" destination="XmL-24-Cn7" id="Hno-uc-SH4"/>
                         <outlet property="segmentedControl" destination="L5u-Zr-Q8o" id="UPy-pC-Hn9"/>
                         <outlet property="timelineTableView" destination="bl0-SP-8aP" id="Ur3-Dv-amR"/>
@@ -80,7 +129,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1017" y="8"/>
+            <point key="canvasLocation" x="1016.8" y="7.6461769115442282"/>
         </scene>
         <!--Sign Up View Controller-->
         <scene sceneID="E0p-nf-eSy">
@@ -113,7 +162,7 @@
                                     </textField>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4rj-4Z-hTK">
                                         <rect key="frame" x="20" y="38.5" width="335" height="156"/>
-                                        <string key="text">Subscribe for our weekly emails to find Seattle's best events and activities for your kids!
+                                        <string key="text">Subscribe to our weekly emails and find out Seattle's best kid-friendly things to do!
 
 Needless to say, we never share your information.  </string>
                                         <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="19"/>
@@ -206,10 +255,10 @@ Needless to say, we never share your information.  </string>
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="kiddo" translatesAutoresizingMaskIntoConstraints="NO" id="vGX-1E-KtD">
-                                <rect key="frame" x="133" y="268" width="110" height="64"/>
+                                <rect key="frame" x="132.5" y="268" width="110" height="64"/>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="kiddoHearth" translatesAutoresizingMaskIntoConstraints="NO" id="11V-A5-JQj">
-                                <rect key="frame" x="133" y="268" width="110" height="64"/>
+                                <rect key="frame" x="132.5" y="268" width="110" height="64"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" red="0.2196078431372549" green="0.14509803921568626" blue="0.30196078431372547" alpha="1" colorSpace="calibratedRGB"/>
@@ -297,10 +346,10 @@ Needless to say, we never share your information.  </string>
                                                     <constraint firstAttribute="height" constant="200" id="rVQ-EY-U9H"/>
                                                 </constraints>
                                             </mapView>
-                                            <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" alignment="top" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="nPf-Qr-Axw" userLabel="AllEventInfoOverImage">
-                                                <rect key="frame" x="16" y="240.5" width="143" height="41.5"/>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="nPf-Qr-Axw" userLabel="AllEventInfoOverImage">
+                                                <rect key="frame" x="16" y="258.5" width="143" height="41.5"/>
                                                 <subviews>
-                                                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pFQ-ad-dVo">
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pFQ-ad-dVo">
                                                         <rect key="frame" x="0.0" y="0.0" width="69" height="16"/>
                                                         <color key="backgroundColor" red="1" green="0.82621631920000005" blue="0.13725490200000001" alpha="1" colorSpace="calibratedRGB"/>
                                                         <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="9"/>
@@ -309,19 +358,19 @@ Needless to say, we never share your information.  </string>
                                                             <color key="titleColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
                                                         </state>
                                                     </button>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" alignment="top" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="lsq-rG-7vH" userLabel="FeaturedAndDate">
+                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="lsq-rG-7vH" userLabel="FeaturedAndDate">
                                                         <rect key="frame" x="0.0" y="21" width="142.5" height="20.5"/>
                                                         <subviews>
-                                                            <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="3mo-qq-sG3" userLabel="Featured">
+                                                            <stackView opaque="NO" contentMode="scaleToFill" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="3mo-qq-sG3" userLabel="Featured">
                                                                 <subviews>
-                                                                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" image="star" translatesAutoresizingMaskIntoConstraints="NO" id="EFG-fz-vpx">
-                                                                        <rect key="frame" x="-16" y="-343.5" width="0.0" height="18"/>
+                                                                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="star" translatesAutoresizingMaskIntoConstraints="NO" id="EFG-fz-vpx">
+                                                                        <rect key="frame" x="-16" y="-343.5" width="18" height="18"/>
                                                                         <constraints>
                                                                             <constraint firstAttribute="height" constant="18" id="ZUF-ow-pbW"/>
                                                                             <constraint firstAttribute="width" constant="18" id="tN9-7W-UgY"/>
                                                                         </constraints>
                                                                     </imageView>
-                                                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="FEATURED" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xbd-OS-MgO">
+                                                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="FEATURED" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xbd-OS-MgO">
                                                                         <rect key="frame" x="-16" y="-343.5" width="0.0" height="18"/>
                                                                         <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="13"/>
                                                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -505,7 +554,7 @@ Needless to say, we never share your information.  </string>
                                                     <constraint firstAttribute="width" constant="120" id="ysc-Pn-Ue7"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="17"/>
-                                                <state key="normal" title="All dates">
+                                                <state key="normal" title="All">
                                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </state>
                                             </button>
@@ -602,7 +651,7 @@ Needless to say, we never share your information.  </string>
                                 <rect key="frame" x="0.0" y="291" width="375" height="292"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SDK-k9-uEf">
-                                        <rect key="frame" x="0.0" y="0.0" width="174.5" height="38"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="154.5" height="38"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="  " lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dng-yo-aZp">
                                                 <rect key="frame" x="0.0" y="0.0" width="10" height="38"/>
@@ -620,8 +669,8 @@ Needless to say, we never share your information.  </string>
                                                     <constraint firstAttribute="height" constant="38" id="o6N-bz-bCv"/>
                                                 </constraints>
                                             </imageView>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select Category" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Qc-LD-vI2">
-                                                <rect key="frame" x="47" y="0.0" width="127.5" height="38"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select Theme" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Qc-LD-vI2">
+                                                <rect key="frame" x="47" y="0.0" width="107.5" height="38"/>
                                                 <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="17"/>
                                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -638,7 +687,7 @@ Needless to say, we never share your information.  </string>
                                                     <constraint firstAttribute="height" constant="120" id="H9y-jN-MZv"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="17"/>
-                                                <state key="normal" title="All categories">
+                                                <state key="normal" title="All">
                                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </state>
                                             </button>
@@ -650,7 +699,7 @@ Needless to say, we never share your information.  </string>
                                                     <constraint firstAttribute="height" constant="120" id="Lcm-BT-bE1"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="17"/>
-                                                <state key="normal" title="Outdoor">
+                                                <state key="normal" title="Free">
                                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </state>
                                             </button>
@@ -662,7 +711,7 @@ Needless to say, we never share your information.  </string>
                                                     <constraint firstAttribute="height" constant="120" id="qF1-xa-6oj"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="17"/>
-                                                <state key="normal" title="Indoor">
+                                                <state key="normal" title="Nearby">
                                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </state>
                                             </button>
@@ -679,7 +728,7 @@ Needless to say, we never share your information.  </string>
                                                     <constraint firstAttribute="width" constant="120" id="eVT-PG-TvV"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="17"/>
-                                                <state key="normal" title="Halloween">
+                                                <state key="normal" title="Popular">
                                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </state>
                                             </button>
@@ -690,8 +739,8 @@ Needless to say, we never share your information.  </string>
                                                     <constraint firstAttribute="height" constant="120" id="XAJ-Rj-oa9"/>
                                                     <constraint firstAttribute="width" constant="120" id="t1m-k4-hh6"/>
                                                 </constraints>
-                                                <fontDescription key="fontDescription" name="Avenir-LightOblique" family="Avenir" pointSize="17"/>
-                                                <state key="normal" title="More Filters Coming Soon">
+                                                <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="17"/>
+                                                <state key="normal" title="Holiday Guide">
                                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </state>
                                             </button>
@@ -742,7 +791,7 @@ Needless to say, we never share your information.  </string>
                 <navigationController storyboardIdentifier="navController" title="Events and Activities" automaticallyAdjustsScrollViewInsets="NO" id="rqb-Yq-P7V" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="0LU-hS-USf">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -760,7 +809,7 @@ Needless to say, we never share your information.  </string>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="ZfE-2J-LHG" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="Zdk-VB-jEI">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -784,7 +833,7 @@ Needless to say, we never share your information.  </string>
         <image name="star" width="512" height="512"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="BmU-t5-gGb"/>
         <segue reference="BND-Ye-09L"/>
+        <segue reference="BmU-t5-gGb"/>
     </inferredMetricsTieBreakers>
 </document>

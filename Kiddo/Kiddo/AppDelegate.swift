@@ -15,12 +15,14 @@ import Fabric
 import Crashlytics
 import Branch
 import UIViewController_ODStatusBar
+import ForecastIO
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate  {
 
     var window: UIWindow?
     var rootVC: UIViewController?
+    let forecastIO = DarkSkyClient(apiKey: "e6054a4d0d1b152edd4ba15a16ee9d9d")
 
     private let userDefaults = UserDefaults.standard
 

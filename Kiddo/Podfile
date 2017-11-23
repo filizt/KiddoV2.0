@@ -10,6 +10,7 @@ target 'Kiddo' do
   pod 'Branch'
   pod 'UIViewController+ODStatusBar'
   pod 'Cluster'
+  pod "ForecastIO"
   # Pods for Kiddo
 
 end

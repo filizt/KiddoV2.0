@@ -9,7 +9,7 @@
 import UIKit
 import Parse
 
-protocol CellFreeButtonDelegate {
+protocol CellFreeButtonDelegate: NSObjectProtocol {
     func handleFreeButtonTap()
 }
 
@@ -27,7 +27,7 @@ class EventTableViewCell: UITableViewCell {
 
     private let cache = SimpleCache.shared
 
-    var delegate:CellFreeButtonDelegate?
+    weak var delegate:CellFreeButtonDelegate?
 
     var event: Event? {
         didSet {

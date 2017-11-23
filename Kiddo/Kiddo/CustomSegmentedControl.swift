@@ -16,7 +16,7 @@ protocol CustomSegmentedControlDelegate: class {
 
     private var labels = [UILabel]()
     private var selectionBar = UIView()
-    private let SELECTION_BAR_HEIGHT: CGFloat = 3.0
+    private let SELECTION_BAR_HEIGHT: CGFloat = 2.0
     private var tabBarLabelWidth:CGFloat = 0
     private var tabBarLastLabelWidth: CGFloat = 0
     weak var delegate:CustomSegmentedControlDelegate?

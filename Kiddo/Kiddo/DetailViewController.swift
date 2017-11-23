@@ -74,6 +74,8 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
         let shareButtonItem = UIBarButtonItem(image: UIImage(named: "shareIcon")!, style: .done, target: self, action: #selector(share))
         self.navigationItem.rightBarButtonItem = shareButtonItem
 
+        recordUserAction()
+
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -111,6 +113,29 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
         }
     }
 
+    func recordUserAction() {
+        let userInfo: PFObject = PFObject(className: "UserDetailViewHistory")
+        if let currentParseUserObjectId = PFUser.current()?.objectId {
+            userInfo["parseUser"] = PFUser.current()
+            userInfo["parseUserId"] = PFUser.current()?.objectId
+        } else { //where user didn't log in with FB but used their email to sign up
+            if let vendorIdentifier = UIDevice.current.identifierForVendor {
+                userInfo["UUID"] = vendorIdentifier.uuidString
+            }
+            if let email = UserDefaults.standard.object(forKey: "email") as? String {
+                userInfo["email"] = email
+            }
+        }
+
+        userInfo["eventId"] = self.event.id
+        userInfo["eventCategory"] = self.event.category
+        userInfo["eventTitle"] = self.event.title
+        userInfo["eventCost"] = self.event.freeFlag == true ? "Free" : "Paid"
+        userInfo["eventDate"] = self.eventFullDateLabel.text
+        userInfo.saveInBackground()
+
+    }
+
     func share() {
         //fetch user information for recording the share
         let userInfo: PFObject = PFObject(className: "UserShareHistory")
@@ -118,15 +143,11 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
             userInfo["parseUser"] = PFUser.current()
             userInfo["parseUserId"] = PFUser.current()?.objectId
         } else { //where user didn't log in with FB but used their email to sign up
-            let query = PFQuery(className: "UserEmail")
             if let vendorIdentifier = UIDevice.current.identifierForVendor {
-                query.whereKey("deviceUUID", equalTo: vendorIdentifier.uuidString)
-                query.getFirstObjectInBackground(block: { (object, error) in
-                    guard error == nil else { print("\(error?.localizedDescription)"); return }
-                    if let object = object {
-                        userInfo["email"] = object["email"] as! String
-                    }
-                })
+                userInfo["UUID"] = vendorIdentifier.uuidString
+            }
+            if let email = UserDefaults.standard.object(forKey: "email") as? String {
+                userInfo["email"] = email
             }
         }
 
@@ -156,18 +177,28 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
             activityViewController.completionWithItemsHandler = {(activity, success, items, err) in
                 // Return if cancelled
                 if (!success) {
+                    userInfo["shareURL"] = shareUrl
+                    userInfo["eventId"] = self.event.id
+                    userInfo["eventCategory"] = self.event.category
+                    userInfo["eventTitle"] = self.event.title
+                    userInfo["eventCost"] = self.event.freeFlag == true ? "Free" : "Paid"
+                    userInfo["shareStatus"] = "FAILED"
+                    userInfo["eventDate"] = self.eventFullDateLabel.text
+                    userInfo.saveInBackground()
                     return
+                } else {
+                    userInfo["shareURL"] = shareUrl
+                    userInfo["eventId"] = self.event.id
+                    userInfo["eventCategory"] = self.event.category
+                    userInfo["eventTitle"] = self.event.title
+                    userInfo["eventCost"] = self.event.freeFlag == true ? "Free" : "Paid"
+                    userInfo["shareType"] = activity?.rawValue
+                    userInfo["shareStatus"] = "Success"
+                    userInfo["eventDate"] = self.eventFullDateLabel.text
+                    userInfo.saveInBackground()
+
+                    Answers.logCustomEvent(withName: "Event Shared", customAttributes:["Event Title": self.event.title, "Event Category": self.event.category, "Event Cost": self.event.freeFlag == true ? "Free" : "Paid"])
                 }
-
-                userInfo["eventId"] = self.event.id
-                userInfo["eventCategory"] = self.event.category
-                userInfo["eventTitle"] = self.event.title
-                userInfo["eventCost"] = self.event.freeFlag == true ? "Free" : "Paid"
-                userInfo["shareType"] = activity?.rawValue
-                userInfo.saveInBackground()
-
-                Answers.logCustomEvent(withName: "Event Shared", customAttributes:["Event Title": self.event.title, "Event Category": self.event.category, "Event Cost": self.event.freeFlag == true ? "Free" : "Paid"])
-
             }
 
             self.present(activityViewController, animated: true) {
@@ -315,6 +346,25 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
 
     func presentSafariViewController(url: String) {
         if !url.isEmpty {
+            let userInfo: PFObject = PFObject(className: "UserWebsiteVisitHistory")
+            if let currentParseUserObjectId = PFUser.current()?.objectId {
+                userInfo["parseUser"] = PFUser.current()
+                userInfo["parseUserId"] = PFUser.current()?.objectId
+            } else { //where user didn't log in with FB but used their email to sign up
+                if let vendorIdentifier = UIDevice.current.identifierForVendor {
+                    userInfo["UUID"] = vendorIdentifier.uuidString
+                }
+                if let email = UserDefaults.standard.object(forKey: "email") as? String {
+                    userInfo["email"] = email
+                }
+            }
+
+            userInfo["eventId"] = self.event.id
+            userInfo["eventCategory"] = self.event.category
+            userInfo["eventTitle"] = self.event.title
+            userInfo["eventCost"] = self.event.freeFlag == true ? "Free" : "Paid"
+            userInfo.saveInBackground()
+
             let safariVC = SFSafariViewController(url:URL(string: url)!)
             self.present(safariVC, animated: true, completion: nil)
         }

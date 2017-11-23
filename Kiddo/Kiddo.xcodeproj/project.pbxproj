@@ -11,6 +11,7 @@
 		50584E071DD122ED00A2BEA9 /* UIExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50584E061DD122ED00A2BEA9 /* UIExtensions.swift */; };
 		BD0994411ECB5FCC0045F749 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0994401ECB5FCC0045F749 /* SignUpViewController.swift */; };
 		BD1A4F241E82D3B800BF036D /* UserGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD1A4F231E82D3B800BF036D /* UserGraph.swift */; };
+		BD2B56CE1FBCF79000E84D8A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BD2B56CD1FBCF78E00E84D8A /* Assets.xcassets */; };
 		BD506DD81E293CD6001A98B0 /* DateUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD506DD71E293CD6001A98B0 /* DateUtil.swift */; };
 		BD506DDD1E316A5C001A98B0 /* SimpleCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD506DDC1E316A5C001A98B0 /* SimpleCache.swift */; };
 		BD600A9D1F620CAC00DCC0D3 /* ParseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD600A9C1F620CAC00DCC0D3 /* ParseService.swift */; };
@@ -19,12 +20,12 @@
 		BD600AA31F73F78800DCC0D3 /* FiltersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD600AA21F73F78800DCC0D3 /* FiltersViewController.swift */; };
 		BD68B9A71DD0F2F300CE39CA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD68B9A61DD0F2F300CE39CA /* AppDelegate.swift */; };
 		BD68B9AC1DD0F2F300CE39CA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD68B9AA1DD0F2F300CE39CA /* Main.storyboard */; };
-		BD68B9AE1DD0F2F300CE39CA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BD68B9AD1DD0F2F300CE39CA /* Assets.xcassets */; };
 		BD68B9B11DD0F2F300CE39CA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD68B9AF1DD0F2F300CE39CA /* LaunchScreen.storyboard */; };
 		BD68B9BF1DD0FA1C00CE39CA /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD68B9BE1DD0FA1C00CE39CA /* DetailViewController.swift */; };
 		BDB5B0931E4D534400D59AEA /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDB5B0911E4D534400D59AEA /* Fabric.framework */; };
 		BDB5B0961E4D54B600D59AEA /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDB5B0951E4D54B600D59AEA /* Crashlytics.framework */; };
 		BDC903D41E413B82006CD7D6 /* CustomSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDC903D31E413B82006CD7D6 /* CustomSegmentedControl.swift */; };
+		BDD126141FBA2A6D007219B1 /* FilterCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDD126131FBA2A6D007219B1 /* FilterCollectionViewCell.swift */; };
 		BDEB9E8F1E05A64F002F7222 /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDEB9E8E1E05A64F002F7222 /* LogInViewController.swift */; };
 		BDEB9E911E05AB06002F7222 /* bg_portrait.jpg in Resources */ = {isa = PBXBuildFile; fileRef = BDEB9E901E05AB06002F7222 /* bg_portrait.jpg */; };
 		BDFA18571EBECC8F00E90C86 /* SpecialEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDFA18561EBECC8F00E90C86 /* SpecialEvent.swift */; };
@@ -41,6 +42,7 @@
 		540CFF22675486906CCC738D /* Pods-Kiddo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Kiddo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Kiddo/Pods-Kiddo.debug.xcconfig"; sourceTree = "<group>"; };
 		BD0994401ECB5FCC0045F749 /* SignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		BD1A4F231E82D3B800BF036D /* UserGraph.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserGraph.swift; sourceTree = "<group>"; };
+		BD2B56CD1FBCF78E00E84D8A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BD506DD71E293CD6001A98B0 /* DateUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateUtil.swift; sourceTree = "<group>"; };
 		BD506DDC1E316A5C001A98B0 /* SimpleCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleCache.swift; sourceTree = "<group>"; };
 		BD600A9C1F620CAC00DCC0D3 /* ParseService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParseService.swift; sourceTree = "<group>"; };
@@ -50,7 +52,6 @@
 		BD68B9A31DD0F2F200CE39CA /* Kiddo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kiddo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD68B9A61DD0F2F300CE39CA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BD68B9AB1DD0F2F300CE39CA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		BD68B9AD1DD0F2F300CE39CA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BD68B9B01DD0F2F300CE39CA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		BD68B9B21DD0F2F300CE39CA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BD68B9BE1DD0FA1C00CE39CA /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
@@ -58,6 +59,7 @@
 		BDB5B0911E4D534400D59AEA /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = SOURCE_ROOT; };
 		BDB5B0951E4D54B600D59AEA /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = SOURCE_ROOT; };
 		BDC903D31E413B82006CD7D6 /* CustomSegmentedControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomSegmentedControl.swift; sourceTree = "<group>"; };
+		BDD126131FBA2A6D007219B1 /* FilterCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterCollectionViewCell.swift; sourceTree = "<group>"; };
 		BDEB9E8E1E05A64F002F7222 /* LogInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
 		BDEB9E901E05AB06002F7222 /* bg_portrait.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = bg_portrait.jpg; sourceTree = "<group>"; };
 		BDFA18561EBECC8F00E90C86 /* SpecialEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpecialEvent.swift; sourceTree = "<group>"; };
@@ -115,7 +117,7 @@
 		BD506DDB1E2941B6001A98B0 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				BD68B9AD1DD0F2F300CE39CA /* Assets.xcassets */,
+				BD2B56CD1FBCF78E00E84D8A /* Assets.xcassets */,
 				BDEB9E901E05AB06002F7222 /* bg_portrait.jpg */,
 				BD68B9B21DD0F2F300CE39CA /* Info.plist */,
 			);
@@ -188,6 +190,7 @@
 				C26E62721DD1098600BDC568 /* EventTableViewCell.swift */,
 				C26E62701DD103B900BDC568 /* eventCell.xib */,
 				BD600AA01F621B2700DCC0D3 /* CustomFilterButton.swift */,
+				BDD126131FBA2A6D007219B1 /* FilterCollectionViewCell.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -280,9 +283,9 @@
 			files = (
 				C26E62711DD103B900BDC568 /* eventCell.xib in Resources */,
 				BD68B9B11DD0F2F300CE39CA /* LaunchScreen.storyboard in Resources */,
-				BD68B9AE1DD0F2F300CE39CA /* Assets.xcassets in Resources */,
 				BDEB9E911E05AB06002F7222 /* bg_portrait.jpg in Resources */,
 				BD68B9AC1DD0F2F300CE39CA /* Main.storyboard in Resources */,
+				BD2B56CE1FBCF79000E84D8A /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -295,9 +298,30 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Kiddo/Pods-Kiddo-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Bolts/Bolts.framework",
+				"${BUILT_PRODUCTS_DIR}/Branch/Branch.framework",
+				"${BUILT_PRODUCTS_DIR}/Cluster/Cluster.framework",
+				"${BUILT_PRODUCTS_DIR}/FBSDKCoreKit/FBSDKCoreKit.framework",
+				"${BUILT_PRODUCTS_DIR}/FBSDKLoginKit/FBSDKLoginKit.framework",
+				"${BUILT_PRODUCTS_DIR}/ForecastIO/ForecastIO.framework",
+				"${BUILT_PRODUCTS_DIR}/Parse/Parse.framework",
+				"${BUILT_PRODUCTS_DIR}/ParseFacebookUtilsV4/ParseFacebookUtilsV4.framework",
+				"${BUILT_PRODUCTS_DIR}/ParseUI/ParseUI.framework",
+				"${BUILT_PRODUCTS_DIR}/UIViewController+ODStatusBar/UIViewController_ODStatusBar.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Bolts.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Branch.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Cluster.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKCoreKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKLoginKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ForecastIO.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Parse.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ParseFacebookUtilsV4.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ParseUI.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UIViewController_ODStatusBar.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -323,13 +347,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Kiddo-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		DA9CCB1D59561A99C8909304 /* [CP] Copy Pods Resources */ = {
@@ -357,6 +384,7 @@
 				BDFA18571EBECC8F00E90C86 /* SpecialEvent.swift in Sources */,
 				BD600A9D1F620CAC00DCC0D3 /* ParseService.swift in Sources */,
 				C26E62731DD1098600BDC568 /* EventTableViewCell.swift in Sources */,
+				BDD126141FBA2A6D007219B1 /* FilterCollectionViewCell.swift in Sources */,
 				BDEB9E8F1E05A64F002F7222 /* LogInViewController.swift in Sources */,
 				BD68B9BF1DD0FA1C00CE39CA /* DetailViewController.swift in Sources */,
 				BD68B9A71DD0F2F300CE39CA /* AppDelegate.swift in Sources */,
@@ -502,6 +530,7 @@
 					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = Kiddo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.00;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = filizk.Kiddo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -521,6 +550,7 @@
 					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = Kiddo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.00;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = filizk.Kiddo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
