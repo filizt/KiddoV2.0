@@ -97,15 +97,7 @@ protocol CustomSegmentedControlDelegate: class {
 
     private func calculateSegmentedControlLabelWidth() {
         let xOffset:CGFloat = 17.0
-        if items.count > 3 {
-            let tempLabelWidth = (self.bounds.size.width - (xOffset * 2)) / 4.0
-            tabBarLastLabelWidth = tempLabelWidth * SpecialEvent.shared.sizeMultiplier
-
-            tabBarLabelWidth = (self.bounds.size.width - (xOffset * 2) - tabBarLastLabelWidth) / CGFloat(items.count - 1)
-
-        } else {
-            tabBarLabelWidth = (self.bounds.size.width - (xOffset * 2)) / CGFloat(items.count)
-        }
+        tabBarLabelWidth = (self.bounds.size.width - (xOffset * 2)) / CGFloat(items.count)
     }
 
     private func createNextLabelFrame(_ currentFrame: CGRect?, index: Int) -> CGRect {

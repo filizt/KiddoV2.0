@@ -16,6 +16,7 @@ protocol CellFilterButtonDelegate:NSObjectProtocol {
 class FilterCollectionViewCell: UICollectionViewCell {
 
     class var classReuseIdentifier: String { return "filterCollectionViewCell" }
+
     @IBOutlet weak var filterLabel: UILabel!
     weak var delegate: CellFilterButtonDelegate?
 
@@ -36,7 +37,6 @@ class FilterCollectionViewCell: UICollectionViewCell {
     }
 
     func setFilterLabel(title: String) {
-        //if title All then set it to selected
         filterLabel.text = title
         filterLabel.backgroundColor = UIColor.white
         filterLabel.textColor = UIColor.appPurpleColor
@@ -47,5 +47,4 @@ class FilterCollectionViewCell: UICollectionViewCell {
         //filterButton.addTarget(self, action: #selector(TimelineViewController.filterButtonPressed), for: UIControlEvents.touchUpInside)
         
     }
-
 }

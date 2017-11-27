@@ -88,11 +88,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 print ("Error retrieving image cache limit from Parse")
                 return
             }
-
             if let object = object {
-                SpecialEvent.shared.isEnabled = object["isEnabled"] as! Bool
-                SpecialEvent.shared.name = object["name"] as! String
-                SpecialEvent.shared.sizeMultiplier = object["labelSizeMultiplier"] as! CGFloat
+               // if object["isEnabled"] as! Bool == true {
+                    SpecialEvent.shared.isEnabled = object["isEnabled"] as! Bool
+                    SpecialEvent.shared.name = object["name"] as! String
+                    SpecialEvent.shared.sizeMultiplier = object["labelSizeMultiplier"] as! CGFloat
+                //}
             }
         })
     }

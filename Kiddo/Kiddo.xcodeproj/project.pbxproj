@@ -17,7 +17,6 @@
 		BD600A9D1F620CAC00DCC0D3 /* ParseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD600A9C1F620CAC00DCC0D3 /* ParseService.swift */; };
 		BD600A9F1F62130400DCC0D3 /* FilterUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD600A9E1F62130400DCC0D3 /* FilterUtil.swift */; };
 		BD600AA11F621B2700DCC0D3 /* CustomFilterButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD600AA01F621B2700DCC0D3 /* CustomFilterButton.swift */; };
-		BD600AA31F73F78800DCC0D3 /* FiltersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD600AA21F73F78800DCC0D3 /* FiltersViewController.swift */; };
 		BD68B9A71DD0F2F300CE39CA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD68B9A61DD0F2F300CE39CA /* AppDelegate.swift */; };
 		BD68B9AC1DD0F2F300CE39CA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD68B9AA1DD0F2F300CE39CA /* Main.storyboard */; };
 		BD68B9B11DD0F2F300CE39CA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD68B9AF1DD0F2F300CE39CA /* LaunchScreen.storyboard */; };
@@ -48,7 +47,6 @@
 		BD600A9C1F620CAC00DCC0D3 /* ParseService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParseService.swift; sourceTree = "<group>"; };
 		BD600A9E1F62130400DCC0D3 /* FilterUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterUtil.swift; sourceTree = "<group>"; };
 		BD600AA01F621B2700DCC0D3 /* CustomFilterButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomFilterButton.swift; sourceTree = "<group>"; };
-		BD600AA21F73F78800DCC0D3 /* FiltersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FiltersViewController.swift; sourceTree = "<group>"; };
 		BD68B9A31DD0F2F200CE39CA /* Kiddo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kiddo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD68B9A61DD0F2F300CE39CA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BD68B9AB1DD0F2F300CE39CA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -167,7 +165,6 @@
 				BD68B9BE1DD0FA1C00CE39CA /* DetailViewController.swift */,
 				BDEB9E8E1E05A64F002F7222 /* LogInViewController.swift */,
 				BD0994401ECB5FCC0045F749 /* SignUpViewController.swift */,
-				BD600AA21F73F78800DCC0D3 /* FiltersViewController.swift */,
 			);
 			name = "View Controller";
 			sourceTree = "<group>";
@@ -398,7 +395,6 @@
 				BDC903D41E413B82006CD7D6 /* CustomSegmentedControl.swift in Sources */,
 				C22AC4681E60168D00F79926 /* SplashAnimateViewController.swift in Sources */,
 				BD600AA11F621B2700DCC0D3 /* CustomFilterButton.swift in Sources */,
-				BD600AA31F73F78800DCC0D3 /* FiltersViewController.swift in Sources */,
 				BD600A9F1F62130400DCC0D3 /* FilterUtil.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

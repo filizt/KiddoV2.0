@@ -30,7 +30,8 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
     private var request:PFQuery<PFObject>?
     private var lastModified: Date?
     let clusterManager = ClusterManager()
-    fileprivate var filters = ["ALL","📍Nearby","❄️ Holiday","🍀 Free","🌕 Indoor","🎨 Arts"]
+    //"❄️ Holiday"
+    fileprivate var filters = ["ALL","📍Nearby","🍀 Free","🌕 Indoor"]
 
 
     var currentForecast: DataPoint? {
@@ -87,8 +88,6 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
                     self.events = self.tomorrow
                 case 2:
                     self.events = self.later
-                case 3:
-                    self.events = self.specialEventDay
                 default:
                     self.events = self.today
                 }
@@ -175,14 +174,6 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         }
     }
 
-    private var specialEventDay = [Event]() {
-        didSet {
-            if specialEventDay.count > 0 {
-                specialEventDay = self.sortEventsSham(events: specialEventDay )
-            }
-        }
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -230,9 +221,13 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 
         self.setUpNavigationBar()
 
-        updateSegmentedControl()
-
+        self.segmentedControl.items = ["TODAY","TOMORROW","LATER"]
         self.segmentedControl.delegate = self
+
+        //TO-DO change below check to "true"
+        if SpecialEvent.shared.isEnabled == false {
+            filters.insert(SpecialEvent.shared.name, at: 2)
+        }
 
         activityIndicator.hidesWhenStopped = true
         activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
@@ -325,71 +320,16 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 
     func applicationEnteredForeground() {
         activityIndicator.startAnimating()
-        self.updateTabBarIfNecessary()
         self.fetchAllEvents()
 
         self.updateUserGraphDataIfNecessary()
         self.fetchPhotosIfNecessary()
     }
 
-    func fetchSpecialEventReqs() {
-        if SpecialEvent.shared.isEnabled == true {
-            let querySE = PFQuery(className: "EventObject")
-            querySE.whereKey("isSpecialEvent", equalTo: true)
-            querySE.whereKey("isActive", equalTo: true)
-            querySE.findObjectsInBackground { [weak weakSelf = self] (eventObjects, error) in
-                guard error == nil else {
-                    print ("Error fetching tomorrow's events from Parse")
-                    return
-                }
-
-                if let eventObjects = eventObjects {
-                    weakSelf?.specialEventDay = eventObjects.map { Event.create(from: $0) }
-                }
-            }
-        }
-    }
-
     //free button toggles between free events and all events.
     func handleFreeButtonTap() {
         freeButtonToggled = !freeButtonToggled
 
-    }
-
-    func updateSegmentedControl() {
-        if SpecialEvent.shared.isEnabled == false {
-            //not ideal but need to prevent a crash
-            if self.segmentedControl.selectedIndex == 3 {
-                self.segmentedControl.resetViews()
-            }
-            self.segmentedControl.items = ["TODAY","TOMORROW","LATER"]
-
-        } else {
-            let s = SpecialEvent.shared.name
-            var a = ["TODAY","TOMORROW","LATER"]
-            a.append(s)
-            self.segmentedControl.items = a
-        }
-
-    }
-
-    func updateTabBarIfNecessary() {
-        let query = PFQuery(className: "SpecialEventReq")
-        query.getFirstObjectInBackground(block: { (object, error) in
-            guard error == nil else {
-                print ("Error retrieving image cache limit from Parse")
-                return
-            }
-
-            if let object = object {
-                SpecialEvent.shared.isEnabled = object["isEnabled"] as! Bool
-                SpecialEvent.shared.name = object["name"] as! String
-                SpecialEvent.shared.sizeMultiplier = object["labelSizeMultiplier"] as! CGFloat
-
-                self.fetchSpecialEventReqs()
-                self.updateSegmentedControl()
-            }
-        })
     }
 
     func setLastModified() {
@@ -553,7 +493,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         fetchTodayEvents()
         fetchTomorrrowEvents()
         fetchLaterEvents()
-        fetchSpecialEventReqs()
+
     }
 
     private func fetchTodayEvents() {
@@ -729,20 +669,10 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
                 Event.pushedEvent = nil
                 Event.pushedEventId = nil
             }
-        } else if segue.identifier == "showFilterOptions" { //below callback is when we're returning back from modal filters window.
-            if let filtersViewController = segue.destination as? FiltersViewController {
-                filtersViewController.onShowEventsPressed = {[weak self](data) in
-                    if let weakSelf = self {
-                        //weakSelf.doSomethingWithData(data)
-                    }
-                }
-            }
         }
-
     }
 
     //MARK: TableView Delegates
-
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
       return self.events.count
     }
@@ -776,54 +706,14 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
             Answers.logContentView(withName: "Today Tab", contentType: nil, contentId: nil, customAttributes: nil)
         case 1:
             self.events = self.tomorrow
-            //filtersCollectionView.reloadData()
-            //filtersCollectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .top, animated: false)
-//            if let indexPaths = filtersCollectionView.indexPathsForSelectedItems {
-//                filtersCollectionView.scrollToItem(at: indexPaths[0], at: UICollectionViewScrollPosition.left, animated: false)
-//            }
-
-            //filtersCollectionView.cellForItem(at: <#T##IndexPath#>)
-
-            //var ip = filtersCollectionView.indexPath(for: <#T##UICollectionViewCell#>)
-
-            var ip = IndexPath(row: 0, section: 0)
-            var arraip = [IndexPath]()
-            arraip.append(ip)
-            filtersCollectionView.reloadItems(at:arraip )
-
-            var isThisAll = filtersCollectionView.cellForItem(at: ip)
-            var visibleCells = filtersCollectionView.visibleCells
-
-            for vc in visibleCells {
-                //vc.collectio
-                print("cell:", filtersCollectionView.indexPath(for: vc))
-            }
-
-            //self.initial
-                allCell = visibleCells[0]
-
-
-            if allCell != nil {
-                var ip2 = filtersCollectionView.indexPath(for: allCell!)
-
-
-                filtersCollectionView.selectItem(at:ip2 , animated: false, scrollPosition: UICollectionViewScrollPosition.left)
-            }
             resetCollectionViewSelection()
             Answers.logContentView(withName: "Tomorrow Tab", contentType: nil, contentId: nil, customAttributes: nil)
             recordUserSegmentedControlAction(forDay: "Tomorrow")
         case 2:
             self.events = self.later
-            filtersCollectionView.reloadData()
-            //resetCollectionViewSelection()
+            resetCollectionViewSelection()
             Answers.logContentView(withName: "Later Tab", contentType: nil, contentId: nil, customAttributes: nil)
             recordUserSegmentedControlAction(forDay: "Later")
-        case 3:
-            self.events = self.specialEventDay
-
-            resetCollectionViewSelection()
-            Answers.logContentView(withName: SpecialEvent.shared.name, contentType: nil, contentId: nil, customAttributes: nil)
-             recordUserSegmentedControlAction(forDay: "SpecialDay")
         default:
             self.events = self.today
         }
@@ -846,10 +736,9 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
     // MARK: Filter Cell Delegate
     // ["All","Nearby","Holiday","Free","Indoor","Arts"]
     func handleFilterButtonTap(selectedFilter: String) {
-
         var e = [Event]()
-        let selectedIndex = self.segmentedControl.selectedIndex
 
+        let selectedIndex = self.segmentedControl.selectedIndex
         switch selectedIndex {
         case 0:
             e = self.today
@@ -861,26 +750,28 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
             e = self.today
         }
 
-
         switch selectedFilter {
         case filters[0]: //ALL
             self.events = e
             recordUserFilterAction(forFilter: "All")
         case filters[1]: //Nearby
-            self.events = e
             recordUserFilterAction(forFilter: "📍 Nearby")
-        case filters[2]: //Holiday
             self.events = e
+        case filters[2]: //Holiday
+            self.events = e.filter { $0.categoryKeywords?.contains("Seasonal & Holidays") == true }
             recordUserFilterAction(forFilter: "❄︎ Holiday")
         case filters[3]: //Free
             self.events = e.filter { $0.freeFlag == true }
             recordUserFilterAction(forFilter: "Free")
         case filters[4]: //Indoor
-            self.events = e
+            self.events = e.filter { $0.categoryKeywords?.contains("Indoor") == true }
+            if self.events.count < 2 {
+                self.events = e
+            }
             recordUserFilterAction(forFilter: "Indoor")
-        case filters[5]: //Arts
-            self.events = e
-            recordUserFilterAction(forFilter: "🎭 Arts")
+//        case filters[5]: //Arts
+//            self.events = e
+//            recordUserFilterAction(forFilter: "🎭 Arts")
         default:
             self.events = e
             recordUserFilterAction(forFilter: "Default")
