@@ -131,5 +131,22 @@ class DateUtil {
 
         return laterDate
     }
+    
+    func nextWeekend() -> DateInterval? {
+        
+        // Currently returns a DateInterval going from midnight on Saturday to midnight on the following Monday.
+        // Commented-out code is the logic that extracts the dates of Saturday and Sunday if they are needed.
+        
+//        var dateComponents = DateComponents()
+//        dateComponents.minute = -1
+        
+        guard let weekendInterval = Calendar.current.nextWeekend(startingAfter: createDate(from: today()))
+            else { return nil }
+        
+//        let saturday = weekendInterval.start
+//        let sunday = Calendar.current.date(byAdding: dateComponents, to: weekendInterval.end)
+
+        return weekendInterval
+    }
 
 }
