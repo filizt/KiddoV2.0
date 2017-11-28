@@ -29,49 +29,52 @@ class SplashAnimateViewController: UIViewController, PFLogInViewControllerDelega
         super.viewWillAppear(animated)
 
         showStatusBar(style: .lightContent)
-
         if isFirstTime {
             UIView.animate(withDuration: 1.5,
-                           delay: 0,
-                           options: .curveEaseInOut,
-                           animations: {
-                                self.kiddoLogo.alpha = 0
-                           },
-                           completion: { (finished) in
-                                self.kiddoLogo.isHidden = true
-                                UIView.animate(withDuration: 2.0,
-                                               delay: 0.05,
-                                               options: .curveEaseInOut,
-                                               animations: {
-                                                    self.kiddoHeart.transform = CGAffineTransform(translationX: 0, y: -(self.view.frame.size.height/2))
-                                               },
-                                               completion: { (finished) in
-                                                    self.kiddoHeart.isHidden = true
-                                                    self.isFirstTime = false
-                                                    self.prepareForLaunch()
-
-                                               })
-                           })
+                            delay: 0,
+                            options: .curveEaseInOut,
+                            animations: {
+                            self.kiddoLogo.alpha = 0
+            },
+                            completion: { (finished) in
+                            self.kiddoLogo.isHidden = true
+                            UIView.animate(withDuration: 2.0,
+                                            delay: 0.05,
+                                            options: .curveEaseInOut,
+                                            animations: {
+                                            self.kiddoHeart.transform = CGAffineTransform(translationX: 0, y: -(self.view.frame.size.height/2))
+                            },
+                                            completion: { (finished) in
+                                            self.kiddoHeart.isHidden = true
+                                            self.isFirstTime = false
+                                            self.prepareForLaunch()
+                                                
+                            })
+            })
         } else {
             prepareForLaunch()
         }
     }
     
     func prepareForLaunch() {
-        if PFUser.current() != nil {
-            self.performSegue(withIdentifier: "showTimeline", sender: nil)
+        if !ConnectionConfirmation.connectedToNetwork() {
+            presentConnectionWarning()
         } else {
-            if !emailSubmisionNeeded() {
+            if PFUser.current() != nil {
                 self.performSegue(withIdentifier: "showTimeline", sender: nil)
             } else {
-                let logInViewController = LogInViewController()
-                logInViewController.fields = [PFLogInFields.facebook,PFLogInFields.dismissButton]
-                logInViewController.delegate = self
-                logInViewController.emailAsUsername = false
-                logInViewController.signUpController?.delegate = self
-                logInViewController.facebookPermissions = ["public_profile", "email"]
+                if !emailSubmisionNeeded() {
+                    self.performSegue(withIdentifier: "showTimeline", sender: nil)
+                } else {
+                    let logInViewController = LogInViewController()
+                    logInViewController.fields = [PFLogInFields.facebook,PFLogInFields.dismissButton]
+                    logInViewController.delegate = self
+                    logInViewController.emailAsUsername = false
+                    logInViewController.signUpController?.delegate = self
+                    logInViewController.facebookPermissions = ["public_profile", "email"]
 
-                self.present(logInViewController, animated: true, completion: nil )
+                    self.present(logInViewController, animated: true, completion: nil )
+                }
             }
         }
     }
@@ -133,5 +136,15 @@ class SplashAnimateViewController: UIViewController, PFLogInViewControllerDelega
 
     func presentTimeline() {
         self.dismiss(animated: true, completion: { self.performSegue(withIdentifier: "showTimeline", sender: nil) } )
+    }
+    
+    func presentConnectionWarning() {
+        print("Hit connection warning function")
+        let connectionAlert = UIAlertController(title: "No Internet Connection", message: "Please make sure your device is connected to the internet.", preferredStyle: .alert)
+        let okay = UIAlertAction(title: "Retry", style: .default) {
+            action in self.prepareForLaunch()
+        }
+        connectionAlert.addAction(okay)
+        self.present(connectionAlert, animated: true, completion: nil)
     }
 }
