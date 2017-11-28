@@ -9,6 +9,8 @@
 import Foundation
 import SystemConfiguration
 
+// This function is based upon the one written by StackOverflow user Patel Jigar (https://stackoverflow.com/users/4918968/patel-jigar) in answer to this question: https://stackoverflow.com/questions/39558868/check-internet-connection-ios-10
+
 class ConnectionConfirmation {
     class func connectedToNetwork() -> Bool {
         
