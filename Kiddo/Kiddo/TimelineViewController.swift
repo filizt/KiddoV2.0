@@ -244,6 +244,9 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         updateUserGraphDataIfNecessary()
 
         self.setLastModified()
+        
+
+
     }
 
     deinit {
@@ -253,6 +256,10 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
     override func viewWillAppear(_ animated: Bool) {
        self.deepLinkHandler()
        showStatusBar(style: .lightContent)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        resetCollectionViewSelection()
     }
 
     private func resetCollectionViewSelection() {
@@ -716,6 +723,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
             recordUserSegmentedControlAction(forDay: "Later")
         default:
             self.events = self.today
+            
         }
     }
 
