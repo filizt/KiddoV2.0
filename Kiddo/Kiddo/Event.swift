@@ -93,4 +93,32 @@ struct Event {
     }
 }
 
+extension Event: Equatable {
+    static func == (lhs: Event, rhs: Event) -> Bool {
+        return lhs.title == rhs.title &&
+        lhs.dates == rhs.dates &&
+        lhs.startDate == rhs.startDate &&
+        lhs.endDate == rhs.endDate &&
+        lhs.allDayFlag == rhs.allDayFlag &&
+        lhs.startTime == rhs.startTime &&
+        lhs.endTime == rhs.endTime &&
+        lhs.freeFlag == rhs.freeFlag &&
+        lhs.price == rhs.price &&
+        lhs.location == rhs.location &&
+        lhs.locationHours == rhs.locationHours &&
+        lhs.imageURL == rhs.imageURL &&
+        lhs.originalEventURL == rhs.originalEventURL &&
+        lhs.address == rhs.address &&
+        lhs.description == rhs.description &&
+        lhs.ages == rhs.ages &&
+        lhs.photo == rhs.photo &&
+        lhs.category == rhs.category &&
+        lhs.featuredFlag == rhs.featuredFlag &&
+        lhs.imageObjectId == rhs.imageObjectId &&
+        lhs.geoLocation == rhs.geoLocation
+        
+        // It won't make a comparison between the category keywords without unwrapping the array
+//        lhs.categoryKeywords == rhs.categoryKeywords
+    }
+}
 

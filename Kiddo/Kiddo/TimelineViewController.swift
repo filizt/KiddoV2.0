@@ -265,7 +265,6 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
     }
 
     private func resetCollectionViewSelection() {
-        //filtersCollectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: UICollectionViewScrollPosition.left, animated: false)
         filtersCollectionView.selectItem(at: IndexPath(row: 0, section: 0), animated: true, scrollPosition: UICollectionViewScrollPosition.left)
     }
 
@@ -764,27 +763,40 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         switch selectedFilter {
         case filters[0]: //ALL
             print("Filter 1")
-            self.events = e
-            recordUserFilterAction(forFilter: "All")
+            if self.events != e {
+                self.events = e
+                recordUserFilterAction(forFilter: "All")
+            }
         case filters[1]: //Nearby
             print("Filter 2")
-            recordUserFilterAction(forFilter: "📍 Nearby")
-            self.events = e
+            if self.events != e {
+                self.events = e
+                recordUserFilterAction(forFilter: "📍 Nearby")
+            }
         case filters[2]: //Holiday
             print("Filter 3")
-            self.events = e.filter { $0.categoryKeywords?.contains("Seasonal & Holidays") == true }
-            recordUserFilterAction(forFilter: "❄︎ Holiday")
+            let holidayEvents = e.filter { $0.categoryKeywords?.contains("Seasonal & Holidays") == true }
+            if self.events != holidayEvents {
+                self.events = holidayEvents
+                recordUserFilterAction(forFilter: "❄︎ Holiday")
+            }
         case filters[3]: //Free
             print("Filter 4")
-            self.events = e.filter { $0.freeFlag == true }
-            recordUserFilterAction(forFilter: "Free")
+            let freeEvents = e.filter { $0.freeFlag == true }
+            if self.events != freeEvents {
+                self.events = freeEvents
+                recordUserFilterAction(forFilter: "Free")
+            }
         case filters[4]: //Indoor
             print("Filter 5")
-            self.events = e.filter { $0.categoryKeywords?.contains("Indoor") == true }
-            if self.events.count < 2 {
+            let freeEvents = e.filter { $0.categoryKeywords?.contains("Indoor") == true }
+            if self.events != freeEvents && freeEvents.count >= 2 {
+                self.events = freeEvents
+                recordUserFilterAction(forFilter: "Indoor")
+            } else {
                 self.events = e
+                recordUserFilterAction(forFilter: "Indoor")
             }
-            recordUserFilterAction(forFilter: "Indoor")
 //        case filters[5]: //Arts
 //            self.events = e
 //            recordUserFilterAction(forFilter: "🎭 Arts")
