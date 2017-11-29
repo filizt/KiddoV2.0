@@ -25,10 +25,13 @@ class SplashAnimateViewController: UIViewController, PFLogInViewControllerDelega
         // Do any additional setup after loading the view.
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
         showStatusBar(style: .lightContent)
+        if !ConnectionConfirmation.connectedToNetwork() {
+            presentConnectionWarning()
+        } else {
         if isFirstTime {
             UIView.animate(withDuration: 1.5,
                             delay: 0,
@@ -54,29 +57,27 @@ class SplashAnimateViewController: UIViewController, PFLogInViewControllerDelega
         } else {
             prepareForLaunch()
         }
+        }
     }
     
     func prepareForLaunch() {
-        if !ConnectionConfirmation.connectedToNetwork() {
-            presentConnectionWarning()
+        if PFUser.current() != nil {
+            self.performSegue(withIdentifier: "showTimeline", sender: nil)
         } else {
-            if PFUser.current() != nil {
+            if !emailSubmisionNeeded() {
                 self.performSegue(withIdentifier: "showTimeline", sender: nil)
             } else {
-                if !emailSubmisionNeeded() {
-                    self.performSegue(withIdentifier: "showTimeline", sender: nil)
-                } else {
-                    let logInViewController = LogInViewController()
-                    logInViewController.fields = [PFLogInFields.facebook,PFLogInFields.dismissButton]
-                    logInViewController.delegate = self
-                    logInViewController.emailAsUsername = false
-                    logInViewController.signUpController?.delegate = self
-                    logInViewController.facebookPermissions = ["public_profile", "email"]
+                let logInViewController = LogInViewController()
+                logInViewController.fields = [PFLogInFields.facebook,PFLogInFields.dismissButton]
+                logInViewController.delegate = self
+                logInViewController.emailAsUsername = false
+                logInViewController.signUpController?.delegate = self
+                logInViewController.facebookPermissions = ["public_profile", "email"]
 
-                    self.present(logInViewController, animated: true, completion: nil )
-                }
+                self.present(logInViewController, animated: true, completion: nil )
             }
         }
+
     }
 
     func emailSubmisionNeeded() -> Bool {
@@ -139,10 +140,9 @@ class SplashAnimateViewController: UIViewController, PFLogInViewControllerDelega
     }
     
     func presentConnectionWarning() {
-        print("Hit connection warning function")
         let connectionAlert = UIAlertController(title: "No Internet Connection", message: "Please make sure your device is connected to the internet.", preferredStyle: .alert)
         let okay = UIAlertAction(title: "Retry", style: .default) {
-            action in self.prepareForLaunch()
+            action in self.viewDidAppear(true)
         }
         connectionAlert.addAction(okay)
         self.present(connectionAlert, animated: true, completion: nil)
