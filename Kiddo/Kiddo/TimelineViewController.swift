@@ -244,6 +244,9 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         updateUserGraphDataIfNecessary()
 
         self.setLastModified()
+        
+
+
     }
 
     deinit {
@@ -254,10 +257,14 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
        self.deepLinkHandler()
        showStatusBar(style: .lightContent)
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(true)
+        resetCollectionViewSelection()
+    }
 
     private func resetCollectionViewSelection() {
-        //filtersCollectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: UICollectionViewScrollPosition.left, animated: false)
-        filtersCollectionView.selectItem(at: IndexPath(row: 0, section: 0), animated: false, scrollPosition: UICollectionViewScrollPosition.left)
+        filtersCollectionView.selectItem(at: IndexPath(row: 0, section: 0), animated: true, scrollPosition: UICollectionViewScrollPosition.left)
     }
 
     func recordUserFilterAction(forFilter: String) {
@@ -467,7 +474,6 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
     }
 
     func animateTimelineCells() {
-
         let visibleCells = timelineTableView.visibleCells.map { (cell) -> EventTableViewCell in
             cell.transform = CGAffineTransform(translationX: 0, y: timelineTableView.bounds.size.height)
             return cell as! EventTableViewCell
@@ -716,6 +722,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
             recordUserSegmentedControlAction(forDay: "Later")
         default:
             self.events = self.today
+            
         }
     }
 
@@ -752,23 +759,36 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 
         switch selectedFilter {
         case filters[0]: //ALL
-            self.events = e
-            recordUserFilterAction(forFilter: "All")
-        case filters[1]: //Nearby
-            recordUserFilterAction(forFilter: "📍 Nearby")
-            self.events = e
-        case filters[2]: //Holiday
-            self.events = e.filter { $0.categoryKeywords?.contains("Seasonal & Holidays") == true }
-            recordUserFilterAction(forFilter: "❄︎ Holiday")
-        case filters[3]: //Free
-            self.events = e.filter { $0.freeFlag == true }
-            recordUserFilterAction(forFilter: "Free")
-        case filters[4]: //Indoor
-            self.events = e.filter { $0.categoryKeywords?.contains("Indoor") == true }
-            if self.events.count < 2 {
+            if self.events != e {
                 self.events = e
+                recordUserFilterAction(forFilter: "All")
             }
-            recordUserFilterAction(forFilter: "Indoor")
+        case filters[1]: //Nearby
+            if self.events != e {
+                self.events = e
+                recordUserFilterAction(forFilter: "📍 Nearby")
+            }
+        case filters[2]: //Holiday
+            let holidayEvents = e.filter { $0.categoryKeywords?.contains("Seasonal & Holidays") == true }
+            if self.events != holidayEvents {
+                self.events = holidayEvents
+                recordUserFilterAction(forFilter: "❄︎ Holiday")
+            }
+        case filters[3]: //Free
+            let freeEvents = e.filter { $0.freeFlag == true }
+            if self.events != freeEvents {
+                self.events = freeEvents
+                recordUserFilterAction(forFilter: "Free")
+            }
+        case filters[4]: //Indoor
+            let freeEvents = e.filter { $0.categoryKeywords?.contains("Indoor") == true }
+            if self.events != freeEvents && freeEvents.count >= 2 {
+                self.events = freeEvents
+                recordUserFilterAction(forFilter: "Indoor")
+            } else {
+                self.events = e
+                recordUserFilterAction(forFilter: "Indoor")
+            }
 //        case filters[5]: //Arts
 //            self.events = e
 //            recordUserFilterAction(forFilter: "🎭 Arts")
