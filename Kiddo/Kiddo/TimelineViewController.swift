@@ -265,7 +265,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 
     private func resetCollectionViewSelection() {
         //filtersCollectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: UICollectionViewScrollPosition.left, animated: false)
-        filtersCollectionView.selectItem(at: IndexPath(row: 0, section: 0), animated: true, scrollPosition: UICollectionViewScrollPosition.left)
+        filtersCollectionView.selectItem(at: IndexPath(row: 0, section: 0), animated: false, scrollPosition: UICollectionViewScrollPosition.left)
     }
 
     func recordUserFilterAction(forFilter: String) {
