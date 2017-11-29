@@ -259,6 +259,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(true)
         resetCollectionViewSelection()
     }
 
