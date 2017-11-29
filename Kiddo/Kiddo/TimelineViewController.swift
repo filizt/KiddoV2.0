@@ -97,7 +97,6 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 
     private var events = [Event]() {
         didSet {
-            print("Events array set")
             if events.count > 0 {
                 if isListSelected {
                     timelineTableView.reloadData()
@@ -475,8 +474,6 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
     }
 
     func animateTimelineCells() {
-        print("Animating timeline cells")
-
         let visibleCells = timelineTableView.visibleCells.map { (cell) -> EventTableViewCell in
             cell.transform = CGAffineTransform(translationX: 0, y: timelineTableView.bounds.size.height)
             return cell as! EventTableViewCell
@@ -762,33 +759,28 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 
         switch selectedFilter {
         case filters[0]: //ALL
-            print("Filter 1")
             if self.events != e {
                 self.events = e
                 recordUserFilterAction(forFilter: "All")
             }
         case filters[1]: //Nearby
-            print("Filter 2")
             if self.events != e {
                 self.events = e
                 recordUserFilterAction(forFilter: "📍 Nearby")
             }
         case filters[2]: //Holiday
-            print("Filter 3")
             let holidayEvents = e.filter { $0.categoryKeywords?.contains("Seasonal & Holidays") == true }
             if self.events != holidayEvents {
                 self.events = holidayEvents
                 recordUserFilterAction(forFilter: "❄︎ Holiday")
             }
         case filters[3]: //Free
-            print("Filter 4")
             let freeEvents = e.filter { $0.freeFlag == true }
             if self.events != freeEvents {
                 self.events = freeEvents
                 recordUserFilterAction(forFilter: "Free")
             }
         case filters[4]: //Indoor
-            print("Filter 5")
             let freeEvents = e.filter { $0.categoryKeywords?.contains("Indoor") == true }
             if self.events != freeEvents && freeEvents.count >= 2 {
                 self.events = freeEvents
@@ -801,7 +793,6 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 //            self.events = e
 //            recordUserFilterAction(forFilter: "🎭 Arts")
         default:
-            print("Default")
             self.events = e
             recordUserFilterAction(forFilter: "Default")
         }
