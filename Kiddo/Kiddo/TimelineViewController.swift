@@ -97,6 +97,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 
     private var events = [Event]() {
         didSet {
+            print("Events array set")
             if events.count > 0 {
                 if isListSelected {
                     timelineTableView.reloadData()
@@ -265,7 +266,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 
     private func resetCollectionViewSelection() {
         //filtersCollectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: UICollectionViewScrollPosition.left, animated: false)
-        filtersCollectionView.selectItem(at: IndexPath(row: 0, section: 0), animated: false, scrollPosition: UICollectionViewScrollPosition.left)
+        filtersCollectionView.selectItem(at: IndexPath(row: 0, section: 0), animated: true, scrollPosition: UICollectionViewScrollPosition.left)
     }
 
     func recordUserFilterAction(forFilter: String) {
@@ -475,6 +476,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
     }
 
     func animateTimelineCells() {
+        print("Animating timeline cells")
 
         let visibleCells = timelineTableView.visibleCells.map { (cell) -> EventTableViewCell in
             cell.transform = CGAffineTransform(translationX: 0, y: timelineTableView.bounds.size.height)
@@ -761,18 +763,23 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 
         switch selectedFilter {
         case filters[0]: //ALL
+            print("Filter 1")
             self.events = e
             recordUserFilterAction(forFilter: "All")
         case filters[1]: //Nearby
+            print("Filter 2")
             recordUserFilterAction(forFilter: "📍 Nearby")
             self.events = e
         case filters[2]: //Holiday
+            print("Filter 3")
             self.events = e.filter { $0.categoryKeywords?.contains("Seasonal & Holidays") == true }
             recordUserFilterAction(forFilter: "❄︎ Holiday")
         case filters[3]: //Free
+            print("Filter 4")
             self.events = e.filter { $0.freeFlag == true }
             recordUserFilterAction(forFilter: "Free")
         case filters[4]: //Indoor
+            print("Filter 5")
             self.events = e.filter { $0.categoryKeywords?.contains("Indoor") == true }
             if self.events.count < 2 {
                 self.events = e
@@ -782,6 +789,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 //            self.events = e
 //            recordUserFilterAction(forFilter: "🎭 Arts")
         default:
+            print("Default")
             self.events = e
             recordUserFilterAction(forFilter: "Default")
         }
