@@ -1,5 +1,5 @@
 //
-//  SpecialEvent.swift
+//  SeasonalEvents.swift
 //  Kiddo
 //
 //  Created by Filiz Kurban on 5/6/17.
@@ -9,9 +9,9 @@
 import Foundation
 import UIKit
 
-class SpecialEvent {
+class SeasonalEvent {
 
-    static let shared = SpecialEvent()
+    static let shared = SeasonalEvent()
 
     var isEnabled = false
     var name = ""

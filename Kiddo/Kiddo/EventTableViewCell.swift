@@ -9,11 +9,6 @@
 import UIKit
 import Parse
 
-protocol CellFreeButtonDelegate: NSObjectProtocol {
-    func handleFreeButtonTap()
-}
-
-
 class EventTableViewCell: UITableViewCell {
     
     @IBOutlet weak var eventImage: UIImageView!
@@ -26,8 +21,6 @@ class EventTableViewCell: UITableViewCell {
     @IBOutlet weak var eventFeaturedStar: UIImageView!
 
     private let cache = SimpleCache.shared
-
-    weak var delegate:CellFreeButtonDelegate?
 
     var event: Event? {
         didSet {
@@ -53,6 +46,7 @@ class EventTableViewCell: UITableViewCell {
         if let event = event {
             self.eventTitle?.text = event.title
             self.eventVenueName?.text = event.location
+            
             self.eventStartTime?.text = event.allDayFlag == true ? "ALL DAY" : "\(DateUtil.shared.shortTime(from:event.startTime))"
             self.eventFreeImage.isHidden = event.freeFlag == true ? false : true
 
@@ -111,15 +105,11 @@ class EventTableViewCell: UITableViewCell {
         }
     }
 
-    func handleTap(_ sender: UITapGestureRecognizer) {
-        delegate?.handleFreeButtonTap()
-    }
-
     override func awakeFromNib() {
         super.awakeFromNib()
 
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(EventTableViewCell.handleTap(_:)))
-        self.eventFreeImage.addGestureRecognizer(tapGesture)
+//        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(EventTableViewCell.handleTap(_:)))
+//        self.eventFreeImage.addGestureRecognizer(tapGesture)
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

@@ -21,7 +21,7 @@ class EventAnnotation : Annotation {
 }
 
 
-class TimelineViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, CustomSegmentedControlDelegate, CellFreeButtonDelegate, UICollectionViewDataSource, UICollectionViewDelegate, CellFilterButtonDelegate {
+class TimelineViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, CustomSegmentedControlDelegate, UICollectionViewDataSource, UICollectionViewDelegate, CellFilterButtonDelegate {
 
     @IBOutlet weak var filtersCollectionView: UICollectionView!
     @IBOutlet weak var timelineTableView: UITableView!
@@ -33,6 +33,16 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
     //"❄️ Holiday"
     fileprivate var filters = ["ALL","📍Nearby","🍀 Free","🌕 Indoor"]
 
+    fileprivate var userLocationFound = false
+
+    //this is beautiful! No need to make locationManager optional to overcome first time problems (calls the didChangeAuthorization delegate when the locationManager is created, before asking the user for auth)
+    lazy var locationManager: CLLocationManager = {
+        let manager = CLLocationManager()
+        manager.delegate = self
+        manager.desiredAccuracy = kCLLocationAccuracyBest
+        manager.distanceFilter = 1000.0
+        return manager
+    }()
 
     var currentForecast: DataPoint? {
         didSet {
@@ -60,11 +70,10 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
                 }
             }
 
-            let label = UILabel(frame: CGRect(x: 35, y: 0, width: 50, height: 30))
-            label.numberOfLines = 0
-            label.text = "Seattle " + String(Int((self.currentForecast?.temperature ?? 0 ))) + "°F" //"Seattle 46°F"
+            let label = UILabel(frame: CGRect(x: 35, y: 0, width: 50, height: 33))
+            label.text = String(Int((self.currentForecast?.temperature ?? 0 ))) + "°F" //"Seattle 46°F"
             label.textColor = UIColor.white
-            label.font = UIFont(name: "Avenir-Book", size: 10)
+            label.font = UIFont(name: "Avenir-Medium", size: 17)
             label.lineBreakMode = NSLineBreakMode.byWordWrapping
             setView.addSubview(label)
             setView.addSubview(imageView)
@@ -74,28 +83,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         }
     }
 
-    private var freeButtonToggled = false {
-        didSet {
-            if freeButtonToggled {
-                self.events = events.filter { $0.freeFlag == true }
-                Answers.logCustomEvent(withName: "FreeButtonTapped", customAttributes:nil)
-            } else {
-                let selectedIndex = self.segmentedControl.selectedIndex
-                switch selectedIndex {
-                case 0:
-                    self.events = self.today
-                case 1:
-                    self.events = self.tomorrow
-                case 2:
-                    self.events = self.later
-                default:
-                    self.events = self.today
-                }
-            }
-        }
-    }
-
-    private var events = [Event]() {
+    fileprivate var events = [Event]() {
         didSet {
             if events.count > 0 {
                 if isListSelected {
@@ -144,7 +132,8 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
             }
         }
     }
-    private var today = [Event]() {
+
+    fileprivate var today = [Event]() {
         didSet {
             if today.count > 0 {
                 today = self.sortEventsSham(events: today )
@@ -155,14 +144,16 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
             }
         }
     }
-    private var tomorrow = [Event]() {
+
+    fileprivate var tomorrow = [Event]() {
         didSet {
             if tomorrow.count > 0 {
                 tomorrow = self.sortEventsSham(events: tomorrow )
             }
         }
     }
-    private var later = [Event]() {
+
+    fileprivate var later = [Event]() {
         didSet {
             if later.count > 0 {
                 guard let laterDate = DateUtil.shared.later() else { return }
@@ -188,7 +179,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         let delegate = UIApplication.shared.delegate as! AppDelegate
 
         //For now, longitude latitude hard coded for Seattle.
-        delegate.forecastIO.getForecast(latitude: 47.6062, longitude: -122.3321) { result in
+        delegate.forecastIO.getForecast(latitude: 47.6205, longitude: -122.3493) { result in
             switch result {
             case .success(let currentForecast, let requestMetadata):
                 if let currentWeather = currentForecast.currently{
@@ -224,9 +215,8 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         self.segmentedControl.items = ["TODAY","TOMORROW","LATER"]
         self.segmentedControl.delegate = self
 
-        //TO-DO change below check to "true"
-        if SpecialEvent.shared.isEnabled == false {
-            filters.insert(SpecialEvent.shared.name, at: 2)
+        if SeasonalEvent.shared.isEnabled == true {
+            filters.insert(SeasonalEvent.shared.name, at: 2)
         }
 
         activityIndicator.hidesWhenStopped = true
@@ -242,8 +232,14 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         self.fetchAllEvents()
 
         updateUserGraphDataIfNecessary()
-
         self.setLastModified()
+
+
+//        if CLLocationManager.authorizationStatus() == .authorizedWhenInUse ||
+//            CLLocationManager.authorizationStatus() == .authorizedAlways {
+//            locationManager.requestLocation()
+//        }
+
     }
 
     deinit {
@@ -253,6 +249,15 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
     override func viewWillAppear(_ animated: Bool) {
        self.deepLinkHandler()
        showStatusBar(style: .lightContent)
+
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        let selectedCells = filtersCollectionView.visibleCells.filter{ $0.isSelected == true }
+
+        if selectedCells.count < 1 {
+            resetCollectionViewSelection()
+        }
     }
 
     private func resetCollectionViewSelection() {
@@ -324,12 +329,6 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 
         self.updateUserGraphDataIfNecessary()
         self.fetchPhotosIfNecessary()
-    }
-
-    //free button toggles between free events and all events.
-    func handleFreeButtonTap() {
-        freeButtonToggled = !freeButtonToggled
-
     }
 
     func setLastModified() {
@@ -681,7 +680,6 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         let selectedEvent = self.events[indexPath.row]
         let cell = self.timelineTableView.dequeueReusableCell(withIdentifier: EventTableViewCell.identifier(), for: indexPath) as! EventTableViewCell
         cell.event = selectedEvent
-        cell.delegate = self
         if self.segmentedControl.selectedIndex == 2 {
             cell.eventStartTime.text = DateUtil.shared.shortDateString(from: selectedEvent.dates.first!)
             cell.eventFeaturedStar.isHidden = true
@@ -756,7 +754,42 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
             recordUserFilterAction(forFilter: "All")
         case filters[1]: //Nearby
             recordUserFilterAction(forFilter: "📍 Nearby")
-            self.events = e
+
+            if CLLocationManager.authorizationStatus() == .authorizedWhenInUse ||
+                    CLLocationManager.authorizationStatus() == .authorizedAlways {
+                //locationManager.requestLocation()
+                //execution moves to requestLocation
+                self.userLocationFound = false
+                locationManager.startUpdatingLocation()
+
+            } else if CLLocationManager.authorizationStatus() == .denied {
+                let alertController = UIAlertController (title: "Hmm", message: "It looks like we don't know your location. You can turn on location services in the Settings page.", preferredStyle: .alert)
+
+                let settingsAction = UIAlertAction(title: "Settings", style: .default) { (_) -> Void in
+                    guard let settingsUrl = URL(string: UIApplicationOpenSettingsURLString) else {
+                        return
+                    }
+
+                    if UIApplication.shared.canOpenURL(settingsUrl) {
+                        UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
+                            print("Settings opened: \(success)") // Prints true
+                        })
+                    }
+                }
+                alertController.addAction(settingsAction)
+                let cancelAction = UIAlertAction(title: "Cancel", style: .default, handler: nil)
+                alertController.addAction(cancelAction)
+
+                present(alertController, animated: true, completion: nil)
+
+            } else {
+                locationManager.requestWhenInUseAuthorization()
+            }
+
+            if mapView?.isHidden == false {
+                self.mapView?.showsUserLocation = true
+            }
+
         case filters[2]: //Holiday
             self.events = e.filter { $0.categoryKeywords?.contains("Seasonal & Holidays") == true }
             recordUserFilterAction(forFilter: "❄︎ Holiday")
@@ -765,26 +798,17 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
             recordUserFilterAction(forFilter: "Free")
         case filters[4]: //Indoor
             self.events = e.filter { $0.categoryKeywords?.contains("Indoor") == true }
-            if self.events.count < 2 {
-                self.events = e
-            }
             recordUserFilterAction(forFilter: "Indoor")
-//        case filters[5]: //Arts
-//            self.events = e
-//            recordUserFilterAction(forFilter: "🎭 Arts")
         default:
             self.events = e
             recordUserFilterAction(forFilter: "Default")
         }
-
-        //filter based on the criteria
-
     }
 
     // MARK: Map or List Switching
 
     @IBOutlet weak var mapContainerView: UIView!
-    var mapView : MKMapView?
+    fileprivate var mapView : MKMapView?
     var isListSelected = true
 
     func switchViewType(){
@@ -796,7 +820,8 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
             Answers.logCustomEvent(withName: "Map/List View Toggled", customAttributes: nil)
             self.navigationItem.rightBarButtonItem = mapBarButtonItem
             timelineTableView.isHidden = false
-            didSelectItem(sender: segmentedControl, selectedIndex: segmentedControl.selectedIndex)
+            //didSelectItem(sender: segmentedControl, selectedIndex: segmentedControl.selectedIndex)
+            timelineTableView.reloadData()
 
             UIView.animate(withDuration: 0.5, animations: {
                 self.mapContainerView.alpha = 0
@@ -814,8 +839,10 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
             mapContainerView.isHidden = false
             mapView = MKMapView(frame: CGRect(x: 0, y: 0, width: mapContainerView.frame.size.width, height: mapContainerView.frame.size.height))
             mapView?.delegate = self
+            mapView?.showsUserLocation = true
             mapContainerView.addSubview(mapView!)
-            didSelectItem(sender: segmentedControl, selectedIndex: segmentedControl.selectedIndex)
+            reloadMapViewAnnotations()
+            //didSelectItem(sender: segmentedControl, selectedIndex: segmentedControl.selectedIndex)
 
             UIView.animate(withDuration: 0.5, animations: {
                 self.mapContainerView.alpha = 1
@@ -825,6 +852,42 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
                     self.timelineTableView.isHidden = true
                 }
             })
+        }
+    }
+
+    private func reloadMapViewAnnotations(){
+        if let map = mapView {
+            map.removeAnnotations(map.annotations)
+            clusterManager.remove(clusterManager.annotations)
+            clusterManager.zoomLevel = 17
+
+            for event in events{
+                if let location = event.geoLocation {
+                    let annotation = EventAnnotation()
+                    annotation.event = event
+                    annotation.coordinate = location.location()
+                    annotation.type = .color(UIColor(red:0.25, green:0.18, blue:0.35, alpha:1.0), radius: 25) // .image(UIImage(named: "pin"))
+                    annotation.title = event.title
+                    annotation.subtitle = (self.segmentedControl.selectedIndex == 2 ? DateUtil.shared.shortDateString(from: event.dates.first!) : (event.allDayFlag == true ? "ALL DAY" : "\(DateUtil.shared.shortTime(from:event.startTime))")) + " - " + event.location
+
+                    clusterManager.add(annotation)
+
+                    var zoomRect = MKMapRectNull
+                    for annotation in clusterManager.annotations {
+                        let annotationPoint = MKMapPointForCoordinate(annotation.coordinate)
+                        let pointRect = MKMapRectMake(annotationPoint.x, annotationPoint.y, 0, 0)
+                        if MKMapRectIsNull(zoomRect) {
+                            zoomRect = pointRect
+                        } else {
+                            zoomRect = MKMapRectUnion(zoomRect, pointRect)
+                        }
+                    }
+
+                    zoomRect = MKMapRectMake(zoomRect.origin.x - zoomRect.size.width * 0.1 , zoomRect.origin.y - zoomRect.size.height * 0.1, zoomRect.size.width * 1.2, zoomRect.size.height * 1.2)
+                    clusterManager.reload(map, visibleMapRect: zoomRect)
+                    map.setVisibleMapRect(zoomRect, animated: true)
+                }
+            }
         }
     }
 }
@@ -850,7 +913,6 @@ class BorderedClusterAnnotationView: ClusterAnnotationView {
 }
 
 extension TimelineViewController: MKMapViewDelegate {
-
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         if let annotation = annotation as? ClusterAnnotation {
             let identifier = "Cluster"
@@ -868,8 +930,10 @@ extension TimelineViewController: MKMapViewDelegate {
             }
             view?.canShowCallout = false
             return view
+        } else if annotation.isEqual(mapView.userLocation) {
+            return nil
         } else {
-            let eventAnnotation = annotation as! EventAnnotation
+             let eventAnnotation = annotation as! EventAnnotation
             let annotationEvent = eventAnnotation.event!
 
             let identifier = "Pin"
@@ -931,6 +995,8 @@ extension TimelineViewController: MKMapViewDelegate {
             view?.canShowCallout = true
             return view
         }
+
+        return nil
     }
 
     func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
@@ -977,5 +1043,99 @@ extension TimelineViewController: MKMapViewDelegate {
         self.navigationController?.pushViewController(detailViewController, animated: true)
     }
 }
+
+//MARK: Location Manager Delegate Methods
+extension TimelineViewController : CLLocationManagerDelegate {
+    //This method gets called when the user responds to the permission dialog. If the user choose Allow, the status becomes CLAuthorizationStatus.AuthorizedWhenInUse.
+
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        if status == .authorizedWhenInUse {
+            locationManager.requestLocation() //calls didUpdateLocations
+        } else if status == .denied {
+            let alertController = UIAlertController (title: "Bummer!", message: "Can't show nearby events. You can turn on location services in the Settings page.", preferredStyle: .alert)
+
+            let settingsAction = UIAlertAction(title: "Settings", style: .default) { (_) -> Void in
+                guard let settingsUrl = URL(string: UIApplicationOpenSettingsURLString) else {
+                    return
+                }
+
+                if UIApplication.shared.canOpenURL(settingsUrl) {
+                    UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
+                        print("Settings opened: \(success)") // Prints true
+                    })
+                }
+            }
+            alertController.addAction(settingsAction)
+            let cancelAction = UIAlertAction(title: "Cancel", style: .default, handler: nil)
+            alertController.addAction(cancelAction)
+
+            present(alertController, animated: true, completion: nil)
+        }
+    }
+
+    //This gets called when location information comes back. You get an array of locations, but you’re only interested in the first item. You don’t do anything with it yet, but eventually you will zoom to this location.
+    //In our case, below gets called when user taps on "Nearby"
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+
+        guard let lastLocation = locations.last else { return }
+
+        if userLocationFound == false {
+
+            self.userLocationFound = true
+
+            let userGeoPoint = PFGeoPoint(latitude:lastLocation.coordinate.latitude, longitude:lastLocation.coordinate.longitude)
+
+            var e = [Event]()
+            let selectedIndex = self.segmentedControl.selectedIndex
+            switch selectedIndex {
+            case 0:
+                e = self.today
+            case 1:
+                e = self.tomorrow
+            case 2:
+                e = self.later
+            default:
+                e = self.today
+            }
+
+            var nearbyEvents = [Event]()
+            nearbyEvents = e.filter { userGeoPoint.distanceInMiles(to: $0.geoLocation ) < 5 }
+
+            if nearbyEvents.count > 1 {
+                self.events = nearbyEvents
+            } else {
+                let alert = UIAlertController(title: "No Events Nearby", message: "Can't find events within a 5 mile radius. Loading all events.", preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+                self.events = e
+            }
+        }
+
+        locationManager.stopUpdatingLocation()
+    }
+
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print("error:: \(error.localizedDescription)")
+        var e = [Event]()
+        let selectedIndex = self.segmentedControl.selectedIndex
+        switch selectedIndex {
+        case 0:
+            e = self.today
+        case 1:
+            e = self.tomorrow
+        case 2:
+            e = self.later
+        default:
+            e = self.today
+        }
+
+        self.events = e
+        let alert = UIAlertController(title: "Uh-Oh", message: "Something went wrong. Loading all events", preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+
+    }
+}
+
 
 

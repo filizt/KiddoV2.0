@@ -44,7 +44,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         UNUserNotificationCenter.current().delegate = self
 
         fetchImageCacheLimitAndImages()
-        fetchSpecialEventRequirements()
+        fetchSeasonalEventRequirements()
         requestAuthForNotifications()
 
         if launchOptions != nil {
@@ -81,19 +81,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         })
     }
 
-    func fetchSpecialEventRequirements() {
-        let query = PFQuery(className: "SpecialEventReq")
+    func fetchSeasonalEventRequirements() {
+        let query = PFQuery(className: "SeasonalEvents")
         query.getFirstObjectInBackground(block: { (object, error) in
             guard error == nil else {
                 print ("Error retrieving image cache limit from Parse")
                 return
             }
             if let object = object {
-               // if object["isEnabled"] as! Bool == true {
-                    SpecialEvent.shared.isEnabled = object["isEnabled"] as! Bool
-                    SpecialEvent.shared.name = object["name"] as! String
-                    SpecialEvent.shared.sizeMultiplier = object["labelSizeMultiplier"] as! CGFloat
-                //}
+                if object["isEnabled"] as! Bool == true {
+                    SeasonalEvent.shared.isEnabled = object["isEnabled"] as! Bool
+                    SeasonalEvent.shared.name = object["name"] as! String
+                }
             }
         })
     }
