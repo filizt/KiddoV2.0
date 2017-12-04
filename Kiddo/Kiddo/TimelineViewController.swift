@@ -1050,7 +1050,7 @@ extension TimelineViewController : CLLocationManagerDelegate {
 
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         if status == .authorizedWhenInUse {
-            locationManager.requestLocation() //calls didUpdateLocations
+            locationManager.startUpdatingLocation() //turns out requestLocation doesn't fire right away. Changing to startupdatingLocation
         } else if status == .denied {
             let alertController = UIAlertController (title: "Bummer!", message: "Can't show nearby events. You can turn on location services in the Settings page.", preferredStyle: .alert)
 
@@ -1080,9 +1080,7 @@ extension TimelineViewController : CLLocationManagerDelegate {
         guard let lastLocation = locations.last else { return }
 
         if userLocationFound == false {
-
             self.userLocationFound = true
-
             let userGeoPoint = PFGeoPoint(latitude:lastLocation.coordinate.latitude, longitude:lastLocation.coordinate.longitude)
 
             var e = [Event]()
