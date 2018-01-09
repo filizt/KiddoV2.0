@@ -167,7 +167,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        presentFeedbackAlert()
         let mapBarButtonItem = UIBarButtonItem(image: UIImage(named: "mapIcon")!, style: .done, target: self, action: #selector(switchViewType))
         self.navigationItem.rightBarButtonItem = mapBarButtonItem
 
@@ -889,6 +889,26 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
                 }
             }
         }
+    }
+    
+    func presentFeedbackAlert() {
+        let alert = UIAlertController(title: "Enjoying Kiddo App?", message: "Recommend Kiddo to others by leaving us a review on the App Store.", preferredStyle: .alert)
+        let rate = UIAlertAction(title: "Yes, rate it now", style: .default) { (action) in
+            // send user to app store
+        }
+        
+        let feedback = UIAlertAction(title: "No, send feedback", style: .default) { (action) in
+            // send user to feedback draft
+        }
+        
+        let noThanks = UIAlertAction(title: "No thanks", style: .default) { (action) in
+            // dismiss view controller, reset timer.
+        }
+        
+        alert.addAction(rate)
+        alert.addAction(feedback)
+        alert.addAction(noThanks)
+        present(alert, animated: true, completion: nil)
     }
 }
 
