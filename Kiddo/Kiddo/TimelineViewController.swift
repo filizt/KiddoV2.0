@@ -15,13 +15,14 @@ import ParseFacebookUtilsV4
 import MapKit
 import Cluster
 import ForecastIO
+import MessageUI
 
 class EventAnnotation : Annotation {
     var event : Event!
 }
 
 
-class TimelineViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, CustomSegmentedControlDelegate, UICollectionViewDataSource, UICollectionViewDelegate, CellFilterButtonDelegate {
+class TimelineViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, CustomSegmentedControlDelegate, UICollectionViewDataSource, UICollectionViewDelegate, CellFilterButtonDelegate, MFMailComposeViewControllerDelegate {
 
     @IBOutlet weak var filtersCollectionView: UICollectionView!
     @IBOutlet weak var timelineTableView: UITableView!
@@ -901,7 +902,11 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         }
         
         let feedback = UIAlertAction(title: "No, send feedback", style: .default) { (action) in
-            // send user to feedback draft
+            let mail = MFMailComposeViewController()
+            mail.mailComposeDelegate = self
+            mail.setToRecipients(["feedback@thekiddoapp.com"])
+            mail.setSubject("Kiddo App Feedback")
+            self.present(mail, animated: true, completion: nil)
         }
         
         let noThanks = UIAlertAction(title: "No thanks", style: .default) { (action) in
@@ -909,10 +914,19 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         }
         
         alert.addAction(rate)
-        alert.addAction(feedback)
+        
+        if MFMailComposeViewController.canSendMail() {
+            alert.addAction(feedback)
+        }
         alert.addAction(noThanks)
         present(alert, animated: true, completion: nil)
     }
+    
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        controller.dismiss(animated: true, completion: nil)
+    }
+    
+    
 }
 
 class BorderedClusterAnnotationView: ClusterAnnotationView {
