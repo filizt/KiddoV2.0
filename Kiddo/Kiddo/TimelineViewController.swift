@@ -895,7 +895,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
     func presentFeedbackAlert() {
         let alert = UIAlertController(title: "Enjoying Kiddo App?", message: "Recommend Kiddo to others by leaving us a review on the App Store.", preferredStyle: .alert)
         let rate = UIAlertAction(title: "Yes, rate it now", style: .default) { (action) in
-            let appID = String() // come back to this with the actual appID
+            let appID = "1210910332"
             if let appStoreURL = URL(string: "itms-apps://itunes.apple.com/app/viewContentsUserReviews?id=\(appID)") {
                 UIApplication.shared.open(appStoreURL, options: [:], completionHandler: nil)
             }
