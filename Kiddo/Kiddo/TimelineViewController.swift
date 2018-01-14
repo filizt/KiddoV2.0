@@ -34,6 +34,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
     fileprivate var filters = ["ALL","📍Nearby","🍀 Free","🌕 Indoor"]
 
     fileprivate var userLocationFound = false
+    fileprivate var firstTimeLaunch = true
 
     //this is beautiful! No need to make locationManager optional to overcome first time problems (calls the didChangeAuthorization delegate when the locationManager is created, before asking the user for auth)
     lazy var locationManager: CLLocationManager = {
@@ -138,7 +139,8 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
             if today.count > 0 {
                 today = self.sortEventsSham(events: today )
 
-                if self.segmentedControl.selectedIndex == 0 {
+                if firstTimeLaunch == true {
+                    firstTimeLaunch = false
                     self.events = self.today
                 }
             }
@@ -257,7 +259,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 
         if selectedCells.count < 1 {
             resetCollectionViewSelection()
-        }
+        } 
     }
 
     private func resetCollectionViewSelection() {
@@ -323,10 +325,11 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         }
     }
 
+    //when to call fetch events - this is too generic of a call
+    //a good way to determine it is to have a timer?
     func applicationEnteredForeground() {
         activityIndicator.startAnimating()
         self.fetchAllEvents()
-
         self.updateUserGraphDataIfNecessary()
         self.fetchPhotosIfNecessary()
     }
@@ -761,10 +764,8 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
                 //execution moves to requestLocation
                 self.userLocationFound = false
                 locationManager.startUpdatingLocation()
-
             } else if CLLocationManager.authorizationStatus() == .denied {
                 let alertController = UIAlertController (title: "Hmm", message: "It looks like we don't know your location. You can turn on location services in the Settings page.", preferredStyle: .alert)
-
                 let settingsAction = UIAlertAction(title: "Settings", style: .default) { (_) -> Void in
                     guard let settingsUrl = URL(string: UIApplicationOpenSettingsURLString) else {
                         return
@@ -781,7 +782,6 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
                 alertController.addAction(cancelAction)
 
                 present(alertController, animated: true, completion: nil)
-
             } else {
                 locationManager.requestWhenInUseAuthorization()
             }
