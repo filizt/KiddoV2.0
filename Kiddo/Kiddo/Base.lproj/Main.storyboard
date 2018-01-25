@@ -16,6 +16,110 @@
         </array>
     </customFonts>
     <scenes>
+        <!--Feedback Alert View Controller-->
+        <scene sceneID="ned-To-tBM">
+            <objects>
+                <viewController id="Lvh-ut-8zO" customClass="FeedbackAlertViewController" customModule="Kiddo" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="6BL-i8-jQo"/>
+                        <viewControllerLayoutGuide type="bottom" id="uGC-FL-WXr"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="yHb-nM-c2b">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1AT-b7-CrC" userLabel="AlertView">
+                                <rect key="frame" x="67" y="131" width="240" height="406"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fvL-lY-zse">
+                                        <rect key="frame" x="8" y="294" width="224" height="36"/>
+                                        <color key="backgroundColor" red="0.32261767983436584" green="0.24618804454803467" blue="0.42429965734481812" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="17"/>
+                                        <state key="normal" title="Send feedback">
+                                            <color key="titleColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e4g-JA-dT8">
+                                        <rect key="frame" x="8" y="350" width="224" height="36"/>
+                                        <color key="backgroundColor" red="0.32261767983436584" green="0.24618804454803467" blue="0.42429965734481812" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="17"/>
+                                        <state key="normal" title="No thanks">
+                                            <color key="titleColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Recommend Kiddo to others by leaving us a review on the App Store" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TBO-WO-pVs">
+                                        <rect key="frame" x="8" y="148" width="224" height="70"/>
+                                        <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zpB-Uh-Rtr" userLabel="AlertHeader">
+                                        <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enjoying the Kiddo App?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9yl-qg-2sM">
+                                                <rect key="frame" x="8" y="50" width="225" height="28"/>
+                                                <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="20"/>
+                                                <color key="textColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                        <color key="backgroundColor" red="0.25" green="0.1803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="128" id="0r6-0S-zdh"/>
+                                            <constraint firstAttribute="width" constant="240" id="56a-WR-pGx"/>
+                                            <constraint firstItem="9yl-qg-2sM" firstAttribute="centerY" secondItem="zpB-Uh-Rtr" secondAttribute="centerY" id="d2g-Lw-Hal"/>
+                                            <constraint firstItem="9yl-qg-2sM" firstAttribute="centerX" secondItem="zpB-Uh-Rtr" secondAttribute="centerX" id="yvk-xk-TRo"/>
+                                        </constraints>
+                                    </view>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Aj3-a0-Apd">
+                                        <rect key="frame" x="8" y="238" width="224" height="36"/>
+                                        <color key="backgroundColor" red="0.32261767983436584" green="0.24618804454803467" blue="0.42429965734481812" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="17"/>
+                                        <state key="normal" title="Rate it now">
+                                            <color key="titleColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="Aj3-a0-Apd" firstAttribute="top" secondItem="TBO-WO-pVs" secondAttribute="bottom" constant="20" id="2fa-cf-lIS"/>
+                                    <constraint firstItem="Aj3-a0-Apd" firstAttribute="trailing" secondItem="fvL-lY-zse" secondAttribute="trailing" id="3mu-Ky-iBv"/>
+                                    <constraint firstItem="Aj3-a0-Apd" firstAttribute="leading" secondItem="fvL-lY-zse" secondAttribute="leading" id="GBi-O7-6Uf"/>
+                                    <constraint firstAttribute="trailing" secondItem="zpB-Uh-Rtr" secondAttribute="trailing" id="IOb-eX-jO2"/>
+                                    <constraint firstAttribute="bottom" secondItem="e4g-JA-dT8" secondAttribute="bottom" constant="20" id="RUl-VG-t7j"/>
+                                    <constraint firstAttribute="trailing" secondItem="TBO-WO-pVs" secondAttribute="trailing" constant="8" id="WlQ-kf-L2w"/>
+                                    <constraint firstItem="TBO-WO-pVs" firstAttribute="top" secondItem="zpB-Uh-Rtr" secondAttribute="bottom" constant="20" id="ZB0-o8-3Yf"/>
+                                    <constraint firstItem="fvL-lY-zse" firstAttribute="leading" secondItem="1AT-b7-CrC" secondAttribute="leading" constant="8" id="bww-9n-b3F"/>
+                                    <constraint firstItem="TBO-WO-pVs" firstAttribute="leading" secondItem="1AT-b7-CrC" secondAttribute="leading" constant="8" id="cAB-KZ-OD6"/>
+                                    <constraint firstItem="zpB-Uh-Rtr" firstAttribute="leading" secondItem="1AT-b7-CrC" secondAttribute="leading" id="gVX-TC-n7O"/>
+                                    <constraint firstAttribute="width" constant="240" id="guy-Hu-JV8"/>
+                                    <constraint firstItem="fvL-lY-zse" firstAttribute="top" secondItem="Aj3-a0-Apd" secondAttribute="bottom" constant="20" id="hgO-xE-1hc"/>
+                                    <constraint firstItem="e4g-JA-dT8" firstAttribute="leading" secondItem="1AT-b7-CrC" secondAttribute="leading" constant="8" id="hnm-mF-bO0"/>
+                                    <constraint firstAttribute="trailing" secondItem="fvL-lY-zse" secondAttribute="trailing" constant="8" id="pWT-l3-Uvi"/>
+                                    <constraint firstAttribute="trailing" secondItem="e4g-JA-dT8" secondAttribute="trailing" constant="8" id="qyP-yM-SqM"/>
+                                    <constraint firstItem="zpB-Uh-Rtr" firstAttribute="top" secondItem="1AT-b7-CrC" secondAttribute="top" id="rjn-Vc-TfW"/>
+                                    <constraint firstItem="e4g-JA-dT8" firstAttribute="top" secondItem="fvL-lY-zse" secondAttribute="bottom" constant="20" id="tl2-fw-rUK"/>
+                                </constraints>
+                            </view>
+                            <view alpha="0.5" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wd1-cn-nXD">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="Wd1-cn-nXD" firstAttribute="width" secondItem="yHb-nM-c2b" secondAttribute="width" id="0X1-2z-nkf"/>
+                            <constraint firstItem="Wd1-cn-nXD" firstAttribute="centerY" secondItem="yHb-nM-c2b" secondAttribute="centerY" id="9xx-Xv-Ucm"/>
+                            <constraint firstItem="Wd1-cn-nXD" firstAttribute="height" secondItem="yHb-nM-c2b" secondAttribute="height" id="PXv-Ek-Bh8"/>
+                            <constraint firstItem="1AT-b7-CrC" firstAttribute="centerY" secondItem="yHb-nM-c2b" secondAttribute="centerY" id="eba-ru-Rxl"/>
+                            <constraint firstItem="1AT-b7-CrC" firstAttribute="centerX" secondItem="yHb-nM-c2b" secondAttribute="centerX" id="qSx-P8-BHa"/>
+                            <constraint firstItem="Wd1-cn-nXD" firstAttribute="centerX" secondItem="yHb-nM-c2b" secondAttribute="centerX" id="vfT-T0-Mmg"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="QvX-2j-U4R" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1016.8" y="-697.60119940029995"/>
+        </scene>
         <!--Title-->
         <scene sceneID="tne-QT-ifu">
             <objects>
