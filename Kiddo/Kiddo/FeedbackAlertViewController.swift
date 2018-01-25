@@ -13,19 +13,16 @@ class FeedbackAlertViewController: UIViewController, MFMailComposeViewController
     
     let defaults = UserDefaults.standard
     
-    @IBOutlet weak var backgroundFill: UIView!
-    //    @IBOutlet weak var rateButton: UIButton!
+    
+    @IBOutlet weak var alertView: UIView!
+    @IBOutlet weak var rateButton: UIButton!
     @IBOutlet weak var feedbackButton: UIButton!
-//    @IBOutlet weak var noThanksButton: UIButton!
+    @IBOutlet weak var noThanksButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-//        backgroundFill.layer.zPosition = -10
-//
-//        if !MFMailComposeViewController.canSendMail() {
-//            feedbackButton.isHidden = true
-//        }
+        applyFormatting()
+
     }
     
     @IBAction func rateNowPressed(_ sender: Any) {
@@ -61,6 +58,22 @@ class FeedbackAlertViewController: UIViewController, MFMailComposeViewController
         let today = dateFormatter.string(from: Date())
         defaults.set(today, forKey: "Start Date")
         dismiss(animated: true, completion: nil)
+    }
+    
+    func applyFormatting() {
+        rateButton.layer.cornerRadius = 10
+        feedbackButton.layer.cornerRadius = 10
+        noThanksButton.layer.cornerRadius = 10
+        
+        alertView.layer.shadowColor = UIColor.black.cgColor
+        alertView.layer.shadowOpacity = 0.5
+        alertView.layer.shadowOffset = CGSize.zero
+        alertView.layer.shadowRadius = 5
+        alertView.layer.shadowPath = UIBezierPath(rect: alertView.bounds).cgPath
+        
+        if !MFMailComposeViewController.canSendMail() {
+            feedbackButton.isEnabled = false
+        }
     }
 
     func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
