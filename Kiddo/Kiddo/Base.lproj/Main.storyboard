@@ -19,7 +19,7 @@
         <!--Feedback Alert View Controller-->
         <scene sceneID="ned-To-tBM">
             <objects>
-                <viewController id="Lvh-ut-8zO" customClass="FeedbackAlertViewController" customModule="Kiddo" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="FeedbackAlertViewController" id="Lvh-ut-8zO" customClass="FeedbackAlertViewController" customModule="Kiddo" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="6BL-i8-jQo"/>
                         <viewControllerLayoutGuide type="bottom" id="uGC-FL-WXr"/>
@@ -31,34 +31,6 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1AT-b7-CrC" userLabel="AlertView">
                                 <rect key="frame" x="67" y="131" width="240" height="406"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fvL-lY-zse">
-                                        <rect key="frame" x="8" y="294" width="224" height="36"/>
-                                        <color key="backgroundColor" red="0.32261767983436584" green="0.24618804454803467" blue="0.42429965734481812" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="17"/>
-                                        <state key="normal" title="Send feedback">
-                                            <color key="titleColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="sendFeedbackPressed:" destination="Lvh-ut-8zO" eventType="touchUpInside" id="2L2-4R-P0r"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e4g-JA-dT8">
-                                        <rect key="frame" x="8" y="350" width="224" height="36"/>
-                                        <color key="backgroundColor" red="0.32261767983436584" green="0.24618804454803467" blue="0.42429965734481812" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="17"/>
-                                        <state key="normal" title="No thanks">
-                                            <color key="titleColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="noThanksPressed:" destination="Lvh-ut-8zO" eventType="touchUpInside" id="Vql-5u-GgF"/>
-                                        </connections>
-                                    </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Recommend Kiddo to others by leaving us a review on the App Store" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TBO-WO-pVs">
-                                        <rect key="frame" x="8" y="148" width="224" height="70"/>
-                                        <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="17"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zpB-Uh-Rtr" userLabel="AlertHeader">
                                         <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
                                         <subviews>
@@ -77,6 +49,34 @@
                                             <constraint firstItem="9yl-qg-2sM" firstAttribute="centerX" secondItem="zpB-Uh-Rtr" secondAttribute="centerX" id="yvk-xk-TRo"/>
                                         </constraints>
                                     </view>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fvL-lY-zse">
+                                        <rect key="frame" x="8" y="294" width="224" height="36"/>
+                                        <color key="backgroundColor" red="0.32261767983436584" green="0.24618804454803467" blue="0.42429965734481812" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="17"/>
+                                        <state key="normal" title="Send feedback">
+                                            <color key="titleColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="sendFeedbackPressed:" destination="Lvh-ut-8zO" eventType="touchUpInside" id="x6a-kL-SKW"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e4g-JA-dT8">
+                                        <rect key="frame" x="8" y="350" width="224" height="36"/>
+                                        <color key="backgroundColor" red="0.32261767983436584" green="0.24618804454803467" blue="0.42429965734481812" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="17"/>
+                                        <state key="normal" title="No thanks">
+                                            <color key="titleColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="noThanksPressed:" destination="Lvh-ut-8zO" eventType="touchUpInside" id="dFh-dZ-OfG"/>
+                                        </connections>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Recommend Kiddo to others by leaving us a review on the App Store" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TBO-WO-pVs">
+                                        <rect key="frame" x="8" y="148" width="224" height="70"/>
+                                        <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Aj3-a0-Apd">
                                         <rect key="frame" x="8" y="238" width="224" height="36"/>
                                         <color key="backgroundColor" red="0.32261767983436584" green="0.24618804454803467" blue="0.42429965734481812" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -85,7 +85,7 @@
                                             <color key="titleColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
                                         <connections>
-                                            <action selector="rateNowPressed:" destination="Lvh-ut-8zO" eventType="touchUpInside" id="OJ8-Rx-kJA"/>
+                                            <action selector="rateNowPressed:" destination="Lvh-ut-8zO" eventType="touchUpInside" id="eUA-b3-trB"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -110,7 +110,7 @@
                                     <constraint firstItem="e4g-JA-dT8" firstAttribute="top" secondItem="fvL-lY-zse" secondAttribute="bottom" constant="20" id="tl2-fw-rUK"/>
                                 </constraints>
                             </view>
-                            <view alpha="0.5" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wd1-cn-nXD">
+                            <view alpha="0.75" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wd1-cn-nXD" userLabel="Background fill">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
@@ -125,9 +125,8 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="backgroundFill" destination="Wd1-cn-nXD" id="bMU-kb-snS"/>
                         <outlet property="feedbackButton" destination="fvL-lY-zse" id="aH3-lm-EaR"/>
-                        <outlet property="noThanksButton" destination="e4g-JA-dT8" id="1xr-cK-obr"/>
-                        <outlet property="rateButton" destination="Aj3-a0-Apd" id="enQ-MW-EBK"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QvX-2j-U4R" userLabel="First Responder" sceneMemberID="firstResponder"/>

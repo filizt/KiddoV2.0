@@ -903,44 +903,53 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .short
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let feedbackAlert = storyboard.instantiateViewController(withIdentifier: "FeedbackAlertViewController") as! FeedbackAlertViewController
+        feedbackAlert.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
+        feedbackAlert.modalTransitionStyle = UIModalTransitionStyle.crossDissolve
+        present(feedbackAlert, animated: true, completion: nil)
         
         if defaults.string(forKey: "Start Date") != nil {
             guard let startDate = dateFormatter.date(from: defaults.string(forKey: "Start Date")!) else { return }
             if hasBeenFifteenDays(startDate: startDate) && defaults.bool(forKey: "Left Feedback") == false {
-                let alert = UIAlertController(title: "Enjoying Kiddo App?", message: "Recommend Kiddo to others by leaving us a review on the App Store.", preferredStyle: .alert)
-                let rate = UIAlertAction(title: "Yes, rate it now", style: .default) { (action) in
-                    let appID = "1210910332"
-                    if let appStoreURL = URL(string: "itms-apps://itunes.apple.com/app/viewContentsUserReviews?id=\(appID)") {
-                        UIApplication.shared.open(appStoreURL, options: [:], completionHandler: { (complete) in
-                            if complete {
-                                defaults.set(true, forKey: "Left Feedback")
-                            }
-                        })
-                    }
-                }
+
                 
-                let feedback = UIAlertAction(title: "No, send feedback", style: .default) { (action) in
-                    let mail = MFMailComposeViewController()
-                    mail.mailComposeDelegate = self
-                    mail.setToRecipients(["feedback@thekiddoapp.com"])
-                    mail.setSubject("Kiddo App Feedback")
-                    self.present(mail, animated: true, completion: {
-                        defaults.set(true, forKey: "Left Feedback")
-                    })
-                }
                 
-                let noThanks = UIAlertAction(title: "No thanks", style: .default) { (action) in
-                    let today = dateFormatter.string(from: Date())
-                    defaults.set(today, forKey: "Start Date")
-                }
                 
-                alert.addAction(rate)
-                
-                if MFMailComposeViewController.canSendMail() {
-                    alert.addAction(feedback)
-                }
-                alert.addAction(noThanks)
-                present(alert, animated: true, completion: nil)
+//                let alert = UIAlertController(title: "Enjoying Kiddo App?", message: "Recommend Kiddo to others by leaving us a review on the App Store.", preferredStyle: .alert)
+//                let rate = UIAlertAction(title: "Yes, rate it now", style: .default) { (action) in
+//                    let appID = "1210910332"
+//                    if let appStoreURL = URL(string: "itms-apps://itunes.apple.com/app/viewContentsUserReviews?id=\(appID)") {
+//                        UIApplication.shared.open(appStoreURL, options: [:], completionHandler: { (complete) in
+//                            if complete {
+//                                defaults.set(true, forKey: "Left Feedback")
+//                            }
+//                        })
+//                    }
+//                }
+//
+//                let feedback = UIAlertAction(title: "No, send feedback", style: .default) { (action) in
+//                    let mail = MFMailComposeViewController()
+//                    mail.mailComposeDelegate = self
+//                    mail.setToRecipients(["feedback@thekiddoapp.com"])
+//                    mail.setSubject("Kiddo App Feedback")
+//                    self.present(mail, animated: true, completion: {
+//                        defaults.set(true, forKey: "Left Feedback")
+//                    })
+//                }
+//
+//                let noThanks = UIAlertAction(title: "No thanks", style: .default) { (action) in
+//                    let today = dateFormatter.string(from: Date())
+//                    defaults.set(today, forKey: "Start Date")
+//                }
+//
+//                alert.addAction(rate)
+//
+//                if MFMailComposeViewController.canSendMail() {
+//                    alert.addAction(feedback)
+//                }
+//                alert.addAction(noThanks)
+//                present(alert, animated: true, completion: nil)
             }
         } else {
             let today = dateFormatter.string(from: Date())
