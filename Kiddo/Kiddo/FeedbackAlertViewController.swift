@@ -21,7 +21,7 @@ class FeedbackAlertViewController: UIViewController, MFMailComposeViewController
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        backgroundFill.layer.zPosition = -10
+//        backgroundFill.layer.zPosition = -10
 //
 //        if !MFMailComposeViewController.canSendMail() {
 //            feedbackButton.isHidden = true
