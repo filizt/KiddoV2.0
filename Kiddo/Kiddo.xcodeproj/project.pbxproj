@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		3D0E85AC124827498950F2FA /* Pods_Kiddo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FFC514A966709BA92D1974B /* Pods_Kiddo.framework */; };
 		50584E071DD122ED00A2BEA9 /* UIExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50584E061DD122ED00A2BEA9 /* UIExtensions.swift */; };
+		835DD14120195083007AE374 /* FeedbackAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835DD14020195083007AE374 /* FeedbackAlertViewController.swift */; };
 		BD0994411ECB5FCC0045F749 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0994401ECB5FCC0045F749 /* SignUpViewController.swift */; };
 		BD1A4F241E82D3B800BF036D /* UserGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD1A4F231E82D3B800BF036D /* UserGraph.swift */; };
 		BD2B56CE1FBCF79000E84D8A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BD2B56CD1FBCF78E00E84D8A /* Assets.xcassets */; };
@@ -39,6 +40,7 @@
 		4FFC514A966709BA92D1974B /* Pods_Kiddo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Kiddo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		50584E061DD122ED00A2BEA9 /* UIExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIExtensions.swift; sourceTree = "<group>"; };
 		540CFF22675486906CCC738D /* Pods-Kiddo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Kiddo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Kiddo/Pods-Kiddo.debug.xcconfig"; sourceTree = "<group>"; };
+		835DD14020195083007AE374 /* FeedbackAlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackAlertViewController.swift; sourceTree = "<group>"; };
 		BD0994401ECB5FCC0045F749 /* SignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		BD1A4F231E82D3B800BF036D /* UserGraph.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserGraph.swift; sourceTree = "<group>"; };
 		BD2B56CD1FBCF78E00E84D8A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -165,6 +167,7 @@
 				BD68B9BE1DD0FA1C00CE39CA /* DetailViewController.swift */,
 				BDEB9E8E1E05A64F002F7222 /* LogInViewController.swift */,
 				BD0994401ECB5FCC0045F749 /* SignUpViewController.swift */,
+				835DD14020195083007AE374 /* FeedbackAlertViewController.swift */,
 			);
 			name = "View Controller";
 			sourceTree = "<group>";
@@ -381,6 +384,7 @@
 				BDFA18571EBECC8F00E90C86 /* SpecialEvent.swift in Sources */,
 				BD600A9D1F620CAC00DCC0D3 /* ParseService.swift in Sources */,
 				C26E62731DD1098600BDC568 /* EventTableViewCell.swift in Sources */,
+				835DD14120195083007AE374 /* FeedbackAlertViewController.swift in Sources */,
 				BDD126141FBA2A6D007219B1 /* FilterCollectionViewCell.swift in Sources */,
 				BDEB9E8F1E05A64F002F7222 /* LogInViewController.swift in Sources */,
 				BD68B9BF1DD0FA1C00CE39CA /* DetailViewController.swift in Sources */,
