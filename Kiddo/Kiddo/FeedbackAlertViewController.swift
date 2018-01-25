@@ -10,6 +10,9 @@ import UIKit
 
 class FeedbackAlertViewController: UIViewController {
 
+    @IBOutlet weak var rateButton: UIButton!
+    @IBOutlet weak var feedbackButton: UIButton!
+    @IBOutlet weak var noThanksButton: UIButton!
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -21,7 +24,13 @@ class FeedbackAlertViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-
+    @IBAction func rateNowPressed(_ sender: Any) {
+    }
+    @IBAction func sendFeedbackPressed(_ sender: Any) {
+    }
+    @IBAction func noThanksPressed(_ sender: Any) {
+    }
+    
     /*
     // MARK: - Navigation
 

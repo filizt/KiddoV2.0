@@ -38,6 +38,9 @@
                                         <state key="normal" title="Send feedback">
                                             <color key="titleColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
+                                        <connections>
+                                            <action selector="sendFeedbackPressed:" destination="Lvh-ut-8zO" eventType="touchUpInside" id="2L2-4R-P0r"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e4g-JA-dT8">
                                         <rect key="frame" x="8" y="350" width="224" height="36"/>
@@ -46,6 +49,9 @@
                                         <state key="normal" title="No thanks">
                                             <color key="titleColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
+                                        <connections>
+                                            <action selector="noThanksPressed:" destination="Lvh-ut-8zO" eventType="touchUpInside" id="Vql-5u-GgF"/>
+                                        </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Recommend Kiddo to others by leaving us a review on the App Store" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TBO-WO-pVs">
                                         <rect key="frame" x="8" y="148" width="224" height="70"/>
@@ -78,6 +84,9 @@
                                         <state key="normal" title="Rate it now">
                                             <color key="titleColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
+                                        <connections>
+                                            <action selector="rateNowPressed:" destination="Lvh-ut-8zO" eventType="touchUpInside" id="OJ8-Rx-kJA"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -115,6 +124,11 @@
                             <constraint firstItem="Wd1-cn-nXD" firstAttribute="centerX" secondItem="yHb-nM-c2b" secondAttribute="centerX" id="vfT-T0-Mmg"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="feedbackButton" destination="fvL-lY-zse" id="aH3-lm-EaR"/>
+                        <outlet property="noThanksButton" destination="e4g-JA-dT8" id="1xr-cK-obr"/>
+                        <outlet property="rateButton" destination="Aj3-a0-Apd" id="enQ-MW-EBK"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QvX-2j-U4R" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
