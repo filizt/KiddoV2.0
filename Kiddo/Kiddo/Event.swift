@@ -91,6 +91,10 @@ struct Event {
     mutating func updateDates(bydate: Date) {
         dates = dates.filter{ $0 >= bydate }
     }
+
+    static func parseImageId(object: PFObject) -> String {
+       return object["imageObjectId"] as! String
+    }
 }
 
 

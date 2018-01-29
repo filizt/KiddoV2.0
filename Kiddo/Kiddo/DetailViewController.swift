@@ -15,6 +15,7 @@ import MapKit
 import Crashlytics
 import MessageUI
 import Branch
+import Contacts
 
 enum TabBarItems : Int {
     case today = 0
@@ -118,12 +119,13 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
         if let currentParseUserObjectId = PFUser.current()?.objectId {
             userInfo["parseUser"] = PFUser.current()
             userInfo["parseUserId"] = PFUser.current()?.objectId
-        } else { //where user didn't log in with FB but used their email to sign up
             if let vendorIdentifier = UIDevice.current.identifierForVendor {
                 userInfo["UUID"] = vendorIdentifier.uuidString
             }
-            if let email = UserDefaults.standard.object(forKey: "email") as? String {
-                userInfo["email"] = email
+        } else if let email = UserDefaults.standard.object(forKey: "email") as? String { //where user didn't log in with FB but used their email to sign up
+            userInfo["email"] = email
+            if let vendorIdentifier = UIDevice.current.identifierForVendor {
+                userInfo["UUID"] = vendorIdentifier.uuidString
             }
         }
 
@@ -142,13 +144,14 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
         if let currentParseUserObjectId = PFUser.current()?.objectId {
             userInfo["parseUser"] = PFUser.current()
             userInfo["parseUserId"] = PFUser.current()?.objectId
-        } else { //where user didn't log in with FB but used their email to sign up
             if let vendorIdentifier = UIDevice.current.identifierForVendor {
                 userInfo["UUID"] = vendorIdentifier.uuidString
             }
-            if let email = UserDefaults.standard.object(forKey: "email") as? String {
-                userInfo["email"] = email
+        } else if let email = UserDefaults.standard.object(forKey: "email") as? String {  //where user didn't log in with FB but used their email to sign up
+            if let vendorIdentifier = UIDevice.current.identifierForVendor {
+                userInfo["UUID"] = vendorIdentifier.uuidString
             }
+            userInfo["email"] = email
         }
 
         //share prep
@@ -156,7 +159,7 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
         let branchUniversalObject: BranchUniversalObject = BranchUniversalObject(canonicalIdentifier: canonicalIdentifier)
         branchUniversalObject.title = event.title
         branchUniversalObject.contentDescription = event.description
-        branchUniversalObject.imageUrl = "http://kiddoapp.herokuapp.com/parse/files/1G2h3j45Rtf3s/0fb21cca5841db0816d3fbc8b598ece2_file.jpeg"
+        branchUniversalObject.imageUrl = "http://kiddoapp.herokuapp.com/parse/files/1G2h3j45Rtf3s/f99a2119a2769ac8ea12c269f0bbda96_file.jpeg"
 
         let query = PFQuery(className: "EventImage")
         if let imageObject:PFObject = try? query.getObjectWithId(event.imageObjectId) {
@@ -176,29 +179,29 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
             activityViewController.excludedActivityTypes = [.airDrop, .print, .assignToContact, .postToFlickr, .postToVimeo]
             activityViewController.completionWithItemsHandler = {(activity, success, items, err) in
                 // Return if cancelled
-                if (!success) {
-                    userInfo["shareURL"] = shareUrl
-                    userInfo["eventId"] = self.event.id
-                    userInfo["eventCategory"] = self.event.category
-                    userInfo["eventTitle"] = self.event.title
-                    userInfo["eventCost"] = self.event.freeFlag == true ? "Free" : "Paid"
-                    userInfo["shareStatus"] = "FAILED"
-                    userInfo["eventDate"] = self.eventFullDateLabel.text
-                    userInfo.saveInBackground()
-                    return
-                } else {
-                    userInfo["shareURL"] = shareUrl
-                    userInfo["eventId"] = self.event.id
-                    userInfo["eventCategory"] = self.event.category
-                    userInfo["eventTitle"] = self.event.title
-                    userInfo["eventCost"] = self.event.freeFlag == true ? "Free" : "Paid"
-                    userInfo["shareType"] = activity?.rawValue
-                    userInfo["shareStatus"] = "Success"
-                    userInfo["eventDate"] = self.eventFullDateLabel.text
-                    userInfo.saveInBackground()
-
-                    Answers.logCustomEvent(withName: "Event Shared", customAttributes:["Event Title": self.event.title, "Event Category": self.event.category, "Event Cost": self.event.freeFlag == true ? "Free" : "Paid"])
-                }
+                let userParseId = userInfo["parseUserId"] as? String
+                    if (!success) {
+                        userInfo["shareURL"] = shareUrl
+                        userInfo["eventId"] = self.event.id
+                        userInfo["eventCategory"] = self.event.category
+                        userInfo["eventTitle"] = self.event.title
+                        userInfo["eventCost"] = self.event.freeFlag == true ? "Free" : "Paid"
+                        userInfo["shareStatus"] = "FAILED"
+                        userInfo["eventDate"] = self.eventFullDateLabel.text
+                        userInfo.saveInBackground()
+                        return
+                    } else {
+                        userInfo["shareURL"] = shareUrl
+                        userInfo["eventId"] = self.event.id
+                        userInfo["eventCategory"] = self.event.category
+                        userInfo["eventTitle"] = self.event.title
+                        userInfo["eventCost"] = self.event.freeFlag == true ? "Free" : "Paid"
+                        userInfo["shareType"] = activity?.rawValue
+                        userInfo["shareStatus"] = "Success"
+                        userInfo["eventDate"] = self.eventFullDateLabel.text
+                        userInfo.saveInBackground()
+                    }
+                Answers.logCustomEvent(withName: "Event Shared", customAttributes:["Event Title": self.event.title, "Event Category": self.event.category, "Event Cost": self.event.freeFlag == true ? "Free" : "Paid"])
             }
 
             self.present(activityViewController, animated: true) {
@@ -211,7 +214,7 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
         if MFMailComposeViewController.canSendMail() {
             let mail = MFMailComposeViewController()
             mail.mailComposeDelegate = self
-            mail.setToRecipients(["feedback@thekiddoapp.com"])
+            mail.setToRecipients(["info@kiddolocal.com"])
             mail.setSubject("Kiddo User Feedback")
 
             var messageBody = "Let us know what you think about this event or Kiddo in general. We're listening."
@@ -317,7 +320,8 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
             MKLaunchOptionsMapSpanKey: NSValue(mkCoordinateSpan: region.span)
         ]
 
-        let placemark = MKPlacemark(coordinate: locationCoordinates!, addressDictionary: nil)
+        let addressDictionary = [CNPostalAddressStreetKey: self.event.address]
+        let placemark = MKPlacemark(coordinate: locationCoordinates!, addressDictionary: addressDictionary)
         let mapItem = MKMapItem(placemark: placemark)
 
         mapItem.name = self.event.location
@@ -350,13 +354,11 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
             if let currentParseUserObjectId = PFUser.current()?.objectId {
                 userInfo["parseUser"] = PFUser.current()
                 userInfo["parseUserId"] = PFUser.current()?.objectId
-            } else { //where user didn't log in with FB but used their email to sign up
+            } else if let email = UserDefaults.standard.object(forKey: "email") as? String  { //where user didn't log in with FB but used their email to sign up
                 if let vendorIdentifier = UIDevice.current.identifierForVendor {
                     userInfo["UUID"] = vendorIdentifier.uuidString
                 }
-                if let email = UserDefaults.standard.object(forKey: "email") as? String {
-                    userInfo["email"] = email
-                }
+                userInfo["email"] = email
             }
 
             userInfo["eventId"] = self.event.id

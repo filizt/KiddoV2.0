@@ -96,7 +96,7 @@ class DateUtil {
 
     }
 
-    func tomorrow() -> String {
+    func tomorrowString() -> String {
         var components = DateComponents()
         components.day = 1
         guard let tomorrow = Calendar.current.date(byAdding: components, to: Date()) else { return "" }

@@ -8,12 +8,13 @@
 
 import Foundation
 import UIKit
+import Parse
 
 class SimpleCache {
     static let shared = SimpleCache()
 
     private var cache = [String: UIImage]()
-    var capacity = 30
+    var capacity = 300
 
     func image(key: String) -> UIImage? {
         return self.cache[key]
@@ -25,5 +26,37 @@ class SimpleCache {
             self.cache.removeValue(forKey: lastKey)
         }
         cache[key] = image
+    }
+
+    static func fetchImages(objects: [PFObject]) {
+        let imageIdSet = Set (objects.map { Event.parseImageId(object: $0)})
+        let imageIds = Array (imageIdSet)
+
+        let query = PFQuery(className: "EventImage")
+        query.whereKey("objectId", containedIn: imageIds )
+        query.findObjectsInBackground(block: { (objects, error) in
+            guard error == nil else {
+                print ("Error retrieving image data from Parse")
+                return
+            }
+
+            if let objects = objects {
+                for object in objects {
+                    guard let imageFile = object["image"] as? PFFile else { return }
+
+                    imageFile.getDataInBackground({ (data, error) in
+                        guard error == nil else {
+                            print ("Error retrieving image data from Parse")
+                            return
+                        }
+                        guard let imageData = data else { return }
+                        guard let image = UIImage(data: imageData) else { return }
+
+                        SimpleCache.shared.setImage(image, key: object.objectId!)
+
+                    })
+                }
+            }
+        })
     }
 }

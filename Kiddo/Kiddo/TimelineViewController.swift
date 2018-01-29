@@ -272,13 +272,11 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         if let currentParseUserObjectId = PFUser.current()?.objectId {
             userInfo["parseUser"] = PFUser.current()
             userInfo["parseUserId"] = PFUser.current()?.objectId
-        } else { //where user didn't log in with FB but used their email to sign up
+        } else if let email = UserDefaults.standard.object(forKey: "email") as? String { //where user didn't log in with FB but used their email to sign up
             if let vendorIdentifier = UIDevice.current.identifierForVendor {
                 userInfo["UUID"] = vendorIdentifier.uuidString
             }
-            if let email = UserDefaults.standard.object(forKey: "email") as? String {
-                userInfo["email"] = email
-            }
+            userInfo["email"] = email
         }
 
         userInfo["filter"] = forFilter
@@ -291,13 +289,11 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         if let currentParseUserObjectId = PFUser.current()?.objectId {
             userInfo["parseUser"] = PFUser.current()
             userInfo["parseUserId"] = PFUser.current()?.objectId
-        } else { //where user didn't log in with FB but used their email to sign up
+        } else if let email = UserDefaults.standard.object(forKey: "email") as? String { //where user didn't log in with FB but used their email to sign up
             if let vendorIdentifier = UIDevice.current.identifierForVendor {
                 userInfo["UUID"] = vendorIdentifier.uuidString
             }
-            if let email = UserDefaults.standard.object(forKey: "email") as? String {
-                userInfo["email"] = email
-            }
+            userInfo["email"] = email
         }
 
         userInfo["day"] = forDay
@@ -410,42 +406,9 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
                         object["appLaunchHistory"] = [Date()]
                     }
                     object.saveInBackground()
-                } else { //below is the case where users signed up with facebook but we don't have their userGraph info yet
-                    if let accessToken = FBSDKAccessToken.current() {
-                        PFFacebookUtils.logInInBackground(with: accessToken) { (user, error) in
-                            guard error == nil else { print("\(error?.localizedDescription)"); return }
-                            if user != nil {
-                                let requestParameters = ["fields": "id, first_name, last_name, name, email, age_range, gender, locale"]
-                                if let userDetails = FBSDKGraphRequest(graphPath: "me", parameters: requestParameters){
-                                    userDetails.start { (connection, result, error) -> Void in
-                                        guard error == nil else { print("\(error?.localizedDescription)"); return }
-
-                                        if let result = result {
-                                            let userGraphObject = UserGraph.create(from: result)
-                                            let userInfo: PFObject = PFObject(className: "UserGraphInfo")
-                                            userInfo["facebookId"] = userGraphObject.id
-                                            userInfo["firstName"] = userGraphObject.first_name
-                                            userInfo["lastName"] = userGraphObject.last_name
-                                            userInfo["fullName"] = userGraphObject.full_name
-                                            userInfo["email"] = userGraphObject.email
-                                            userInfo["gender"] = userGraphObject.gender
-                                            userInfo["locale"] = userGraphObject.locale
-                                            userInfo["parseUser"] = PFUser.current()
-                                            userInfo["parseUserId"] = PFUser.current()?.objectId
-                                            userInfo["lastSeen"] = Date()
-
-                                            userInfo.saveInBackground()
-                                        } else {
-                                            print("Uh oh. There was an problem getting the fb graph info.")
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
                 }
             }
-        } else { //where user didn't log in with FB but used their email to sign up
+        } else if let email = UserDefaults.standard.object(forKey: "email") as? String {//where user didn't log in with FB but used their email to sign up
             let query = PFQuery(className: "UserEmail")
             if let vendorIdentifier = UIDevice.current.identifierForVendor {
                 query.whereKey("deviceUUID", equalTo: vendorIdentifier.uuidString)
@@ -525,7 +488,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 
     private func fetchTomorrrowEvents() {
         let queryTomorrow = PFQuery(className: "EventDate")
-        let dateTomorrow = DateUtil.shared.createDate(from: DateUtil.shared.tomorrow())
+        let dateTomorrow = DateUtil.shared.createDate(from: DateUtil.shared.tomorrowString())
         queryTomorrow.whereKey("eventDate", equalTo: dateTomorrow)
         queryTomorrow.findObjectsInBackground { [weak weakSelf = self] (dateObjects, error) in
             guard error == nil else {

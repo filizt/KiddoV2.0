@@ -43,7 +43,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
         UNUserNotificationCenter.current().delegate = self
 
-        fetchImageCacheLimitAndImages()
+        prefetchImages()
         fetchSeasonalEventRequirements()
         requestAuthForNotifications()
 
@@ -66,19 +66,41 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         return true
     }
 
-    func fetchImageCacheLimitAndImages() {
-        let query = PFQuery(className: "ImageCache")
-        query.getFirstObjectInBackground(block: { (object, error) in
+
+
+    func prefetchImages() {
+        let events = PFQuery(className: "EventObject")
+        var dates = [Date]()
+        let date = DateUtil.shared.createDate(from: DateUtil.shared.today())
+        dates.append(date)
+        if let tomorrow = DateUtil.shared.tomorrow() {
+            dates.append(tomorrow)
+        }
+        if let later = DateUtil.shared.later() {
+            dates.append(later)
+        }
+        if let laterPlusOne = DateUtil.shared.laterPlusOne() {
+            dates.append(laterPlusOne)
+        }
+        events.whereKey("allEventDates", containedIn: dates)
+        events.whereKey("isActive", equalTo: true)
+
+        let popularEvents = PFQuery(className:"EventObject")
+        popularEvents.whereKey("allEventDates", greaterThanOrEqualTo: date)
+        popularEvents.whereKey("isActive", equalTo: true)
+        popularEvents.whereKey("isPopular", equalTo: true)
+
+        let query = PFQuery.orQuery(withSubqueries: [events, popularEvents])
+        query.findObjectsInBackground { (dateObjects, error) in
             guard error == nil else {
-                print ("Error retrieving image cache limit from Parse")
+                print ("Error fetching today's events from Parse")
                 return
             }
 
-            if let object = object {
-                SimpleCache.shared.capacity = object["limit"] as! Int
-                self.fetchImages()
+            if let objects = dateObjects {
+                SimpleCache.fetchImages(objects: objects)
             }
-        })
+        }
     }
 
     func fetchSeasonalEventRequirements() {

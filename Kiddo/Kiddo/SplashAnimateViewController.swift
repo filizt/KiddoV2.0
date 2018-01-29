@@ -58,22 +58,25 @@ class SplashAnimateViewController: UIViewController, PFLogInViewControllerDelega
     }
     
     func prepareForLaunch() {
-        if PFUser.current() != nil {
-            self.performSegue(withIdentifier: "showTimeline", sender: nil)
-        } else {
-            if !emailSubmisionNeeded() {
-                self.performSegue(withIdentifier: "showTimeline", sender: nil)
-            } else {
-                let logInViewController = LogInViewController()
-                logInViewController.fields = [PFLogInFields.facebook,PFLogInFields.dismissButton]
-                logInViewController.delegate = self
-                logInViewController.emailAsUsername = false
-                logInViewController.signUpController?.delegate = self
-                logInViewController.facebookPermissions = ["public_profile", "email"]
 
-                self.present(logInViewController, animated: true, completion: nil )
-            }
-        }
+        self.performSegue(withIdentifier: "showTimeline", sender: nil)
+
+//        if PFUser.current() != nil {
+//            self.performSegue(withIdentifier: "showTimeline", sender: nil)
+//        } else {
+//            if !emailSubmisionNeeded() {
+//                self.performSegue(withIdentifier: "showTimeline", sender: nil)
+//            } else {
+//                let logInViewController = LogInViewController()
+//                logInViewController.fields = [PFLogInFields.facebook,PFLogInFields.dismissButton]
+//                logInViewController.delegate = self
+//                logInViewController.emailAsUsername = false
+//                logInViewController.signUpController?.delegate = self
+//                logInViewController.facebookPermissions = ["public_profile", "email"]
+//
+//                self.present(logInViewController, animated: true, completion: nil )
+//            }
+//        }
     }
 
     func emailSubmisionNeeded() -> Bool {
