@@ -56,7 +56,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         Branch.getInstance()?.initSession(launchOptions: launchOptions, andRegisterDeepLinkHandler: { (params, error) in
             if error == nil && params?["+clicked_branch_link"] != nil && params?["eventId"] != nil {
                 let eventId = params?["eventId"] as! String
-                Event.pushedEventId = eventId
+                 Event.pushedEventId = eventId
+
+                if let date = params?["forDateTime"] {
+                    Event.pushedEventForDateTime = date as? String
+                }
 
                 let storyboard = UIStoryboard(name: "Main", bundle: nil)
                 let navController = storyboard.instantiateViewController(withIdentifier: "navController")

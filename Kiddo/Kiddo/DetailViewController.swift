@@ -79,6 +79,12 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
 
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        Event.pushedEvent = nil
+        Event.pushedEventId = nil
+        Event.pushedEventForDateTime = nil
+    }
+
     override func viewWillAppear(_ animated: Bool) {
 //        if event.address != nil {
 //            addressStringToGeocode(for: event.address)
@@ -143,7 +149,7 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
         let userInfo: PFObject = PFObject(className: "UserShareHistory")
         if let currentParseUserObjectId = PFUser.current()?.objectId {
             userInfo["parseUser"] = PFUser.current()
-            userInfo["parseUserId"] = PFUser.current()?.objectId
+            userInfo["parseUserId"] = currentParseUserObjectId
             if let vendorIdentifier = UIDevice.current.identifierForVendor {
                 userInfo["UUID"] = vendorIdentifier.uuidString
             }
@@ -159,6 +165,9 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
         let branchUniversalObject: BranchUniversalObject = BranchUniversalObject(canonicalIdentifier: canonicalIdentifier)
         branchUniversalObject.title = event.title
         branchUniversalObject.contentDescription = event.description
+        if let eventDateTime = self.eventFullDateLabel.text {
+            branchUniversalObject.addMetadataKey("forDateTime", value: eventDateTime)
+        }
         branchUniversalObject.imageUrl = "http://kiddoapp.herokuapp.com/parse/files/1G2h3j45Rtf3s/f99a2119a2769ac8ea12c269f0bbda96_file.jpeg"
 
         let query = PFQuery(className: "EventImage")
@@ -173,7 +182,7 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
 
         if let shareUrl = branchUniversalObject.getShortUrl(with: linkProperties) {
             let shareString =  event.title + " " + shareUrl
-            var activityItems : [Any] = [shareString]
+            let activityItems : [Any] = [shareString]
 
             let activityViewController: UIActivityViewController = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
             activityViewController.excludedActivityTypes = [.airDrop, .print, .assignToContact, .postToFlickr, .postToVimeo]
@@ -283,20 +292,21 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
         switch currentTab {
         case .today:
              let eventDate = DateUtil.shared.fullDateStringWithDateStyle(from: DateUtil.shared.todayDate()!)
-             self.eventFullDateLabel.text = event.allDayFlag == true ? eventDate : eventDate + " at " + event.startTime
+             self.eventFullDateLabel.text = event.allDayFlag == true ? eventDate : eventDate + " " + event.startTime
         case .tomorrow:
             let eventDate = DateUtil.shared.fullDateStringWithDateStyle(from: DateUtil.shared.tomorrow()!)
-            self.eventFullDateLabel.text = event.allDayFlag == true ? eventDate : eventDate + " at " + event.startTime
+            self.eventFullDateLabel.text = event.allDayFlag == true ? eventDate : eventDate + " " + event.startTime
         case .later:
             let eventDate = DateUtil.shared.fullDateStringWithDateStyle(from: event.dates.first!)
-            self.eventFullDateLabel.text = event.allDayFlag == true ? eventDate : eventDate + " at " + event.startTime
+            self.eventFullDateLabel.text = event.allDayFlag == true ? eventDate : eventDate + " " + event.startTime
             self.eventFeaturedLabel.isHidden = true
             self.eventFeaturedStar.isHidden = true
-        default:
-            self.eventFullDateLabel.text = event.location
-
+        default: //if we hit here it means we're coming from following a deeplink
+            self.eventFullDateLabel.text = event.location // need this for backward compatibility. Until build 1.5.4
+            if let date = Event.pushedEventForDateTime {
+                self.eventFullDateLabel.text = date
+            }
         }
-
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {

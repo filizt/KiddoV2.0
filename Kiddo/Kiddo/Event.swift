@@ -36,6 +36,7 @@ struct Event {
 
     static var pushedEventId: String?
     static var pushedEvent: Event?
+    static var pushedEventForDateTime: String?
 
     static func create(from object: PFObject) -> Event {
         let id = object.objectId ?? "0"
