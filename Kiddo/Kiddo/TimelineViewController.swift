@@ -34,6 +34,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
     fileprivate var filters = ["ALL","📍Nearby","🍀 Free","🌕 Indoor"]
 
     fileprivate var userLocationFound = false
+    var lastKnownUserLocation : CLLocation?
     fileprivate var firstTimeLaunch = true
 
     //this is beautiful! No need to make locationManager optional to overcome first time problems (calls the didChangeAuthorization delegate when the locationManager is created, before asking the user for auth)
@@ -241,6 +242,13 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 //            CLLocationManager.authorizationStatus() == .authorizedAlways {
 //            locationManager.requestLocation()
 //        }
+
+        //if we already recorded the last know location retrieve
+        if let locationDictionary = UserDefaults.standard.object(forKey: "lastLocation") as? Dictionary<String,CLLocationDegrees> {
+            let locationLat = locationDictionary["lat"]!
+            let locationLon = locationDictionary["lon"]!
+            lastKnownUserLocation = CLLocation(latitude: locationLat, longitude: locationLon)
+        }
 
     }
 
@@ -625,6 +633,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
                 destinationViewController.event = selectedEvent
                 destinationViewController.image = (currentCell.eventImage?.image)!
                 destinationViewController.currentTab = TabBarItems(rawValue: segmentedControl.selectedIndex)!
+                destinationViewController.lastKnownUserLocation = self.lastKnownUserLocation
             }
         } else if segue.identifier == "showDetailViewForPushedEvent" {
             if let destinationViewController = segue.destination as? DetailViewController {
@@ -1001,6 +1010,8 @@ extension TimelineViewController: MKMapViewDelegate {
         }
 
         detailViewController.currentTab = TabBarItems(rawValue: segmentedControl.selectedIndex)!
+        detailViewController.lastKnownUserLocation = self.lastKnownUserLocation
+
         self.navigationController?.pushViewController(detailViewController, animated: true)
     }
 }
@@ -1039,6 +1050,9 @@ extension TimelineViewController : CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
 
         guard let lastLocation = locations.last else { return }
+
+        UserDefaults.standard.set(["lat": lastLocation.coordinate.latitude, "lon": lastLocation.coordinate.longitude], forKey: "lastLocation")
+        lastKnownUserLocation = lastLocation //this is used for recording user data at Parse
 
         if userLocationFound == false {
             self.userLocationFound = true

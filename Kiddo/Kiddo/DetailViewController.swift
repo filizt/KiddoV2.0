@@ -59,6 +59,8 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
         }
     }
 
+    var lastKnownUserLocation : CLLocation?
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -140,8 +142,25 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
         userInfo["eventTitle"] = self.event.title
         userInfo["eventCost"] = self.event.freeFlag == true ? "Free" : "Paid"
         userInfo["eventDate"] = self.eventFullDateLabel.text
-        userInfo.saveInBackground()
 
+        if let location = lastKnownUserLocation {
+            CLGeocoder().reverseGeocodeLocation(location, completionHandler: {(placemarks, error) -> Void in
+                if error == nil {
+                    if let city = placemarks?.first?.locality,
+                        let postCode = placemarks?.first?.postalAddress?.postalCode,
+                        let streetAddress = placemarks?.first?.postalAddress?.street {
+                        userInfo["userLocation"] = city
+                        userInfo["postCode"] = postCode
+                        userInfo["streetAddress"] = streetAddress
+                        userInfo["userGeoLocation"] = [placemarks?.first?.location?.coordinate.latitude, placemarks?.first?.location?.coordinate.longitude]
+                    }
+                }
+                //either there is an error or not let's save what we have.
+                userInfo.saveInBackground()
+            })
+        } else {
+             userInfo.saveInBackground()
+        }
     }
 
     func share() {
