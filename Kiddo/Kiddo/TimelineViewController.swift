@@ -20,7 +20,6 @@ class EventAnnotation : Annotation {
     var event : Event!
 }
 
-
 class TimelineViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, CustomSegmentedControlDelegate, UICollectionViewDataSource, UICollectionViewDelegate, CellFilterButtonDelegate {
 
     @IBOutlet weak var filtersCollectionView: UICollectionView!
@@ -138,11 +137,15 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
     fileprivate var today = [Event]() {
         didSet {
             if today.count > 0 {
-                today = self.sortEventsSham(events: today )
+                today = self.sortEventsSham(events: today)
 
                 if firstTimeLaunch == true {
                     firstTimeLaunch = false
                     self.events = self.today
+                } else {
+                    if oldValue.count != today.count && segmentedControl.selectedIndex == 0 {
+                        reloadDataAndUpdateUI()
+                    }
                 }
             }
         }
@@ -152,6 +155,10 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         didSet {
             if tomorrow.count > 0 {
                 tomorrow = self.sortEventsSham(events: tomorrow )
+
+                if oldValue.count != tomorrow.count && segmentedControl.selectedIndex == 1 {
+                    reloadDataAndUpdateUI()
+                }
             }
         }
     }
@@ -164,6 +171,10 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
                     later[i].updateDates(bydate: laterDate)
                 }
                 later.sort { $0.dates.first! < $1.dates.first! }
+
+                if oldValue.count != later.count && segmentedControl.selectedIndex == 2 {
+                    reloadDataAndUpdateUI()
+                }
             }
         }
     }
@@ -270,6 +281,18 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         } 
     }
 
+    private func reloadDataAndUpdateUI() {
+        //get current state of segmented control
+        //get current state of filters
+        //update tableview
+
+        let selectedCells = filtersCollectionView.visibleCells.filter{ $0.isSelected == true }
+
+        if let sc = selectedCells.first as? FilterCollectionViewCell {
+            sc.layoutIfNeeded()
+        }
+    }
+
     private func resetCollectionViewSelection() {
         //filtersCollectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: UICollectionViewScrollPosition.left, animated: false)
         filtersCollectionView.selectItem(at: IndexPath(row: 0, section: 0), animated: false, scrollPosition: UICollectionViewScrollPosition.left)
@@ -332,7 +355,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
     //when to call fetch events - this is too generic of a call
     //a good way to determine it is to have a timer?
     func applicationEnteredForeground() {
-        activityIndicator.startAnimating()
+        self.activityIndicator.startAnimating()
         self.fetchAllEvents()
         self.updateUserGraphDataIfNecessary()
         self.fetchPhotosIfNecessary()

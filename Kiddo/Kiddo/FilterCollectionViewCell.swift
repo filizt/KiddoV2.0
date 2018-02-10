@@ -22,17 +22,25 @@ class FilterCollectionViewCell: UICollectionViewCell {
 
     override var isSelected: Bool {
         didSet {
-            if isSelected {
-                filterLabel.backgroundColor = UIColor.appPurpleColor
-                filterLabel.textColor = UIColor.white
-                filterLabel.layer.borderColor = UIColor.appPurpleColor.cgColor
-                filterLabel.clipsToBounds = true
-                delegate?.handleFilterButtonTap(selectedFilter: self.filterLabel.text!)
-            } else {
-                filterLabel.backgroundColor = UIColor.white
-                filterLabel.textColor = UIColor.appPurpleColor
-                filterLabel.layer.borderColor = UIColor.appPurpleColor.cgColor
-            }
+            updateUI()
+        }
+    }
+
+    override func layoutIfNeeded() {
+        updateUI()
+    }
+
+    func updateUI() {
+        if self.isSelected {
+            filterLabel.backgroundColor = UIColor.appPurpleColor
+            filterLabel.textColor = UIColor.white
+            filterLabel.layer.borderColor = UIColor.appPurpleColor.cgColor
+            filterLabel.clipsToBounds = true
+            delegate?.handleFilterButtonTap(selectedFilter: self.filterLabel.text!)
+        } else {
+            filterLabel.backgroundColor = UIColor.white
+            filterLabel.textColor = UIColor.appPurpleColor
+            filterLabel.layer.borderColor = UIColor.appPurpleColor.cgColor
         }
     }
 
