@@ -33,7 +33,23 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
     fileprivate var filters = ["ALL","📍Nearby","🍀 Free","🌕 Indoor"]
 
     fileprivate var userLocationFound = false
-    var lastKnownUserLocation : CLLocation?
+    var lastKnownUserLocation : CLLocation? {
+        didSet {
+            if oldValue != nil {
+                //this is not first time
+                if let distance = oldValue?.distance(from: lastKnownUserLocation!) {
+                    if !distance.isLessThanOrEqualTo(5000.0) {
+                        print("distance in greater than 5000")
+                        self.getWeatherForecast()
+                    }
+                }
+            } else {
+                //first time
+                self.getWeatherForecast()
+            }
+        }
+    }
+
     fileprivate var firstTimeLaunch = true
 
     //this is beautiful! No need to make locationManager optional to overcome first time problems (calls the didChangeAuthorization delegate when the locationManager is created, before asking the user for auth)
@@ -56,7 +72,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
                 switch currentForecastWeatherIcon {
                 case "clear-day":
                     if let cloudCoverRate = currentForecast?.cloudCover {
-                        imageView.image = UIImage(named: (cloudCoverRate > 0.2) ? "partly-cloudy-day": "clear" )
+                        imageView.image = UIImage(named: (cloudCoverRate > 0.2) ? "partly-cloudy-day": "clear-day" )
                     }
                 case "partly-cloudy-day":
                     if let cloudCoverRate = currentForecast?.cloudCover {
@@ -185,27 +201,13 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         let mapBarButtonItem = UIBarButtonItem(image: UIImage(named: "mapIcon")!, style: .done, target: self, action: #selector(switchViewType))
         self.navigationItem.rightBarButtonItem = mapBarButtonItem
 
-        let filterBarButtonItem = UIBarButtonItem(title: "Filter", style: .plain, target: self, action: #selector(showFiltersView))
-//        self.navigationItem.leftBarButtonItem = filterBarButtonItem
-
-         let weatherButtonItem = UIBarButtonItem(image: UIImage(named: "rain")!, style: .done, target: self, action: #selector(switchViewType))
-
-        let delegate = UIApplication.shared.delegate as! AppDelegate
-
-        //For now, longitude latitude hard coded for Seattle.
-        delegate.forecastIO.getForecast(latitude: 47.6205, longitude: -122.3493) { result in
-            switch result {
-            case .success(let currentForecast, let requestMetadata):
-                if let currentWeather = currentForecast.currently{
-                    DispatchQueue.main.async {
-                        self.currentForecast = currentWeather
-                    }
-                }
-                break
-            case .failure(let error):
-                //  Uh-oh. We have an error!
-                break
-            }
+        //if we already recorded the last know location retrieve
+        if let locationDictionary = UserDefaults.standard.object(forKey: "lastLocation") as? Dictionary<String,CLLocationDegrees> {
+            let locationLat = locationDictionary["lat"]!
+            let locationLon = locationDictionary["lon"]!
+            lastKnownUserLocation = CLLocation(latitude: locationLat, longitude: locationLon)
+        } else {
+             self.getWeatherForecast()// will get it for defaut location - Seattle.
         }
 
         mapContainerView.alpha = 0
@@ -248,19 +250,6 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         updateUserGraphDataIfNecessary()
         self.setLastModified()
 
-
-//        if CLLocationManager.authorizationStatus() == .authorizedWhenInUse ||
-//            CLLocationManager.authorizationStatus() == .authorizedAlways {
-//            locationManager.requestLocation()
-//        }
-
-        //if we already recorded the last know location retrieve
-        if let locationDictionary = UserDefaults.standard.object(forKey: "lastLocation") as? Dictionary<String,CLLocationDegrees> {
-            let locationLat = locationDictionary["lat"]!
-            let locationLon = locationDictionary["lon"]!
-            lastKnownUserLocation = CLLocation(latitude: locationLat, longitude: locationLon)
-        }
-
     }
 
     deinit {
@@ -279,6 +268,31 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         if selectedCells.count < 1 {
             resetCollectionViewSelection()
         } 
+    }
+
+    private func getWeatherForecast() {
+        //For now, longitude latitude hard coded for Seattle.
+        var location = CLLocation(latitude: 47.6205, longitude: -122.3493)
+
+        if let lastKnown = lastKnownUserLocation {
+            location = lastKnown
+        }
+
+        let delegate = UIApplication.shared.delegate as! AppDelegate
+        delegate.forecastIO.getForecast(latitude:location.coordinate.latitude, longitude: location.coordinate.longitude) { result in
+            switch result {
+            case .success(let currentForecast, let requestMetadata):
+                if let currentWeather = currentForecast.currently{
+                    DispatchQueue.main.async {
+                        self.currentForecast = currentWeather
+                    }
+                }
+                break
+            case .failure(let error):
+                //  Uh-oh. We have an error!
+                break
+            }
+        }
     }
 
     private func reloadDataAndUpdateUI() {
@@ -359,6 +373,11 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         self.fetchAllEvents()
         self.updateUserGraphDataIfNecessary()
         self.fetchPhotosIfNecessary()
+
+        if CLLocationManager.authorizationStatus() == .authorizedWhenInUse ||
+            CLLocationManager.authorizationStatus() == .authorizedAlways {
+            locationManager.startUpdatingLocation()
+        }
     }
 
     func setLastModified() {
