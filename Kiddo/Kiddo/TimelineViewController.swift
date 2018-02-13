@@ -442,6 +442,18 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
     func updateUserGraphDataIfNecessary() {
         //user had signed up through FB before and currently logged in.
         if let currentParseUserObjectId = PFUser.current()?.objectId {
+
+            //**** new way of recording user info
+            let userInfo: PFObject = PFObject(className: "UserAppLaunchHistory")
+            userInfo["loginType"] = "Facebook"
+            userInfo["parseUser"] = PFUser.current()
+            userInfo["parseUserId"] = PFUser.current()?.objectId
+            //userInfo["email"] = PFUser.current()?.email
+            userInfo["lastSeen"] = Date()
+            userInfo["lastSeenPST"] = DateUtil.shared.todayLongFormated()
+            userInfo.saveInBackground()
+            //****
+
             let query = PFQuery(className: "UserGraphInfo")
             query.whereKey("parseUserId", equalTo: currentParseUserObjectId)
             query.getFirstObjectInBackground() { (object, error) in
@@ -459,6 +471,18 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
                 }
             }
         } else if let email = UserDefaults.standard.object(forKey: "email") as? String {//where user didn't log in with FB but used their email to sign up
+
+            //**** new way of recording user info
+            let userInfo: PFObject = PFObject(className: "UserAppLaunchHistory")
+            userInfo["loginType"] = "Email"
+            if let vendorIdentifier = UIDevice.current.identifierForVendor {
+                userInfo["UUID"] = vendorIdentifier.uuidString
+            }
+            userInfo["lastSeen"] = Date()
+            userInfo["lastSeenPST"] = DateUtil.shared.todayLongFormated()
+            userInfo.saveInBackground()
+            //****
+
             let query = PFQuery(className: "UserEmail")
             if let vendorIdentifier = UIDevice.current.identifierForVendor {
                 query.whereKey("deviceUUID", equalTo: vendorIdentifier.uuidString)
@@ -676,12 +700,14 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
                 destinationViewController.image = (currentCell.eventImage?.image)!
                 destinationViewController.currentTab = TabBarItems(rawValue: segmentedControl.selectedIndex)!
                 destinationViewController.lastKnownUserLocation = self.lastKnownUserLocation
+                destinationViewController.currentForecast = self.currentForecast
             }
         } else if segue.identifier == "showDetailViewForPushedEvent" {
             if let destinationViewController = segue.destination as? DetailViewController {
                 destinationViewController.event = Event.pushedEvent
                 destinationViewController.image = SimpleCache.shared.image(key: (Event.pushedEvent?.imageObjectId)!)
                 destinationViewController.currentTab = TabBarItems.none
+                destinationViewController.currentForecast = self.currentForecast
             }
         }
     }

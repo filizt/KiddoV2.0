@@ -90,6 +90,12 @@ class DateUtil {
 
     }
 
+    func todayLongFormated() -> String {
+        formatter.dateFormat = "yyyy-MM-dd hh:mm:ss"
+        return formatter.string(from: Date())
+
+    }
+
     func todayDate() -> Date? {
         formatter.dateFormat = "MM-dd-yyyy"
         return formatter.date(from: today())

@@ -16,6 +16,7 @@ import Crashlytics
 import MessageUI
 import Branch
 import Contacts
+import ForecastIO
 
 enum TabBarItems : Int {
     case today = 0
@@ -60,6 +61,7 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
     }
 
     var lastKnownUserLocation : CLLocation?
+    var currentForecast: DataPoint?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -142,6 +144,11 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
         userInfo["eventTitle"] = self.event.title
         userInfo["eventCost"] = self.event.freeFlag == true ? "Free" : "Paid"
         userInfo["eventDate"] = self.eventFullDateLabel.text
+        userInfo["currentWeather"] = self.currentForecast?.summary
+        if var temp = self.currentForecast?.temperature {
+            userInfo["currentTemprature"] = Int(temp)
+        }
+
 
         if let location = lastKnownUserLocation {
             CLGeocoder().reverseGeocodeLocation(location, completionHandler: {(placemarks, error) -> Void in
