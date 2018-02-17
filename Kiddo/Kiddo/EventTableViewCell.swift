@@ -20,6 +20,8 @@ class EventTableViewCell: UITableViewCell {
     @IBOutlet weak var eventCategory: UIButton!
     @IBOutlet weak var eventFeaturedStar: UIImageView!
 
+    @IBOutlet weak var eventEndTime: UILabel!
+    @IBOutlet weak var dashBetweenTimes: UILabel!
     private let cache = SimpleCache.shared
 
     var event: Event? {
@@ -42,12 +44,29 @@ class EventTableViewCell: UITableViewCell {
         self.eventImage?.image = UIImage(named: "image_placeholder")
         self.eventCategory.layer.cornerRadius = 8
         self.eventCategory.layer.masksToBounds = true
+        self.dashBetweenTimes.isHidden = true
+        self.eventEndTime.isHidden = false
 
         if let event = event {
             self.eventTitle?.text = event.title
             self.eventVenueName?.text = event.location
-            
-            self.eventStartTime?.text = event.allDayFlag == true ? "ALL DAY" : "\(DateUtil.shared.shortTime(from:event.startTime))"
+
+            //allday flag and showTimes flags are mutually exclusive.
+            //locationHours should still be saved as part of the data, as detail view relies on that to show "All Day" event's hours. This is needed for backward compatibility.
+            if event.allDayFlag == true {
+                self.dashBetweenTimes.isHidden = false
+                self.eventStartTime?.text = "\(DateUtil.shared.shortTime(from:event.startTime))"
+                self.eventEndTime?.text = "\(DateUtil.shared.shortTime(from:event.endTime))"
+            } else {
+                self.eventStartTime?.text = "\(DateUtil.shared.shortTime(from:event.startTime))"
+                self.eventEndTime.isHidden = true
+            }
+
+            if let showTimes = self.event?.showTimes {
+                self.eventStartTime?.text = showTimes
+                self.eventEndTime.isHidden = true
+            }
+
             self.eventFreeImage.isHidden = event.freeFlag == true ? false : true
 
             if event.category == "Other" {

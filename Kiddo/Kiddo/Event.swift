@@ -33,6 +33,7 @@ struct Event {
     var imageObjectId: String!
     let geoLocation: PFGeoPoint?
     let categoryKeywords: [String]?
+    let showTimes: String?
 
     static var pushedEventId: String?
     static var pushedEvent: Event?
@@ -62,6 +63,7 @@ struct Event {
         let imageObjectId = object["imageObjectId"] as! String
         let geoLocation = object["geoLocation"] as? PFGeoPoint
         let categoryKeywords = object["categoryKeywords"] as? [String]
+        let showTimes = object["categoryKeywords"] as? String
 
         return Event(id: id,
                      title: title,
@@ -85,7 +87,8 @@ struct Event {
                      featuredFlag: featuredFlag,
                      imageObjectId: imageObjectId,
                      geoLocation: geoLocation,
-                     categoryKeywords: categoryKeywords
+                     categoryKeywords: categoryKeywords,
+                     showTimes: showTimes
         )
     }
 
