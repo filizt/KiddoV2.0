@@ -34,8 +34,8 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
     @IBOutlet weak var eventDescription: UITextView!
     @IBOutlet weak var eventAgeInfo: UILabel!
     @IBOutlet weak var scrollView: UIScrollView!
-    @IBOutlet weak var eventHours: UILabel!
-    @IBOutlet weak var eventCost: UILabel!
+    //@IBOutlet weak var eventHours: UILabel!
+    //@IBOutlet weak var eventCost: UILabel!
     @IBOutlet weak var moreInfoButton: UIButton!
     @IBOutlet weak var eventCategory: UIButton!
     @IBOutlet weak var eventFeaturedLabel: UILabel!
@@ -291,8 +291,8 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
         }
         self.eventDescription.text = event.description
         self.eventAgeInfo.text = "AGES: \(event.ages)"
-        self.eventCost.text = event.freeFlag == true ? "COST: Free" : "COST: \(event.price)"
-        self.eventHours.text = event.allDayFlag == true ? "HOURS: \(event.locationHours)" : "HOURS: \(event.startTime) - \(event.endTime)"
+       // self.eventCost.text = event.freeFlag == true ? "COST: Free" : "COST: \(event.price)"
+       // self.eventHours.text = event.allDayFlag == true ? "HOURS: \(event.locationHours)" : "HOURS: \(event.startTime) - \(event.endTime)"
 
         if event.originalEventURL != nil {
             self.moreInfoButton.setTitle("VISIT EVENT WEBSITE", for: .normal)
