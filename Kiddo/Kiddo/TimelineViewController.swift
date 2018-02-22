@@ -279,12 +279,12 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         }
 
         let delegate = UIApplication.shared.delegate as! AppDelegate
-        delegate.forecastIO.getForecast(latitude:location.coordinate.latitude, longitude: location.coordinate.longitude) { result in
+        delegate.forecastIO.getForecast(latitude:location.coordinate.latitude, longitude: location.coordinate.longitude) { [weak weakSelf = self] result in
             switch result {
-            case .success(let currentForecast, let requestMetadata):
-                if let currentWeather = currentForecast.currently{
+            case .success(let forecast, let requestMetadata):
+                if let currForecast = forecast.currently{
                     DispatchQueue.main.async {
-                        self.currentForecast = currentWeather
+                        weakSelf?.currentForecast = currForecast
                     }
                 }
                 break
@@ -573,8 +573,8 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
             if let dateObjects = dateObjects {
                 let relation = dateObjects[0].relation(forKey: "events")
                 let query = relation.query()
-                query.includeKey("isActive")
-                query.whereKey("isActive", equalTo: true)
+                //query.includeKey("isActive")
+                //query.whereKey("isActive", equalTo: true)
                 query.findObjectsInBackground { (objects, error) in
                     if let objects = objects {
                         weakSelf?.tomorrow = objects.map { Event.create(from: $0) }

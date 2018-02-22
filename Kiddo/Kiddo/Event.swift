@@ -63,7 +63,7 @@ struct Event {
         let imageObjectId = object["imageObjectId"] as! String
         let geoLocation = object["geoLocation"] as? PFGeoPoint
         let categoryKeywords = object["categoryKeywords"] as? [String]
-        let showTimes = object["categoryKeywords"] as? String
+        let showTimes = object["showTimes"] as? String
 
         return Event(id: id,
                      title: title,

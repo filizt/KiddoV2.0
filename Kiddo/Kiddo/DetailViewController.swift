@@ -17,6 +17,7 @@ import MessageUI
 import Branch
 import Contacts
 import ForecastIO
+import EventKit
 
 enum TabBarItems : Int {
     case today = 0
@@ -28,19 +29,23 @@ enum TabBarItems : Int {
 
 class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDelegate, MFMailComposeViewControllerDelegate {
     
-    @IBOutlet weak var mapView: MKMapView!
+
     @IBOutlet weak var eventImage: UIImageView!
     @IBOutlet weak var scrollViewContainerView: UIView!
-    @IBOutlet weak var eventDescription: UITextView!
-    @IBOutlet weak var eventAgeInfo: UILabel!
     @IBOutlet weak var scrollView: UIScrollView!
-    //@IBOutlet weak var eventHours: UILabel!
-    //@IBOutlet weak var eventCost: UILabel!
-    @IBOutlet weak var moreInfoButton: UIButton!
+
     @IBOutlet weak var eventCategory: UIButton!
-    @IBOutlet weak var eventFeaturedLabel: UILabel!
-    @IBOutlet weak var eventFeaturedStar: UIImageView!
+
+    @IBOutlet weak var eventTitle: UILabel!
     @IBOutlet weak var eventFullDateLabel: UILabel!
+    @IBOutlet weak var eventHours: UILabel!
+    @IBOutlet weak var addToCalendarButton: UIButton!
+    @IBOutlet weak var eventAgeInfo: UILabel!
+    @IBOutlet weak var eventPrice: UILabel!
+    @IBOutlet weak var eventLocation: UILabel!
+    @IBOutlet weak var eventDescription: UITextView!
+    @IBOutlet weak var mapView: MKMapView!
+    @IBOutlet weak var moreInfoButton: UIButton!
 
     var event: Event!
     var image: UIImage? = nil
@@ -245,6 +250,10 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
         }
     }
 
+    @IBAction func addToCalendarButtonPressed(_ sender: Any) {
+
+    }
+
     @IBAction func sendFeedbackPressed(_ sender: UIButton) {
         if MFMailComposeViewController.canSendMail() {
             let mail = MFMailComposeViewController()
@@ -283,16 +292,55 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
     }
 
     private func loadEventInfo() {
-        self.title = event.title
+        self.eventCategory.isHidden = false
+        let formatedString = event.category.uppercased()
+        self.eventCategory?.setTitle(formatedString, for: .normal)
+        self.eventCategory.layer.cornerRadius = 8
+        self.eventCategory.layer.masksToBounds = true
+
+
         if let image = self.image {
             self.eventImage.image = self.image
         } else {
             self.eventImage.image = UIImage(named: "image_placeholder")
         }
+
+        self.eventTitle.text = event.title
+
+        //Event dates and hours formating
+        switch currentTab {
+        case .today:
+            let eventDate = DateUtil.shared.fullDateStringWithDateTimeStyle(from: DateUtil.shared.todayDate()!)
+            self.eventFullDateLabel.text = eventDate
+            self.eventHours.text = DateUtil.shared.shortTime(from:event.startTime) + " - " + DateUtil.shared.shortTime(from:event.endTime)
+
+            //Need to look at the below case later!
+//            if self.event.showTimes != nil {
+//                let eventHoursText = DateUtil.shared.shortTime(from:event.startTime) + " - " + DateUtil.shared.shortTime(from:event.endTime)
+//                self.eventHours.text = eventHoursText + " Additional times available."
+//            }
+
+        case .tomorrow:
+            let eventDate = DateUtil.shared.fullDateStringWithDateTimeStyle(from: DateUtil.shared.tomorrow()!)
+            self.eventFullDateLabel.text = eventDate
+            self.eventHours.text = DateUtil.shared.shortTime(from:event.startTime) + " - " + DateUtil.shared.shortTime(from:event.endTime)
+        case .later:
+            let eventDate = DateUtil.shared.fullDateStringWithDateTimeStyle(from: event.dates.first!)
+            self.eventFullDateLabel.text = eventDate
+            self.eventHours.text = DateUtil.shared.shortTime(from:event.startTime) + " - " + DateUtil.shared.shortTime(from:event.endTime)
+        default: //if we hit here it means we're coming from following a deeplink
+            self.eventFullDateLabel.text = event.location // need this for backward compatibility. Until build 1.5.4
+            if let date = Event.pushedEventForDateTime {
+                self.eventFullDateLabel.text = date
+            }
+
+        }
+
+        self.eventAgeInfo.text = event.ages
+        self.eventPrice.text = event.freeFlag == true ? "Free" : event.price
+        self.eventLocation.text = event.address
+
         self.eventDescription.text = event.description
-        self.eventAgeInfo.text = "AGES: \(event.ages)"
-       // self.eventCost.text = event.freeFlag == true ? "COST: Free" : "COST: \(event.price)"
-       // self.eventHours.text = event.allDayFlag == true ? "HOURS: \(event.locationHours)" : "HOURS: \(event.startTime) - \(event.endTime)"
 
         if event.originalEventURL != nil {
             self.moreInfoButton.setTitle("VISIT EVENT WEBSITE", for: .normal)
@@ -301,38 +349,12 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
             self.moreInfoButton.isUserInteractionEnabled = false
         }
 
-        self.eventFeaturedLabel.isHidden = !event.featuredFlag
-        self.eventFeaturedStar.isHidden = !event.featuredFlag
-
-        self.eventCategory.isHidden = event.category == "Other" ? true : false
-        self.eventCategory.setTitle(event.category, for: .normal)
-        self.eventCategory.layer.cornerRadius = 8
-        self.eventCategory.layer.masksToBounds = true
-        let formatedString = event.category.uppercased()
-        self.eventCategory?.setTitle(formatedString, for: .normal)
 
         if let geoLocation = event.geoLocation {
             self.locationCoordinates = geoLocation.location()
         }
 
-        switch currentTab {
-        case .today:
-             let eventDate = DateUtil.shared.fullDateStringWithDateStyle(from: DateUtil.shared.todayDate()!)
-             self.eventFullDateLabel.text = event.allDayFlag == true ? eventDate : eventDate + " " + event.startTime
-        case .tomorrow:
-            let eventDate = DateUtil.shared.fullDateStringWithDateStyle(from: DateUtil.shared.tomorrow()!)
-            self.eventFullDateLabel.text = event.allDayFlag == true ? eventDate : eventDate + " " + event.startTime
-        case .later:
-            let eventDate = DateUtil.shared.fullDateStringWithDateStyle(from: event.dates.first!)
-            self.eventFullDateLabel.text = event.allDayFlag == true ? eventDate : eventDate + " " + event.startTime
-            self.eventFeaturedLabel.isHidden = true
-            self.eventFeaturedStar.isHidden = true
-        default: //if we hit here it means we're coming from following a deeplink
-            self.eventFullDateLabel.text = event.location // need this for backward compatibility. Until build 1.5.4
-            if let date = Event.pushedEventForDateTime {
-                self.eventFullDateLabel.text = date
-            }
-        }
+
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {

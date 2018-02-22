@@ -46,13 +46,13 @@ class DateUtil {
     }
 
     func fullDateStringWithDateStyle(from date: Date) -> String {
-        formatter.dateStyle = .full
+        //formatter.dateFormat = "EEEE, MMMM dd, yyyy"//"yyyy-MM-dd hh:mm:ss"
         return formatter.string(from: date)
     }
 
     func fullDateStringWithDateTimeStyle(from date: Date) -> String {
         formatter.dateStyle = .full
-        formatter.timeStyle = .short
+        formatter.timeStyle = .none
         return formatter.string(from: date)
     }
 
@@ -136,6 +136,13 @@ class DateUtil {
         guard let laterDate = Calendar.current.date(byAdding: dateComponents, to: createDate(from:today())) else { return nil }
 
         return laterDate
+    }
+
+    //2018-02-22 01:00:00 +0000 - hourly
+    //2018-02-24 08:00:00 +0000 - daily
+    //PST to UTC in milatary time, in above format
+    func weatherTime() {
+        
     }
 
 }
