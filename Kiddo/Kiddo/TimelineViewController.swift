@@ -573,8 +573,8 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
             if let dateObjects = dateObjects {
                 let relation = dateObjects[0].relation(forKey: "events")
                 let query = relation.query()
-                //query.includeKey("isActive")
-                //query.whereKey("isActive", equalTo: true)
+                query.includeKey("isActive")
+                query.whereKey("isActive", equalTo: true)
                 query.findObjectsInBackground { (objects, error) in
                     if let objects = objects {
                         weakSelf?.tomorrow = objects.map { Event.create(from: $0) }

@@ -75,6 +75,8 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
+	<key>NSCalendarsUsageDescription</key>
+	<string>Kiddo wants to access your calendar to add event information.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Kiddo wants to know your location to show nearby events and activities.</string>
 	<key>NSPhotoLibraryUsageDescription</key>

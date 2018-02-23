@@ -67,6 +67,7 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
 
     var lastKnownUserLocation : CLLocation?
     var currentForecast: DataPoint?
+    //var eventDateForCalendar: Date?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -250,9 +251,71 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
         }
     }
 
-    @IBAction func addToCalendarButtonPressed(_ sender: Any) {
+//    @IBAction func addToCalendarButtonPressed(_ sender: Any) {
+//        let status = EKEventStore.authorizationStatus(for: EKEntityType.event)
+//
+//        switch (status) {
+//                    case EKAuthorizationStatus.notDetermined:
+//                            // This happens on first-run
+//                                EKEventStore().requestAccess(to: .event, completion: {
+//                                    (accessGranted: Bool, error: Error?) in
+//                                    if accessGranted == true {
+//                                        DispatchQueue.main.async(execute: {
+//                                            print("access granted")
+//                                            self.addEventToCalendar()
+//
+//                                        })
+//                                    } else {
+//                                        DispatchQueue.main.async(execute: {
+//                                            print("access denied")
+//                                        })
+//                                    }
+//                                })
+//                    case EKAuthorizationStatus.authorized:
+//                            // Things are in line with being able to show the calendars in the table view
+//                                print("authorized")
+//                                self.addEventToCalendar()
+//                    case EKAuthorizationStatus.restricted, EKAuthorizationStatus.denied:
+//                           // We need to help them give us permission
+//                                print("denied")
+//                    }
+//
+//    }
 
-    }
+//    private func addEventToCalendar() {
+//        let eventStore = EKEventStore();
+//        let newEvent = EKEvent(eventStore: eventStore)
+//        //https://stackoverflow.com/questions/48175452/defaultcalendarfornewevents-is-defined-as-optional-however-cant-use-optional-bi/48196230#48196230
+//        //Hence the nil check.
+//        if eventStore.defaultCalendarForNewEvents != nil {
+//            newEvent.calendar = eventStore.defaultCalendarForNewEvents
+//            newEvent.title = self.event.title
+//            newEvent.startDate = eventDateForCalendar!
+//            newEvent.endDate = eventDateForCalendar!
+//            newEvent.location = event.location + " " + event.address
+//
+//
+//       // Save the calendar using the Event Store instance
+//        if let saved = try? eventStore.save(newEvent, span: .thisEvent, commit: true) {
+//                let alert = UIAlertController(title: "Success", message: "Event added to the default calendar", preferredStyle: .alert)
+//                    let OKAction = UIAlertAction(title: "OK", style:.default, handler: nil)
+//                    alert.addAction(OKAction)
+//
+//                    self.present(alert, animated: true, completion: nil)
+//                   // self.dismiss(animated: true, completion: nil)
+//            } else { //need to fix this part a little bit to get the errors, etc.
+//                let alert = UIAlertController(title: "Event could not be saved", message: "error.localizedDescription", preferredStyle: .alert)
+//                    let OKAction = UIAlertAction(title: "OK", style:.default, handler: nil)
+//                    alert.addAction(OKAction)
+//
+//                    self.present(alert, animated: true, completion: nil)
+//
+//            }
+//
+//        }
+//
+//        //self.performSegue(withIdentifier: "showDetailView", sender: nil)
+//    }
 
     @IBAction func sendFeedbackPressed(_ sender: UIButton) {
         if MFMailComposeViewController.canSendMail() {
@@ -313,6 +376,13 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
             let eventDate = DateUtil.shared.fullDateStringWithDateTimeStyle(from: DateUtil.shared.todayDate()!)
             self.eventFullDateLabel.text = eventDate
             self.eventHours.text = DateUtil.shared.shortTime(from:event.startTime) + " - " + DateUtil.shared.shortTime(from:event.endTime)
+//
+//            print("DateUtil.shared.createShortTimeDate(from: event.startTime )", DateUtil.shared.createShortTimeDate(from: event.startTime ))
+//           let d = DateUtil.shared.dateForCalendar(date: Date(), time: DateUtil.shared.createShortTimeDate(from: event.startTime ))
+//            print("DateUtil.shared.dateForCalendar()", d)
+//            //let d = DateUtil.shared.createDate(from: self.eventFullDateLabel.text!)
+//            //print("This is the date from eventfulldatelabel", d)
+//            eventDateForCalendar = Date()
 
             //Need to look at the below case later!
 //            if self.event.showTimes != nil {
@@ -324,10 +394,14 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
             let eventDate = DateUtil.shared.fullDateStringWithDateTimeStyle(from: DateUtil.shared.tomorrow()!)
             self.eventFullDateLabel.text = eventDate
             self.eventHours.text = DateUtil.shared.shortTime(from:event.startTime) + " - " + DateUtil.shared.shortTime(from:event.endTime)
+
+
+            //eventDateForCalendar = Date()
         case .later:
             let eventDate = DateUtil.shared.fullDateStringWithDateTimeStyle(from: event.dates.first!)
             self.eventFullDateLabel.text = eventDate
             self.eventHours.text = DateUtil.shared.shortTime(from:event.startTime) + " - " + DateUtil.shared.shortTime(from:event.endTime)
+            //eventDateForCalendar = Date()
         default: //if we hit here it means we're coming from following a deeplink
             self.eventFullDateLabel.text = event.location // need this for backward compatibility. Until build 1.5.4
             if let date = Event.pushedEventForDateTime {
@@ -364,6 +438,8 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
         if (y > 0) {
             self.eventImage.frame = CGRect(x: 0, y: scrollView.contentOffset.y, width: self.cachedImageViewSize.size.width+y, height: self.cachedImageViewSize.size.height+y)
             self.eventImage.center = CGPoint(x:self.view.center.x, y:self.eventImage.center.y);
+        } else {
+            print("y is ")
         }
     }
 

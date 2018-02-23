@@ -138,11 +138,34 @@ class DateUtil {
         return laterDate
     }
 
-    //2018-02-22 01:00:00 +0000 - hourly
-    //2018-02-24 08:00:00 +0000 - daily
-    //PST to UTC in milatary time, in above format
-    func weatherTime() {
-        
-    }
+//    func dateForCalendar(date: Date, time: Date) -> Date? {
+//
+//        let currCalendar = Calendar.current
+//        var dateComponents = DateComponents()
+//        dateComponents.calendar = Calendar.current
+//
+//        dateComponents.year = currCalendar.component(.year, from: date)
+//        dateComponents.month = currCalendar.component(.month, from: date)
+//        dateComponents.day = currCalendar.component(.day, from: date)
+//        dateComponents.hour = currCalendar.component(.hour, from: time)
+//        dateComponents.minute = currCalendar.component(.minute, from: time)
+//        dateComponents.second = currCalendar.component(.second, from: time)
+//
+//        var dateComponents2 = DateComponents()
+//        dateComponents.day = 3
+//        
+//        return dateComponents.date
+//        //print("From Calendar.current.date(from: dateComponents)", Calendar.current.date(from: dateComponents) )
+//       // print("Calendar.current.date(byAdding: dateComponents, to: createDate(from:today()))", Calendar.current.date(byAdding: dateComponents, to: createDate(from:today())) )
+//       // return Calendar.current.date(from: dateComponents)
+////        guard let tomorrow = Calendar.current.date(byAdding: dateComponents, to: createDate(from:today())) else { return nil }
+//    }
+//
+//    //2018-02-22 01:00:00 +0000 - hourly
+//    //2018-02-24 08:00:00 +0000 - daily
+//    //PST to UTC in milatary time, in above format
+//    func weatherTime() {
+//        
+//    }
 
 }
