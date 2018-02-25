@@ -13,9 +13,12 @@ import Crashlytics
 import ParseFacebookUtilsV4
 
 class SplashAnimateViewController: UIViewController, PFLogInViewControllerDelegate, PFSignUpViewControllerDelegate{
-    
-    @IBOutlet weak var kiddoLogo: UIView!
-    @IBOutlet weak var kiddoHeart: UIView!
+
+    @IBOutlet weak var findFunThingstodoLabel: UILabel!
+
+    @IBOutlet weak var dot1: UIImageView!
+    @IBOutlet weak var dot2: UIImageView!
+    @IBOutlet weak var dot3: UIImageView!
 
     var isFirstTime: Bool = true
 
@@ -28,35 +31,93 @@ class SplashAnimateViewController: UIViewController, PFLogInViewControllerDelega
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
+        self.dot1.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+        self.dot2.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+        self.dot3.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+
         showStatusBar(style: .lightContent)
+        self.findFunThingstodoLabel.alpha = 0
+        self.dot1.alpha = 0
+        self.dot2.alpha = 0
+        self.dot3.alpha = 0
 
         if isFirstTime {
-            UIView.animate(withDuration: 1.5,
-                           delay: 0,
+            UIView.animate(withDuration: 2,
+                           delay: 0.0,
+                           options: .curveEaseIn,
+                           animations: {
+                             self.findFunThingstodoLabel.alpha = 1
+            },
+                           completion:{ (finished) in
+            UIView.animate(withDuration: 0.3,
+                           delay: 0.0,
                            options: .curveEaseInOut,
                            animations: {
-                                self.kiddoLogo.alpha = 0
+                            self.dot1.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+                            self.dot2.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
+                            self.dot3.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
+                            self.dot1.alpha = 1
+                            self.dot2.alpha = 1
+                            self.dot3.alpha = 1
                            },
                            completion: { (finished) in
-                                self.kiddoLogo.isHidden = true
-                                UIView.animate(withDuration: 2.0,
-                                               delay: 0.05,
-                                               options: .curveEaseInOut,
-                                               animations: {
-                                                    self.kiddoHeart.transform = CGAffineTransform(translationX: 0, y: -(self.view.frame.size.height/2))
-                                               },
-                                               completion: { (finished) in
-                                                    self.kiddoHeart.isHidden = true
-                                                    self.isFirstTime = false
-                                                    self.prepareForLaunch()
-
-                                               })
-                           })
+                            UIView.animate(withDuration: 0.3, delay: 0.0, options:.curveEaseInOut, animations: {
+                                self.dot1.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
+                                self.dot2.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+                                self.dot3.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+                                }, completion: { (finished) in
+                                    UIView.animate(withDuration: 0.3, delay: 0.0, options:.curveEaseInOut, animations: {
+                                        self.dot1.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
+                                        self.dot2.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
+                                        self.dot3.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+                                    }, completion: { (finished) in
+                                        UIView.animate(withDuration: 0.3, delay: 0.0, options:.curveEaseInOut, animations: {
+                                            self.dot1.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
+                                            self.dot2.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
+                                            self.dot3.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
+                                        }, completion: { (finished) in
+                                            UIView.animate(withDuration: 0.3, delay: 0.0, options:.curveEaseInOut, animations: {
+                                                self.dot1.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+                                                self.dot2.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+                                                self.dot3.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+                                            }, completion: { (finished) in
+                                                UIView.animate(withDuration: 0.3, delay: 0.0, options:.curveEaseInOut, animations: {
+                                                    self.dot1.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
+                                                    self.dot2.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+                                                    self.dot3.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+                                                }, completion: { (finished) in
+                                                    UIView.animate(withDuration: 0.3, delay: 0.0, options:[.curveEaseInOut], animations: {
+                                                        self.dot1.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
+                                                        self.dot2.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
+                                                        self.dot3.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+                                                    }, completion: { (finished) in
+                                                        UIView.animate(withDuration: 0.3, delay: 0.0, options:[.curveEaseInOut], animations: {
+//                                                            self.dot1.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
+//                                                            self.dot2.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
+//                                                            self.dot3.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
+                                                        }, completion: { (finished) in
+                                                            self.dot1.isHidden = true
+                                                            self.dot2.isHidden = true
+                                                            self.dot3.isHidden = true
+                                                            self.isFirstTime = false
+                                                            self.prepareForLaunch()
+                                                        })
+                                                    })
+                                                })
+                                            })
+                                        })
+                                    })
+                                })
+                            })
+            })
         } else {
             prepareForLaunch()
         }
+
     }
-    
+
+
+
     func prepareForLaunch() {
 
         self.performSegue(withIdentifier: "showTimeline", sender: nil)

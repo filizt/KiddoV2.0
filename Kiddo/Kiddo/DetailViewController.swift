@@ -99,11 +99,16 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
 //        if event.address != nil {
 //            addressStringToGeocode(for: event.address)
 //        }
+        if let image = self.eventImage.image {
+            if image.size.width * 0.60 <= image.size.height {
+                if let croppedImage = cropImage(image: image) {
+                    self.eventImage.image = croppedImage
+                }
+                self.cachedImageViewSize = self.eventImage.frame;
+            }
+        }
 
         //check one more time to find an image, if self.image is still nil.
-
-        self.cachedImageViewSize = self.eventImage.frame;
-
         guard self.image == nil else {
             return
         }
@@ -128,6 +133,21 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
                 })
             }
         }
+    }
+    
+    private func cropImage(image: UIImage) -> UIImage?  {
+
+        let cgwidth: CGFloat = image.size.width
+        let cgheight: CGFloat = image.size.width * 0.60
+        let rect: CGRect = CGRect(x:0, y:0, width: cgwidth, height: cgheight)
+
+
+        guard let cgImage = image.cgImage else { return nil }
+        guard let croppedImageRect = cgImage.cropping(to: rect) else { return nil }
+
+        let image = UIImage(cgImage: croppedImageRect, scale: image.scale, orientation: image.imageOrientation)
+
+        return image
     }
 
     func recordUserAction() {
@@ -403,10 +423,14 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
             self.eventHours.text = DateUtil.shared.shortTime(from:event.startTime) + " - " + DateUtil.shared.shortTime(from:event.endTime)
             //eventDateForCalendar = Date()
         default: //if we hit here it means we're coming from following a deeplink
-            self.eventFullDateLabel.text = event.location // need this for backward compatibility. Until build 1.5.4
             if let date = Event.pushedEventForDateTime {
                 self.eventFullDateLabel.text = date
+            } else {
+                let eventDate = DateUtil.shared.fullDateStringWithDateTimeStyle(from: event.dates.first!)
+                self.eventFullDateLabel.text = eventDate
             }
+
+            self.eventHours.text = DateUtil.shared.shortTime(from:event.startTime) + " - " + DateUtil.shared.shortTime(from:event.endTime)
 
         }
 
@@ -438,9 +462,7 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
         if (y > 0) {
             self.eventImage.frame = CGRect(x: 0, y: scrollView.contentOffset.y, width: self.cachedImageViewSize.size.width+y, height: self.cachedImageViewSize.size.height+y)
             self.eventImage.center = CGPoint(x:self.view.center.x, y:self.eventImage.center.y);
-        } else {
-            print("y is ")
-        }
+        } 
     }
 
     func handleTap(_ gestureRecognizer: UITapGestureRecognizer) {

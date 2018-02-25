@@ -251,37 +251,65 @@ Needless to say, we never share your information.  </string>
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="splashGradient" translatesAutoresizingMaskIntoConstraints="NO" id="cqS-4D-5w9">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Kiddosplash" translatesAutoresizingMaskIntoConstraints="NO" id="cqS-4D-5w9">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="kiddo" translatesAutoresizingMaskIntoConstraints="NO" id="vGX-1E-KtD">
-                                <rect key="frame" x="132.5" y="268" width="110" height="64"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Find fun things to do" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gge-NJ-dYM">
+                                <rect key="frame" x="83" y="285" width="209" height="30.5"/>
+                                <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="22"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="smallDot" translatesAutoresizingMaskIntoConstraints="NO" id="hUC-MD-F2w">
+                                <rect key="frame" x="159" y="323" width="20" height="20"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="20" id="aB6-xo-CY4"/>
+                                    <constraint firstAttribute="width" constant="20" id="olz-OD-S4E"/>
+                                </constraints>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="kiddoHearth" translatesAutoresizingMaskIntoConstraints="NO" id="11V-A5-JQj">
-                                <rect key="frame" x="132.5" y="268" width="110" height="64"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="smallDot" translatesAutoresizingMaskIntoConstraints="NO" id="qat-Dr-z2V">
+                                <rect key="frame" x="177" y="323" width="20" height="20"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="20" id="0sv-5F-QoK"/>
+                                    <constraint firstAttribute="height" constant="20" id="Snl-7P-g64"/>
+                                </constraints>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="smallDot" translatesAutoresizingMaskIntoConstraints="NO" id="eEA-94-lqS">
+                                <rect key="frame" x="196.5" y="323" width="20" height="20"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="20" id="7eh-SE-Ieb"/>
+                                    <constraint firstAttribute="width" constant="20" id="pdY-uL-eKw"/>
+                                </constraints>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" red="0.2196078431372549" green="0.14509803921568626" blue="0.30196078431372547" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="11V-A5-JQj" firstAttribute="centerY" secondItem="Re7-2U-Ea0" secondAttribute="centerY" multiplier="0.9" id="1Vq-W3-998"/>
                             <constraint firstItem="cqS-4D-5w9" firstAttribute="top" secondItem="Re7-2U-Ea0" secondAttribute="top" id="4ct-5c-sCA"/>
-                            <constraint firstItem="vGX-1E-KtD" firstAttribute="centerX" secondItem="Re7-2U-Ea0" secondAttribute="centerX" id="BnR-AJ-dbO"/>
-                            <constraint firstItem="11V-A5-JQj" firstAttribute="centerX" secondItem="Re7-2U-Ea0" secondAttribute="centerX" id="PhG-kC-uIN"/>
+                            <constraint firstItem="eEA-94-lqS" firstAttribute="centerX" secondItem="Re7-2U-Ea0" secondAttribute="centerX" multiplier="1.1" id="7gS-Ms-yh6"/>
+                            <constraint firstItem="Gge-NJ-dYM" firstAttribute="centerY" secondItem="Re7-2U-Ea0" secondAttribute="centerY" multiplier="0.9" id="GzI-Ki-GsH"/>
+                            <constraint firstItem="hUC-MD-F2w" firstAttribute="centerX" secondItem="Re7-2U-Ea0" secondAttribute="centerX" multiplier="0.9" id="IjJ-ob-3p7"/>
+                            <constraint firstItem="hUC-MD-F2w" firstAttribute="centerY" secondItem="Re7-2U-Ea0" secondAttribute="centerY" id="Kqr-Lg-lz2"/>
                             <constraint firstItem="93h-nb-Z9g" firstAttribute="top" secondItem="cqS-4D-5w9" secondAttribute="bottom" id="Z2N-af-iUT"/>
-                            <constraint firstItem="vGX-1E-KtD" firstAttribute="centerY" secondItem="Re7-2U-Ea0" secondAttribute="centerY" multiplier="0.9" id="arN-o6-Ejx"/>
+                            <constraint firstItem="hUC-MD-F2w" firstAttribute="centerY" secondItem="Re7-2U-Ea0" secondAttribute="centerY" id="awp-tG-uqV"/>
+                            <constraint firstItem="eEA-94-lqS" firstAttribute="centerY" secondItem="Re7-2U-Ea0" secondAttribute="centerY" id="b1P-CV-g83"/>
                             <constraint firstAttribute="trailing" secondItem="cqS-4D-5w9" secondAttribute="trailing" id="kwg-vz-CCw"/>
+                            <constraint firstItem="Gge-NJ-dYM" firstAttribute="centerX" secondItem="Re7-2U-Ea0" secondAttribute="centerX" id="nNd-Aq-qUV"/>
+                            <constraint firstItem="qat-Dr-z2V" firstAttribute="centerX" secondItem="Re7-2U-Ea0" secondAttribute="centerX" id="r34-nB-p06"/>
+                            <constraint firstItem="qat-Dr-z2V" firstAttribute="centerY" secondItem="Re7-2U-Ea0" secondAttribute="centerY" id="twO-RJ-hcj"/>
                             <constraint firstItem="cqS-4D-5w9" firstAttribute="leading" secondItem="Re7-2U-Ea0" secondAttribute="leading" id="ubN-R3-ziL"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="kiddoHeart" destination="11V-A5-JQj" id="QLC-11-66v"/>
-                        <outlet property="kiddoLogo" destination="vGX-1E-KtD" id="Yqk-X1-qPS"/>
+                        <outlet property="dot1" destination="hUC-MD-F2w" id="StJ-r7-DO7"/>
+                        <outlet property="dot2" destination="qat-Dr-z2V" id="DuC-83-TxO"/>
+                        <outlet property="dot3" destination="eEA-94-lqS" id="j2x-Yo-q2b"/>
+                        <outlet property="findFunThingstodoLabel" destination="Gge-NJ-dYM" id="win-21-QpU"/>
                         <segue destination="rqb-Yq-P7V" kind="show" identifier="showTimeline" animates="NO" id="BND-Ye-09L"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="u0y-42-JHP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-730" y="146"/>
+            <point key="canvasLocation" x="-730.39999999999998" y="145.27736131934034"/>
         </scene>
         <!--Detail View Controller-->
         <scene sceneID="Qfs-9q-RSc">
@@ -292,14 +320,14 @@ Needless to say, we never share your information.  </string>
                         <viewControllerLayoutGuide type="bottom" id="faB-91-pEo"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="cJs-0j-HFp">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="935"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="958"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hxZ-Yy-QZr">
-                                <rect key="frame" x="0.0" y="64" width="375" height="877"/>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hxZ-Yy-QZr">
+                                <rect key="frame" x="0.0" y="64" width="375" height="908"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MNq-I4-i1y">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="889"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="892"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="DYO-TX-Z2k">
                                                 <rect key="frame" x="0.0" y="0.0" width="375" height="255"/>
@@ -513,7 +541,7 @@ Needless to say, we never share your information.  </string>
                                             <constraint firstItem="i0A-ed-dta" firstAttribute="top" secondItem="DYO-TX-Z2k" secondAttribute="bottom" constant="25" id="PIp-ej-70M"/>
                                             <constraint firstItem="j8d-u6-qgc" firstAttribute="leading" secondItem="MNq-I4-i1y" secondAttribute="leading" constant="16" id="UpN-fO-f7B"/>
                                             <constraint firstItem="DYO-TX-Z2k" firstAttribute="top" secondItem="MNq-I4-i1y" secondAttribute="top" id="Vtt-XB-cdJ"/>
-                                            <constraint firstAttribute="bottom" secondItem="Vwe-a4-WTV" secondAttribute="bottom" constant="-4.5" id="WI2-UN-UUW"/>
+                                            <constraint firstAttribute="bottom" secondItem="Vwe-a4-WTV" secondAttribute="bottom" constant="-1.5" id="WI2-UN-UUW"/>
                                             <constraint firstItem="j8d-u6-qgc" firstAttribute="top" secondItem="i0A-ed-dta" secondAttribute="bottom" constant="12" id="XEW-uu-qkh"/>
                                             <constraint firstAttribute="trailing" secondItem="pzE-9F-2Et" secondAttribute="trailing" constant="15" id="Xfe-0N-ary"/>
                                             <constraint firstItem="U9h-xr-6yx" firstAttribute="leading" secondItem="MNq-I4-i1y" secondAttribute="leading" id="Xj7-n7-ZCn"/>
@@ -549,7 +577,7 @@ Needless to say, we never share your information.  </string>
                                     <constraint firstAttribute="trailing" secondItem="MNq-I4-i1y" secondAttribute="trailing" id="1eR-gq-9av"/>
                                     <constraint firstItem="MNq-I4-i1y" firstAttribute="top" secondItem="hxZ-Yy-QZr" secondAttribute="top" id="Es1-cv-fhc"/>
                                     <constraint firstItem="MNq-I4-i1y" firstAttribute="leading" secondItem="hxZ-Yy-QZr" secondAttribute="leading" id="P05-JN-MT0"/>
-                                    <constraint firstAttribute="bottom" secondItem="MNq-I4-i1y" secondAttribute="bottom" id="uZE-Ar-ipi"/>
+                                    <constraint firstAttribute="bottom" secondItem="MNq-I4-i1y" secondAttribute="bottom" constant="8" id="uZE-Ar-ipi"/>
                                     <constraint firstItem="MNq-I4-i1y" firstAttribute="width" secondItem="hxZ-Yy-QZr" secondAttribute="width" id="udf-z1-mmm"/>
                                 </constraints>
                             </scrollView>
@@ -558,12 +586,12 @@ Needless to say, we never share your information.  </string>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="hxZ-Yy-QZr" secondAttribute="trailing" id="6ac-OW-SgN"/>
                             <constraint firstItem="hxZ-Yy-QZr" firstAttribute="leading" secondItem="cJs-0j-HFp" secondAttribute="leading" id="RK5-e3-VN8"/>
-                            <constraint firstItem="faB-91-pEo" firstAttribute="top" secondItem="hxZ-Yy-QZr" secondAttribute="bottom" constant="-6" id="dfJ-OR-swd"/>
+                            <constraint firstItem="faB-91-pEo" firstAttribute="top" secondItem="hxZ-Yy-QZr" secondAttribute="bottom" constant="-9" id="dfJ-OR-swd"/>
                             <constraint firstItem="hxZ-Yy-QZr" firstAttribute="top" secondItem="2as-L2-j5u" secondAttribute="bottom" id="mO4-Xb-4Mj"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="L6C-hq-ggT"/>
-                    <size key="freeformSize" width="375" height="935"/>
+                    <size key="freeformSize" width="375" height="958"/>
                     <connections>
                         <outlet property="eventAgeInfo" destination="iAx-RO-gMe" id="lQW-6W-gon"/>
                         <outlet property="eventCategory" destination="pFQ-ad-dVo" id="wNy-Xa-126"/>
@@ -619,14 +647,13 @@ Needless to say, we never share your information.  </string>
         </scene>
     </scenes>
     <resources>
+        <image name="Kiddosplash" width="375" height="667"/>
         <image name="ages2" width="215" height="185"/>
         <image name="bg_portraitBlur2" width="1060" height="1484"/>
         <image name="calendaricon" width="360" height="360"/>
         <image name="gradient" width="2100" height="690"/>
-        <image name="kiddo" width="110" height="64"/>
-        <image name="kiddoHearth" width="110" height="64"/>
         <image name="location_pin" width="512" height="512"/>
-        <image name="splashGradient" width="375" height="667"/>
+        <image name="smallDot" width="40" height="40"/>
         <image name="tickets" width="200" height="200"/>
     </resources>
     <inferredMetricsTieBreakers>

@@ -1072,6 +1072,8 @@ extension TimelineViewController: MKMapViewDelegate {
         let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
         let detailViewController = storyboard.instantiateViewController(withIdentifier: "DetailViewController") as! DetailViewController
         detailViewController.event = annotationEvent
+        detailViewController.currentForecast = self.currentForecast
+        detailViewController.lastKnownUserLocation = self.lastKnownUserLocation
 
         if let imageView = view.leftCalloutAccessoryView as? UIImageView {
             detailViewController.image = imageView.image

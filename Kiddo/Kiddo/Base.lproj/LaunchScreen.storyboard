@@ -1,12 +1,10 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1212" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
-        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -22,21 +20,20 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="kiddo" translatesAutoresizingMaskIntoConstraints="NO" id="KPT-ge-DTo">
-                                <rect key="frame" x="133" y="268" width="110" height="64"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="splashGradient" translatesAutoresizingMaskIntoConstraints="NO" id="Y6w-tg-AQi">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Kiddosplash" translatesAutoresizingMaskIntoConstraints="NO" id="Y6w-tg-AQi">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" red="0.2196078431372549" green="0.14509803921568626" blue="0.30196078431372547" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="KPT-ge-DTo" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" multiplier="0.9" id="5G7-r9-1R4"/>
+                            <constraint firstItem="Y6w-tg-AQi" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="3Eu-CP-8qV"/>
+                            <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="Y6w-tg-AQi" secondAttribute="bottom" id="6eL-RM-f8G"/>
                             <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="Y6w-tg-AQi" secondAttribute="bottom" id="PIO-g0-hDd"/>
                             <constraint firstAttribute="trailing" secondItem="Y6w-tg-AQi" secondAttribute="trailing" id="RKP-pD-ml8"/>
                             <constraint firstItem="Y6w-tg-AQi" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="RrP-Nk-17r"/>
-                            <constraint firstItem="KPT-ge-DTo" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="TkD-jv-Vxd"/>
+                            <constraint firstItem="Y6w-tg-AQi" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="Tor-dU-o4V"/>
                             <constraint firstItem="Y6w-tg-AQi" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="hML-rE-XTd"/>
+                            <constraint firstAttribute="trailing" secondItem="Y6w-tg-AQi" secondAttribute="trailing" id="rd0-Uw-FdQ"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -46,7 +43,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="kiddo" width="110" height="64"/>
-        <image name="splashGradient" width="375" height="667"/>
+        <image name="Kiddosplash" width="375" height="667"/>
     </resources>
 </document>

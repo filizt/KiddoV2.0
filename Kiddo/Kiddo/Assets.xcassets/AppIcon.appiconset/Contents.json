@@ -3,55 +3,55 @@
     {
       "size" : "20x20",
       "idiom" : "iphone",
-      "filename" : "notification2x.png",
+      "filename" : "KiddoLogoK60x60-1.png",
       "scale" : "2x"
     },
     {
       "size" : "20x20",
       "idiom" : "iphone",
-      "filename" : "notification3x.png",
+      "filename" : "KiddoLogoK60x60.png",
       "scale" : "3x"
     },
     {
       "size" : "29x29",
       "idiom" : "iphone",
-      "filename" : "spotlight2x.png",
+      "filename" : "KiddoLogoK80x80-2.png",
       "scale" : "2x"
     },
     {
       "size" : "29x29",
       "idiom" : "iphone",
-      "filename" : "spotlight3x.png",
+      "filename" : "KiddoLogoK80x80-1.png",
       "scale" : "3x"
     },
     {
       "size" : "40x40",
       "idiom" : "iphone",
-      "filename" : "Icon-Small-40@2x.png",
+      "filename" : "KiddoLogoK80x80.png",
       "scale" : "2x"
     },
     {
       "size" : "40x40",
       "idiom" : "iphone",
-      "filename" : "7spotlight3x.png",
+      "filename" : "KiddoLogoK120x120-1.png",
       "scale" : "3x"
     },
     {
       "size" : "60x60",
       "idiom" : "iphone",
-      "filename" : "7spotlight3x-1.png",
+      "filename" : "KiddoLogoK120x120.png",
       "scale" : "2x"
     },
     {
       "size" : "60x60",
       "idiom" : "iphone",
-      "filename" : "iphoneApp3x.png",
+      "filename" : "KiddoLogoK180x180.png",
       "scale" : "3x"
     },
     {
       "size" : "1024x1024",
       "idiom" : "ios-marketing",
-      "filename" : "iphoneApp1024.png",
+      "filename" : "KiddoLogoK1024.png",
       "scale" : "1x"
     }
   ],
