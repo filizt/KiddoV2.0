@@ -113,7 +113,7 @@
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="EUR-ae-as2" secondAttribute="bottom" id="blq-ag-4ZV"/>
                             <constraint firstItem="EUR-ae-as2" firstAttribute="top" secondItem="L5u-Zr-Q8o" secondAttribute="bottom" constant="-6" id="r0A-hW-8fG"/>
                             <constraint firstAttribute="trailing" secondItem="EUR-ae-as2" secondAttribute="trailing" id="s8H-1F-i6j"/>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="bl0-SP-8aP" secondAttribute="bottom" id="xSn-JK-8rc"/>
+                            <constraint firstAttribute="bottom" secondItem="bl0-SP-8aP" secondAttribute="bottom" id="xSn-JK-8rc"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Title" id="fJv-Hi-iQY"/>
@@ -329,14 +329,14 @@
                         <viewControllerLayoutGuide type="bottom" id="faB-91-pEo"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="cJs-0j-HFp">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="963"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="962"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hxZ-Yy-QZr">
-                                <rect key="frame" x="0.0" y="64" width="375" height="913"/>
+                                <rect key="frame" x="0.0" y="64" width="375" height="898"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MNq-I4-i1y">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="899"/>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MNq-I4-i1y">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="898"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="DYO-TX-Z2k">
                                                 <rect key="frame" x="0.0" y="0.0" width="375" height="255"/>
@@ -549,7 +549,7 @@
                                             <constraint firstItem="i0A-ed-dta" firstAttribute="top" secondItem="DYO-TX-Z2k" secondAttribute="bottom" constant="25" id="PIp-ej-70M"/>
                                             <constraint firstItem="j8d-u6-qgc" firstAttribute="leading" secondItem="MNq-I4-i1y" secondAttribute="leading" constant="16" id="UpN-fO-f7B"/>
                                             <constraint firstItem="DYO-TX-Z2k" firstAttribute="top" secondItem="MNq-I4-i1y" secondAttribute="top" id="Vtt-XB-cdJ"/>
-                                            <constraint firstAttribute="bottom" secondItem="Vwe-a4-WTV" secondAttribute="bottom" constant="2" id="WI2-UN-UUW"/>
+                                            <constraint firstAttribute="bottom" secondItem="Vwe-a4-WTV" secondAttribute="bottom" id="WI2-UN-UUW"/>
                                             <constraint firstItem="j8d-u6-qgc" firstAttribute="top" secondItem="i0A-ed-dta" secondAttribute="bottom" constant="12" id="XEW-uu-qkh"/>
                                             <constraint firstAttribute="trailing" secondItem="pzE-9F-2Et" secondAttribute="trailing" constant="15" id="Xfe-0N-ary"/>
                                             <constraint firstItem="U9h-xr-6yx" firstAttribute="leading" secondItem="MNq-I4-i1y" secondAttribute="leading" id="Xj7-n7-ZCn"/>
@@ -585,7 +585,7 @@
                                     <constraint firstAttribute="trailing" secondItem="MNq-I4-i1y" secondAttribute="trailing" id="1eR-gq-9av"/>
                                     <constraint firstItem="MNq-I4-i1y" firstAttribute="top" secondItem="hxZ-Yy-QZr" secondAttribute="top" id="Es1-cv-fhc"/>
                                     <constraint firstItem="MNq-I4-i1y" firstAttribute="leading" secondItem="hxZ-Yy-QZr" secondAttribute="leading" id="P05-JN-MT0"/>
-                                    <constraint firstAttribute="bottom" secondItem="MNq-I4-i1y" secondAttribute="bottom" constant="13" id="uZE-Ar-ipi"/>
+                                    <constraint firstAttribute="bottom" secondItem="MNq-I4-i1y" secondAttribute="bottom" id="uZE-Ar-ipi"/>
                                     <constraint firstItem="MNq-I4-i1y" firstAttribute="width" secondItem="hxZ-Yy-QZr" secondAttribute="width" id="udf-z1-mmm"/>
                                 </constraints>
                             </scrollView>
@@ -593,13 +593,13 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="hxZ-Yy-QZr" secondAttribute="trailing" id="6ac-OW-SgN"/>
+                            <constraint firstItem="hxZ-Yy-QZr" firstAttribute="top" secondItem="cJs-0j-HFp" secondAttribute="top" constant="64" id="7jo-BH-wa1"/>
                             <constraint firstItem="hxZ-Yy-QZr" firstAttribute="leading" secondItem="cJs-0j-HFp" secondAttribute="leading" id="RK5-e3-VN8"/>
-                            <constraint firstItem="faB-91-pEo" firstAttribute="top" secondItem="hxZ-Yy-QZr" secondAttribute="bottom" constant="-14" id="dfJ-OR-swd"/>
-                            <constraint firstItem="hxZ-Yy-QZr" firstAttribute="top" secondItem="2as-L2-j5u" secondAttribute="bottom" id="mO4-Xb-4Mj"/>
+                            <constraint firstAttribute="bottom" secondItem="hxZ-Yy-QZr" secondAttribute="bottom" id="Uka-6w-bAG"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="L6C-hq-ggT"/>
-                    <size key="freeformSize" width="375" height="963"/>
+                    <size key="freeformSize" width="375" height="962"/>
                     <connections>
                         <outlet property="eventAgeInfo" destination="iAx-RO-gMe" id="lQW-6W-gon"/>
                         <outlet property="eventCategory" destination="pFQ-ad-dVo" id="wNy-Xa-126"/>
