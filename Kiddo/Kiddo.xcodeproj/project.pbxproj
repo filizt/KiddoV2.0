@@ -106,6 +106,7 @@
 		BD506DDA1E294175001A98B0 /* Storyboards */ = {
 			isa = PBXGroup;
 			children = (
+				C26E62701DD103B900BDC568 /* eventCell.xib */,
 				BD68B9AA1DD0F2F300CE39CA /* Main.storyboard */,
 				BD68B9AF1DD0F2F300CE39CA /* LaunchScreen.storyboard */,
 			);
@@ -161,10 +162,10 @@
 			isa = PBXGroup;
 			children = (
 				C22AC4671E60168D00F79926 /* SplashAnimateViewController.swift */,
-				C26E626E1DD1038C00BDC568 /* TimelineViewController.swift */,
-				BD68B9BE1DD0FA1C00CE39CA /* DetailViewController.swift */,
 				BDEB9E8E1E05A64F002F7222 /* LogInViewController.swift */,
 				BD0994401ECB5FCC0045F749 /* SignUpViewController.swift */,
+				C26E626E1DD1038C00BDC568 /* TimelineViewController.swift */,
+				BD68B9BE1DD0FA1C00CE39CA /* DetailViewController.swift */,
 			);
 			name = "View Controller";
 			sourceTree = "<group>";
@@ -185,7 +186,6 @@
 			children = (
 				BDC903D31E413B82006CD7D6 /* CustomSegmentedControl.swift */,
 				C26E62721DD1098600BDC568 /* EventTableViewCell.swift */,
-				C26E62701DD103B900BDC568 /* eventCell.xib */,
 				BD600AA01F621B2700DCC0D3 /* CustomFilterButton.swift */,
 				BDD126131FBA2A6D007219B1 /* FilterCollectionViewCell.swift */,
 			);

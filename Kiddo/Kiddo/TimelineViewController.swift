@@ -30,7 +30,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
     private var lastModified: Date?
     let clusterManager = ClusterManager()
     //"❄️ Holiday"
-    fileprivate var filters = ["ALL","📍Nearby","🍀 Free","🌕 Indoor"]
+    fileprivate var filters = ["ALL","📍Nearby","🐝 Keep'em Busy", "🍀 Free","🌕 Indoor"]
 
     fileprivate var userLocationFound = false
     var lastKnownUserLocation : CLLocation? {
@@ -740,17 +740,32 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         switch selectedIndex {
         case 0:
             self.events = self.today
-            resetCollectionViewSelection()
+            UIView.animate(withDuration: 0.3, animations: { () -> Void in
+                let leftOffset = CGPoint(x: 0, y: 0);
+                self.filtersCollectionView.contentOffset = leftOffset
+            }) { (finished) -> Void in
+                self.resetCollectionViewSelection()
+            }
             recordUserSegmentedControlAction(forDay: "Today")
             Answers.logContentView(withName: "Today Tab", contentType: nil, contentId: nil, customAttributes: nil)
         case 1:
             self.events = self.tomorrow
-            resetCollectionViewSelection()
+            UIView.animate(withDuration: 0.3, animations: { () -> Void in
+                let leftOffset = CGPoint(x: 0, y: 0);
+                self.filtersCollectionView.contentOffset = leftOffset
+            }) { (finished) -> Void in
+                self.resetCollectionViewSelection()
+            }
             Answers.logContentView(withName: "Tomorrow Tab", contentType: nil, contentId: nil, customAttributes: nil)
             recordUserSegmentedControlAction(forDay: "Tomorrow")
         case 2:
             self.events = self.later
-            resetCollectionViewSelection()
+            UIView.animate(withDuration: 0.3, animations: { () -> Void in
+                let leftOffset = CGPoint(x: 0, y: 0);
+                self.filtersCollectionView.contentOffset = leftOffset
+            }) { (finished) -> Void in
+                self.resetCollectionViewSelection()
+            }
             Answers.logContentView(withName: "Later Tab", contentType: nil, contentId: nil, customAttributes: nil)
             recordUserSegmentedControlAction(forDay: "Later")
         default:
@@ -790,11 +805,11 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         }
 
         switch selectedFilter {
-        case filters[0]: //ALL
+        case "ALL": //ALL
             self.events = e
             recordUserFilterAction(forFilter: "All")
-        case filters[1]: //Nearby
-            recordUserFilterAction(forFilter: "📍 Nearby")
+        case "📍 Nearby": //Nearby
+            recordUserFilterAction(forFilter: "Nearby")
 
             if CLLocationManager.authorizationStatus() == .authorizedWhenInUse ||
                     CLLocationManager.authorizationStatus() == .authorizedAlways {
@@ -828,18 +843,56 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
                 self.mapView?.showsUserLocation = true
             }
 
-        case filters[2]: //Holiday
-            self.events = e.filter { $0.categoryKeywords?.contains("Seasonal & Holidays") == true }
-            recordUserFilterAction(forFilter: "❄︎ Holiday")
-        case filters[3]: //Free
-            self.events = e.filter { $0.freeFlag == true }
-            recordUserFilterAction(forFilter: "Free")
-        case filters[4]: //Indoor
+        case "🐝 Keep'em Busy": //Holiday
+            let filteredEvents = e.filter { $0.categoryKeywords?.contains("Activity") == true }
+            if filteredEvents.count > 0 {
+                self.events = filteredEvents
+                recordUserFilterAction(forFilter: "Keep'em Busy")
+            } else {
+                let alertController = UIAlertController (title: "Sorry", message: "It looks like we can't find any Keep'em Busy events for the day.", preferredStyle: .alert)
+                let action = UIAlertAction(title: "OK", style: UIAlertActionStyle.default) { (_) -> Void in
+                    self.resetCollectionViewSelection()
+                    self.events = e
+                }
+                alertController.addAction(action)
+                self.present(alertController, animated: true, completion: nil)
+            }
+        case "🍀 Free": //Free
+            let eventsFiltered = e.filter { $0.freeFlag == true }
+            if eventsFiltered.count == 0 {
+                let alertController = UIAlertController (title: "Sorry", message: "It looks like we can't find any Free events for the day.", preferredStyle: .alert)
+                let action = UIAlertAction(title: "OK", style: UIAlertActionStyle.default) { (_) -> Void in
+                    self.resetCollectionViewSelection()
+                    self.events = e
+                }
+                alertController.addAction(action)
+                self.present(alertController, animated: true, completion: nil)
+            } else {
+                self.events = eventsFiltered
+                recordUserFilterAction(forFilter: "Free")
+            }
+        case "🌕 Indoor": //Indoor
             self.events = e.filter { $0.categoryKeywords?.contains("Indoor") == true }
             recordUserFilterAction(forFilter: "Indoor")
         default:
-            self.events = e
-            recordUserFilterAction(forFilter: "Default")
+            if SeasonalEvent.shared.isEnabled == true {
+                let seasonalFilteredEvents = e.filter { $0.categoryKeywords?.contains(SeasonalEvent.shared.name) == true }
+                if seasonalFilteredEvents.count > 0 {
+                    self.events = seasonalFilteredEvents
+                    recordUserFilterAction(forFilter: SeasonalEvent.shared.name)
+                } else {
+                    let alertController = UIAlertController (title: "Sorry", message: "It looks like we can't find any events for the day.", preferredStyle: .alert)
+                    let action = UIAlertAction(title: "OK", style: UIAlertActionStyle.default) { (_) -> Void in
+                        self.resetCollectionViewSelection()
+                        self.events = e
+                    }
+                    alertController.addAction(action)
+                    self.present(alertController, animated: true, completion: nil)
+                }
+            } else {
+                self.events = e
+                recordUserFilterAction(forFilter: "Default")
+            }
         }
     }
 

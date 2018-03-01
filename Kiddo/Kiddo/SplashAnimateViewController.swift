@@ -31,9 +31,9 @@ class SplashAnimateViewController: UIViewController, PFLogInViewControllerDelega
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        self.dot1.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
-        self.dot2.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
-        self.dot3.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+        self.dot1.transform = CGAffineTransform(scaleX: 0.2, y: 0.2)
+        self.dot2.transform = CGAffineTransform(scaleX: 0.2, y: 0.2)
+        self.dot3.transform = CGAffineTransform(scaleX: 0.2, y: 0.2)
 
         showStatusBar(style: .lightContent)
         self.findFunThingstodoLabel.alpha = 0
@@ -49,52 +49,51 @@ class SplashAnimateViewController: UIViewController, PFLogInViewControllerDelega
                              self.findFunThingstodoLabel.alpha = 1
             },
                            completion:{ (finished) in
-            UIView.animate(withDuration: 0.3,
-                           delay: 0.0,
-                           options: .curveEaseInOut,
-                           animations: {
-                            self.dot1.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
-                            self.dot2.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
-                            self.dot3.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
                             self.dot1.alpha = 1
                             self.dot2.alpha = 1
                             self.dot3.alpha = 1
-                           },
-                           completion: { (finished) in
-                            UIView.animate(withDuration: 0.3, delay: 0.0, options:.curveEaseInOut, animations: {
+                            UIView.animate(withDuration: 0.3,
+                           delay: 0.0,
+                           options: [],
+                           animations: {
+                            self.dot1.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
+                            self.dot2.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+                            self.dot3.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+                           },completion: { (finished) in
+                            UIView.animate(withDuration: 0.2, delay: 0.0, options:.curveEaseInOut, animations: {
                                 self.dot1.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
-                                self.dot2.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
-                                self.dot3.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+                                self.dot2.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
+                                self.dot3.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
                                 }, completion: { (finished) in
-                                    UIView.animate(withDuration: 0.3, delay: 0.0, options:.curveEaseInOut, animations: {
+                                    UIView.animate(withDuration: 0.2, delay: 0.0, options:.curveEaseInOut, animations: {
                                         self.dot1.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
                                         self.dot2.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
-                                        self.dot3.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+                                        self.dot3.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
                                     }, completion: { (finished) in
-                                        UIView.animate(withDuration: 0.3, delay: 0.0, options:.curveEaseInOut, animations: {
-                                            self.dot1.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
-                                            self.dot2.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
-                                            self.dot3.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
+                                        UIView.animate(withDuration: 0.2, delay: 0.0, options:.curveEaseInOut, animations: {
+                                            self.dot1.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+                                            self.dot2.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+                                            self.dot3.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
                                         }, completion: { (finished) in
-                                            UIView.animate(withDuration: 0.3, delay: 0.0, options:.curveEaseInOut, animations: {
-                                                self.dot1.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
-                                                self.dot2.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
-                                                self.dot3.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+                                            UIView.animate(withDuration: 0.2, delay: 0.0, options:.curveEaseInOut, animations: {
+                                                self.dot1.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
+                                                self.dot2.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+                                                self.dot3.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
                                             }, completion: { (finished) in
-                                                UIView.animate(withDuration: 0.3, delay: 0.0, options:.curveEaseInOut, animations: {
+                                                UIView.animate(withDuration: 0.2, delay: 0.0, options:.curveEaseInOut, animations: {
                                                     self.dot1.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
-                                                    self.dot2.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
-                                                    self.dot3.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+                                                    self.dot2.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
+                                                    self.dot3.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
                                                 }, completion: { (finished) in
-                                                    UIView.animate(withDuration: 0.3, delay: 0.0, options:[.curveEaseInOut], animations: {
+                                                    UIView.animate(withDuration: 0.2, delay: 0.0, options:[.curveEaseInOut], animations: {
                                                         self.dot1.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
                                                         self.dot2.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
-                                                        self.dot3.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+                                                        self.dot3.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
                                                     }, completion: { (finished) in
-                                                        UIView.animate(withDuration: 0.3, delay: 0.0, options:[.curveEaseInOut], animations: {
-//                                                            self.dot1.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
-//                                                            self.dot2.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
-//                                                            self.dot3.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
+                                                        UIView.animate(withDuration: 0.2, delay: 0.0, options:[.curveEaseInOut], animations: {
+                                                            self.dot1.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+                                                            self.dot2.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+                                                            self.dot3.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
                                                         }, completion: { (finished) in
                                                             self.dot1.isHidden = true
                                                             self.dot2.isHidden = true
@@ -120,24 +119,24 @@ class SplashAnimateViewController: UIViewController, PFLogInViewControllerDelega
 
     func prepareForLaunch() {
 
-        self.performSegue(withIdentifier: "showTimeline", sender: nil)
+        //self.performSegue(withIdentifier: "showTimeline", sender: nil)
 
-//        if PFUser.current() != nil {
-//            self.performSegue(withIdentifier: "showTimeline", sender: nil)
-//        } else {
-//            if !emailSubmisionNeeded() {
-//                self.performSegue(withIdentifier: "showTimeline", sender: nil)
-//            } else {
-//                let logInViewController = LogInViewController()
-//                logInViewController.fields = [PFLogInFields.facebook,PFLogInFields.dismissButton]
-//                logInViewController.delegate = self
-//                logInViewController.emailAsUsername = false
-//                logInViewController.signUpController?.delegate = self
-//                logInViewController.facebookPermissions = ["public_profile", "email"]
-//
-//                self.present(logInViewController, animated: true, completion: nil )
-//            }
-//        }
+        if PFUser.current() != nil {
+            self.performSegue(withIdentifier: "showTimeline", sender: nil)
+        } else {
+            if !emailSubmisionNeeded() {
+                self.performSegue(withIdentifier: "showTimeline", sender: nil)
+            } else {
+                let logInViewController = LogInViewController()
+                logInViewController.fields = [PFLogInFields.facebook,PFLogInFields.dismissButton]
+                logInViewController.delegate = self
+                logInViewController.emailAsUsername = false
+                logInViewController.signUpController?.delegate = self
+                logInViewController.facebookPermissions = ["public_profile", "email"]
+
+                self.present(logInViewController, animated: true, completion: nil )
+            }
+        }
     }
 
     func emailSubmisionNeeded() -> Bool {

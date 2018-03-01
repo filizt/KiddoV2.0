@@ -11,6 +11,7 @@
     </dependencies>
     <customFonts key="customFonts">
         <array key="Avenir.ttc">
+            <string>Avenir-Black</string>
             <string>Avenir-Book</string>
             <string>Avenir-Heavy</string>
             <string>Avenir-Medium</string>
@@ -55,35 +56,35 @@
                                     <constraint firstAttribute="height" constant="40" id="XzM-xU-wx5"/>
                                 </constraints>
                                 <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="drY-Jq-EQk">
-                                    <size key="itemSize" width="90" height="40"/>
+                                    <size key="itemSize" width="110" height="40"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="filterCollectionViewCell" id="aiP-N2-ZCC" customClass="FilterCollectionViewCell" customModule="Kiddo" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="90" height="40"/>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" reuseIdentifier="filterCollectionViewCell" id="Kou-9Y-jfz" customClass="FilterCollectionViewCell" customModule="Kiddo" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="110" height="40"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                            <rect key="frame" x="0.0" y="0.0" width="90" height="40"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                            <rect key="frame" x="0.0" y="0.0" width="110" height="40"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fVl-Uk-iA4">
-                                                    <rect key="frame" x="8" y="8" width="74" height="24"/>
-                                                    <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="12"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Keep'em Busy" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SbD-KC-InH">
+                                                    <rect key="frame" x="8" y="8" width="94" height="22"/>
+                                                    <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="11"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                         </view>
                                         <constraints>
-                                            <constraint firstItem="fVl-Uk-iA4" firstAttribute="leading" secondItem="aiP-N2-ZCC" secondAttribute="leadingMargin" id="IoR-ZL-tXg"/>
-                                            <constraint firstAttribute="bottomMargin" secondItem="fVl-Uk-iA4" secondAttribute="bottom" id="cYd-he-vz3"/>
-                                            <constraint firstAttribute="trailingMargin" secondItem="fVl-Uk-iA4" secondAttribute="trailing" id="sWP-2f-Vb0"/>
-                                            <constraint firstItem="fVl-Uk-iA4" firstAttribute="top" secondItem="aiP-N2-ZCC" secondAttribute="topMargin" id="vTP-Ak-1HP"/>
+                                            <constraint firstItem="SbD-KC-InH" firstAttribute="top" secondItem="Kou-9Y-jfz" secondAttribute="topMargin" id="GpT-up-dgS"/>
+                                            <constraint firstItem="SbD-KC-InH" firstAttribute="leading" secondItem="Kou-9Y-jfz" secondAttribute="leadingMargin" id="UEa-mu-qqA"/>
+                                            <constraint firstAttribute="trailingMargin" secondItem="SbD-KC-InH" secondAttribute="trailing" id="cDq-q4-gin"/>
+                                            <constraint firstAttribute="bottomMargin" secondItem="SbD-KC-InH" secondAttribute="bottom" constant="2" id="e6i-3a-mek"/>
                                         </constraints>
                                         <connections>
-                                            <outlet property="filterLabel" destination="fVl-Uk-iA4" id="shY-oD-kNe"/>
+                                            <outlet property="filterLabel" destination="SbD-KC-InH" id="Cc8-MC-pLw"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
@@ -149,33 +150,21 @@
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bg_portraitBlur2" translatesAutoresizingMaskIntoConstraints="NO" id="cdf-De-58R">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                     </imageView>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder=" Email" textAlignment="natural" minimumFontSize="18" translatesAutoresizingMaskIntoConstraints="NO" id="qYR-gy-kgx">
-                                        <rect key="frame" x="37.5" y="216" width="300" height="35"/>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Email" textAlignment="natural" minimumFontSize="18" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="qYR-gy-kgx">
+                                        <rect key="frame" x="16" y="245" width="343" height="44"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="35" id="LxY-FQ-iZt"/>
-                                            <constraint firstAttribute="width" constant="300" id="ze6-bI-1A1"/>
+                                            <constraint firstAttribute="height" constant="44" id="LxY-FQ-iZt"/>
                                         </constraints>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="18"/>
                                         <textInputTraits key="textInputTraits" keyboardType="emailAddress" returnKeyType="done"/>
                                     </textField>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4rj-4Z-hTK">
-                                        <rect key="frame" x="20" y="38.5" width="335" height="156"/>
-                                        <string key="text">Subscribe to our weekly emails and find out Seattle's best kid-friendly things to do!
-
-Needless to say, we never share your information.  </string>
-                                        <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="19"/>
-                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <nil key="highlightedColor"/>
-                                        <string key="userLabel">Let's stay in touch!   Sign up for our weekly emails about Seattle's best events and activities for kids!  You can unsubscribe anytime and we never share your information.</string>
-                                    </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bTG-1Z-ld9">
-                                        <rect key="frame" x="37" y="262.5" width="300" height="35"/>
+                                        <rect key="frame" x="16" y="297" width="343" height="44"/>
                                         <color key="backgroundColor" red="0.20392156862745098" green="0.74901960784313726" blue="0.28627450980392155" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="35" id="273-qo-SYE"/>
-                                            <constraint firstAttribute="width" constant="300" id="aMi-Ne-g6A"/>
+                                            <constraint firstAttribute="height" constant="44" id="273-qo-SYE"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="18"/>
                                         <state key="normal" title="Submit">
@@ -186,10 +175,10 @@ Needless to say, we never share your information.  </string>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kiT-2e-wqy">
-                                        <rect key="frame" x="144" y="309.5" width="87" height="35"/>
+                                        <rect key="frame" x="144" y="349" width="87" height="44"/>
                                         <color key="backgroundColor" red="1" green="0.38387640629999997" blue="0.36725140550000002" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="35" id="swb-ps-Pfr"/>
+                                            <constraint firstAttribute="height" constant="44" id="swb-ps-Pfr"/>
                                             <constraint firstAttribute="width" constant="87" id="v8K-dy-NIh"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
@@ -200,30 +189,50 @@ Needless to say, we never share your information.  </string>
                                             <action selector="goBackButtonTapped:" destination="Yzy-ug-nwD" eventType="touchUpInside" id="zdf-X4-IVE"/>
                                         </connections>
                                     </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Let's Get Started" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I5K-rm-Uhf">
+                                        <rect key="frame" x="16" y="147.5" width="343" height="38.5"/>
+                                        <fontDescription key="fontDescription" name="Avenir-Black" family="Avenir" pointSize="28"/>
+                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sign up to find fun things to do!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y2F-Hs-d4q">
+                                        <rect key="frame" x="16" y="183.5" width="343" height="19.5"/>
+                                        <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="14"/>
+                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstItem="4rj-4Z-hTK" firstAttribute="centerX" secondItem="A1Z-gS-9mU" secondAttribute="centerX" id="Eta-Sl-p5L"/>
+                                    <constraint firstItem="kiT-2e-wqy" firstAttribute="top" secondItem="bTG-1Z-ld9" secondAttribute="bottom" constant="8" id="1l2-DM-oEN"/>
+                                    <constraint firstItem="bTG-1Z-ld9" firstAttribute="top" secondItem="qYR-gy-kgx" secondAttribute="bottom" constant="8" id="43g-Kt-StF"/>
+                                    <constraint firstAttribute="trailing" secondItem="I5K-rm-Uhf" secondAttribute="trailing" constant="16" id="9wv-vU-1JS"/>
                                     <constraint firstItem="cdf-De-58R" firstAttribute="leading" secondItem="A1Z-gS-9mU" secondAttribute="leading" id="Fgs-Kf-7pe"/>
+                                    <constraint firstItem="Y2F-Hs-d4q" firstAttribute="centerY" secondItem="A1Z-gS-9mU" secondAttribute="centerY" multiplier="0.58" id="HpI-QB-hoi"/>
+                                    <constraint firstItem="I5K-rm-Uhf" firstAttribute="centerX" secondItem="A1Z-gS-9mU" secondAttribute="centerX" id="KMS-6r-6Go"/>
                                     <constraint firstItem="cdf-De-58R" firstAttribute="top" secondItem="A1Z-gS-9mU" secondAttribute="top" id="Lqa-8O-ByN"/>
-                                    <constraint firstItem="4rj-4Z-hTK" firstAttribute="leading" secondItem="A1Z-gS-9mU" secondAttribute="leading" constant="20" id="M98-bV-Vhr"/>
+                                    <constraint firstItem="qYR-gy-kgx" firstAttribute="leading" secondItem="A1Z-gS-9mU" secondAttribute="leading" constant="16" id="OHS-XZ-TU6"/>
                                     <constraint firstItem="qYR-gy-kgx" firstAttribute="centerX" secondItem="A1Z-gS-9mU" secondAttribute="centerX" id="Qcd-lU-COt"/>
                                     <constraint firstItem="bTG-1Z-ld9" firstAttribute="centerX" secondItem="A1Z-gS-9mU" secondAttribute="centerX" id="XZp-OB-aKQ"/>
-                                    <constraint firstItem="kiT-2e-wqy" firstAttribute="centerY" secondItem="A1Z-gS-9mU" secondAttribute="centerY" multiplier="0.98" id="aoU-Bz-HjF"/>
-                                    <constraint firstItem="qYR-gy-kgx" firstAttribute="centerY" secondItem="A1Z-gS-9mU" secondAttribute="centerY" multiplier="0.7" id="av7-dZ-hqc"/>
-                                    <constraint firstItem="bTG-1Z-ld9" firstAttribute="centerY" secondItem="A1Z-gS-9mU" secondAttribute="centerY" multiplier="0.84" id="bgQ-XK-plI"/>
-                                    <constraint firstItem="4rj-4Z-hTK" firstAttribute="centerY" secondItem="A1Z-gS-9mU" secondAttribute="centerY" multiplier="0.35" id="dYA-2R-KOQ"/>
+                                    <constraint firstItem="bTG-1Z-ld9" firstAttribute="leading" secondItem="A1Z-gS-9mU" secondAttribute="leading" constant="16" id="YZA-0c-aoh"/>
+                                    <constraint firstItem="qYR-gy-kgx" firstAttribute="centerY" secondItem="A1Z-gS-9mU" secondAttribute="centerY" multiplier="0.8" id="av7-dZ-hqc"/>
+                                    <constraint firstItem="Y2F-Hs-d4q" firstAttribute="centerX" secondItem="A1Z-gS-9mU" secondAttribute="centerX" id="dfs-OP-peu"/>
                                     <constraint firstItem="kiT-2e-wqy" firstAttribute="centerX" secondItem="A1Z-gS-9mU" secondAttribute="centerX" id="fck-cM-TpZ"/>
-                                    <constraint firstAttribute="trailing" secondItem="4rj-4Z-hTK" secondAttribute="trailing" constant="20" id="pxO-EH-rcy"/>
+                                    <constraint firstAttribute="trailing" secondItem="bTG-1Z-ld9" secondAttribute="trailing" constant="16" id="j5m-Sc-sSX"/>
+                                    <constraint firstAttribute="trailing" secondItem="Y2F-Hs-d4q" secondAttribute="trailing" constant="16" id="kPY-wZ-0Ao"/>
+                                    <constraint firstItem="I5K-rm-Uhf" firstAttribute="leading" secondItem="A1Z-gS-9mU" secondAttribute="leading" constant="16" id="qqr-GQ-p8i"/>
                                     <constraint firstAttribute="trailing" secondItem="cdf-De-58R" secondAttribute="trailing" id="sbe-Oo-BYU"/>
+                                    <constraint firstAttribute="trailing" secondItem="qYR-gy-kgx" secondAttribute="trailing" constant="16" id="tKb-xW-3kM"/>
                                     <constraint firstAttribute="bottom" secondItem="cdf-De-58R" secondAttribute="bottom" id="tno-QW-rtl"/>
+                                    <constraint firstItem="Y2F-Hs-d4q" firstAttribute="leading" secondItem="A1Z-gS-9mU" secondAttribute="leading" constant="16" id="wnQ-MA-19D"/>
+                                    <constraint firstItem="I5K-rm-Uhf" firstAttribute="centerY" secondItem="A1Z-gS-9mU" secondAttribute="centerY" multiplier="0.5" id="zWo-ju-cjs"/>
                                 </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="Jdb-Lj-FiO" firstAttribute="top" secondItem="A1Z-gS-9mU" secondAttribute="bottom" id="dXA-Ha-iL1"/>
                             <constraint firstItem="A1Z-gS-9mU" firstAttribute="top" secondItem="tZg-ST-Jf6" secondAttribute="top" id="iUc-IZ-Gs6"/>
+                            <constraint firstAttribute="bottom" secondItem="A1Z-gS-9mU" secondAttribute="bottom" id="ihN-tH-hVh"/>
                             <constraint firstItem="A1Z-gS-9mU" firstAttribute="leading" secondItem="tZg-ST-Jf6" secondAttribute="leading" id="p6s-yR-glq"/>
                             <constraint firstAttribute="trailing" secondItem="A1Z-gS-9mU" secondAttribute="trailing" id="yDG-64-qX8"/>
                         </constraints>
@@ -260,21 +269,21 @@ Needless to say, we never share your information.  </string>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="smallDot" translatesAutoresizingMaskIntoConstraints="NO" id="hUC-MD-F2w">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="smallerDot" translatesAutoresizingMaskIntoConstraints="NO" id="hUC-MD-F2w">
                                 <rect key="frame" x="159" y="323" width="20" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="20" id="aB6-xo-CY4"/>
                                     <constraint firstAttribute="width" constant="20" id="olz-OD-S4E"/>
                                 </constraints>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="smallDot" translatesAutoresizingMaskIntoConstraints="NO" id="qat-Dr-z2V">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="smallerDot" translatesAutoresizingMaskIntoConstraints="NO" id="qat-Dr-z2V">
                                 <rect key="frame" x="177" y="323" width="20" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="20" id="0sv-5F-QoK"/>
                                     <constraint firstAttribute="height" constant="20" id="Snl-7P-g64"/>
                                 </constraints>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="smallDot" translatesAutoresizingMaskIntoConstraints="NO" id="eEA-94-lqS">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="smallerDot" translatesAutoresizingMaskIntoConstraints="NO" id="eEA-94-lqS">
                                 <rect key="frame" x="196.5" y="323" width="20" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="20" id="7eh-SE-Ieb"/>
@@ -320,14 +329,14 @@ Needless to say, we never share your information.  </string>
                         <viewControllerLayoutGuide type="bottom" id="faB-91-pEo"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="cJs-0j-HFp">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="958"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="963"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hxZ-Yy-QZr">
-                                <rect key="frame" x="0.0" y="64" width="375" height="908"/>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hxZ-Yy-QZr">
+                                <rect key="frame" x="0.0" y="64" width="375" height="913"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MNq-I4-i1y">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="892"/>
+                                    <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MNq-I4-i1y">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="899"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="DYO-TX-Z2k">
                                                 <rect key="frame" x="0.0" y="0.0" width="375" height="255"/>
@@ -381,14 +390,14 @@ Needless to say, we never share your information.  </string>
                                                 <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="15"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                             </textView>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Not finding what you're looking for? " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zDp-kF-e0F">
-                                                <rect key="frame" x="16" y="622.5" width="205" height="13.5"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Not finding what you're looking for?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zDp-kF-e0F">
+                                                <rect key="frame" x="16" y="627" width="187" height="13.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="I5B-Tu-rtM">
-                                                <rect key="frame" x="0.0" y="643.5" width="375" height="200"/>
+                                                <rect key="frame" x="0.0" y="648" width="375" height="200"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="200" id="rVQ-EY-U9H"/>
                                                 </constraints>
@@ -492,7 +501,7 @@ Needless to say, we never share your information.  </string>
                                                 </constraints>
                                             </view>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vwe-a4-WTV">
-                                                <rect key="frame" x="0.0" y="843.5" width="375" height="50"/>
+                                                <rect key="frame" x="0.0" y="848" width="375" height="50"/>
                                                 <color key="backgroundColor" red="0.25098039215686274" green="0.1803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="50" id="Kft-jF-q9j"/>
@@ -506,14 +515,13 @@ Needless to say, we never share your information.  </string>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qja-YY-utz">
-                                                <rect key="frame" x="203" y="622.5" width="108" height="14"/>
+                                                <rect key="frame" x="202" y="626.5" width="102" height="14"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="width" constant="108" id="1JX-jo-T1A"/>
+                                                    <constraint firstAttribute="width" constant="102" id="1JX-jo-T1A"/>
                                                     <constraint firstAttribute="height" constant="14" id="fAw-ch-VPT"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="11"/>
-                                                <inset key="contentEdgeInsets" minX="-11" minY="2" maxX="0.0" maxY="0.0"/>
                                                 <state key="normal" title="Send us feedback!"/>
                                                 <connections>
                                                     <action selector="sendFeedbackPressed:" destination="voi-bg-x8q" eventType="touchUpInside" id="tve-iO-P91"/>
@@ -527,21 +535,21 @@ Needless to say, we never share your information.  </string>
                                             <constraint firstAttribute="trailing" secondItem="xIf-fc-GWU" secondAttribute="trailing" constant="14" id="6bw-ki-yfX"/>
                                             <constraint firstAttribute="trailing" secondItem="4WU-LV-I4l" secondAttribute="trailing" constant="299" id="8jP-em-H0Z"/>
                                             <constraint firstAttribute="trailing" secondItem="5R1-aw-fPe" secondAttribute="trailing" constant="15" id="9CJ-Km-Zb7"/>
-                                            <constraint firstItem="zDp-kF-e0F" firstAttribute="top" secondItem="pzE-9F-2Et" secondAttribute="bottom" constant="3.5" id="9uF-Bj-z4n"/>
+                                            <constraint firstItem="zDp-kF-e0F" firstAttribute="top" secondItem="pzE-9F-2Et" secondAttribute="bottom" constant="8" id="9uF-Bj-z4n"/>
                                             <constraint firstItem="zFt-ld-Jq5" firstAttribute="leading" secondItem="MNq-I4-i1y" secondAttribute="leading" id="BQA-na-QUl"/>
                                             <constraint firstItem="I5B-Tu-rtM" firstAttribute="leading" secondItem="MNq-I4-i1y" secondAttribute="leading" id="BjL-3b-i53"/>
                                             <constraint firstItem="i0A-ed-dta" firstAttribute="top" secondItem="U9h-xr-6yx" secondAttribute="bottom" constant="25" id="CBJ-C9-WP9"/>
                                             <constraint firstAttribute="trailing" secondItem="fXI-Dq-4bv" secondAttribute="trailing" id="CkI-Jx-9EZ"/>
                                             <constraint firstItem="xIf-fc-GWU" firstAttribute="top" secondItem="5R1-aw-fPe" secondAttribute="bottom" constant="1.5" id="EUN-Hv-5YA"/>
                                             <constraint firstItem="nPf-Qr-Axw" firstAttribute="leading" secondItem="MNq-I4-i1y" secondAttribute="leading" constant="16" id="FCh-dU-ORu"/>
-                                            <constraint firstItem="Qja-YY-utz" firstAttribute="leading" secondItem="zDp-kF-e0F" secondAttribute="trailing" constant="-18" id="HlK-CI-ciI"/>
                                             <constraint firstItem="4WU-LV-I4l" firstAttribute="top" secondItem="zFt-ld-Jq5" secondAttribute="bottom" constant="15" id="IYI-fq-iyY"/>
-                                            <constraint firstItem="Qja-YY-utz" firstAttribute="top" secondItem="pzE-9F-2Et" secondAttribute="bottom" constant="3.5" id="JXA-Cm-GeY"/>
+                                            <constraint firstItem="Qja-YY-utz" firstAttribute="leading" secondItem="zDp-kF-e0F" secondAttribute="trailing" constant="-1" id="Iqa-Vg-kC8"/>
+                                            <constraint firstItem="Qja-YY-utz" firstAttribute="top" secondItem="pzE-9F-2Et" secondAttribute="bottom" constant="7.5" id="JXA-Cm-GeY"/>
                                             <constraint firstItem="i0A-ed-dta" firstAttribute="leading" secondItem="MNq-I4-i1y" secondAttribute="leading" constant="15" id="JZt-lE-eQ5"/>
                                             <constraint firstItem="i0A-ed-dta" firstAttribute="top" secondItem="DYO-TX-Z2k" secondAttribute="bottom" constant="25" id="PIp-ej-70M"/>
                                             <constraint firstItem="j8d-u6-qgc" firstAttribute="leading" secondItem="MNq-I4-i1y" secondAttribute="leading" constant="16" id="UpN-fO-f7B"/>
                                             <constraint firstItem="DYO-TX-Z2k" firstAttribute="top" secondItem="MNq-I4-i1y" secondAttribute="top" id="Vtt-XB-cdJ"/>
-                                            <constraint firstAttribute="bottom" secondItem="Vwe-a4-WTV" secondAttribute="bottom" constant="-1.5" id="WI2-UN-UUW"/>
+                                            <constraint firstAttribute="bottom" secondItem="Vwe-a4-WTV" secondAttribute="bottom" constant="2" id="WI2-UN-UUW"/>
                                             <constraint firstItem="j8d-u6-qgc" firstAttribute="top" secondItem="i0A-ed-dta" secondAttribute="bottom" constant="12" id="XEW-uu-qkh"/>
                                             <constraint firstAttribute="trailing" secondItem="pzE-9F-2Et" secondAttribute="trailing" constant="15" id="Xfe-0N-ary"/>
                                             <constraint firstItem="U9h-xr-6yx" firstAttribute="leading" secondItem="MNq-I4-i1y" secondAttribute="leading" id="Xj7-n7-ZCn"/>
@@ -561,7 +569,7 @@ Needless to say, we never share your information.  </string>
                                             <constraint firstAttribute="trailing" secondItem="DYO-TX-Z2k" secondAttribute="trailing" id="hUg-iC-XXX"/>
                                             <constraint firstItem="uec-HJ-1d9" firstAttribute="top" secondItem="xIf-fc-GWU" secondAttribute="bottom" constant="5" id="lHO-IU-CV7"/>
                                             <constraint firstItem="pzE-9F-2Et" firstAttribute="top" secondItem="4WU-LV-I4l" secondAttribute="bottom" constant="8" id="p6R-hC-jbh"/>
-                                            <constraint firstAttribute="trailing" secondItem="Qja-YY-utz" secondAttribute="trailing" constant="64" id="pBV-Q4-yRk"/>
+                                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Qja-YY-utz" secondAttribute="trailing" constant="69" id="pBV-Q4-yRk"/>
                                             <constraint firstAttribute="trailing" secondItem="uec-HJ-1d9" secondAttribute="trailing" id="qvc-hJ-sGf"/>
                                             <constraint firstItem="fXI-Dq-4bv" firstAttribute="leading" secondItem="MNq-I4-i1y" secondAttribute="leading" id="rlw-FL-Wab"/>
                                             <constraint firstAttribute="trailing" relation="lessThanOrEqual" secondItem="nPf-Qr-Axw" secondAttribute="trailing" constant="224" id="tjN-Yd-4Uc"/>
@@ -577,7 +585,7 @@ Needless to say, we never share your information.  </string>
                                     <constraint firstAttribute="trailing" secondItem="MNq-I4-i1y" secondAttribute="trailing" id="1eR-gq-9av"/>
                                     <constraint firstItem="MNq-I4-i1y" firstAttribute="top" secondItem="hxZ-Yy-QZr" secondAttribute="top" id="Es1-cv-fhc"/>
                                     <constraint firstItem="MNq-I4-i1y" firstAttribute="leading" secondItem="hxZ-Yy-QZr" secondAttribute="leading" id="P05-JN-MT0"/>
-                                    <constraint firstAttribute="bottom" secondItem="MNq-I4-i1y" secondAttribute="bottom" constant="8" id="uZE-Ar-ipi"/>
+                                    <constraint firstAttribute="bottom" secondItem="MNq-I4-i1y" secondAttribute="bottom" constant="13" id="uZE-Ar-ipi"/>
                                     <constraint firstItem="MNq-I4-i1y" firstAttribute="width" secondItem="hxZ-Yy-QZr" secondAttribute="width" id="udf-z1-mmm"/>
                                 </constraints>
                             </scrollView>
@@ -586,12 +594,12 @@ Needless to say, we never share your information.  </string>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="hxZ-Yy-QZr" secondAttribute="trailing" id="6ac-OW-SgN"/>
                             <constraint firstItem="hxZ-Yy-QZr" firstAttribute="leading" secondItem="cJs-0j-HFp" secondAttribute="leading" id="RK5-e3-VN8"/>
-                            <constraint firstItem="faB-91-pEo" firstAttribute="top" secondItem="hxZ-Yy-QZr" secondAttribute="bottom" constant="-9" id="dfJ-OR-swd"/>
+                            <constraint firstItem="faB-91-pEo" firstAttribute="top" secondItem="hxZ-Yy-QZr" secondAttribute="bottom" constant="-14" id="dfJ-OR-swd"/>
                             <constraint firstItem="hxZ-Yy-QZr" firstAttribute="top" secondItem="2as-L2-j5u" secondAttribute="bottom" id="mO4-Xb-4Mj"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="L6C-hq-ggT"/>
-                    <size key="freeformSize" width="375" height="958"/>
+                    <size key="freeformSize" width="375" height="963"/>
                     <connections>
                         <outlet property="eventAgeInfo" destination="iAx-RO-gMe" id="lQW-6W-gon"/>
                         <outlet property="eventCategory" destination="pFQ-ad-dVo" id="wNy-Xa-126"/>
@@ -653,11 +661,11 @@ Needless to say, we never share your information.  </string>
         <image name="calendaricon" width="360" height="360"/>
         <image name="gradient" width="2100" height="690"/>
         <image name="location_pin" width="512" height="512"/>
-        <image name="smallDot" width="40" height="40"/>
+        <image name="smallerDot" width="50" height="50"/>
         <image name="tickets" width="200" height="200"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="BND-Ye-09L"/>
+        <segue reference="5yJ-p1-a2p"/>
         <segue reference="BmU-t5-gGb"/>
     </inferredMetricsTieBreakers>
 </document>

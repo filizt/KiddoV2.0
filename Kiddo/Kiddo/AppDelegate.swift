@@ -116,8 +116,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             }
             if let object = object {
                 if object["isEnabled"] as! Bool == true {
-                    SeasonalEvent.shared.isEnabled = object["isEnabled"] as! Bool
-                    SeasonalEvent.shared.name = object["name"] as! String
+                    //SeasonalEvent.shared.isEnabled = object["isEnabled"] as! Bool
+                    //SeasonalEvent.shared.name = object["name"] as! String
                 }
             }
         })

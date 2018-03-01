@@ -22,7 +22,9 @@ class FilterCollectionViewCell: UICollectionViewCell {
 
     override var isSelected: Bool {
         didSet {
-            updateUI()
+            if (super.isSelected != oldValue){
+                updateUI()
+            }
         }
     }
 

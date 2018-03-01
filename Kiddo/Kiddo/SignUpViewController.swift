@@ -22,9 +22,16 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
         self.submitButton.layer.cornerRadius = 5
         self.emailField.layer.cornerRadius = 5
         self.goBackButton.layer.cornerRadius = 5
+        self.submitButton.clipsToBounds = true
+        self.emailField.clipsToBounds = true
+        self.goBackButton.clipsToBounds = true
 
         self.emailField.delegate = self
         //self.modalTransitionStyle = UIModalTransitionStyle.flipHorizontal
+
+        let indentView = UIView(frame: CGRect(x: 0, y: 0, width: 8, height: self.emailField.layer.frame.size.height))
+        emailField.leftView = indentView
+        emailField.leftViewMode = .always
 
         // Do any additional setup after loading the view.
     }
@@ -41,22 +48,51 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
 
     @IBAction func submitButtonTapped(_ sender: UIButton) {
 
-        if emailField.text != nil && isValidEmail(emailStr: emailField.text!){
-                UserDefaults.standard.set(emailField.text, forKey: "email")
+        if let email = emailField.text, isValidEmail(emailStr: emailField.text!) {
 
             let emailObject: PFObject = PFObject(className: "UserEmail")
-            emailObject["email"] = emailField.text!
-
+            emailObject["email"] = email
             if let vendorIdentifier = UIDevice.current.identifierForVendor {
                 emailObject["deviceUUID"] = vendorIdentifier.uuidString
             } else {
                 emailObject["deviceUUID"] = "0"
             }
 
-            emailObject.saveInBackground(block: { (result, error) in
-                self.performSegue(withIdentifier: "pushTimeline", sender: nil)
-            })
+            let user = PFUser()
+            user.email = email
+            user.password = "a"
+            user.username = email
 
+            let existingUser = try? PFUser.logIn(withUsername: email, password: "a")
+
+            if let user = existingUser {
+                //it's an existing user loggin back in(after a reinstall or unexplainable thing that deleted hise session token); just make sure he's logged in and current returns the user
+               self.performSegue(withIdentifier: "pushTimeline", sender: nil)
+            } else {
+                //it's a new user go through the singUp routine
+                user.signUpInBackground(block: { (result, error) in
+                    if result == true {
+                        UserDefaults.standard.set(email, forKey: "email")
+                        emailObject.saveInBackground(block: { (result, error) in
+                            if result == false {
+                                //If we hit here, there is a problem with signing up not related to the user flow but due to maybe network issue or a backend issue. Let's record it but let the user see the timeline.
+                                let userLogInIssue: PFObject = PFObject(className: "UserLogInIssue")
+                                userLogInIssue["parseUserEmail"] = user.email
+                                if let objID = user.objectId {
+                                    userLogInIssue["parseUserObjectId"] = objID
+                                }
+
+                                if let error = error {
+                                    userLogInIssue["error"] = error.localizedDescription
+                                }
+
+                                userLogInIssue.saveInBackground()
+                            }
+                            self.performSegue(withIdentifier: "pushTimeline", sender: nil)
+                        })
+                    }
+                })
+            }
         } else {
             let alertController = UIAlertController(title: "Invalid email address.", message: "Please enter a valid email address.", preferredStyle: .alert)
             let OKAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.cancel, handler: nil)
@@ -88,3 +124,4 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
     */
 
 }
+

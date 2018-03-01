@@ -23,11 +23,20 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Kiddosplash" translatesAutoresizingMaskIntoConstraints="NO" id="Y6w-tg-AQi">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="KiddoInitialCircle" translatesAutoresizingMaskIntoConstraints="NO" id="afk-EI-TDc">
+                                <rect key="frame" x="137.5" y="283.5" width="100" height="100"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="100" id="TfN-dQ-TYi"/>
+                                    <constraint firstAttribute="width" constant="100" id="muE-Pg-CeI"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" red="0.2196078431372549" green="0.14509803921568626" blue="0.30196078431372547" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="Y6w-tg-AQi" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="3Eu-CP-8qV"/>
+                            <constraint firstItem="afk-EI-TDc" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="477-aV-cp6"/>
                             <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="Y6w-tg-AQi" secondAttribute="bottom" id="6eL-RM-f8G"/>
+                            <constraint firstItem="afk-EI-TDc" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="9n6-4Y-Cgs"/>
                             <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="Y6w-tg-AQi" secondAttribute="bottom" id="PIO-g0-hDd"/>
                             <constraint firstAttribute="trailing" secondItem="Y6w-tg-AQi" secondAttribute="trailing" id="RKP-pD-ml8"/>
                             <constraint firstItem="Y6w-tg-AQi" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="RrP-Nk-17r"/>
@@ -43,6 +52,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="KiddoInitialCircle" width="70" height="70"/>
         <image name="Kiddosplash" width="375" height="667"/>
     </resources>
 </document>

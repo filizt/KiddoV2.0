@@ -99,13 +99,14 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
 //        if event.address != nil {
 //            addressStringToGeocode(for: event.address)
 //        }
+
         if let image = self.eventImage.image {
             if image.size.width * 0.60 <= image.size.height {
                 if let croppedImage = cropImage(image: image) {
                     self.eventImage.image = croppedImage
                 }
-                self.cachedImageViewSize = self.eventImage.frame;
             }
+            self.cachedImageViewSize = self.eventImage.frame;
         }
 
         //check one more time to find an image, if self.image is still nil.
@@ -184,8 +185,8 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
                         let streetAddress = placemarks?.first?.postalAddress?.street {
                         userInfo["userLocation"] = city
                         userInfo["postCode"] = postCode
-                        userInfo["streetAddress"] = streetAddress
-                        userInfo["userGeoLocation"] = [placemarks?.first?.location?.coordinate.latitude, placemarks?.first?.location?.coordinate.longitude]
+                        //userInfo["streetAddress"] = streetAddress
+                       //userInfo["userGeoLocation"] = [placemarks?.first?.location?.coordinate.latitude, placemarks?.first?.location?.coordinate.longitude]
                     }
                 }
                 //either there is an error or not let's save what we have.
