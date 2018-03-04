@@ -448,7 +448,10 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
             userInfo["loginType"] = "Facebook"
             userInfo["parseUser"] = PFUser.current()
             userInfo["parseUserId"] = PFUser.current()?.objectId
-            //userInfo["email"] = PFUser.current()?.email
+            if let email = PFUser.current()?.email {
+                 userInfo["email"] = email
+            }
+            userInfo["email"] = PFUser.current()?.email
             userInfo["lastSeen"] = Date()
             userInfo["lastSeenPST"] = DateUtil.shared.todayLongFormated()
             userInfo.saveInBackground()
@@ -468,6 +471,16 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
                         object["appLaunchHistory"] = [Date()]
                     }
                     object.saveInBackground()
+                } else { //if there is not a user already created in UserGraphInfo document, let's get the graph data and create entry in UserGraphInfo.
+//                    let graphInfo: PFObject = PFObject(className: "UserGraphInfo")
+//                    userInfo["loginType"] = "Facebook"
+//                    userInfo["parseUser"] = PFUser.current()
+//                    userInfo["parseUserId"] = PFUser.current()?.objectId
+//
+//                    //userInfo["email"] = PFUser.current()?.email
+//                    userInfo["lastSeen"] = Date()
+//                    userInfo["lastSeenPST"] = DateUtil.shared.todayLongFormated()
+//                    userInfo.saveInBackground()
                 }
             }
         } else if let email = UserDefaults.standard.object(forKey: "email") as? String {//where user didn't log in with FB but used their email to sign up

@@ -59,7 +59,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
             }
 
             let user = PFUser()
-            user.email = email
+            user.email = ""
             user.password = "a"
             user.username = email
 
