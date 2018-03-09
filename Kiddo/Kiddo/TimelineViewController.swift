@@ -15,6 +15,7 @@ import ParseFacebookUtilsV4
 import MapKit
 import Cluster
 import ForecastIO
+import Mixpanel
 
 class EventAnnotation : Annotation {
     var event : Event!
@@ -30,7 +31,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
     private var lastModified: Date?
     let clusterManager = ClusterManager()
     //"❄️ Holiday"
-    fileprivate var filters = ["ALL","📍Nearby","🐝 Keep'em Busy", "🍀 Free","🌕 Indoor"]
+    fileprivate var filters = ["ALL","📍 Nearby","🐝 Keep'em Busy", "🍀 Free","🌕 Indoor"]
 
     fileprivate var userLocationFound = false
     var lastKnownUserLocation : CLLocation? {
@@ -246,9 +247,13 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 
         activityIndicator.startAnimating()
         self.fetchAllEvents()
-
-        updateUserGraphDataIfNecessary()
         self.setLastModified()
+
+        if let currentUser = PFUser.current() {
+            Mixpanel.mainInstance().people.set(properties: ["ParseUserId": currentUser.objectId ?? "" ])
+        }
+
+        Mixpanel.mainInstance().people.increment(property: "Number of App Launches", by: 1.0)
 
     }
 
@@ -269,6 +274,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
             resetCollectionViewSelection()
         } 
     }
+
 
     private func getWeatherForecast() {
         //For now, longitude latitude hard coded for Seattle.
@@ -371,7 +377,6 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
     func applicationEnteredForeground() {
         self.activityIndicator.startAnimating()
         self.fetchAllEvents()
-        self.updateUserGraphDataIfNecessary()
         self.fetchPhotosIfNecessary()
 
         if CLLocationManager.authorizationStatus() == .authorizedWhenInUse ||
@@ -435,85 +440,6 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
                         })
                     }//if backend is updated
                 }
-            }
-        }
-    }
-
-    func updateUserGraphDataIfNecessary() {
-        //user had signed up through FB before and currently logged in.
-        if let currentParseUserObjectId = PFUser.current()?.objectId {
-
-            //**** new way of recording user info
-            let userInfo: PFObject = PFObject(className: "UserAppLaunchHistory")
-            userInfo["loginType"] = "Facebook"
-            userInfo["parseUser"] = PFUser.current()
-            userInfo["parseUserId"] = PFUser.current()?.objectId
-            if let email = PFUser.current()?.email {
-                 userInfo["email"] = email
-            }
-            userInfo["email"] = PFUser.current()?.email
-            userInfo["lastSeen"] = Date()
-            userInfo["lastSeenPST"] = DateUtil.shared.todayLongFormated()
-            userInfo.saveInBackground()
-            //****
-
-            let query = PFQuery(className: "UserGraphInfo")
-            query.whereKey("parseUserId", equalTo: currentParseUserObjectId)
-            query.getFirstObjectInBackground() { (object, error) in
-                if let object = object {
-                    //user graph data already saved, just update the lastSeen field
-                    object["lastSeen"] = Date()
-                    if object["appLaunchHistory"] != nil {
-                        var a = object["appLaunchHistory"] as! [Date]
-                        a.append(Date())
-                        object["appLaunchHistory"] = a
-                    } else {
-                        object["appLaunchHistory"] = [Date()]
-                    }
-                    object.saveInBackground()
-                } else { //if there is not a user already created in UserGraphInfo document, let's get the graph data and create entry in UserGraphInfo.
-//                    let graphInfo: PFObject = PFObject(className: "UserGraphInfo")
-//                    userInfo["loginType"] = "Facebook"
-//                    userInfo["parseUser"] = PFUser.current()
-//                    userInfo["parseUserId"] = PFUser.current()?.objectId
-//
-//                    //userInfo["email"] = PFUser.current()?.email
-//                    userInfo["lastSeen"] = Date()
-//                    userInfo["lastSeenPST"] = DateUtil.shared.todayLongFormated()
-//                    userInfo.saveInBackground()
-                }
-            }
-        } else if let email = UserDefaults.standard.object(forKey: "email") as? String {//where user didn't log in with FB but used their email to sign up
-
-            //**** new way of recording user info
-            let userInfo: PFObject = PFObject(className: "UserAppLaunchHistory")
-            userInfo["loginType"] = "Email"
-            if let vendorIdentifier = UIDevice.current.identifierForVendor {
-                userInfo["UUID"] = vendorIdentifier.uuidString
-            }
-            userInfo["lastSeen"] = Date()
-            userInfo["lastSeenPST"] = DateUtil.shared.todayLongFormated()
-            userInfo.saveInBackground()
-            //****
-
-            let query = PFQuery(className: "UserEmail")
-            if let vendorIdentifier = UIDevice.current.identifierForVendor {
-                query.whereKey("deviceUUID", equalTo: vendorIdentifier.uuidString)
-                query.getFirstObjectInBackground(block: { (object, error) in
-                    guard error == nil else { print("\(error?.localizedDescription)"); return }
-                    if let object = object {
-                        object["lastSeen"] = Date()
-                        if object["appLaunchHistory"] != nil {
-                            var a = object["appLaunchHistory"] as! [Date]
-                            a.append(Date())
-                            object["appLaunchHistory"] = a
-                        } else {
-                            object["appLaunchHistory"] = [Date()]
-                        }
-
-                        object.saveInBackground()
-                    }
-                })
             }
         }
     }
@@ -824,8 +750,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         case "📍 Nearby": //Nearby
             recordUserFilterAction(forFilter: "Nearby")
 
-            if CLLocationManager.authorizationStatus() == .authorizedWhenInUse ||
-                    CLLocationManager.authorizationStatus() == .authorizedAlways {
+            if CLLocationManager.authorizationStatus() == .authorizedWhenInUse || CLLocationManager.authorizationStatus() == .authorizedAlways {
                 //locationManager.requestLocation()
                 //execution moves to requestLocation
                 self.userLocationFound = false

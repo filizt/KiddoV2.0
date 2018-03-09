@@ -11,6 +11,7 @@ import Parse
 import ParseUI
 import Crashlytics
 import ParseFacebookUtilsV4
+import Mixpanel
 
 class SplashAnimateViewController: UIViewController, PFLogInViewControllerDelegate, PFSignUpViewControllerDelegate{
 
@@ -26,16 +27,17 @@ class SplashAnimateViewController: UIViewController, PFLogInViewControllerDelega
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
+        showStatusBar(style: .lightContent)
+
         self.dot1.transform = CGAffineTransform(scaleX: 0.2, y: 0.2)
         self.dot2.transform = CGAffineTransform(scaleX: 0.2, y: 0.2)
         self.dot3.transform = CGAffineTransform(scaleX: 0.2, y: 0.2)
-
-        showStatusBar(style: .lightContent)
         self.findFunThingstodoLabel.alpha = 0
         self.dot1.alpha = 0
         self.dot2.alpha = 0
@@ -46,24 +48,24 @@ class SplashAnimateViewController: UIViewController, PFLogInViewControllerDelega
                            delay: 0.0,
                            options: .curveEaseIn,
                            animations: {
-                             self.findFunThingstodoLabel.alpha = 1
+                            self.findFunThingstodoLabel.alpha = 1
             },
                            completion:{ (finished) in
                             self.dot1.alpha = 1
                             self.dot2.alpha = 1
                             self.dot3.alpha = 1
                             UIView.animate(withDuration: 0.3,
-                           delay: 0.0,
-                           options: [],
-                           animations: {
-                            self.dot1.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
-                            self.dot2.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
-                            self.dot3.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
-                           },completion: { (finished) in
-                            UIView.animate(withDuration: 0.2, delay: 0.0, options:.curveEaseInOut, animations: {
-                                self.dot1.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
-                                self.dot2.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
-                                self.dot3.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+                                           delay: 0.0,
+                                           options: [],
+                                           animations: {
+                                            self.dot1.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
+                                            self.dot2.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+                                            self.dot3.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+                            },completion: { (finished) in
+                                UIView.animate(withDuration: 0.2, delay: 0.0, options:.curveEaseInOut, animations: {
+                                    self.dot1.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
+                                    self.dot2.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
+                                    self.dot3.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
                                 }, completion: { (finished) in
                                     UIView.animate(withDuration: 0.2, delay: 0.0, options:.curveEaseInOut, animations: {
                                         self.dot1.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
@@ -112,19 +114,22 @@ class SplashAnimateViewController: UIViewController, PFLogInViewControllerDelega
         } else {
             prepareForLaunch()
         }
-
     }
 
 
 
     func prepareForLaunch() {
 
-        //self.performSegue(withIdentifier: "showTimeline", sender: nil)
+       // self.performSegue(withIdentifier: "showTimeline", sender: nil)
 
-        if PFUser.current() != nil {
+        if let user = PFUser.current() {
+            if let userObjId = user.objectId {
+                Mixpanel.mainInstance().identify(distinctId: userObjId)
+            }
             self.performSegue(withIdentifier: "showTimeline", sender: nil)
         } else {
-            if !emailSubmisionNeeded() {
+            if !emailSubmisionNeeded() { // this is here because of backward compatibility reasons. For existing email users, we'll crea PFUser and log them in. The next time they would not reach here, as PFUser.current() will return true.
+                //TODO: at some point we need to retire emailSubmissionNeeded check as all the users would have a log in by then.
                 self.performSegue(withIdentifier: "showTimeline", sender: nil)
             } else {
                 let logInViewController = LogInViewController()
@@ -140,7 +145,33 @@ class SplashAnimateViewController: UIViewController, PFLogInViewControllerDelega
     }
 
     func emailSubmisionNeeded() -> Bool {
-        if let _ = UserDefaults.standard.object(forKey: "email") as? String {
+        if let email = UserDefaults.standard.object(forKey: "email") as? String {
+            //if we already have the email, this is a returning email user, let's create a pfUser
+            let pfUser = PFUser()
+            pfUser.email = email
+            pfUser.username = email
+            pfUser.password = "a"
+
+            if (try? pfUser.signUp()) != nil {
+                let userInfo: PFObject = PFObject(className: "UserInfo")
+                userInfo["logInMethod"] = "Email"
+                userInfo["firstName"] = pfUser.username
+                userInfo["email"] = pfUser.email
+                userInfo["parseUser"] = PFUser.current()
+                userInfo["parseUserId"] = PFUser.current()?.objectId
+
+                userInfo.saveInBackground()
+
+                let mixpanel = Mixpanel.mainInstance()
+                mixpanel.createAlias(pfUser.objectId!,
+                                     distinctId: mixpanel.distinctId);
+                mixpanel.identify(distinctId: mixpanel.distinctId)
+                mixpanel.track(event: "SignUp", properties: ["Source" : "Email", "Date" : Date()] )
+                mixpanel.people.set(properties: ["Email": pfUser.email!, "Source": "Email", "Date": Date(), "ParseUserId": pfUser.objectId ?? "" ])
+
+            }
+            
+
             return false
         }
 
@@ -162,8 +193,52 @@ class SplashAnimateViewController: UIViewController, PFLogInViewControllerDelega
     //MARK: PFLogInViewControllerDelegate functions
 
     func log(_ logInController: PFLogInViewController, didLogIn user: PFUser) {
+        let mixpanel = Mixpanel.mainInstance()
+
         if user.isNew {
-            Answers.logSignUp(withMethod: "Facebook", success: 1, customAttributes: ["FacebookLogin": "Success"])
+            mixpanel.createAlias(user.objectId!,
+                                 distinctId: mixpanel.distinctId);
+            mixpanel.identify(distinctId: mixpanel.distinctId)
+
+            if let accessToken = FBSDKAccessToken.current() {
+                PFFacebookUtils.logInInBackground(with: accessToken) { (userLoggedIn, error) in
+                    guard error == nil else { print("\(error?.localizedDescription ?? "Error while loggin in on Facebook")"); return }
+                    if userLoggedIn != nil {
+                        let requestParameters = ["fields": "id, first_name, last_name, name, email, age_range, gender, locale"]
+                        if let userDetails = FBSDKGraphRequest(graphPath: "me", parameters: requestParameters){
+                            userDetails.start { (connection, result, error) -> Void in
+                                guard error == nil else { print("\(error?.localizedDescription ?? "Error getting graph data")"); return }
+
+                                if let result = result {
+                                    let userCreated = User.create(from: result)
+                                    let userInfo: PFObject = PFObject(className: "UserInfo")
+                                    userInfo["facebookId"] = userCreated.id
+                                    userInfo["logInMethod"] = "Facebook"
+                                    userInfo["firstName"] = userCreated.first_name
+                                    userInfo["lastName"] = userCreated.last_name
+                                    userInfo["fullName"] = userCreated.full_name
+                                    userInfo["email"] = userCreated.email
+                                    userInfo["gender"] = userCreated.gender
+                                    userInfo["locale"] = userCreated.locale
+                                    userInfo["parseUser"] = PFUser.current()
+                                    userInfo["parseUserId"] = PFUser.current()?.objectId ?? ""
+
+                                    userInfo.saveInBackground()
+
+                                    mixpanel.track(event: "SignUp", properties: ["Source" : "Facebook", "Date" : Date()] )
+                                    mixpanel.people.set(properties: ["User First Name" : userCreated.first_name, "User Last Name" : userCreated.last_name, "Email" : userCreated.email, "Source" : "Facebook", "Date" : Date(), "ParseUserId": user.objectId! ?? "" ])
+
+                                } else {
+                                    print("Uh oh. There was an problem getting the fb graph info.")
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        } else { // We reach here if the user already signed up with his FB before (There is an exisint PFUser in the database) Maybe returning user after an app uninstall
+            mixpanel.identify(distinctId: user.objectId!)
+            mixpanel.people.set(properties: ["Resurrected User": true])
         }
         presentTimeline()
     }

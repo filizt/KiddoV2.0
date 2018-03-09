@@ -8,12 +8,14 @@
 
 import UIKit
 import Parse
+import Mixpanel
 
 class SignUpViewController: UIViewController, UITextFieldDelegate {
 
     @IBOutlet weak var submitButton: UIButton!
     @IBOutlet weak var emailField: UITextField!
     @IBOutlet weak var goBackButton: UIButton!
+    let mixpanel = Mixpanel.mainInstance()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,7 +43,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
         // Dispose of any resources that can be recreated.
     }
 
-    func textFieldShouldReturn(_ textField: UITextField!) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
     }
@@ -49,49 +51,43 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
     @IBAction func submitButtonTapped(_ sender: UIButton) {
 
         if let email = emailField.text, isValidEmail(emailStr: emailField.text!) {
-
-            let emailObject: PFObject = PFObject(className: "UserEmail")
-            emailObject["email"] = email
-            if let vendorIdentifier = UIDevice.current.identifierForVendor {
-                emailObject["deviceUUID"] = vendorIdentifier.uuidString
+            if let resurrectedUser = try? PFUser.logIn(withUsername: email, password: "a") {
+                mixpanel.identify(distinctId: resurrectedUser.objectId!)
+                mixpanel.people.set(properties: ["Resurrected User": true])
             } else {
-                emailObject["deviceUUID"] = "0"
-            }
+                let pfUser = PFUser()
+                pfUser.email = email
+                pfUser.username = email
+                pfUser.password = "a"
 
-            let user = PFUser()
-            user.email = ""
-            user.password = "a"
-            user.username = email
+                //it's a new user so go through the singUp routine
+                if (try? pfUser.signUp()) != nil {
+                    let userInfo: PFObject = PFObject(className: "UserInfo")
+                    userInfo["logInMethod"] = "Email"
+                    userInfo["firstName"] = pfUser.email
+                    userInfo["email"] = pfUser.email
+                    userInfo["parseUser"] = PFUser.current()
+                    userInfo["parseUserId"] = PFUser.current()?.objectId ?? ""
 
-            let existingUser = try? PFUser.logIn(withUsername: email, password: "a")
+                    userInfo.saveInBackground()
 
-            if let user = existingUser {
-                //it's an existing user loggin back in(after a reinstall or unexplainable thing that deleted hise session token); just make sure he's logged in and current returns the user
-               self.performSegue(withIdentifier: "pushTimeline", sender: nil)
-            } else {
-                //it's a new user go through the singUp routine
-                user.signUpInBackground(block: { (result, error) in
-                    if result == true {
-                        UserDefaults.standard.set(email, forKey: "email")
-                        emailObject.saveInBackground(block: { (result, error) in
-                            if result == false {
-                                //If we hit here, there is a problem with signing up not related to the user flow but due to maybe network issue or a backend issue. Let's record it but let the user see the timeline.
-                                let userLogInIssue: PFObject = PFObject(className: "UserLogInIssue")
-                                userLogInIssue["parseUserEmail"] = user.email
-                                if let objID = user.objectId {
-                                    userLogInIssue["parseUserObjectId"] = objID
-                                }
+                    mixpanel.createAlias(pfUser.objectId!,
+                                         distinctId: mixpanel.distinctId);
+                    mixpanel.identify(distinctId: mixpanel.distinctId)
+                    mixpanel.track(event: "SignUp", properties: ["Source" : "Email", "Date" : Date()] )
+                    mixpanel.people.set(properties: ["Email" : pfUser.email!, "Source" : "Email", "Date" : Date(), "ParseUserId": pfUser.objectId ?? "" ])
 
-                                if let error = error {
-                                    userLogInIssue["error"] = error.localizedDescription
-                                }
+                } else {
+                    let userInfo: PFObject = PFObject(className: "UserSignUpError")
+                    userInfo["logInMethod"] = "Email"
+                    userInfo["firstName"] = pfUser.email
+                    userInfo["email"] = pfUser.email
+                    userInfo["parseUser"] = PFUser.current()
+                    userInfo["parseUserId"] = PFUser.current()?.objectId
 
-                                userLogInIssue.saveInBackground()
-                            }
-                            self.performSegue(withIdentifier: "pushTimeline", sender: nil)
-                        })
-                    }
-                })
+                    userInfo.saveInBackground()
+                }
+                
             }
         } else {
             let alertController = UIAlertController(title: "Invalid email address.", message: "Please enter a valid email address.", preferredStyle: .alert)
@@ -99,6 +95,8 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
             alertController.addAction(OKAction)
             self.present(alertController, animated: true, completion: nil)
         }
+
+         self.performSegue(withIdentifier: "pushTimeline", sender: nil)
     }
 
     func isValidEmail(emailStr:String) -> Bool {
