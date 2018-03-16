@@ -47,7 +47,8 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
     @IBOutlet weak var eventDescription: UITextView!
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var moreInfoButton: UIButton!
-
+    @IBOutlet weak var buyTicketsButton: UIButton!
+    
     var event: Event!
     var image: UIImage? = nil
     var currentTab: TabBarItems = TabBarItems.today
@@ -88,12 +89,6 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
 
         recordDetailView()
 
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        Event.pushedEvent = nil
-        Event.pushedEventId = nil
-        Event.pushedEventForDateTime = nil
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -215,9 +210,10 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
         userInfo["eventTitle"] = self.event.title
         userInfo["eventCost"] = self.event.freeFlag == true ? "Free" : "Paid"
         userInfo["eventDate"] = self.eventFullDateLabel.text
-        userInfo["currentWeather"] = self.currentForecast?.summary
-        if var temp = self.currentForecast?.temperature {
-            userInfo["currentTemprature"] = Int(temp)
+
+        if self.currentForecast?.temperature != nil && self.currentForecast?.summary != nil {
+            userInfo["currentTemprature"] = Int((self.currentForecast?.temperature)!)
+            userInfo["currentWeather"] = self.currentForecast?.summary
         }
 
 
@@ -381,7 +377,20 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
 //
 //        //self.performSegue(withIdentifier: "showDetailView", sender: nil)
 //    }
+    @IBAction func buyTicketsButtonPressed(_ sender: UIButton) {
 
+        if let url = event.ticketsURL {
+            UIApplication.shared.open(URL(string : url)!, options: [:], completionHandler: { (status) in
+                //record analytics here
+                Mixpanel.mainInstance().track(event: "Buy Tickets Pressed", properties: ["Event Title": self.event.title, "Event Location" : self.event.location, "Event Ages": self.event.ages ])
+            })
+        } else {
+            UIApplication.shared.open(URL(string : "https://www.brownpapertickets.com/ref/2620206")!, options: [:], completionHandler: { (status) in
+
+            })
+        }
+    }
+    
     @IBAction func sendFeedbackPressed(_ sender: UIButton) {
         if MFMailComposeViewController.canSendMail() {
             let mail = MFMailComposeViewController()
@@ -425,9 +434,13 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
         self.eventCategory?.setTitle(formatedString, for: .normal)
         self.eventCategory.layer.cornerRadius = 8
         self.eventCategory.layer.masksToBounds = true
+        self.buyTicketsButton.isHidden = true
 
+        if event.ticketsAvailable != nil {
+            self.buyTicketsButton.isHidden = false
+        }
 
-        if let image = self.image {
+        if self.image != nil {
             self.eventImage.image = self.image
         } else {
             self.eventImage.image = UIImage(named: "image_placeholder")

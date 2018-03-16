@@ -34,6 +34,9 @@ struct Event {
     let geoLocation: PFGeoPoint?
     let categoryKeywords: [String]?
     let showTimes: String?
+    let ticketsAvailable: Bool?
+    let ticketsURL: String?
+  
 
     static var pushedEventId: String?
     static var pushedEvent: Event?
@@ -64,6 +67,8 @@ struct Event {
         let geoLocation = object["geoLocation"] as? PFGeoPoint
         let categoryKeywords = object["categoryKeywords"] as? [String]
         let showTimes = object["showTimes"] as? String
+        let ticketsAvailable = object["ticketsAvailable"] as? Bool
+        let ticketsURL = object["ticketsURL"] as? String
 
         return Event(id: id,
                      title: title,
@@ -88,7 +93,9 @@ struct Event {
                      imageObjectId: imageObjectId,
                      geoLocation: geoLocation,
                      categoryKeywords: categoryKeywords,
-                     showTimes: showTimes
+                     showTimes: showTimes,
+                     ticketsAvailable: ticketsAvailable,
+                     ticketsURL:ticketsURL
         )
     }
 

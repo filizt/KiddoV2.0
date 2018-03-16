@@ -46,6 +46,7 @@ class EventTableViewCell: UITableViewCell {
         self.eventCategory.layer.masksToBounds = true
         self.dashBetweenTimes.isHidden = true
         self.eventEndTime.isHidden = false
+        self.eventFreeImage.isHidden = true
 
         if let event = event {
             self.eventTitle?.text = event.title
@@ -67,7 +68,13 @@ class EventTableViewCell: UITableViewCell {
                 self.eventEndTime.isHidden = true
             }
 
-            self.eventFreeImage.isHidden = event.freeFlag == true ? false : true
+            if event.ticketsAvailable == true {
+                self.eventFreeImage.isHidden = false
+                self.eventFreeImage.image = UIImage(named: "ticketsTimeline")
+            } else {
+                self.eventFreeImage.image = UIImage(named: "free")
+                self.eventFreeImage.isHidden = event.freeFlag == true ? false : true
+            }
 
             if event.category == "Other" {
                 self.eventCategory.isHidden = true

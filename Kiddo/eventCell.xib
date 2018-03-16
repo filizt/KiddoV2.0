@@ -40,13 +40,13 @@
                         </constraints>
                     </imageView>
                     <stackView opaque="NO" contentMode="scaleToFill" alignment="bottom" translatesAutoresizingMaskIntoConstraints="NO" id="GIj-qi-YAt">
-                        <rect key="frame" x="15" y="162" width="338" height="82"/>
+                        <rect key="frame" x="15" y="162" width="345" height="82"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="aao-36-zLd" userLabel="CategoryToLocationAllVertical">
-                                <rect key="frame" x="0.0" y="0.0" width="298" height="82"/>
+                                <rect key="frame" x="0.0" y="0.0" width="295" height="82"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="c3I-7R-1rc">
-                                        <rect key="frame" x="0.0" y="0.0" width="298" height="44"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="295" height="44"/>
                                         <subviews>
                                             <button opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9KD-1Q-QA9">
                                                 <rect key="frame" x="0.0" y="0.0" width="67" height="16"/>
@@ -58,7 +58,7 @@
                                                 </state>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Event Title" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="none" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s7f-NO-xe3">
-                                                <rect key="frame" x="0.0" y="18" width="298" height="26"/>
+                                                <rect key="frame" x="0.0" y="18" width="295" height="26"/>
                                                 <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="19"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
@@ -127,13 +127,13 @@
                                 </subviews>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="EWP-Mm-5kQ" userLabel="FreeImage">
-                                <rect key="frame" x="298" y="42" width="40" height="40"/>
+                                <rect key="frame" x="295" y="32" width="50" height="50"/>
                                 <subviews>
                                     <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="free" translatesAutoresizingMaskIntoConstraints="NO" id="zFP-HN-0Do">
-                                        <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="40" id="MHA-c5-3Lv"/>
-                                            <constraint firstAttribute="height" constant="40" id="dLc-Ac-zJT"/>
+                                            <constraint firstAttribute="width" constant="50" id="MHA-c5-3Lv"/>
+                                            <constraint firstAttribute="height" constant="50" id="dLc-Ac-zJT"/>
                                         </constraints>
                                     </imageView>
                                 </subviews>
@@ -153,7 +153,7 @@
                     <constraint firstItem="dIg-Rg-YSx" firstAttribute="top" secondItem="qoZ-Vx-DOt" secondAttribute="top" id="hcQ-0l-Yqu"/>
                     <constraint firstAttribute="bottom" secondItem="dIg-Rg-YSx" secondAttribute="bottom" constant="-1" id="oji-UW-1td"/>
                     <constraint firstAttribute="trailing" secondItem="seo-c7-hM8" secondAttribute="trailing" constant="-1" id="rVi-UD-Obk"/>
-                    <constraint firstAttribute="trailingMargin" secondItem="GIj-qi-YAt" secondAttribute="trailing" constant="5" id="slO-Su-pgC"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="GIj-qi-YAt" secondAttribute="trailing" constant="-2" id="slO-Su-pgC"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>

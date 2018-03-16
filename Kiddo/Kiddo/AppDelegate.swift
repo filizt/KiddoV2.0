@@ -41,7 +41,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         Mixpanel.initialize(token: "fda2cfdb1bb3e523b6842ac03ff88fba")
 
         if !isSimulator() {
-             Fabric.with([Crashlytics.self])
+            Fabric.with([Crashlytics.self])
         }
 
         UNUserNotificationCenter.current().delegate = self

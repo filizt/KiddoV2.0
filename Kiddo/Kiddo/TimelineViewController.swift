@@ -647,6 +647,9 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
                 destinationViewController.image = SimpleCache.shared.image(key: (Event.pushedEvent?.imageObjectId)!)
                 destinationViewController.currentTab = TabBarItems.none
                 destinationViewController.currentForecast = self.currentForecast
+                Event.pushedEvent = nil
+                Event.pushedEventId = nil
+                Event.pushedEventForDateTime = nil
             }
         }
     }
