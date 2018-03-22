@@ -192,7 +192,7 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
             currentTemperature = Int(abs((self.currentForecast?.temperature)!))
         }
 
-        Mixpanel.mainInstance().track(event: "EventDetailView", properties: ["event Id" : self.event.id, "eventCategory" : self.event.category, "eventTitle" : self.event.title, "freeEvent" : self.event.freeFlag, "currentWeather": currentWeather, "currentTemperature" : currentTemperature])
+        Mixpanel.mainInstance().track(event: "EventDetailView", properties: ["event Id" : self.event.id, "eventCategory" : self.event.category, "eventTitle" : self.event.title, "freeEvent" : self.event.freeFlag, "eventLocation": self.event.location, "currentWeather": currentWeather, "currentTemperature" : currentTemperature])
 
         depricatedRecordUserAction()
 
@@ -304,6 +304,7 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
                         userInfo.saveInBackground()
                     }
                 Answers.logCustomEvent(withName: "Event Shared", customAttributes:["Event Title": self.event.title, "Event Category": self.event.category, "Event Cost": self.event.freeFlag == true ? "Free" : "Paid"])
+                Mixpanel.mainInstance().track(event: "Event Shared", properties: ["Event Id" : self.event.id, "Event Category" : self.event.category, "Event Title" : self.event.title, "freeEvent" : self.event.freeFlag, "Event Location" : self.event.location])
             }
 
             self.present(activityViewController, animated: true) {
@@ -382,7 +383,7 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
         if let url = event.ticketsURL {
             UIApplication.shared.open(URL(string : url)!, options: [:], completionHandler: { (status) in
                 //record analytics here
-                Mixpanel.mainInstance().track(event: "Buy Tickets Pressed", properties: ["Event Title": self.event.title, "Event Location" : self.event.location, "Event Ages": self.event.ages ])
+                Mixpanel.mainInstance().track(event: "Buy Tickets Pressed", properties: ["event Id" : self.event.id, "Event Title": self.event.title, "Event Location" : self.event.location, "freeEvent" : self.event.freeFlag, "Event Ages": self.event.ages ])
             })
         } else {
             UIApplication.shared.open(URL(string : "https://www.brownpapertickets.com/ref/2620206")!, options: [:], completionHandler: { (status) in
@@ -526,7 +527,7 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
     func handleTap(_ gestureRecognizer: UITapGestureRecognizer) {
 
         Answers.logCustomEvent(withName: "Directions Requested", customAttributes:["Event Occurs": currentTab])
-        Mixpanel.mainInstance().track(event: "Directions Requested", properties: ["event Id" : self.event.id, "eventCategory" : self.event.category, "eventTitle" : self.event.title, "freeEvent" : self.event.freeFlag])
+        Mixpanel.mainInstance().track(event: "Directions Requested", properties: ["Event Id" : self.event.id, "Event Category" : self.event.category, "Event Title" : self.event.title, "Free Event" : self.event.freeFlag, "Event Location" : self.event.location])
 
         guard locationCoordinates != nil else { return }
 
