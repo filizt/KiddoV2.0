@@ -16,6 +16,7 @@ import Crashlytics
 import Branch
 import UIViewController_ODStatusBar
 import ForecastIO
+import Mixpanel
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate  {
@@ -36,6 +37,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
         Parse.initialize(with: configuration)
         PFFacebookUtils.initializeFacebook(applicationLaunchOptions: launchOptions)
+
+        Mixpanel.initialize(token: "fda2cfdb1bb3e523b6842ac03ff88fba")
 
         if !isSimulator() {
              Fabric.with([Crashlytics.self])
@@ -67,6 +70,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 self.window!.rootViewController = navController
             }
         })
+
+        Mixpanel.mainInstance().track(event: "App Launch", properties: [:])
+
+        if let currentParseUserObjectId = PFUser.current()?.objectId {
+            let userInfo: PFObject = PFObject(className: "UserAppLaunchHistory")
+            userInfo["parseUser"] = PFUser.current()
+            userInfo["parseUserId"] = PFUser.current()?.objectId
+            userInfo.saveInBackground()
+
+        }
+
+
         return true
     }
 
@@ -116,8 +131,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             }
             if let object = object {
                 if object["isEnabled"] as! Bool == true {
-                    //SeasonalEvent.shared.isEnabled = object["isEnabled"] as! Bool
-                    //SeasonalEvent.shared.name = object["name"] as! String
+                    SeasonalEvent.shared.isEnabled = object["isEnabled"] as! Bool
+                    SeasonalEvent.shared.name = object["name"] as! String
                 }
             }
         })
@@ -205,6 +220,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         let date = DateUtil.shared.today()
         Answers.logCustomEvent(withName: "NotificationViewed", customAttributes: ["Date":date])
+        
     }
 
 

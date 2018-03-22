@@ -1,4 +1,4 @@
-//
+    //
 //  DetailViewController.swift
 //  Kiddo
 //
@@ -18,6 +18,7 @@ import Branch
 import Contacts
 import ForecastIO
 import EventKit
+import Mixpanel
 
 enum TabBarItems : Int {
     case today = 0
@@ -85,7 +86,7 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
         let shareButtonItem = UIBarButtonItem(image: UIImage(named: "shareIcon")!, style: .done, target: self, action: #selector(share))
         self.navigationItem.rightBarButtonItem = shareButtonItem
 
-        recordUserAction()
+        recordDetailView()
 
     }
 
@@ -151,19 +152,62 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
         return image
     }
 
+    private func recordDetailView() {
+        recordUserInfo() // geoplookup completion handler calls recordUserAction()
+    }
+
+    func recordUserInfo() {
+        var dict = [String:MixpanelType]()
+
+        if let currentUser = PFUser.current() {
+            if let objId = currentUser.objectId {
+                dict["ParseUserId"] = objId
+            }
+        }
+
+        if let location = lastKnownUserLocation {
+            CLGeocoder().reverseGeocodeLocation(location, completionHandler: {[weak weakSelf = self] (placemarks, error) -> Void in
+                if error == nil {
+                    if let city = placemarks?.first?.locality,
+                        let postCode = placemarks?.first?.postalAddress?.postalCode,
+                        let streetAddress = placemarks?.first?.postalAddress?.street {
+                        dict["userLocation"] = city
+                        dict["postCode"] = postCode
+
+                        Mixpanel.mainInstance().registerSuperProperties(dict)
+
+                        weakSelf?.recordUserAction()
+                    }
+                }
+            })
+        } else {
+            dict["userLocation"] = ""
+            dict["postCode"] = ""
+            Mixpanel.mainInstance().registerSuperProperties(dict)
+            self.recordUserAction()
+        }
+
+    }
+
     func recordUserAction() {
+        var currentWeather = ""
+        var currentTemperature = 0
+        if self.currentForecast?.summary != nil && self.currentForecast?.temperature != nil {
+            currentWeather = (self.currentForecast?.summary)!
+            currentTemperature = Int(abs((self.currentForecast?.temperature)!))
+        }
+
+        Mixpanel.mainInstance().track(event: "EventDetailView", properties: ["event Id" : self.event.id, "eventCategory" : self.event.category, "eventTitle" : self.event.title, "freeEvent" : self.event.freeFlag, "currentWeather": currentWeather, "currentTemperature" : currentTemperature])
+
+        depricatedRecordUserAction()
+
+    }
+
+    private func depricatedRecordUserAction() {
         let userInfo: PFObject = PFObject(className: "UserDetailViewHistory")
         if let currentParseUserObjectId = PFUser.current()?.objectId {
             userInfo["parseUser"] = PFUser.current()
             userInfo["parseUserId"] = PFUser.current()?.objectId
-            if let vendorIdentifier = UIDevice.current.identifierForVendor {
-                userInfo["UUID"] = vendorIdentifier.uuidString
-            }
-        } else if let email = UserDefaults.standard.object(forKey: "email") as? String { //where user didn't log in with FB but used their email to sign up
-            userInfo["email"] = email
-            if let vendorIdentifier = UIDevice.current.identifierForVendor {
-                userInfo["UUID"] = vendorIdentifier.uuidString
-            }
         }
 
         userInfo["eventId"] = self.event.id
@@ -186,14 +230,14 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
                         userInfo["userLocation"] = city
                         userInfo["postCode"] = postCode
                         //userInfo["streetAddress"] = streetAddress
-                       //userInfo["userGeoLocation"] = [placemarks?.first?.location?.coordinate.latitude, placemarks?.first?.location?.coordinate.longitude]
+                        //userInfo["userGeoLocation"] = [placemarks?.first?.location?.coordinate.latitude, placemarks?.first?.location?.coordinate.longitude]
                     }
                 }
                 //either there is an error or not let's save what we have.
                 userInfo.saveInBackground()
             })
         } else {
-             userInfo.saveInBackground()
+            userInfo.saveInBackground()
         }
     }
 
@@ -469,6 +513,7 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
     func handleTap(_ gestureRecognizer: UITapGestureRecognizer) {
 
         Answers.logCustomEvent(withName: "Directions Requested", customAttributes:["Event Occurs": currentTab])
+        Mixpanel.mainInstance().track(event: "Directions Requested", properties: ["event Id" : self.event.id, "eventCategory" : self.event.category, "eventTitle" : self.event.title, "freeEvent" : self.event.freeFlag])
 
         guard locationCoordinates != nil else { return }
 
