@@ -16,6 +16,9 @@ class LogInViewController: PFLogInViewController, UITextViewDelegate {
     var backgroundImage: UIImageView!
     private var facebookButtonAnimationShown: Bool = false
     var privacyText: UITextView!
+    var signUpButton: UIButton!
+    var welcomeText: UILabel!
+    var welcomeSubtext: UILabel!
 
     override func viewDidLoad() {
          super.viewDidLoad()
@@ -46,14 +49,43 @@ class LogInViewController: PFLogInViewController, UITextViewDelegate {
         logInView?.logo = nil
 
         self.logInView?.dismissButton?.isEnabled = true
-        self.logInView?.dismissButton?.setImage(nil, for: .normal)
-        self.logInView?.dismissButton?.backgroundColor = UIColor(red: 52/255, green: 191/255, blue: 73/255, alpha: 1)
-        
-        self.logInView?.dismissButton?.setTitle("    Sign up with Email", for: .normal)
-        self.logInView?.dismissButton?.setTitleColor(UIColor.white, for: .normal)
-        self.logInView?.dismissButton?.titleLabel?.font = UIFont(name: "Avenir-Medium", size: 17)
-        self.logInView?.dismissButton?.layer.cornerRadius = 5
 
+        self.signUpButton = UIButton()
+        self.signUpButton.setImage(nil, for: .normal)
+        self.signUpButton.backgroundColor = UIColor(red: 52/255, green: 191/255, blue: 73/255, alpha: 1)
+        
+        self.signUpButton.setTitle("    Sign up with Email", for: .normal)
+        self.signUpButton.setTitleColor(UIColor.white, for: .normal)
+        self.signUpButton.titleLabel?.font = UIFont(name: "Avenir-Medium", size: 17)
+        self.signUpButton.layer.cornerRadius = 5
+        self.signUpButton.addTarget(self, action: #selector(self.handleSignUpButtonTap(sender:)), for: .touchUpInside)
+        self.view.addSubview(signUpButton)
+
+//        self.welcomeText = UILabel()
+//        self.welcomeText.text = "Welcome to Kiddo Local"
+//        self.welcomeText.textColor = UIColor.white
+//        self.welcomeText.font = UIFont(name: "Avenir-Black", size: 30)
+//        self.welcomeText.textAlignment = .center
+//
+//        self.welcomeSubtext = UILabel()
+//        self.welcomeSubtext.text = "Discover kid-friendly local events and drop-in activities using one intuitive app. Login with Facebook or sign up learn about the best weekend events and upcoming shows."
+//        self.welcomeSubtext.textColor = UIColor.white
+//        self.welcomeSubtext.font = UIFont(name: "Avenir-Book", size: 15)
+//        self.welcomeSubtext.textAlignment = .center
+//        self.welcomeSubtext.numberOfLines = 0
+//        self.welcomeSubtext.lineBreakMode = .byWordWrapping
+//
+//        self.view.addSubview(welcomeText)
+//        self.view.addSubview(welcomeSubtext)
+
+    }
+
+    func handleSignUpButtonTap(sender: UIButton) {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "SignUpViewController")
+        self.present(controller, animated: true, completion: nil)
+
+        //self.dismiss(animated: true, completion: { self.present(controller, animated: true, completion: nil) } )
     }
 
     func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange) -> Bool {
@@ -90,12 +122,20 @@ class LogInViewController: PFLogInViewController, UITextViewDelegate {
         // stretch background image to fill screen
         backgroundImage.frame = CGRect(x: 0,y:  0,width:  self.logInView!.frame.width, height: self.logInView!.frame.height)
 
+//        welcomeText.frame = CGRect(x:0, y:0, width:350, height: 40)
+//        welcomeText.center = CGPoint(x:185, y:350)
+//        welcomeSubtext.frame = CGRect(x:0, y:0, width:300, height: 100)
+//        welcomeSubtext.center = CGPoint(x:185, y:420)
+
+
+        logInView?.dismissButton?.frame = CGRect(x:(logInView?.dismissButton?.frame.origin.x)!, y:(logInView?.dismissButton?.frame.origin.y)!, width:10, height:10)
+
         logInView?.facebookButton?.frame = CGRect(x:(self.logInView?.facebookButton?.frame.origin.x)!, y: (self.logInView?.facebookButton?.frame.origin.y)! - 85,  width:(self.logInView?.facebookButton?.frame.width)!, height: (self.logInView?.facebookButton?.frame.height)!)
 
-        logInView?.dismissButton?.frame = CGRect(x:(self.logInView?.facebookButton?.frame.origin.x)!, y: (self.logInView?.facebookButton?.frame.origin.y)! + 55,  width:(self.logInView?.facebookButton?.frame.width)!, height: (self.logInView?.facebookButton?.frame.height)!)
+        signUpButton.frame = CGRect(x:(self.logInView?.facebookButton?.frame.origin.x)!, y: (self.logInView?.facebookButton?.frame.origin.y)! + 55,  width:(self.logInView?.facebookButton?.frame.width)!, height: (self.logInView?.facebookButton?.frame.height)!)
 
         //privacy text frame
-        privacyText.frame = CGRect(x: (self.logInView?.dismissButton?.frame.origin.x)!, y:(self.logInView?.dismissButton?.frame.origin.y)! + 48 ,width: (self.logInView?.dismissButton?.frame.size.width)!, height: (self.logInView?.dismissButton?.frame.size.height)!)
+        privacyText.frame = CGRect(x: (self.signUpButton.frame.origin.x), y:(self.signUpButton.frame.origin.y) + 48 ,width: (self.signUpButton.frame.size.width), height: (self.signUpButton.frame.size.height))
 
     }
 

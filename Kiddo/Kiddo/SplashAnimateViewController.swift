@@ -13,7 +13,7 @@ import Crashlytics
 import ParseFacebookUtilsV4
 import Mixpanel
 
-class SplashAnimateViewController: UIViewController, PFLogInViewControllerDelegate, PFSignUpViewControllerDelegate{
+class SplashAnimateViewController: UIViewController, PFLogInViewControllerDelegate {
 
     @IBOutlet weak var findFunThingstodoLabel: UILabel!
 
@@ -120,7 +120,9 @@ class SplashAnimateViewController: UIViewController, PFLogInViewControllerDelega
 
     func prepareForLaunch() {
 
-       // self.performSegue(withIdentifier: "showTimeline", sender: nil)
+        if UserDefaults.standard.bool(forKey: "loginSkipped") {
+            self.performSegue(withIdentifier: "showTimeline", sender: nil)
+        }
 
         if let user = PFUser.current() {
             if let userObjId = user.objectId {
@@ -136,7 +138,6 @@ class SplashAnimateViewController: UIViewController, PFLogInViewControllerDelega
                 logInViewController.fields = [PFLogInFields.facebook,PFLogInFields.dismissButton]
                 logInViewController.delegate = self
                 logInViewController.emailAsUsername = false
-                logInViewController.signUpController?.delegate = self
                 logInViewController.facebookPermissions = ["public_profile", "email"]
 
                 self.present(logInViewController, animated: true, completion: nil )
@@ -255,12 +256,13 @@ class SplashAnimateViewController: UIViewController, PFLogInViewControllerDelega
         //UserDefaults.standard.set(Date(), forKey: "FacebookLoginSkipped")
         //presentTimeline()
 
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let controller = storyboard.instantiateViewController(withIdentifier: "SignUpViewController")
-        //self.present(controller, animated: true, completion: nil)
-        
-        self.dismiss(animated: true, completion: { self.present(controller, animated: true, completion: nil) } )
-
+//        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+//        let controller = storyboard.instantiateViewController(withIdentifier: "SignUpViewController")
+//        //self.present(controller, animated: true, completion: nil)
+//
+//        self.dismiss(animated: true, completion: { self.present(controller, animated: true, completion: nil) } )
+        UserDefaults.standard.set(true, forKey: "loginSkipped")
+        presentTimeline()
 
     }
 
