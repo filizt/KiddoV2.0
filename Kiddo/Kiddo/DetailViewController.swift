@@ -437,7 +437,7 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
         self.eventCategory.layer.masksToBounds = true
         self.buyTicketsButton.isHidden = true
 
-        if event.ticketsAvailable != nil {
+        if event.ticketsAvailable == true {
             self.buyTicketsButton.isHidden = false
         }
 

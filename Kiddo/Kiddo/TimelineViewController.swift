@@ -526,31 +526,33 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
     }
 
     private func fetchLaterEvents() {
-        let queryLater = PFQuery(className: "EventObject")
-        var laterDates = [Date]()
-        guard let laterDate = DateUtil.shared.later() else { return }
-        guard let laterDatePlusOne = DateUtil.shared.laterPlusOne() else { return }
-        laterDates.append(laterDate)
-        laterDates.append(laterDatePlusOne)
-        queryLater.whereKey("allEventDates", containedIn: laterDates)
-        queryLater.whereKey("isActive", equalTo: true)
-        queryLater.whereKey("isPopular", equalTo: true)
-        queryLater.limit = 35
-        queryLater.findObjectsInBackground { [weak weakSelf = self] (objects, error) in
-            guard error == nil else {
-                print ("Error fetching later events from Parse")
-                return
-            }
-
-            if let objects = objects {
-                weakSelf?.later = objects.map { Event.create(from: $0) }
+//        let queryLater = PFQuery(className: "EventObject")
+//        var laterDates = [Date]()
+//        guard let laterDate = DateUtil.shared.later() else { return }
+//        guard let laterDatePlusOne = DateUtil.shared.laterPlusOne() else { return }
+//        print(laterDate)
+//        print(laterDatePlusOne)
+//        laterDates.append(laterDate)
+//        laterDates.append(laterDatePlusOne)
+//        queryLater.whereKey("allEventDates", containedIn: laterDates)
+//        queryLater.whereKey("isActive", equalTo: true)
+//        queryLater.whereKey("isPopular", equalTo: true)
+//        queryLater.limit = 35
+//        queryLater.findObjectsInBackground { [weak weakSelf = self] (objects, error) in
+//            guard error == nil else {
+//                print ("Error fetching later events from Parse")
+//                return
+//            }
+//
+//            if let objects = objects {
+//                weakSelf?.later = objects.map { Event.create(from: $0) }
 
                 let queryPopular = PFQuery(className: "EventObject")
-                guard let date: Date = DateUtil.shared.laterPlusOne() else { return }
+                guard let date: Date = DateUtil.shared.later() else { return }
                 queryPopular.whereKey("allEventDates", greaterThanOrEqualTo: date)
                 queryPopular.whereKey("isActive", equalTo: true)
                 queryPopular.whereKey("isPopular", equalTo: true)
-                queryPopular.limit = 35
+                queryPopular.limit = 40
                 queryPopular.findObjectsInBackground { [weak weakSelf = self] (popularObjects, error) in
                     if let popularObjects = popularObjects {
                         let returnedEvents = popularObjects.map { Event.create(from: $0) }
@@ -566,8 +568,8 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
                     }
                 }
             }
-        }
-    }
+//        }
+//    }
 
     func filterEventsByCriteria() {
 //        let category = EventType.All
