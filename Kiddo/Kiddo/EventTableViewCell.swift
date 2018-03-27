@@ -68,7 +68,7 @@ class EventTableViewCell: UITableViewCell {
                 self.eventEndTime.isHidden = true
             }
 
-            if event.ticketsAvailable == true {
+            if !event.ticketsURL.isEmpty {
                 self.eventFreeImage.isHidden = false
                 self.eventFreeImage.image = UIImage(named: "ticketsTimeline")
             } else {

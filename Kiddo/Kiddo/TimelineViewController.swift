@@ -475,8 +475,61 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
     }
 
     private func fetchTodayEvents() {
-        let eventToday = PFQuery(className: "EventDate")
-        let date = DateUtil.shared.createDate(from: DateUtil.shared.today())
+//        let eventToday = PFQuery(className: "EventDate")
+//        let date = DateUtil.shared.createDate(from: DateUtil.shared.today())
+//        eventToday.whereKey("eventDate", equalTo: date)
+//        eventToday.findObjectsInBackground { [weak weakSelf = self] (dateObjects, error) in
+//            guard error == nil else {
+//                print ("Error fetching today's events from Parse")
+//                return
+//            }
+//
+//            if let dateObjects = dateObjects {
+//                let relation = dateObjects[0].relation(forKey: "events")
+//                let query = relation.query()
+//                query.includeKey("isActive")
+//                query.whereKey("isActive", equalTo: true)
+//                query.findObjectsInBackground { (objects, error) in
+//                    if let objects = objects {
+//                        weakSelf?.today = objects.map { Event.create(from: $0) }
+//                        weakSelf?.activityIndicator.stopAnimating()
+//                    }
+//                }
+//            }
+//        }
+    }
+
+    private func fetchTomorrrowEvents() {
+//        let queryTomorrow = PFQuery(className: "EventDate")
+//        let dateTomorrow = DateUtil.shared.createDate(from: DateUtil.shared.tomorrowString())
+//        queryTomorrow.whereKey("eventDate", equalTo: dateTomorrow)
+//        queryTomorrow.findObjectsInBackground { [weak weakSelf = self] (dateObjects, error) in
+//            guard error == nil else {
+//                print ("Error fetching tomorrow's events from Parse")
+//                return
+//            }
+//
+//            if let dateObjects = dateObjects {
+//                let relation = dateObjects[0].relation(forKey: "events")
+//                let query = relation.query()
+//                query.includeKey("isActive")
+//                query.whereKey("isActive", equalTo: true)
+//                query.findObjectsInBackground { (objects, error) in
+//                    if let objects = objects {
+//                        weakSelf?.tomorrow = objects.map { Event.create(from: $0) }
+//                    }
+//                }
+//            }
+//        }
+
+
+    }
+
+    private func fetchLaterEvents() {
+
+        let eventToday = PFQuery(className: "TestEventDate")
+        let date = DateUtil.shared.UTCZeroZeroDateValue(date: DateUtil.shared.test()!)
+        print(date)
         eventToday.whereKey("eventDate", equalTo: date)
         eventToday.findObjectsInBackground { [weak weakSelf = self] (dateObjects, error) in
             guard error == nil else {
@@ -491,41 +544,14 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
                 query.whereKey("isActive", equalTo: true)
                 query.findObjectsInBackground { (objects, error) in
                     if let objects = objects {
-                        weakSelf?.today = objects.map { Event.create(from: $0) }
+                        weakSelf?.later = objects.map { Event.create(from: $0) }
                         weakSelf?.activityIndicator.stopAnimating()
                     }
                 }
             }
         }
-    }
-
-    private func fetchTomorrrowEvents() {
-        let queryTomorrow = PFQuery(className: "EventDate")
-        let dateTomorrow = DateUtil.shared.createDate(from: DateUtil.shared.tomorrowString())
-        queryTomorrow.whereKey("eventDate", equalTo: dateTomorrow)
-        queryTomorrow.findObjectsInBackground { [weak weakSelf = self] (dateObjects, error) in
-            guard error == nil else {
-                print ("Error fetching tomorrow's events from Parse")
-                return
-            }
-
-            if let dateObjects = dateObjects {
-                let relation = dateObjects[0].relation(forKey: "events")
-                let query = relation.query()
-                query.includeKey("isActive")
-                query.whereKey("isActive", equalTo: true)
-                query.findObjectsInBackground { (objects, error) in
-                    if let objects = objects {
-                        weakSelf?.tomorrow = objects.map { Event.create(from: $0) }
-                    }
-                }
-            }
-        }
 
 
-    }
-
-    private func fetchLaterEvents() {
 //        let queryLater = PFQuery(className: "EventObject")
 //        var laterDates = [Date]()
 //        guard let laterDate = DateUtil.shared.later() else { return }
@@ -547,29 +573,29 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 //            if let objects = objects {
 //                weakSelf?.later = objects.map { Event.create(from: $0) }
 
-                let queryPopular = PFQuery(className: "EventObject")
-                guard let date: Date = DateUtil.shared.later() else { return }
-                queryPopular.whereKey("allEventDates", greaterThanOrEqualTo: date)
-                queryPopular.whereKey("isActive", equalTo: true)
-                queryPopular.whereKey("isPopular", equalTo: true)
-                queryPopular.limit = 40
-                queryPopular.findObjectsInBackground { [weak weakSelf = self] (popularObjects, error) in
-                    if let popularObjects = popularObjects {
-                        let returnedEvents = popularObjects.map { Event.create(from: $0) }
-                        //let's add returned events and dedupe  if necessary - this is a rare condition but still we need to do it.
-                        var filteredList = [Event]()
-                        for event in returnedEvents {
-                            let filtered = weakSelf?.later.filter{ $0.id == event.id }
-                            if filtered?.count == 0 {
-                                filteredList.append(event)
-                            }
-                        }
-                        weakSelf?.later += filteredList
-                    }
-                }
-            }
+//                let queryPopular = PFQuery(className: "EventObject")
+//                guard let date: Date = DateUtil.shared.later() else { return }
+//                queryPopular.whereKey("allEventDates", greaterThanOrEqualTo: date)
+//                queryPopular.whereKey("isActive", equalTo: true)
+//                queryPopular.whereKey("isPopular", equalTo: true)
+//                queryPopular.limit = 40
+//                queryPopular.findObjectsInBackground { [weak weakSelf = self] (popularObjects, error) in
+//                    if let popularObjects = popularObjects {
+//                        let returnedEvents = popularObjects.map { Event.create(from: $0) }
+//                        //let's add returned events and dedupe  if necessary - this is a rare condition but still we need to do it.
+//                        var filteredList = [Event]()
+//                        for event in returnedEvents {
+//                            let filtered = weakSelf?.later.filter{ $0.id == event.id }
+//                            if filtered?.count == 0 {
+//                                filteredList.append(event)
+//                            }
+//                        }
+//                        weakSelf?.later += filteredList
+//                    }
+//                }
+//            }
 //        }
-//    }
+    }
 
     func filterEventsByCriteria() {
 //        let category = EventType.All

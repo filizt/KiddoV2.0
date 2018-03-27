@@ -25,6 +25,36 @@ class DateUtil {
 
     }
 
+    func UTCZeroZeroDateValue(date: Date) -> Date? {
+
+        var components = Calendar.current.dateComponents([.day , .month, .year, .hour, .minute, .second], from: date)
+        components.hour = 0
+        components.minute = 0
+        components.second = 0
+        components.timeZone = TimeZone(abbreviation: "UTC")
+        return Calendar.current.date(from: components)
+    }
+
+    func tomorrow() -> Date? {
+        var dateComponents = DateComponents()
+        dateComponents.day = 1
+
+        guard let tomorrow = Calendar.current.date(byAdding: dateComponents, to: createDate(from:today())) else { return nil }
+
+        return tomorrow
+    }
+
+    func test() -> Date? {
+        var dateComponents = DateComponents()
+        dateComponents.day = 11
+
+        guard let tomorrow = Calendar.current.date(byAdding: dateComponents, to: createDate(from:today())) else { return nil }
+
+        return tomorrow
+    }
+
+  //  -----------------------------------------------
+
     func shortDate(from dateString: String) -> String {
         formatter.dateFormat = "MMM d, yyyy"
         if dateString.isEmpty != true {
@@ -111,14 +141,7 @@ class DateUtil {
         return formatter.string(from: tomorrow)
     }
 
-    func tomorrow() -> Date? {
-        var dateComponents = DateComponents()
-        dateComponents.day = 1
 
-        guard let tomorrow = Calendar.current.date(byAdding: dateComponents, to: createDate(from:today())) else { return nil }
-
-        return tomorrow
-    }
 
     func later() -> Date? {
         var dateComponents = DateComponents()

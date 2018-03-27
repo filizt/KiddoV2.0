@@ -13,15 +13,12 @@ struct Event {
     let id: String
     let title: String
     var dates: [Date]
-    let startDate: Date
-    let endDate: Date
     let allDayFlag: Bool!
     let startTime: String
     let endTime: String
     let freeFlag: Bool!
     let price: String
     let location: String!
-    let locationHours: String
     let imageURL: String?
     let originalEventURL: String?
     let address: String!
@@ -33,10 +30,11 @@ struct Event {
     var imageObjectId: String!
     let geoLocation: PFGeoPoint?
     let categoryKeywords: [String]?
-    let showTimes: String?
-    let ticketsAvailable: Bool?
-    let ticketsURL: String?
-  
+    let showTimes: String? //Delete this
+    let allEventSessions: [Date]
+    let ticketsURL: String
+    let discountedTicketSessions: [Date]?
+    let discountedTicketsURL: String?
 
     static var pushedEventId: String?
     static var pushedEvent: Event?
@@ -46,15 +44,12 @@ struct Event {
         let id = object.objectId ?? "0"
         let title = object["title"] as! String
         let dates = object["allEventDates"] as! [Date] //force downcast
-        let startDate = object["startDate"] as! Date
-        let endDate = object["endDate"] as! Date
         let allDayFlag = object["allDay"] as! Bool
-        let startTime = object["startTime"] as! String
-        let endTime = object["endTime"] as! String
+        let startTime = object["startTime"] as? String ?? ""
+        let endTime = object["endTime"] as? String ?? ""
         let freeFlag = object["free"] as! Bool
         let price = object["price"] as! String
         let location = object["location"] as! String
-        let locationHours = object["locationHours"] as! String
         let imageURL = object["imageURL"] as? String
         let originalEventURL = object["originalEventURL"] as? String //Try downcast; and store nil if doesn't work
         let address = object["address"] as! String
@@ -67,21 +62,20 @@ struct Event {
         let geoLocation = object["geoLocation"] as? PFGeoPoint
         let categoryKeywords = object["categoryKeywords"] as? [String]
         let showTimes = object["showTimes"] as? String
-        let ticketsAvailable = object["ticketsAvailable"] as? Bool
-        let ticketsURL = object["ticketsURL"] as? String
+        let allEventSessions = object["allEventSessions"] as! [Date]
+        let ticketsURL = object["ticketsURL"] as! String
+        let discountedTicketSessions = object["discountedTicketSessions"] as? [Date]
+        let discountedTicketsURL = object["discountedTicketsURL"] as? String
 
         return Event(id: id,
                      title: title,
                      dates: dates,
-                     startDate: startDate,
-                     endDate: endDate,
                      allDayFlag: allDayFlag,
                      startTime: startTime,
                      endTime: endTime,
                      freeFlag: freeFlag,
                      price: price,
                      location: location,
-                     locationHours: locationHours,
                      imageURL: imageURL,
                      originalEventURL: originalEventURL,
                      address: address,
@@ -94,8 +88,10 @@ struct Event {
                      geoLocation: geoLocation,
                      categoryKeywords: categoryKeywords,
                      showTimes: showTimes,
-                     ticketsAvailable: ticketsAvailable,
-                     ticketsURL:ticketsURL
+                     allEventSessions: allEventSessions,
+                     ticketsURL: ticketsURL,
+                     discountedTicketSessions: discountedTicketSessions,
+                     discountedTicketsURL: discountedTicketsURL
         )
     }
 

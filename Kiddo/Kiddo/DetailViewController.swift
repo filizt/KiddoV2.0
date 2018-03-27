@@ -380,8 +380,8 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
 //    }
     @IBAction func buyTicketsButtonPressed(_ sender: UIButton) {
 
-        if let url = event.ticketsURL {
-            UIApplication.shared.open(URL(string : url)!, options: [:], completionHandler: { (status) in
+        if !event.ticketsURL.isEmpty {
+            UIApplication.shared.open(URL(string : event.ticketsURL)!, options: [:], completionHandler: { (status) in
                 //record analytics here
                 Mixpanel.mainInstance().track(event: "Buy Tickets Pressed", properties: ["event Id" : self.event.id, "Event Title": self.event.title, "Event Location" : self.event.location, "freeEvent" : self.event.freeFlag, "Event Ages": self.event.ages ])
             })
@@ -437,7 +437,7 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
         self.eventCategory.layer.masksToBounds = true
         self.buyTicketsButton.isHidden = true
 
-        if event.ticketsAvailable == true {
+        if !event.ticketsURL.isEmpty {
             self.buyTicketsButton.isHidden = false
         }
 
