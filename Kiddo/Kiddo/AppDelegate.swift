@@ -47,8 +47,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         UNUserNotificationCenter.current().delegate = self
 
         prefetchImages()
-        fetchSeasonalEventRequirements()
+        //fetchSeasonalEventRequirements()
         requestAuthForNotifications()
+        checkVersionInfoAndRequestDownload()
 
         if launchOptions != nil {
             if let remoteNotificationDict = launchOptions![UIApplicationLaunchOptionsKey.remoteNotification] as? NSDictionary{
@@ -85,58 +86,59 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         return true
     }
 
-
+    func checkVersionInfoAndRequestDownload() {
+        let query = PFQuery(className: "VersionInfoUpdate")
+        query.getFirstObjectInBackground(block: { (object, error) in
+            guard error == nil else {
+                print ("Error retrieving version info from Parse")
+                return
+            }
+            if let object = object {
+                if object["IsOn"] as! Bool == true {
+                    VersionManager.shared.isEnabled = object["IsOn"] as! Bool
+                    VersionManager.shared.currentActiveVersion = object["currentVersion"] as! String
+                }
+            }
+        })
+    }
 
     func prefetchImages() {
-        let events = PFQuery(className: "EventObject")
-        var dates = [Date]()
-        let date = DateUtil.shared.createDate(from: DateUtil.shared.today())
-        dates.append(date)
-        if let tomorrow = DateUtil.shared.tomorrow() {
-            dates.append(tomorrow)
-        }
-        if let later = DateUtil.shared.later() {
-            dates.append(later)
-        }
-        if let laterPlusOne = DateUtil.shared.laterPlusOne() {
-            dates.append(laterPlusOne)
-        }
-        events.whereKey("allEventDates", containedIn: dates)
-        events.whereKey("isActive", equalTo: true)
 
-        let popularEvents = PFQuery(className:"EventObject")
-        popularEvents.whereKey("allEventDates", greaterThanOrEqualTo: date)
-        popularEvents.whereKey("isActive", equalTo: true)
-        popularEvents.whereKey("isPopular", equalTo: true)
+        guard let startDate = DateUtil.shared.todayStart() else { return }
+        guard let endDate = DateUtil.shared.addThreeMonths(to: startDate) else { return }
 
-        let query = PFQuery.orQuery(withSubqueries: [events, popularEvents])
-        query.findObjectsInBackground { (dateObjects, error) in
+        let eventsQuery = PFQuery(className: "EventInstance")
+        eventsQuery.whereKey("eventDate", lessThanOrEqualTo: endDate)
+        eventsQuery.whereKey("eventDate", greaterThan: startDate)
+        eventsQuery.includeKey("eventImageId")
+
+        eventsQuery.findObjectsInBackground { (eventInstances, error) in
             guard error == nil else {
                 print ("Error fetching today's events from Parse")
                 return
             }
 
-            if let objects = dateObjects {
+            if let objects = eventInstances {
                 SimpleCache.fetchImages(objects: objects)
             }
         }
     }
 
-    func fetchSeasonalEventRequirements() {
-        let query = PFQuery(className: "SeasonalEvents")
-        query.getFirstObjectInBackground(block: { (object, error) in
-            guard error == nil else {
-                print ("Error retrieving image cache limit from Parse")
-                return
-            }
-            if let object = object {
-                if object["isEnabled"] as! Bool == true {
-                    SeasonalEvent.shared.isEnabled = object["isEnabled"] as! Bool
-                    SeasonalEvent.shared.name = object["name"] as! String
-                }
-            }
-        })
-    }
+//    func fetchSeasonalEventRequirements() {
+//        let query = PFQuery(className: "SeasonalEvents")
+//        query.getFirstObjectInBackground(block: { (object, error) in
+//            guard error == nil else {
+//                print ("Error retrieving image cache limit from Parse")
+//                return
+//            }
+//            if let object = object {
+//                if object["isEnabled"] as! Bool == true {
+//                    SeasonalEvent.shared.isEnabled = object["isEnabled"] as! Bool
+//                    SeasonalEvent.shared.name = object["name"] as! String
+//                }
+//            }
+//        })
+//    }
 
     
     func fetchImages() {
@@ -218,7 +220,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
 
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        let date = DateUtil.shared.today()
+        let date = DateUtil.shared.mediumDateString(from: Date())
         Answers.logCustomEvent(withName: "NotificationViewed", customAttributes: ["Date":date])
         
     }

@@ -34,17 +34,6 @@ class FilterUtil {
 //        }
 //    }
 
-    class func sortEventsSham(events: [Event]) -> [Event]{
-        var e = events
-        let a = e.filter { $0.featuredFlag == true }
-        let aComplement = e.filter { $0.featuredFlag == false }
-        var b = aComplement.filter { $0.allDayFlag == false }
-        let c = aComplement.filter { $0.allDayFlag == true }
 
-        b.sort { (DateUtil.shared.createShortTimeDate(from: $0.startTime)).compare(DateUtil.shared.createShortTimeDate(from: $1.startTime)) == ComparisonResult.orderedAscending }
-        e = a + b + c
-
-        return e
-    }
 
 }

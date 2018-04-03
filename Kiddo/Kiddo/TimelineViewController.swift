@@ -119,9 +119,13 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
                                 let annotation = EventAnnotation()
                                 annotation.event = event
                                 annotation.coordinate = location.location()
-                                annotation.type = .color(UIColor(red:0.25, green:0.18, blue:0.35, alpha:1.0), radius: 25) // .image(UIImage(named: "pin"))
-                                annotation.title = event.title
-                                annotation.subtitle = (self.segmentedControl.selectedIndex == 2 ? DateUtil.shared.shortDateString(from: event.dates.first!) : (event.allDayFlag == true ? "ALL DAY" : "\(DateUtil.shared.shortTime(from:event.startTime))")) + " - " + event.location
+                                annotation.type = .color(UIColor(red:0.90, green:0.29, blue:0.24, alpha:1.0), radius: 30) // .image(UIImage(named: "pin"))
+                                annotation.title = event.title + " @ " + event.location
+                                if segmentedControl.selectedIndex == 2 {
+                                    annotation.subtitle = DateUtil.shared.fullDateString(from: event.startTime)
+                                } else {
+                                    annotation.subtitle = DateUtil.shared.shortTimeString(from: event.startTime)
+                                }
 
                                 clusterManager.add(annotation)
 
@@ -154,7 +158,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
     fileprivate var today = [Event]() {
         didSet {
             if today.count > 0 {
-                today = self.sortEventsSham(events: today)
+                today = self.sortEvents(events: today)
 
                 if firstTimeLaunch == true {
                     firstTimeLaunch = false
@@ -171,7 +175,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
     fileprivate var tomorrow = [Event]() {
         didSet {
             if tomorrow.count > 0 {
-                tomorrow = self.sortEventsSham(events: tomorrow )
+                tomorrow = self.sortEvents(events: tomorrow )
 
                 if oldValue.count != tomorrow.count && segmentedControl.selectedIndex == 1 {
                     reloadDataAndUpdateUI()
@@ -183,11 +187,11 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
     fileprivate var later = [Event]() {
         didSet {
             if later.count > 0 {
-                guard let laterDate = DateUtil.shared.later() else { return }
-                for i in 0..<later.count {
-                    later[i].updateDates(bydate: laterDate)
-                }
-                later.sort { $0.dates.first! < $1.dates.first! }
+                //guard let laterDate = DateUtil.shared.laterStart() else { return }
+//                for i in 0..<later.count {
+//                    later[i].updateDates(bydate: laterDate)
+//                }
+                later.sort { $0.eventDates.first! < $1.eventDates.first! }
 
                 if oldValue.count != later.count && segmentedControl.selectedIndex == 2 {
                     reloadDataAndUpdateUI()
@@ -232,9 +236,9 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         self.segmentedControl.items = ["TODAY","TOMORROW","LATER"]
         self.segmentedControl.delegate = self
 
-        if SeasonalEvent.shared.isEnabled == true {
-            filters.insert(SeasonalEvent.shared.name, at: 2)
-        }
+//        if SeasonalEvent.shared.isEnabled == true {
+//            filters.insert(SeasonalEvent.shared.name, at: 2)
+//        }
 
         activityIndicator.hidesWhenStopped = true
         activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
@@ -365,7 +369,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
                     return
                 }
                 if let event = event {
-                    Event.pushedEvent = Event.create(from: event)
+                    //Event.pushedEvent = Event.create(from: event)
                     self.performSegue(withIdentifier: "showDetailViewForPushedEvent", sender: nil)
                 }
             }
@@ -475,6 +479,40 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
     }
 
     private func fetchTodayEvents() {
+        let startDate = DateUtil.shared.todayStart() //returns a test date
+        let endDate = DateUtil.shared.addOneDay(startDate: startDate!) //returns a test date
+        print(startDate) // this should print PST but the actual date should be UTC.
+        print(DateUtil.shared.dateStringWithDateTimeStyle(from: startDate!))
+        print(endDate) // this should print PST but the actual date should be UTC.
+        print(DateUtil.shared.dateStringWithDateTimeStyle(from: endDate!))
+
+        let innerQuery = PFQuery(className: "EventInstance")
+        innerQuery.whereKey("eventDate", lessThanOrEqualTo: endDate)
+        innerQuery.whereKey("eventDate", greaterThan: startDate)
+
+        let eventsQuery = PFQuery(className: "Event")
+        eventsQuery.includeKey("eventInstanceObjects")
+        eventsQuery.whereKey("isActive", equalTo: true)
+        eventsQuery.whereKey("eventInstanceObjects", matchesQuery: innerQuery)
+
+        var events = [Event]()
+
+        eventsQuery.findObjectsInBackground { [weak weakSelf = self] (dateObjects, error) in
+            guard error == nil else {
+                print ("Error fetching today's events from Parse")
+                return
+            }
+
+            if let dateObjects = dateObjects {
+                //all the
+
+                weakSelf?.today = dateObjects.map { Event.create(from: $0, forDay: "Today") }
+                weakSelf?.activityIndicator.stopAnimating()
+            }
+
+        }
+
+
 //        let eventToday = PFQuery(className: "EventDate")
 //        let date = DateUtil.shared.createDate(from: DateUtil.shared.today())
 //        eventToday.whereKey("eventDate", equalTo: date)
@@ -522,34 +560,119 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 //            }
 //        }
 
+        let startDate = DateUtil.shared.tomorrowStart() //returns a test date
+        let endDate = DateUtil.shared.addOneDay(startDate: startDate!) //returns a test date
+        print(startDate) // this should print PST but the actual date should be UTC.
+        print(DateUtil.shared.dateStringWithDateTimeStyle(from: startDate!))
+        print(endDate) // this should print PST but the actual date should be UTC.
+        print(DateUtil.shared.dateStringWithDateTimeStyle(from: endDate!))
 
-    }
+        let innerQuery = PFQuery(className: "EventInstance")
+        innerQuery.whereKey("eventDate", lessThanOrEqualTo: endDate)
+        innerQuery.whereKey("eventDate", greaterThan: startDate)
 
-    private func fetchLaterEvents() {
+        let eventsQuery = PFQuery(className: "Event")
+        eventsQuery.includeKey("eventInstanceObjects")
+        eventsQuery.whereKey("isActive", equalTo: true)
+        eventsQuery.whereKey("eventInstanceObjects", matchesQuery: innerQuery)
 
-        let eventToday = PFQuery(className: "TestEventDate")
-        let date = DateUtil.shared.UTCZeroZeroDateValue(date: DateUtil.shared.test()!)
-        print(date)
-        eventToday.whereKey("eventDate", equalTo: date)
-        eventToday.findObjectsInBackground { [weak weakSelf = self] (dateObjects, error) in
+        var events = [Event]()
+
+        eventsQuery.findObjectsInBackground { [weak weakSelf = self] (dateObjects, error) in
             guard error == nil else {
                 print ("Error fetching today's events from Parse")
                 return
             }
 
             if let dateObjects = dateObjects {
-                let relation = dateObjects[0].relation(forKey: "events")
-                let query = relation.query()
-                query.includeKey("isActive")
-                query.whereKey("isActive", equalTo: true)
-                query.findObjectsInBackground { (objects, error) in
-                    if let objects = objects {
-                        weakSelf?.later = objects.map { Event.create(from: $0) }
-                        weakSelf?.activityIndicator.stopAnimating()
-                    }
-                }
+                //all the
+
+                weakSelf?.tomorrow = dateObjects.map { Event.create(from: $0, forDay: "Tomorrow") }
             }
+
         }
+    }
+
+    private func fetchLaterEvents() {
+        let startDate = DateUtil.shared.laterStart() //returns a test date
+        let endDate = DateUtil.shared.addOneDay(startDate: startDate!) //returns a test date
+        print(startDate) // this should print PST but the actual date should be UTC.
+        print(DateUtil.shared.dateStringWithDateTimeStyle(from: startDate!))
+        print(endDate) // this should print PST but the actual date should be UTC.
+        print(DateUtil.shared.dateStringWithDateTimeStyle(from: endDate!))
+
+        let innerQuery = PFQuery(className: "EventInstance")
+        innerQuery.whereKey("eventDate", greaterThan: startDate)
+
+        let eventsQuery = PFQuery(className: "Event")
+        eventsQuery.includeKey("eventInstanceObjects")
+        //add popular check here
+        //limit it to 200 or something high
+        eventsQuery.whereKey("isActive", equalTo: true)
+        eventsQuery.whereKey("isPopular", equalTo: true)
+        eventsQuery.limit = 100
+        eventsQuery.whereKey("eventInstanceObjects", matchesQuery: innerQuery)
+
+        var events = [Event]()
+
+        eventsQuery.findObjectsInBackground { [weak weakSelf = self] (dateObjects, error) in
+            guard error == nil else {
+                print ("Error fetching today's events from Parse")
+                return
+            }
+
+            if let dateObjects = dateObjects {
+                weakSelf?.later = dateObjects.map { Event.create(from: $0, forDay: "Later") }
+            }
+
+        }
+
+        //let innerQuery = PFQuery(class)
+
+//        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"myDictionary.myKey = %@", @"mySearchTerm"];
+//
+//        PFQuery *objectQuery = [PFQuery queryWithClassName:@"myObject" predicate:predicate];
+
+
+
+        // Using NSPredicate
+//        let innerPred = NSPredicate(format: "image IN SELF")
+//        let innerQuery = PFQuery(className: "Post", predicate: innerPred)
+//
+//        let pred = NSPredicate(format: "eventInstances %@", innerQuery)
+//        let query = PFQuery(className: "Comment", predicate: pred)
+
+
+
+
+//        let innerQuery = PFQuery(className: "TestEventObject")
+//        innerQuery.whereKey("isActive", equalTo: true)
+//
+//        let eventToday = PFQuery(className: "TestEventInstance")
+//        //eventToday.includeKey("allEventDates")
+//        eventToday.whereKey("allEventDates", lessThanOrEqualTo: endDate)
+//        eventToday.whereKey("allEventDates", greaterThan: startDate)
+//        eventToday.whereKey("eventObject", matchesQuery: innerQuery)
+
+//        let eventQuery = PFQuery(className:"TestEventObject")
+//        eventToday.includeKey("allEventDates")
+//        eventToday.whereKey("allEventDates", lessThanOrEqualTo: endDate)
+//        eventToday.whereKey("allEventDates", greaterThan: startDate)
+//
+//        let query = PFQuery.orQuery(withSubqueries: [eventQuery])
+//        query.whe
+//
+//        eventToday.
+//        eventToday.findObjectsInBackground { [weak weakSelf = self] (dateObjects, error) in
+//            guard error == nil else {
+//                print ("Error fetching today's events from Parse")
+//                return
+//            }
+//
+//            if let dateObjects = dateObjects {
+//                //all the
+//                print("we're here")
+//        }
 
 
 //        let queryLater = PFQuery(className: "EventObject")
@@ -595,6 +718,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 //                }
 //            }
 //        }
+        
     }
 
     func filterEventsByCriteria() {
@@ -617,27 +741,13 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
     
 
     func sortEvents(events: [Event]) -> [Event]{
-        var e = events
-        var a = e.filter { $0.allDayFlag == false }
-        let b = e.filter { $0.allDayFlag == true }
-        a.sort { ($0.startTime < $1.startTime) }
-        e = a + b
+        let e = events
 
-        return e
-    }
-
-    // There is first conversion of the string to date object and then sort. This needs to be fixed as some point. We can startTime and endTime as Date() objects.
-    func sortEventsSham(events: [Event]) -> [Event]{
-        var e = events
         let a = e.filter { $0.featuredFlag == true }
         let aComplement = e.filter { $0.featuredFlag == false }
-        var b = aComplement.filter { $0.allDayFlag == false }
-        let c = aComplement.filter { $0.allDayFlag == true }
+        let sorted = aComplement.sorted { ( $0.startTime < $1.startTime ) }
 
-        b.sort { (DateUtil.shared.createShortTimeDate(from: $0.startTime)).compare(DateUtil.shared.createShortTimeDate(from: $1.startTime)) == ComparisonResult.orderedAscending }
-        e = a + b + c
-
-        return e
+        return sorted + a
     }
 
 
@@ -692,10 +802,15 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         let cell = self.timelineTableView.dequeueReusableCell(withIdentifier: EventTableViewCell.identifier(), for: indexPath) as! EventTableViewCell
         cell.event = selectedEvent
         if self.segmentedControl.selectedIndex == 2 {
-            cell.eventStartTime.text = DateUtil.shared.shortDateString(from: selectedEvent.dates.first!)
+            cell.eventStartTime.text = DateUtil.shared.mediumDateString(from: selectedEvent.eventDates.first!)
             cell.eventFeaturedStar.isHidden = true
             cell.eventFeaturedLabel.isHidden = true
+            cell.eventEndTime.isHidden = true
+            cell.dashBetweenTimes.isHidden = true
         }
+
+        cell.selectionStyle = .none
+        
         return cell
     }
 
@@ -841,27 +956,39 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
                 recordUserFilterAction(forFilter: "Free")
             }
         case "🌕 Indoor": //Indoor
-            self.events = e.filter { $0.categoryKeywords?.contains("Indoor") == true }
-            recordUserFilterAction(forFilter: "Indoor")
-        default:
-            if SeasonalEvent.shared.isEnabled == true {
-                let seasonalFilteredEvents = e.filter { $0.categoryKeywords?.contains(SeasonalEvent.shared.name) == true }
-                if seasonalFilteredEvents.count > 0 {
-                    self.events = seasonalFilteredEvents
-                    recordUserFilterAction(forFilter: SeasonalEvent.shared.name)
-                } else {
-                    let alertController = UIAlertController (title: "Sorry", message: "It looks like we can't find any events for the day.", preferredStyle: .alert)
-                    let action = UIAlertAction(title: "OK", style: UIAlertActionStyle.default) { (_) -> Void in
-                        self.resetCollectionViewSelection()
-                        self.events = e
-                    }
-                    alertController.addAction(action)
-                    self.present(alertController, animated: true, completion: nil)
+            let eventsFiltered = e.filter { $0.categoryKeywords?.contains("Indoor") == true }
+            if eventsFiltered.count == 0 {
+                let alertController = UIAlertController (title: "Sorry", message: "It looks like we can't find any Indoor events for the day.", preferredStyle: .alert)
+                let action = UIAlertAction(title: "OK", style: UIAlertActionStyle.default) { (_) -> Void in
+                    self.resetCollectionViewSelection()
+                    self.events = e
                 }
+                alertController.addAction(action)
+                self.present(alertController, animated: true, completion: nil)
             } else {
+                self.events = eventsFiltered
+                recordUserFilterAction(forFilter: "Indoor")
+            }
+
+        default:
+//            if SeasonalEvent.shared.isEnabled == true {
+//                let seasonalFilteredEvents = e.filter { $0.categoryKeywords?.contains(SeasonalEvent.shared.name) == true }
+//                if seasonalFilteredEvents.count > 0 {
+//                    self.events = seasonalFilteredEvents
+//                    recordUserFilterAction(forFilter: SeasonalEvent.shared.name)
+//                } else {
+//                    let alertController = UIAlertController (title: "Sorry", message: "It looks like we can't find any events for the day.", preferredStyle: .alert)
+//                    let action = UIAlertAction(title: "OK", style: UIAlertActionStyle.default) { (_) -> Void in
+//                        self.resetCollectionViewSelection()
+//                        self.events = e
+//                    }
+//                    alertController.addAction(action)
+//                    self.present(alertController, animated: true, completion: nil)
+//                }
+//            } else {
                 self.events = e
                 recordUserFilterAction(forFilter: "Default")
-            }
+//            }
         }
     }
 
@@ -926,9 +1053,13 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
                     let annotation = EventAnnotation()
                     annotation.event = event
                     annotation.coordinate = location.location()
-                    annotation.type = .color(UIColor(red:0.25, green:0.18, blue:0.35, alpha:1.0), radius: 25) // .image(UIImage(named: "pin"))
-                    annotation.title = event.title
-                    annotation.subtitle = (self.segmentedControl.selectedIndex == 2 ? DateUtil.shared.shortDateString(from: event.dates.first!) : (event.allDayFlag == true ? "ALL DAY" : "\(DateUtil.shared.shortTime(from:event.startTime))")) + " - " + event.location
+                    annotation.type = .color(UIColor(red:0.90, green:0.29, blue:0.24, alpha:1.0), radius: 30) // .image(UIImage(named: "pin"))
+                    annotation.title = event.title + " @ " + event.location
+                    if segmentedControl.selectedIndex == 2 {
+                        annotation.subtitle = DateUtil.shared.fullDateString(from: event.startTime)
+                    } else {
+                        annotation.subtitle = DateUtil.shared.shortTimeString(from: event.startTime)
+                    }
 
                     clusterManager.add(annotation)
 
@@ -983,7 +1114,7 @@ extension TimelineViewController: MKMapViewDelegate {
                 if let annotation = annotation.annotations.first as? Annotation, let type = annotation.type {
                     view = BorderedClusterAnnotationView(annotation: annotation, reuseIdentifier: identifier, type: type, borderColor: .white)
                 } else {
-                    view = ClusterAnnotationView(annotation: annotation, reuseIdentifier: identifier, type: .color(UIColor.appPurpleColor, radius: 25))
+                    view = ClusterAnnotationView(annotation: annotation, reuseIdentifier: identifier, type: .color(UIColor(red:0.90, green:0.29, blue:0.24, alpha:1.0), radius: 25))
                 }
             } else {
                 view?.annotation = annotation
@@ -1000,7 +1131,7 @@ extension TimelineViewController: MKMapViewDelegate {
             var view = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MKPinAnnotationView
             if view == nil {
                 view = MKPinAnnotationView(annotation: annotation, reuseIdentifier: identifier)
-                view?.pinTintColor = UIColor.appPurpleColor
+                view?.pinTintColor = UIColor(red:0.90, green:0.29, blue:0.24, alpha:1.0)
             } else {
                 view?.annotation = annotation
             }

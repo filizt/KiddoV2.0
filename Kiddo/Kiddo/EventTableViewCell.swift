@@ -20,6 +20,7 @@ class EventTableViewCell: UITableViewCell {
     @IBOutlet weak var eventCategory: UIButton!
     @IBOutlet weak var eventFeaturedStar: UIImageView!
 
+    @IBOutlet weak var ticketsAvailableLabel: UILabel!
     @IBOutlet weak var eventEndTime: UILabel!
     @IBOutlet weak var dashBetweenTimes: UILabel!
     private let cache = SimpleCache.shared
@@ -36,7 +37,7 @@ class EventTableViewCell: UITableViewCell {
         self.eventTitle?.text = nil
         self.eventVenueName?.text = nil
         self.eventStartTime?.text = nil
-
+        self.ticketsAvailableLabel.isHidden = true
     }
 
     private func updateUI() {
@@ -47,6 +48,7 @@ class EventTableViewCell: UITableViewCell {
         self.dashBetweenTimes.isHidden = true
         self.eventEndTime.isHidden = false
         self.eventFreeImage.isHidden = true
+        self.ticketsAvailableLabel.isHidden = true
 
         if let event = event {
             self.eventTitle?.text = event.title
@@ -54,26 +56,13 @@ class EventTableViewCell: UITableViewCell {
 
             //allday flag and showTimes flags are mutually exclusive.
             //locationHours should still be saved as part of the data, as detail view relies on that to show "All Day" event's hours. This is needed for backward compatibility.
-            if event.allDayFlag == true {
+            if event.variousTimes == true {
+                self.eventStartTime?.text = "Various Times"
+                self.eventEndTime.isHidden = true
+            } else {
                 self.dashBetweenTimes.isHidden = false
-                self.eventStartTime?.text = "\(DateUtil.shared.shortTime(from:event.startTime))"
-                self.eventEndTime?.text = "\(DateUtil.shared.shortTime(from:event.endTime))"
-            } else {
-                self.eventStartTime?.text = "\(DateUtil.shared.shortTime(from:event.startTime))"
-                self.eventEndTime.isHidden = true
-            }
-
-            if let showTimes = self.event?.showTimes {
-                self.eventStartTime?.text = showTimes
-                self.eventEndTime.isHidden = true
-            }
-
-            if !event.ticketsURL.isEmpty {
-                self.eventFreeImage.isHidden = false
-                self.eventFreeImage.image = UIImage(named: "ticketsTimeline")
-            } else {
-                self.eventFreeImage.image = UIImage(named: "free")
-                self.eventFreeImage.isHidden = event.freeFlag == true ? false : true
+                self.eventStartTime?.text = "\(DateUtil.shared.shortTimeString(from:event.startTime))"
+                self.eventEndTime?.text = "\(DateUtil.shared.shortTimeString(from:event.endTime))"
             }
 
             if event.category == "Other" {
@@ -94,6 +83,19 @@ class EventTableViewCell: UITableViewCell {
                 self.eventFeaturedLabel.isHidden = true
             }
 
+            if event.ticketsURL.isEmpty {
+                self.ticketsAvailableLabel.isHidden = true
+                self.eventFreeImage.image = UIImage(named: "free")
+                self.eventFreeImage.isHidden = event.freeFlag == true ? false : true
+            } else {
+                self.eventFreeImage.isHidden = event.freeFlag == true ? false : true
+                self.ticketsAvailableLabel.isHidden = false
+                var endFrame = self.ticketsAvailableLabel.frame
+                self.ticketsAvailableLabel.frame.origin.x = UIScreen.main.bounds.width
+                UIView.animate(withDuration: 0.5, delay: 0, options: [.curveEaseInOut], animations: {
+                    self.ticketsAvailableLabel.frame  = endFrame
+                }, completion: nil )
+            }
 
             if let image = cache.image(key:event.imageObjectId) {
                 self.eventImage?.image = image
@@ -123,12 +125,18 @@ class EventTableViewCell: UITableViewCell {
                         guard let imageData = data else { return }
                         guard let image = UIImage(data: imageData) else { return }
 
+                        //set eventImage only if current event showing is the one we started the download for
                         if let e = self.event {
                             if e.id == eventIdForDownload {
-                                 self.eventImage?.image = image
+                                UIView.transition(with: self.eventImage,
+                                                  duration:0.8,
+                                                  options: .transitionCrossDissolve,
+                                                  animations: {  self.eventImage?.image = image},
+                                                  completion: {(finished) in
+                                                  self.cache.setImage(image, key: event.imageObjectId)
+                                })
                             }
                         }
-                        self.cache.setImage(image, key: event.imageObjectId)
                     })
                 })
             }

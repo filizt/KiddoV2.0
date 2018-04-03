@@ -29,8 +29,7 @@ class SimpleCache {
     }
 
     static func fetchImages(objects: [PFObject]) {
-        let imageIdSet = Set (objects.map { Event.parseImageId(object: $0)})
-        let imageIds = Array (imageIdSet)
+        let imageIds = Array(Set(objects.flatMap { $0["eventImageId"] as! String }))
 
         let query = PFQuery(className: "EventImage")
         query.whereKey("objectId", containedIn: imageIds )

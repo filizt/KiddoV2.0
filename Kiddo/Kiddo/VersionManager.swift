@@ -9,11 +9,10 @@
 import Foundation
 import UIKit
 
-class SeasonalEvent {
+class VersionManager {
 
-    static let shared = SeasonalEvent()
+    static let shared = VersionManager()
 
     var isEnabled = false
-    var name = ""
-    var sizeMultiplier:CGFloat = 1.0
+    var currentActiveVersion = ""
 }

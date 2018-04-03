@@ -120,6 +120,42 @@ class SplashAnimateViewController: UIViewController, PFLogInViewControllerDelega
 
     func prepareForLaunch() {
 
+        if VersionManager.shared.isEnabled {
+            let currentAppVersion = (Bundle.main.infoDictionary?["CFBundleShortVersionString"] as! String)
+            if VersionManager.shared.currentActiveVersion != currentAppVersion {
+                let alertController = UIAlertController(title: "Update Available", message: "Kiddo Local has a new version available. You can download it from the App store.", preferredStyle: .alert)
+                let downloadNewVersionAction = UIAlertAction(title: "Download", style: .default) {  (_) -> Void in
+                    guard let url = URL(string: "https://itunes.apple.com/us/app/kiddo-events-and-activities-for-you-your-kid/id1210910332") else {
+                        return
+                    }
+
+                    if UIApplication.shared.canOpenURL(url) {
+                        if #available(iOS 10.0, *) {
+                            UIApplication.shared.open(url, options: [:], completionHandler: { (finished) in
+                                if finished {
+                                    self.checkLoginInfo()
+                                }
+                            })
+                        } else {
+                            UIApplication.shared.openURL(url)
+                        }
+                    }
+                }
+
+                alertController.addAction(downloadNewVersionAction)
+                let cancelAction = UIAlertAction(title: "Cancel", style: .default, handler: { (_) -> Void in
+                    self.checkLoginInfo()
+                })
+                alertController.addAction(cancelAction)
+
+                present(alertController, animated: true, completion: nil )
+            } else {
+               checkLoginInfo()
+            }
+        }
+    }
+
+    func checkLoginInfo() {
         if UserDefaults.standard.bool(forKey: "loginSkipped") {
             self.performSegue(withIdentifier: "showTimeline", sender: nil)
         }
@@ -144,6 +180,7 @@ class SplashAnimateViewController: UIViewController, PFLogInViewControllerDelega
             }
         }
     }
+
 
     func emailSubmisionNeeded() -> Bool {
         if let email = UserDefaults.standard.object(forKey: "email") as? String {
@@ -171,11 +208,8 @@ class SplashAnimateViewController: UIViewController, PFLogInViewControllerDelega
                 mixpanel.people.set(properties: ["Email": pfUser.email!, "Source": "Email", "Date": Date(), "ParseUserId": pfUser.objectId ?? "" ])
 
             }
-            
-
             return false
         }
-
         return true
     }
 

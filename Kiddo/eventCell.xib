@@ -4,12 +4,14 @@
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
         <array key="Avenir.ttc">
+            <string>Avenir-Black</string>
             <string>Avenir-Book</string>
             <string>Avenir-Heavy</string>
         </array>
@@ -140,13 +142,25 @@
                             </stackView>
                         </subviews>
                     </stackView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="TICKETS AVAILABLE" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dxo-Qd-CMq">
+                        <rect key="frame" x="206" y="19" width="169" height="25"/>
+                        <color key="backgroundColor" red="0.90196078431372551" green="0.29019607843137252" blue="0.23529411764705882" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="25" id="mME-r8-LBt"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="Avenir-Black" family="Avenir" pointSize="12"/>
+                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="bottom" secondItem="seo-c7-hM8" secondAttribute="bottom" constant="-1" id="07x-3n-VGr"/>
+                    <constraint firstAttribute="trailing" secondItem="Dxo-Qd-CMq" secondAttribute="trailing" constant="-1" id="2Fm-QC-nIW"/>
                     <constraint firstItem="seo-c7-hM8" firstAttribute="top" secondItem="qoZ-Vx-DOt" secondAttribute="top" id="7dQ-64-1EG"/>
                     <constraint firstItem="GIj-qi-YAt" firstAttribute="top" relation="lessThanOrEqual" secondItem="qoZ-Vx-DOt" secondAttribute="topMargin" constant="152.5" id="Ir7-kb-xdH"/>
                     <constraint firstItem="GIj-qi-YAt" firstAttribute="leading" secondItem="qoZ-Vx-DOt" secondAttribute="leading" constant="15" id="PRT-50-r1u"/>
                     <constraint firstAttribute="trailing" secondItem="dIg-Rg-YSx" secondAttribute="trailing" constant="-1" id="Qqz-6D-Kfx"/>
+                    <constraint firstItem="Dxo-Qd-CMq" firstAttribute="leading" relation="lessThanOrEqual" secondItem="qoZ-Vx-DOt" secondAttribute="leading" constant="206" id="Uhc-ys-SAB"/>
                     <constraint firstItem="seo-c7-hM8" firstAttribute="leading" secondItem="qoZ-Vx-DOt" secondAttribute="leading" id="Waz-2e-bxe"/>
                     <constraint firstItem="dIg-Rg-YSx" firstAttribute="leading" secondItem="qoZ-Vx-DOt" secondAttribute="leading" id="YIn-Re-AH9"/>
                     <constraint firstAttribute="bottom" secondItem="GIj-qi-YAt" secondAttribute="bottom" constant="15" id="gAi-bL-zGV"/>
@@ -154,6 +168,7 @@
                     <constraint firstAttribute="bottom" secondItem="dIg-Rg-YSx" secondAttribute="bottom" constant="-1" id="oji-UW-1td"/>
                     <constraint firstAttribute="trailing" secondItem="seo-c7-hM8" secondAttribute="trailing" constant="-1" id="rVi-UD-Obk"/>
                     <constraint firstAttribute="trailingMargin" secondItem="GIj-qi-YAt" secondAttribute="trailing" constant="-2" id="slO-Su-pgC"/>
+                    <constraint firstItem="GIj-qi-YAt" firstAttribute="top" secondItem="Dxo-Qd-CMq" secondAttribute="bottom" constant="118" id="u18-XH-a1w"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
@@ -167,6 +182,7 @@
                 <outlet property="eventStartTime" destination="OI5-6J-JOr" id="dVO-CW-hki"/>
                 <outlet property="eventTitle" destination="s7f-NO-xe3" id="A3i-6j-Jun"/>
                 <outlet property="eventVenueName" destination="CQ5-XZ-pXL" id="s63-sx-Ogd"/>
+                <outlet property="ticketsAvailableLabel" destination="Dxo-Qd-CMq" id="99I-Ae-bZe"/>
             </connections>
             <point key="canvasLocation" x="-138" y="5"/>
         </tableViewCell>

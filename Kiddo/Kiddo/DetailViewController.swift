@@ -28,7 +28,7 @@ enum TabBarItems : Int {
     case none
 }
 
-class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDelegate, MFMailComposeViewControllerDelegate {
+class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDelegate, MFMailComposeViewControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate {
     
 
     @IBOutlet weak var eventImage: UIImageView!
@@ -36,10 +36,10 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
     @IBOutlet weak var scrollView: UIScrollView!
 
     @IBOutlet weak var eventCategory: UIButton!
-
+    @IBOutlet weak var eventSessionsCollectionView: UICollectionView!
+    
     @IBOutlet weak var eventTitle: UILabel!
     @IBOutlet weak var eventFullDateLabel: UILabel!
-    @IBOutlet weak var eventHours: UILabel!
     @IBOutlet weak var addToCalendarButton: UIButton!
     @IBOutlet weak var eventAgeInfo: UILabel!
     @IBOutlet weak var eventPrice: UILabel!
@@ -69,10 +69,26 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
 
     var lastKnownUserLocation : CLLocation?
     var currentForecast: DataPoint?
+    var selectedEventSession = 0 {//0 is default
+        didSet {
+            self.eventSessionsCollectionView.reloadData()
+        }
+    }
     //var eventDateForCalendar: Date?
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        //call a sperate function here for deep link
+        //        default: //if we hit here it means we're coming from following a deeplink
+        //            if let date = Event.pushedEventForDateTime {
+        //                self.eventFullDateLabel.text = date
+        //            } else {
+        //                let eventDate = DateUtil.shared.fullDateStringWithDateTimeStyle(from: event.dates.first!)
+        //                self.eventFullDateLabel.text = eventDate
+        //            }
+
+        //self.eventHours.text = DateUtil.shared.shortTime(from:event.startTime) + " - " + DateUtil.shared.shortTime(from:event.endTime)
 
         self.loadEventInfo()
 
@@ -86,6 +102,9 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
 
         let shareButtonItem = UIBarButtonItem(image: UIImage(named: "shareIcon")!, style: .done, target: self, action: #selector(share))
         self.navigationItem.rightBarButtonItem = shareButtonItem
+
+        self.eventSessionsCollectionView.delegate = self
+        self.eventSessionsCollectionView.dataSource = self
 
         recordDetailView()
 
@@ -381,7 +400,9 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
     @IBAction func buyTicketsButtonPressed(_ sender: UIButton) {
 
         if !event.ticketsURL.isEmpty {
-            UIApplication.shared.open(URL(string : event.ticketsURL)!, options: [:], completionHandler: { (status) in
+            guard let urlString = URL(string : event.ticketsURL) else { return }
+
+            UIApplication.shared.open(urlString, options: [:], completionHandler: { (status) in
                 //record analytics here
                 Mixpanel.mainInstance().track(event: "Buy Tickets Pressed", properties: ["event Id" : self.event.id, "Event Title": self.event.title, "Event Location" : self.event.location, "freeEvent" : self.event.freeFlag, "Event Ages": self.event.ages ])
             })
@@ -449,52 +470,20 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
 
         self.eventTitle.text = event.title
 
-        //Event dates and hours formating
-        switch currentTab {
-        case .today:
-            let eventDate = DateUtil.shared.fullDateStringWithDateTimeStyle(from: DateUtil.shared.todayDate()!)
-            self.eventFullDateLabel.text = eventDate
-            self.eventHours.text = DateUtil.shared.shortTime(from:event.startTime) + " - " + DateUtil.shared.shortTime(from:event.endTime)
-//
-//            print("DateUtil.shared.createShortTimeDate(from: event.startTime )", DateUtil.shared.createShortTimeDate(from: event.startTime ))
-//           let d = DateUtil.shared.dateForCalendar(date: Date(), time: DateUtil.shared.createShortTimeDate(from: event.startTime ))
-//            print("DateUtil.shared.dateForCalendar()", d)
-//            //let d = DateUtil.shared.createDate(from: self.eventFullDateLabel.text!)
-//            //print("This is the date from eventfulldatelabel", d)
-//            eventDateForCalendar = Date()
-
-            //Need to look at the below case later!
-//            if self.event.showTimes != nil {
-//                let eventHoursText = DateUtil.shared.shortTime(from:event.startTime) + " - " + DateUtil.shared.shortTime(from:event.endTime)
-//                self.eventHours.text = eventHoursText + " Additional times available."
-//            }
-
-        case .tomorrow:
-            let eventDate = DateUtil.shared.fullDateStringWithDateTimeStyle(from: DateUtil.shared.tomorrow()!)
-            self.eventFullDateLabel.text = eventDate
-            self.eventHours.text = DateUtil.shared.shortTime(from:event.startTime) + " - " + DateUtil.shared.shortTime(from:event.endTime)
-
-
-            //eventDateForCalendar = Date()
-        case .later:
-            let eventDate = DateUtil.shared.fullDateStringWithDateTimeStyle(from: event.dates.first!)
-            self.eventFullDateLabel.text = eventDate
-            self.eventHours.text = DateUtil.shared.shortTime(from:event.startTime) + " - " + DateUtil.shared.shortTime(from:event.endTime)
-            //eventDateForCalendar = Date()
-        default: //if we hit here it means we're coming from following a deeplink
-            if let date = Event.pushedEventForDateTime {
-                self.eventFullDateLabel.text = date
-            } else {
-                let eventDate = DateUtil.shared.fullDateStringWithDateTimeStyle(from: event.dates.first!)
-                self.eventFullDateLabel.text = eventDate
-            }
-
-            self.eventHours.text = DateUtil.shared.shortTime(from:event.startTime) + " - " + DateUtil.shared.shortTime(from:event.endTime)
-
-        }
+        self.eventFullDateLabel.text = DateUtil.shared.fullDateString(from: event.startTime)
 
         self.eventAgeInfo.text = event.ages
-        self.eventPrice.text = event.freeFlag == true ? "Free" : event.price
+
+//        if !event.discountedTicketsURL.isEmpty {
+//            let attributeString =  NSMutableAttributedString(string: self.event.price)
+//            attributeString.addAttribute(NSStrikethroughStyleAttributeName, value: 2, range: NSMakeRange(0, attributeString.length))
+//            self.eventPrice.attributedText = attributeString
+//        } else {
+            self.eventPrice.text = event.freeFlag == true ? "Free" : event.price
+            self.eventPrice.numberOfLines = 0
+        self.eventPrice.preferredMaxLayoutWidth = self.eventPrice.frame.size.width;
+       // }
+
         self.eventLocation.text = event.address
 
         self.eventDescription.text = event.description
@@ -587,6 +576,39 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
             self.present(safariVC, animated: true, completion: nil)
         }
     }
+
+    // MARK: CollectionView Delegates
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return event.eventInstances.count
+    }
+
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "eventSessionsCell", for: indexPath) as! EventSessionsCollectionViewCell
+        let eventItem = event.eventInstances[indexPath.row]
+        cell.timeLabel.text = DateUtil.shared.shortTimeString(from: eventItem.0) + " - " + DateUtil.shared.shortTimeString(from: eventItem.1)
+        cell.timeLabel.backgroundColor = UIColor.white
+
+        cell.timeLabel.layer.cornerRadius = 5
+        cell.timeLabel.layer.borderWidth = 0.5
+        cell.timeLabel.layer.borderColor = UIColor.lightGray.cgColor
+
+        //This will be on later.
+//        if indexPath.row == selectedEventSession {
+//            //default selected
+//            cell.timeLabel.layer.borderColor = UIColor(red:0.39, green:0.00, blue:0.00, alpha:1.0).cgColor
+//            cell.timeLabel.layer.borderWidth = 0.7
+//            cell.isSelected = true
+//        }
+
+        return cell
+    }
+
+//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+//        //changeActive Selection here as well
+//        self.selectedEventSession = (collectionView.indexPathsForSelectedItems?.first?.row)!
+//
+//    }
+
 }
 
 extension PFGeoPoint {
