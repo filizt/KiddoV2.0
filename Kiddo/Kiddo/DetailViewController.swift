@@ -49,6 +49,7 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
     @IBOutlet weak var moreInfoButton: UIButton!
     @IBOutlet weak var buyTicketsButton: UIButton!
     
+    @IBOutlet weak var buyTicketsButtonPadding: UIView!
     var event: Event!
     var image: UIImage? = nil
     var currentTab: TabBarItems = TabBarItems.today
@@ -105,6 +106,9 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
 
         self.eventSessionsCollectionView.delegate = self
         self.eventSessionsCollectionView.dataSource = self
+
+        buyTicketsButton.layer.cornerRadius = 5
+        buyTicketsButton.clipsToBounds = true
 
         recordDetailView()
 
@@ -457,9 +461,11 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
         self.eventCategory.layer.cornerRadius = 8
         self.eventCategory.layer.masksToBounds = true
         self.buyTicketsButton.isHidden = true
+        self.buyTicketsButtonPadding.isHidden = true
 
         if !event.ticketsURL.isEmpty {
             self.buyTicketsButton.isHidden = false
+            self.buyTicketsButtonPadding.isHidden = false
         }
 
         if self.image != nil {
