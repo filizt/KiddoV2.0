@@ -480,8 +480,7 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
 //            self.eventPrice.attributedText = attributeString
 //        } else {
             self.eventPrice.text = event.freeFlag == true ? "Free" : event.price
-            self.eventPrice.numberOfLines = 0
-        self.eventPrice.preferredMaxLayoutWidth = self.eventPrice.frame.size.width;
+
        // }
 
         self.eventLocation.text = event.address
