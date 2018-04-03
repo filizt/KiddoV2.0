@@ -82,6 +82,27 @@ class DateUtil {
         return date
     }
 
+    func dateStringToDateObject(dateString: String) -> Date? {
+        formatter.dateStyle = .full
+        formatter.timeStyle = .none
+        let date = formatter.date(from: dateString)
+        return date
+    }
+
+    func concetenateDateAndTime(date: Date, time:Date ) -> Date? {
+
+        var timeComponents = Calendar.current.dateComponents([.hour, .minute, .second ], from: time)
+        var dateComponents =  Calendar.current.dateComponents([.year, .month, .day], from: date)
+        dateComponents.hour = timeComponents.hour
+        dateComponents.minute = timeComponents.minute
+        dateComponents.second = timeComponents.second
+        print(dateComponents.timeZone)
+        print(timeComponents.timeZone)
+        print( Calendar.current.date(from: dateComponents))
+
+        return Calendar.current.date(from: dateComponents)
+    }
+
 
 //    func todayStartDate() -> String {
 //        var date = test()

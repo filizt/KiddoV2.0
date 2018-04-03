@@ -362,14 +362,14 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 
     func deepLinkHandler() {
        if let eventId = Event.pushedEventId {
-            let query = PFQuery(className:"EventObject")
+            let query = PFQuery(className:"Event")
             query.getObjectInBackground(withId: eventId) {(event, error) -> Void in
                 guard error == nil else {
                     print ("Error retrieving data from Parse")
                     return
                 }
                 if let event = event {
-                    //Event.pushedEvent = Event.create(from: event)
+                    Event.pushedEvent = Event.create(from: event, forDay: "PushedEvent")
                     self.performSegue(withIdentifier: "showDetailViewForPushedEvent", sender: nil)
                 }
             }
@@ -481,10 +481,10 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
     private func fetchTodayEvents() {
         let startDate = DateUtil.shared.todayStart() //returns a test date
         let endDate = DateUtil.shared.addOneDay(startDate: startDate!) //returns a test date
-        print(startDate) // this should print PST but the actual date should be UTC.
-        print(DateUtil.shared.dateStringWithDateTimeStyle(from: startDate!))
-        print(endDate) // this should print PST but the actual date should be UTC.
-        print(DateUtil.shared.dateStringWithDateTimeStyle(from: endDate!))
+//        print(startDate) // this should print PST but the actual date should be UTC.
+//        print(DateUtil.shared.dateStringWithDateTimeStyle(from: startDate!))
+//        print(endDate) // this should print PST but the actual date should be UTC.
+//        print(DateUtil.shared.dateStringWithDateTimeStyle(from: endDate!))
 
         let innerQuery = PFQuery(className: "EventInstance")
         innerQuery.whereKey("eventDate", lessThanOrEqualTo: endDate)
@@ -562,10 +562,10 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 
         let startDate = DateUtil.shared.tomorrowStart() //returns a test date
         let endDate = DateUtil.shared.addOneDay(startDate: startDate!) //returns a test date
-        print(startDate) // this should print PST but the actual date should be UTC.
-        print(DateUtil.shared.dateStringWithDateTimeStyle(from: startDate!))
-        print(endDate) // this should print PST but the actual date should be UTC.
-        print(DateUtil.shared.dateStringWithDateTimeStyle(from: endDate!))
+//        print(startDate) // this should print PST but the actual date should be UTC.
+//        print(DateUtil.shared.dateStringWithDateTimeStyle(from: startDate!))
+//        print(endDate) // this should print PST but the actual date should be UTC.
+//        print(DateUtil.shared.dateStringWithDateTimeStyle(from: endDate!))
 
         let innerQuery = PFQuery(className: "EventInstance")
         innerQuery.whereKey("eventDate", lessThanOrEqualTo: endDate)
@@ -596,10 +596,10 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
     private func fetchLaterEvents() {
         let startDate = DateUtil.shared.laterStart() //returns a test date
         let endDate = DateUtil.shared.addOneDay(startDate: startDate!) //returns a test date
-        print(startDate) // this should print PST but the actual date should be UTC.
-        print(DateUtil.shared.dateStringWithDateTimeStyle(from: startDate!))
-        print(endDate) // this should print PST but the actual date should be UTC.
-        print(DateUtil.shared.dateStringWithDateTimeStyle(from: endDate!))
+//        print(startDate) // this should print PST but the actual date should be UTC.
+//        print(DateUtil.shared.dateStringWithDateTimeStyle(from: startDate!))
+//        print(endDate) // this should print PST but the actual date should be UTC.
+//        print(DateUtil.shared.dateStringWithDateTimeStyle(from: endDate!))
 
         let innerQuery = PFQuery(className: "EventInstance")
         innerQuery.whereKey("eventDate", greaterThan: startDate)

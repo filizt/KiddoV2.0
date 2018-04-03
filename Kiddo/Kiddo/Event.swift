@@ -142,6 +142,27 @@ struct Event {
 
             }
 
+        case "PushedEvent" :
+
+            if let startDate = DateUtil.shared.dateStringToDateObject(dateString: pushedEventForDateTime!), let endDate = DateUtil.shared.addOneDay(startDate: startDate) {
+                //  eventDateTimeList.contains(where: { $0 == (startDateTime, endDateTime) }
+                //var todayInstance = eventInstances.first(where: $0)
+                // var eventInstances = localEventInstances.flatMap { $0.filter { $0.key == "startTime" && ($0.value >= startDate && $0.value < endDate ) } }
+                for instanceDict in instances {
+                    if let value = instanceDict["startTime"] {
+                        if value >= startDate && value < endDate {
+                            let start = value
+                            if let end = instanceDict["endTime"] {
+                                eventInstances.append((start,end))
+                            }
+                        }
+                    }
+                }
+
+                if eventInstances.count > 1 {
+                    variousTimes = true
+                }
+            }
         default:
             print("hit default")
         }
