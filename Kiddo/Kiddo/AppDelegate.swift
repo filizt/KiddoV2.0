@@ -111,6 +111,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         eventsQuery.whereKey("eventDate", lessThanOrEqualTo: endDate)
         eventsQuery.whereKey("eventDate", greaterThan: startDate)
         eventsQuery.includeKey("eventImageId")
+        eventsQuery.limit = 3000
 
         eventsQuery.findObjectsInBackground { (eventInstances, error) in
             guard error == nil else {
