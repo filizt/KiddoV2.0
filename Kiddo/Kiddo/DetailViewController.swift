@@ -406,15 +406,13 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
         if !event.ticketsURL.isEmpty {
             guard let urlString = URL(string : event.ticketsURL) else { return }
 
+            spawnedLocally = true
+
             UIApplication.shared.open(urlString, options: [:], completionHandler: { (status) in
                 //record analytics here
                 Mixpanel.mainInstance().track(event: "Buy Tickets Pressed", properties: ["event Id" : self.event.id, "Event Title": self.event.title, "Event Location" : self.event.location, "freeEvent" : self.event.freeFlag, "Event Ages": self.event.ages ])
             })
-        } else {
-            UIApplication.shared.open(URL(string : "https://www.brownpapertickets.com/ref/2620206")!, options: [:], completionHandler: { (status) in
-
-            })
-        }
+        } 
     }
     
     @IBAction func sendFeedbackPressed(_ sender: UIButton) {
@@ -525,6 +523,8 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
 
         guard locationCoordinates != nil else { return }
 
+        spawnedLocally = true
+
         let options = [
             MKLaunchOptionsMapCenterKey: NSValue(mkCoordinate: region.center),
             MKLaunchOptionsMapSpanKey: NSValue(mkCoordinateSpan: region.span)
@@ -578,6 +578,9 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
             userInfo.saveInBackground()
 
             let safariVC = SFSafariViewController(url:URL(string: url)!)
+
+            spawnedLocally = true
+
             self.present(safariVC, animated: true, completion: nil)
         }
     }

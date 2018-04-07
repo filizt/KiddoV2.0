@@ -18,6 +18,8 @@ import UIViewController_ODStatusBar
 import ForecastIO
 import Mixpanel
 
+var spawnedLocally = false
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate  {
 
@@ -105,7 +107,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func prefetchImages() {
 
         guard let startDate = DateUtil.shared.todayStart() else { return }
-        guard let endDate = DateUtil.shared.addThreeMonths(to: startDate) else { return }
+        guard let endDate = DateUtil.shared.addOneMonth(to: startDate) else { return }
 
         let eventsQuery = PFQuery(className: "EventInstance")
         eventsQuery.whereKey("eventDate", lessThanOrEqualTo: endDate)
@@ -232,7 +234,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
-
+        if spawnedLocally == false {
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let navController = storyboard.instantiateViewController(withIdentifier: "navController")
+            self.window!.rootViewController = navController
+        } else {
+            //do nothing but reset variable
+            spawnedLocally = false
+        }
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {

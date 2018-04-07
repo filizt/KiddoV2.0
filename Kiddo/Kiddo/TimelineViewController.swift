@@ -21,6 +21,7 @@ class EventAnnotation : Annotation {
     var event : Event!
 }
 
+
 class TimelineViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, CustomSegmentedControlDelegate, UICollectionViewDataSource, UICollectionViewDelegate, CellFilterButtonDelegate {
 
     @IBOutlet weak var filtersCollectionView: UICollectionView!
@@ -243,7 +244,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         activityIndicator.hidesWhenStopped = true
         activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
         
-        NotificationCenter.default.addObserver(self, selector: #selector(applicationEnteredForeground), name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(applicationEnteredForeground), name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
 
         //First time the app loads, default view is today tab. Let's log that.
         Answers.logContentView(withName: "Today Tab", contentType: nil, contentId: nil, customAttributes: nil)
@@ -252,6 +253,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         activityIndicator.startAnimating()
         self.fetchAllEvents()
         self.setLastModified()
+        self.self.fetchPhotosIfNecessary()
 
         if let currentUser = PFUser.current() {
             Mixpanel.mainInstance().people.set(properties: ["ParseUserId": currentUser.objectId ?? "" ])
@@ -276,9 +278,23 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 
         if selectedCells.count < 1 {
             resetCollectionViewSelection()
-        } 
+        }
+
+        if CLLocationManager.authorizationStatus() == .authorizedWhenInUse ||
+            CLLocationManager.authorizationStatus() == .authorizedAlways {
+            locationManager.startUpdatingLocation()
+        }
     }
 
+    private func updateAndRefreshAllIfNeeded() {
+        //Check if we're coming back from detail view spawned switches
+
+        //if so do nothing
+
+        //if not, update all data, reset filter views, etc.
+        self.fetchAllEvents()
+
+    }
 
     private func getWeatherForecast() {
         //For now, longitude latitude hard coded for Seattle.
@@ -378,16 +394,16 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 
     //when to call fetch events - this is too generic of a call
     //a good way to determine it is to have a timer?
-    func applicationEnteredForeground() {
-        self.activityIndicator.startAnimating()
-        self.fetchAllEvents()
-        self.fetchPhotosIfNecessary()
-
-        if CLLocationManager.authorizationStatus() == .authorizedWhenInUse ||
-            CLLocationManager.authorizationStatus() == .authorizedAlways {
-            locationManager.startUpdatingLocation()
-        }
-    }
+//    func applicationEnteredForeground() {
+//        self.activityIndicator.startAnimating()
+//        self.fetchAllEvents()
+//        self.fetchPhotosIfNecessary()
+//
+//        if CLLocationManager.authorizationStatus() == .authorizedWhenInUse ||
+//            CLLocationManager.authorizationStatus() == .authorizedAlways {
+//            locationManager.startUpdatingLocation()
+//        }
+//    }
 
     func setLastModified() {
         let query = PFQuery(className: "EventImage")
@@ -472,6 +488,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
     //need last request for fetch: today, tomorrow, later 
 
     private func fetchAllEvents() {
+        self.activityIndicator.startAnimating()
         fetchTodayEvents()
         fetchTomorrrowEvents()
         fetchLaterEvents()
@@ -802,7 +819,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         let cell = self.timelineTableView.dequeueReusableCell(withIdentifier: EventTableViewCell.identifier(), for: indexPath) as! EventTableViewCell
         cell.event = selectedEvent
         if self.segmentedControl.selectedIndex == 2 {
-            cell.eventStartTime.text = DateUtil.shared.mediumDateString(from: selectedEvent.eventDates.first!)
+            cell.eventStartTime.text = DateUtil.shared.fullDateString(from: selectedEvent.eventDates.first!)
             cell.eventFeaturedStar.isHidden = true
             cell.eventFeaturedLabel.isHidden = true
             cell.eventEndTime.isHidden = true

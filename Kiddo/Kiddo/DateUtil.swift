@@ -77,8 +77,8 @@ class DateUtil {
         return date
     }
 
-    func addThreeMonths(to date: Date) -> Date? {
-        let date = date.addingTimeInterval(90.0 * 24 * 60.0 * 60.0)
+    func addOneMonth(to date: Date) -> Date? {
+        let date = date.addingTimeInterval(30.0 * 24 * 60.0 * 60.0)
         return date
     }
 
