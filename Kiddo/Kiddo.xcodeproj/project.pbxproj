@@ -21,6 +21,7 @@
 		BD68B9AC1DD0F2F300CE39CA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD68B9AA1DD0F2F300CE39CA /* Main.storyboard */; };
 		BD68B9B11DD0F2F300CE39CA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD68B9AF1DD0F2F300CE39CA /* LaunchScreen.storyboard */; };
 		BD68B9BF1DD0FA1C00CE39CA /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD68B9BE1DD0FA1C00CE39CA /* DetailViewController.swift */; };
+		BD6D64CF20866E6200ACC57D /* AppStateTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD6D64CE20866E6200ACC57D /* AppStateTracker.swift */; };
 		BD90C4F6206AF0F8007594C1 /* EventSessionsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD90C4F5206AF0F8007594C1 /* EventSessionsCollectionViewCell.swift */; };
 		BDB5B0931E4D534400D59AEA /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDB5B0911E4D534400D59AEA /* Fabric.framework */; };
 		BDB5B0961E4D54B600D59AEA /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDB5B0951E4D54B600D59AEA /* Crashlytics.framework */; };
@@ -54,6 +55,7 @@
 		BD68B9B01DD0F2F300CE39CA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		BD68B9B21DD0F2F300CE39CA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BD68B9BE1DD0FA1C00CE39CA /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		BD6D64CE20866E6200ACC57D /* AppStateTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStateTracker.swift; sourceTree = "<group>"; };
 		BD90C4F5206AF0F8007594C1 /* EventSessionsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventSessionsCollectionViewCell.swift; sourceTree = "<group>"; };
 		BD9EFEB41EDA28B500F80296 /* Kiddo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Kiddo.entitlements; sourceTree = "<group>"; };
 		BDB5B0911E4D534400D59AEA /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = SOURCE_ROOT; };
@@ -101,6 +103,7 @@
 				BD506DD71E293CD6001A98B0 /* DateUtil.swift */,
 				50584E061DD122ED00A2BEA9 /* UIExtensions.swift */,
 				BD600A9E1F62130400DCC0D3 /* FilterUtil.swift */,
+				BD6D64CE20866E6200ACC57D /* AppStateTracker.swift */,
 			);
 			name = Util;
 			sourceTree = "<group>";
@@ -224,7 +227,6 @@
 				BD68B9A01DD0F2F200CE39CA /* Frameworks */,
 				BD68B9A11DD0F2F200CE39CA /* Resources */,
 				59A50EDB3C88E49250C0A4F7 /* [CP] Embed Pods Frameworks */,
-				DA9CCB1D59561A99C8909304 /* [CP] Copy Pods Resources */,
 				BDB5B0901E4D529700D59AEA /* ShellScript */,
 			);
 			buildRules = (
@@ -251,6 +253,9 @@
 						DevelopmentTeam = AWF997WQMM;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 1;
+							};
 							com.apple.SafariKeychain = {
 								enabled = 1;
 							};
@@ -361,21 +366,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		DA9CCB1D59561A99C8909304 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Kiddo/Pods-Kiddo-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -389,6 +379,7 @@
 				BDD126141FBA2A6D007219B1 /* FilterCollectionViewCell.swift in Sources */,
 				BDEB9E8F1E05A64F002F7222 /* LogInViewController.swift in Sources */,
 				BD68B9BF1DD0FA1C00CE39CA /* DetailViewController.swift in Sources */,
+				BD6D64CF20866E6200ACC57D /* AppStateTracker.swift in Sources */,
 				BD68B9A71DD0F2F300CE39CA /* AppDelegate.swift in Sources */,
 				50584E071DD122ED00A2BEA9 /* UIExtensions.swift in Sources */,
 				BD506DD81E293CD6001A98B0 /* DateUtil.swift in Sources */,

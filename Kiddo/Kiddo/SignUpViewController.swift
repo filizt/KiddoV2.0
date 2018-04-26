@@ -95,7 +95,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
             alertController.addAction(OKAction)
             self.present(alertController, animated: true, completion: nil)
         }
-
+         appState = AppStateTracker.State.appInNonTransitionalState //Invalidate the previously set(FB login) state. We started this as FB but made a non transitional state if user logsin with email.
          self.performSegue(withIdentifier: "pushTimeline", sender: nil)
     }
 

@@ -57,4 +57,8 @@ class FilterCollectionViewCell: UICollectionViewCell {
         //filterButton.addTarget(self, action: #selector(TimelineViewController.filterButtonPressed), for: UIControlEvents.touchUpInside)
         
     }
+
+    func getFilterLabel() -> String? {
+        return filterLabel.text
+    }
 }

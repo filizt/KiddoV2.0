@@ -18,7 +18,9 @@ import UIViewController_ODStatusBar
 import ForecastIO
 import Mixpanel
 
-var spawnedLocally = false
+var testMode = false
+var appState = AppStateTracker.State.appInNonTransitionalState
+var lastAppActiveTimeStamp : Date?
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate  {
@@ -40,17 +42,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         Parse.initialize(with: configuration)
         PFFacebookUtils.initializeFacebook(applicationLaunchOptions: launchOptions)
 
-        Mixpanel.initialize(token: "fda2cfdb1bb3e523b6842ac03ff88fba")
+//        if !isSimulator() {
+//            Fabric.with([Crashlytics.self])
+//        }
 
-        if !isSimulator() {
-            Fabric.with([Crashlytics.self])
+        if testMode {
+             Mixpanel.initialize(token: "a5c3cfa22228541b11759f218a092df7")
+            Mixpanel.initialize(token: <#T##String#>, launchOptions: <#T##[UIApplicationLaunchOptionsKey : Any]?#>, flushInterval: <#T##Double#>, instanceName: <#T##String#>)
+        } else {
+             Mixpanel.initialize(token: "fda2cfdb1bb3e523b6842ac03ff88fba")
+             Fabric.with([Crashlytics.self])
         }
 
         UNUserNotificationCenter.current().delegate = self
 
         prefetchImages()
         //fetchSeasonalEventRequirements()
-        requestAuthForNotifications()
         checkVersionInfoAndRequestDownload()
 
         if launchOptions != nil {
@@ -143,50 +150,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 //        })
 //    }
 
-    //MARK: Local Notifications
 
-    func requestAuthForNotifications() {
-        UNUserNotificationCenter.current().getNotificationSettings(completionHandler: { (settings) in
-            if settings.authorizationStatus != .authorized {
-                UNUserNotificationCenter.current().requestAuthorization(options: [ .alert, .sound,.badge]) {(granted, error) in
-                    if granted {
-                        //schedule notifications.
-                        self.scheduleLocalNotifications()
-                        Answers.logCustomEvent(withName: "UserNotificationAuth", customAttributes: ["Notifications":"Authroized"])
-                    } else {
-                        Answers.logCustomEvent(withName: "UserNotificationAuth", customAttributes: ["Notifications":"Denied"])
-                    }
-                }
-            }
-        })
-    }
-
-    //Turns out we can only ask the user once for notification auth. So commenting below code out.
-    //    func notificationsAuthNeeded() -> Bool {
-    //        if let lastNotificationAuthRequest = UserDefaults.standard.object(forKey: "UserNotificationsDeniedKey") as? Date {
-    //            guard ((lastNotificationAuthRequest.timeIntervalSinceNow * -1) >= (60*60*24*3)) else { return false }
-    //        }
-    //
-    //        return true //first time user case
-    //    }
-
-    func scheduleLocalNotifications() {
-        //time interval is every 3 days
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: (60*60*24*2), repeats: true)
-
-        let content = UNMutableNotificationContent()
-        content.title = "Kiddo"
-        content.body = "New events and activities added every day! Come check them out!"
-        content.sound = UNNotificationSound.default()
-
-        let request = UNNotificationRequest(identifier: "textNotification", content: content, trigger: trigger)
-
-        UNUserNotificationCenter.current().add(request) {(error) in
-            if let error = error {
-                print("Uh oh! We had an error: \(error)")
-            }
-        }
-    }
 
     func isSimulator() -> Bool {
         return TARGET_OS_SIMULATOR != 0
@@ -207,21 +171,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         return true
     }
 
-    func application(_ application: UIApplication,
-                     open url: URL,
-                     sourceApplication: String?,
-                     annotation: Any) -> Bool {
-
+    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
         if (!Branch.getInstance().handleDeepLink(url)) {
-            return FBSDKApplicationDelegate.sharedInstance().application(application,
+            return FBSDKApplicationDelegate.sharedInstance().application(app,
                                                                      open: url,
-                                                                     sourceApplication: sourceApplication,
-                                                                     annotation: annotation)
+                                                                     sourceApplication: options[.sourceApplication] as! String,
+                                                                     annotation: options[.annotation])
         }
 
         return true
     }
-    
+    //The problem is, it calls second time after dismissing system services alert (location, push notifications, photos)
+    //https://stackoverflow.com/questions/39622392/applicationwillresignactive-called-without-reason-on-ios-10-swift-3
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
@@ -230,20 +191,47 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func applicationDidEnterBackground(_ application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+
+        //if we didn't leave the app due to locallyspawnedprocesses, then let's record the time we're leaving the app
+        lastAppActiveTimeStamp = Date()
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
-        // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
-        if spawnedLocally == false {
+
+        //if it's been an hour since the last time we checked the app, let's reset it
+        if let lastAppActiveTimeStamp = lastAppActiveTimeStamp {
+            if Int(lastAppActiveTimeStamp.timeIntervalSinceNow * -1) > (60*60) {
+                appState = AppStateTracker.State.appWillEnterForegroundFromLongInactivity
+            }
+        }
+
+        switch appState {
+        case .appWillEnterForegroundFromLocallySpawnedProcess(let process):
+            switch process {
+            case .FacebookLogin:
+                print("no-op for now")
+            case .Maps:
+                print("no-op for now")
+            case .Settings:
+                UIApplication.shared.registerForRemoteNotifications()
+            case .Browser:
+                print("no-op for now")
+            }
+            print("no-op for now")
+        case .appWillEnterForegroundFromLongInactivity:
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let navController = storyboard.instantiateViewController(withIdentifier: "navController")
             self.window!.rootViewController = navController
-        } else {
-            //do nothing but reset variable
-            spawnedLocally = false
+        case .appInNonTransitionalState:
+            print("No-op: Not in transition mode")
+
         }
+
+        appState = AppStateTracker.State.appInNonTransitionalState //Reset!
+
     }
 
+    //runs first time and anytime after that the app transitions back in
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
         FBSDKAppEvents.activateApp()
@@ -256,11 +244,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     // MARK: Push Notification
 
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        print(deviceToken)
+//        let currentInstallation = PFInstallation.current()
+//        currentInstallation?.setDeviceTokenFrom(deviceToken)
+//        currentInstallation?.saveInBackground()
+        if let user = PFUser.current() {
+            Mixpanel.mainInstance().people.addPushDeviceToken(deviceToken)
+        }
 
-        let currentInstallation = PFInstallation.current()
-        currentInstallation?.setDeviceTokenFrom(deviceToken)
-        currentInstallation?.saveInBackground()
+//        let deviceTokenString = deviceToken.reduce("", {$0 + String(format: "%02X", $1)})
+//
+//        if let user = PFUser.current() {
+//            Mixpanel.mainInstance().people.append(properties: [ "$ios_devices": [deviceTokenString]] )
+//        }
     }
 
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {

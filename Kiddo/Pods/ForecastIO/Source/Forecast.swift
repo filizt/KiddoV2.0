@@ -12,10 +12,10 @@ import Foundation
 public struct Forecast {
     
     /// The requested latitude.
-    public let latitude: Float
+    public let latitude: Double
     
     /// The requested longitude.
-    public let longitude: Float
+    public let longitude: Double
     
     /// The IANA timezone name for the requested location (e.g. "America/New_York"). Rely on local user settings over this property.
     public let timezone: String
@@ -66,8 +66,8 @@ public struct Forecast {
     ///
     /// - returns: A new `Forecast` filled with data from the given JSON object.
     public init(fromJSON json: NSDictionary) {
-        latitude = json["latitude"] as! Float
-        longitude = json["longitude"] as! Float
+        latitude = json["latitude"] as! Double
+        longitude = json["longitude"] as! Double
         timezone = json["timezone"] as! String
         
         if let jsonCurrently = json["currently"] as? NSDictionary {

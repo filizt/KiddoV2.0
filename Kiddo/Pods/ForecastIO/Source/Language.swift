@@ -20,6 +20,9 @@ public enum Language: String {
     /// The Belarusian language.
     case belarusian = "be"
     
+    /// The Bulgarian language.
+    case bulgarian = "bg"
+    
     /// The Bosnian language.
     case bosnian = "bs"
     
@@ -28,6 +31,9 @@ public enum Language: String {
     
     /// The Czech language.
     case czech = "cs"
+    
+    /// The Danish language.
+    case danish = "da"
     
     /// The German language.
     case german = "de"
@@ -44,6 +50,9 @@ public enum Language: String {
     /// The Estonian language.
     case estonian = "et"
     
+    /// The Finnish language.
+    case finnish = "fi"
+    
     /// The French language.
     case french = "fr"
     
@@ -56,11 +65,20 @@ public enum Language: String {
     /// The Indonesian language.
     case indonesian = "id"
     
+    /// The Icelandic language.
+    case icelandic = "is"
+    
     /// The Italian language.
     case italian = "it"
     
-    /// The Icelandic language.
-    case icelandic = "is"
+    /// The Japanese language.
+    case japanese = "ja"
+    
+    /// The Georgian language.
+    case georgian = "ka"
+    
+    /// The Korean language.
+    case korean = "ko"
     
     /// The Cornish language.
     case cornish = "kw"
@@ -76,6 +94,9 @@ public enum Language: String {
     
     /// The Portuguese language.
     case portuguese = "pt"
+    
+    /// The Romanian language.
+    case romanian = "ro"
     
     /// The Russian language.
     case russian = "ru"

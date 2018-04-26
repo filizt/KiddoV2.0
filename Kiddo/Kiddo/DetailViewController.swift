@@ -112,7 +112,15 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
 
         recordDetailView()
 
+        UNUserNotificationCenter.current().getNotificationSettings(completionHandler: { (settings) in
+            if settings.authorizationStatus == .notDetermined || settings.authorizationStatus == .denied {
+                DispatchQueue.main.async {
+                    self.needAuthForPushNotifications()
+                }
+            }
+        })
     }
+
 
     override func viewWillAppear(_ animated: Bool) {
 //        if event.address != nil {
@@ -336,77 +344,101 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
         }
     }
 
-//    @IBAction func addToCalendarButtonPressed(_ sender: Any) {
-//        let status = EKEventStore.authorizationStatus(for: EKEntityType.event)
-//
-//        switch (status) {
-//                    case EKAuthorizationStatus.notDetermined:
-//                            // This happens on first-run
-//                                EKEventStore().requestAccess(to: .event, completion: {
-//                                    (accessGranted: Bool, error: Error?) in
-//                                    if accessGranted == true {
-//                                        DispatchQueue.main.async(execute: {
-//                                            print("access granted")
-//                                            self.addEventToCalendar()
-//
-//                                        })
-//                                    } else {
-//                                        DispatchQueue.main.async(execute: {
-//                                            print("access denied")
-//                                        })
-//                                    }
-//                                })
-//                    case EKAuthorizationStatus.authorized:
-//                            // Things are in line with being able to show the calendars in the table view
-//                                print("authorized")
-//                                self.addEventToCalendar()
-//                    case EKAuthorizationStatus.restricted, EKAuthorizationStatus.denied:
-//                           // We need to help them give us permission
-//                                print("denied")
-//                    }
-//
-//    }
+    //Add Event to Calendar
 
-//    private func addEventToCalendar() {
-//        let eventStore = EKEventStore();
-//        let newEvent = EKEvent(eventStore: eventStore)
-//        //https://stackoverflow.com/questions/48175452/defaultcalendarfornewevents-is-defined-as-optional-however-cant-use-optional-bi/48196230#48196230
-//        //Hence the nil check.
-//        if eventStore.defaultCalendarForNewEvents != nil {
-//            newEvent.calendar = eventStore.defaultCalendarForNewEvents
-//            newEvent.title = self.event.title
-//            newEvent.startDate = eventDateForCalendar!
-//            newEvent.endDate = eventDateForCalendar!
-//            newEvent.location = event.location + " " + event.address
-//
-//
-//       // Save the calendar using the Event Store instance
-//        if let saved = try? eventStore.save(newEvent, span: .thisEvent, commit: true) {
-//                let alert = UIAlertController(title: "Success", message: "Event added to the default calendar", preferredStyle: .alert)
-//                    let OKAction = UIAlertAction(title: "OK", style:.default, handler: nil)
-//                    alert.addAction(OKAction)
-//
-//                    self.present(alert, animated: true, completion: nil)
-//                   // self.dismiss(animated: true, completion: nil)
-//            } else { //need to fix this part a little bit to get the errors, etc.
-//                let alert = UIAlertController(title: "Event could not be saved", message: "error.localizedDescription", preferredStyle: .alert)
-//                    let OKAction = UIAlertAction(title: "OK", style:.default, handler: nil)
-//                    alert.addAction(OKAction)
-//
-//                    self.present(alert, animated: true, completion: nil)
-//
-//            }
-//
-//        }
-//
-//        //self.performSegue(withIdentifier: "showDetailView", sender: nil)
-//    }
+    @IBAction func addToCalendarButtonPressed(_ sender: Any) {
+        let status = EKEventStore.authorizationStatus(for: EKEntityType.event)
+
+        switch (status) {
+                    case EKAuthorizationStatus.notDetermined:
+                            // This happens on first-run
+                                EKEventStore().requestAccess(to: .event, completion: {
+                                    (accessGranted: Bool, error: Error?) in
+                                    if accessGranted == true {
+                                        DispatchQueue.main.async(execute: {
+                                            print("access granted")
+                                            self.addEventToCalendar()
+                                        })
+                                    } else {
+                                        DispatchQueue.main.async(execute: {
+                                            print("access denied")
+                                        })
+                                    }
+                                })
+                    case EKAuthorizationStatus.authorized:
+                            // Things are in line with being able to show the calendars in the table view
+                                print("authorized")
+                                self.addEventToCalendar()
+                    case EKAuthorizationStatus.restricted, EKAuthorizationStatus.denied:
+                           // We need to help them give us permission
+                        askAuthForCalendarAccess()
+                        print("denied")
+                    }
+
+    }
+
+    private func addEventToCalendar() {
+        let eventStore = EKEventStore();
+        let newEvent = EKEvent(eventStore: eventStore)
+        //https://stackoverflow.com/questions/48175452/defaultcalendarfornewevents-is-defined-as-optional-however-cant-use-optional-bi/48196230#48196230
+        //Hence the nil check.
+        if eventStore.defaultCalendarForNewEvents != nil {
+            newEvent.calendar = eventStore.defaultCalendarForNewEvents
+            newEvent.title = "Kiddo: " + self.event.title
+            newEvent.startDate = event.eventInstances[selectedEventSession].0 //start date
+            newEvent.endDate = event.eventInstances[selectedEventSession].1 //end date
+            newEvent.location = event.location + " " + event.address
+
+            Mixpanel.mainInstance().track(event: "AddToCalendarPressed", properties: ["Event Id" : self.event.id, "Event Category" : self.event.category, "Event Title" : self.event.title, "Free Event" : self.event.freeFlag, "Event Location" : self.event.location])
+
+       // Save the calendar using the Event Store instance
+        if let saved = try? eventStore.save(newEvent, span: .thisEvent, commit: true) {
+                let msg = "\"" + self.event.title + "\" " + "is added to the default calendar"
+                let alert = UIAlertController(title: "Added!", message: msg, preferredStyle: .alert)
+                    let OKAction = UIAlertAction(title: "OK", style:.default, handler: nil)
+                    alert.addAction(OKAction)
+
+                    self.present(alert, animated: true, completion: nil)
+                   // self.dismiss(animated: true, completion: nil)
+            } else { //need to fix this part a little bit to get the errors, etc.
+                let alert = UIAlertController(title: "Event could not be saved", message: "error.localizedDescription", preferredStyle: .alert)
+                    let OKAction = UIAlertAction(title: "OK", style:.default, handler: nil)
+                    alert.addAction(OKAction)
+
+                    self.present(alert, animated: true, completion: nil)
+
+            }
+
+        }
+
+        //self.performSegue(withIdentifier: "showDetailView", sender: nil)
+    }
+
+    func askAuthForCalendarAccess() {
+        let alertController = UIAlertController (title: "Calendar Access", message: "Looks like we can't access your calendar. You can enable this in the Settings page. ", preferredStyle: .alert)
+        let cancelAction = UIAlertAction(title: "Not Now", style: .cancel, handler: nil )
+        alertController.addAction(cancelAction)
+
+        let settingsAction = UIAlertAction(title: "Settings", style: .default) { (_) -> Void in
+            guard let settingsUrl = URL(string: UIApplicationOpenSettingsURLString) else {
+                return
+            }
+            //Don't need a completion handler here due to : https://stackoverflow.com/questions/26115265/app-crashes-on-enabling-camera-access-from-settings-ios-8
+            if UIApplication.shared.canOpenURL(settingsUrl) {
+                UIApplication.shared.open(settingsUrl, completionHandler: nil )
+            }
+        }
+        alertController.addAction(settingsAction)
+
+        present(alertController, animated: true, completion: nil)
+    }
+    
     @IBAction func buyTicketsButtonPressed(_ sender: UIButton) {
 
         if !event.ticketsURL.isEmpty {
             guard let urlString = URL(string : event.ticketsURL) else { return }
 
-            spawnedLocally = true
+            appState = AppStateTracker.State.appWillEnterForegroundFromLocallySpawnedProcess(AppStateTracker.ProcessName.Browser)
 
             UIApplication.shared.open(urlString, options: [:], completionHandler: { (status) in
                 //record analytics here
@@ -523,7 +555,7 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
 
         guard locationCoordinates != nil else { return }
 
-        spawnedLocally = true
+        appState = AppStateTracker.State.appWillEnterForegroundFromLocallySpawnedProcess(AppStateTracker.ProcessName.Maps)
 
         let options = [
             MKLaunchOptionsMapCenterKey: NSValue(mkCoordinate: region.center),
@@ -579,8 +611,6 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
 
             let safariVC = SFSafariViewController(url:URL(string: url)!)
 
-            spawnedLocally = true
-
             self.present(safariVC, animated: true, completion: nil)
         }
     }
@@ -601,20 +631,130 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MKMapViewDel
         cell.timeLabel.layer.borderColor = UIColor.lightGray.cgColor
 
         //This will be on later.
-//        if indexPath.row == selectedEventSession {
-//            //default selected
-//            cell.timeLabel.layer.borderColor = UIColor(red:0.39, green:0.00, blue:0.00, alpha:1.0).cgColor
-//            cell.timeLabel.layer.borderWidth = 0.7
-//            cell.isSelected = true
-//        }
+        if indexPath.row == selectedEventSession {
+            //default selected
+            cell.timeLabel.layer.borderColor = UIColor(red:0.39, green:0.00, blue:0.00, alpha:1.0).cgColor
+            cell.timeLabel.layer.borderWidth = 0.7
+            cell.isSelected = true
+        }
 
         return cell
     }
 
-//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        //changeActive Selection here as well
-//        self.selectedEventSession = (collectionView.indexPathsForSelectedItems?.first?.row)!
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        //changeActive Selection here as well
+        self.selectedEventSession = (collectionView.indexPathsForSelectedItems?.first?.row)!
+
+    }
+
+
+
+    //MARK: Local Notifications
+
+    private func needAuthForPushNotifications() {
+
+        if let lastPushNotificationRequest = UserDefaults.standard.object(forKey: "lastPushNotificationRequest") as? Date {
+
+            if Int(lastPushNotificationRequest.timeIntervalSinceNow * -1) >=  (60*60*24*15) {
+                //it's been 15 days or more since we last asked the user to give authorization for push notifications. Let's try that again.
+                _ = Timer.scheduledTimer(timeInterval: 2.0, target: self, selector: #selector(self.askForPushAuth), userInfo: nil, repeats: false)
+            } else {
+                return
+            }
+        } else { //firsttime
+            _ = Timer.scheduledTimer(timeInterval: 2.0, target: self, selector: #selector(self.askForPushAuth), userInfo: nil, repeats: false)
+        }
+    }
+//Enable push notifications to get alerts for recently discounted theatre shows and trending events around. You can change this setting any time in the Settings page.
+   func askForPushAuth() {
+        let notificationAlert = UIAlertController(title: "Notifications", message: "Enable notifications to be the first to know about recently discounted theatre shows and trending events by receiving alerts directly to your phone. \n\n You can change this any time in the Settings page.", preferredStyle: UIAlertControllerStyle.alert)
+
+        notificationAlert.addAction(UIAlertAction(title: "Not Now", style: .default, handler: { (_) -> Void in
+            UserDefaults.standard.set(Date(), forKey: "lastPushNotificationRequest")
+        }))
+        notificationAlert.addAction(UIAlertAction(title: "Enable", style: .default, handler: { (action) in
+            DispatchQueue.main.async {
+                self.requestAuthForNotifications()
+            }
+        }))
+
+        present(notificationAlert, animated: true, completion: nil )
+    }
+
+
+    func requestAuthForNotifications() {
+
+        UNUserNotificationCenter.current().getNotificationSettings(completionHandler: { (settings) in
+            if settings.authorizationStatus == .denied {
+                DispatchQueue.main.async {
+                    self.askAuthForPushNotifications()
+                }
+            } else if settings.authorizationStatus == .notDetermined {
+                UNUserNotificationCenter.current().requestAuthorization(options: [ .alert, .sound,.badge]) {(granted, error) in
+                    if granted {
+                        //schedule notifications.
+                        //self.scheduleLocalNotifications()
+                        Answers.logCustomEvent(withName: "UserNotificationAuth", customAttributes: ["Notifications":"Authroized"])
+                        DispatchQueue.main.async {
+                            UIApplication.shared.registerForRemoteNotifications()
+                        }
+                    } else {
+                        Answers.logCustomEvent(withName: "UserNotificationAuth", customAttributes: ["Notifications":"Denied"])
+                        UserDefaults.standard.set(Date(), forKey: "lastPushNotificationRequest")
+                    }
+                }
+            } 
+        })
+    }
+
+    func askAuthForPushNotifications() {
+        let alertController = UIAlertController (title: "Notifications", message: "Looks like the notifications are turned off. You can enable this in the Settings page. ", preferredStyle: .alert)
+        let cancelAction = UIAlertAction(title: "Not Now", style: .default, handler: { (_) -> Void in
+            UserDefaults.standard.set(Date(), forKey: "lastPushNotificationRequest")
+        })
+        alertController.addAction(cancelAction)
+
+        let settingsAction = UIAlertAction(title: "Settings", style: .default) { (_) -> Void in
+            guard let settingsUrl = URL(string: UIApplicationOpenSettingsURLString) else {
+                return
+            }
+            if UIApplication.shared.canOpenURL(settingsUrl) {
+                UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
+                    print("Settings opened: \(success)") // Prints true
+                     appState = AppStateTracker.State.appWillEnterForegroundFromLocallySpawnedProcess(AppStateTracker.ProcessName.Settings)
+                })
+            }
+        }
+        alertController.addAction(settingsAction)
+
+        present(alertController, animated: true, completion: nil)
+    }
+
+    //Turns out we can only ask the user once for notification auth. So commenting below code out.
+    //    func notificationsAuthNeeded() -> Bool {
+    //        if let lastNotificationAuthRequest = UserDefaults.standard.object(forKey: "UserNotificationsDeniedKey") as? Date {
+    //            guard ((lastNotificationAuthRequest.timeIntervalSinceNow * -1) >= (60*60*24*3)) else { return false }
+    //        }
+    //
+    //        return true //first time user case
+    //    }
 //
+//    func scheduleLocalNotifications() {
+//        //time interval is every 3 days
+//        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: (60*60*24*2), repeats: true)
+//
+//        let content = UNMutableNotificationContent()
+//        content.title = "Kiddo"
+//        content.body = "New events and activities added every day! Come check them out!"
+//        content.sound = UNNotificationSound.default()
+//
+//        let request = UNNotificationRequest(identifier: "textNotification", content: content, trigger: trigger)
+//
+//        UNUserNotificationCenter.current().add(request) {(error) in
+//            if let error = error {
+//                print("Uh oh! We had an error: \(error)")
+//            }
+//        }
 //    }
 
 }

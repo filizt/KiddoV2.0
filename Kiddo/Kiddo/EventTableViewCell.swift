@@ -129,7 +129,7 @@ class EventTableViewCell: UITableViewCell {
                         if let e = self.event {
                             if e.id == eventIdForDownload {
                                 UIView.transition(with: self.eventImage,
-                                                  duration:0.8,
+                                                  duration:0.4,
                                                   options: .transitionCrossDissolve,
                                                   animations: {  self.eventImage?.image = image},
                                                   completion: {(finished) in

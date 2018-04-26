@@ -760,11 +760,11 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
     func sortEvents(events: [Event]) -> [Event]{
         let e = events
 
-        let a = e.filter { $0.featuredFlag == true }
+        let featured = e.filter { $0.featuredFlag == true }
         let aComplement = e.filter { $0.featuredFlag == false }
         let sorted = aComplement.sorted { ( $0.startTime < $1.startTime ) }
 
-        return sorted + a
+        return featured + sorted
     }
 
 
@@ -1296,6 +1296,14 @@ extension TimelineViewController : CLLocationManagerDelegate {
 
         if userLocationFound == false {
             self.userLocationFound = true
+
+            //if "Nearby" is not selected in the filter list, don't do any updates
+            let selectedCells = filtersCollectionView.visibleCells.filter{ $0.isSelected == true }
+            if selectedCells.count >= 1 {
+                    let cell = selectedCells.first as! FilterCollectionViewCell
+                    guard cell.getFilterLabel() == "📍 Nearby" else { return }
+            }
+
             let userGeoPoint = PFGeoPoint(latitude:lastLocation.coordinate.latitude, longitude:lastLocation.coordinate.longitude)
 
             var e = [Event]()

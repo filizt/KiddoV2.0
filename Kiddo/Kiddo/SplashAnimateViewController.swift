@@ -164,6 +164,7 @@ class SplashAnimateViewController: UIViewController, PFLogInViewControllerDelega
             }
             self.performSegue(withIdentifier: "showTimeline", sender: nil)
         } else {
+            appState = AppStateTracker.State.appWillEnterForegroundFromLocallySpawnedProcess(AppStateTracker.ProcessName.FacebookLogin)
             if !emailSubmisionNeeded() { // this is here because of backward compatibility reasons. For existing email users, we'll crea PFUser and log them in. The next time they would not reach here, as PFUser.current() will return true.
                 //TODO: at some point we need to retire emailSubmissionNeeded check as all the users would have a log in by then.
                 self.performSegue(withIdentifier: "showTimeline", sender: nil)
